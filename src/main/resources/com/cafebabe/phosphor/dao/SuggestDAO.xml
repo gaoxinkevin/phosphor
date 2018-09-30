@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.SuggestDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.Suggest">
+    <id column="suggest_id" jdbcType="INTEGER" property="suggestId" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="parent_name" jdbcType="VARCHAR" property="parentName" />
+    <result column="suggest_content" jdbcType="VARCHAR" property="suggestContent" />
+    <result column="suggest_status" jdbcType="INTEGER" property="suggestStatus" />
+    <result column="suggest_photo" jdbcType="VARCHAR" property="suggestPhoto" />
+    <result column="suggest_create_time" jdbcType="TIMESTAMP" property="suggestCreateTime" />
+    <result column="suggest_sf" jdbcType="VARCHAR" property="suggestSf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    suggest_id, order_id, parent_id, parent_name, suggest_content, suggest_status, suggest_photo, 
+    suggest_create_time, suggest_sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from suggest
+    where suggest_id = #{suggestId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from suggest
+    where suggest_id = #{suggestId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Suggest">
+    insert into suggest (suggest_id, order_id, parent_id, 
+      parent_name, suggest_content, suggest_status, 
+      suggest_photo, suggest_create_time, suggest_sf
+      )
+    values (#{suggestId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 
+      #{parentName,jdbcType=VARCHAR}, #{suggestContent,jdbcType=VARCHAR}, #{suggestStatus,jdbcType=INTEGER}, 
+      #{suggestPhoto,jdbcType=VARCHAR}, #{suggestCreateTime,jdbcType=TIMESTAMP}, #{suggestSf,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Suggest">
+    insert into suggest
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="suggestId != null">
+        suggest_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="parentName != null">
+        parent_name,
+      </if>
+      <if test="suggestContent != null">
+        suggest_content,
+      </if>
+      <if test="suggestStatus != null">
+        suggest_status,
+      </if>
+      <if test="suggestPhoto != null">
+        suggest_photo,
+      </if>
+      <if test="suggestCreateTime != null">
+        suggest_create_time,
+      </if>
+      <if test="suggestSf != null">
+        suggest_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="suggestId != null">
+        #{suggestId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="parentName != null">
+        #{parentName,jdbcType=VARCHAR},
+      </if>
+      <if test="suggestContent != null">
+        #{suggestContent,jdbcType=VARCHAR},
+      </if>
+      <if test="suggestStatus != null">
+        #{suggestStatus,jdbcType=INTEGER},
+      </if>
+      <if test="suggestPhoto != null">
+        #{suggestPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="suggestCreateTime != null">
+        #{suggestCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="suggestSf != null">
+        #{suggestSf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Suggest">
+    update suggest
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="parentName != null">
+        parent_name = #{parentName,jdbcType=VARCHAR},
+      </if>
+      <if test="suggestContent != null">
+        suggest_content = #{suggestContent,jdbcType=VARCHAR},
+      </if>
+      <if test="suggestStatus != null">
+        suggest_status = #{suggestStatus,jdbcType=INTEGER},
+      </if>
+      <if test="suggestPhoto != null">
+        suggest_photo = #{suggestPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="suggestCreateTime != null">
+        suggest_create_time = #{suggestCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="suggestSf != null">
+        suggest_sf = #{suggestSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where suggest_id = #{suggestId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.Suggest">
+    update suggest
+    set order_id = #{orderId,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      parent_name = #{parentName,jdbcType=VARCHAR},
+      suggest_content = #{suggestContent,jdbcType=VARCHAR},
+      suggest_status = #{suggestStatus,jdbcType=INTEGER},
+      suggest_photo = #{suggestPhoto,jdbcType=VARCHAR},
+      suggest_create_time = #{suggestCreateTime,jdbcType=TIMESTAMP},
+      suggest_sf = #{suggestSf,jdbcType=VARCHAR}
+    where suggest_id = #{suggestId,jdbcType=INTEGER}
+  </update>
+</mapper>

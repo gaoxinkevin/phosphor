@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.GradeDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.Grade">
+    <id column="grade_id" jdbcType="INTEGER" property="gradeId" />
+    <result column="course_id" jdbcType="INTEGER" property="courseId" />
+    <result column="child_id" jdbcType="INTEGER" property="childId" />
+    <result column="grade_score" jdbcType="DECIMAL" property="gradeScore" />
+    <result column="grade_desc" jdbcType="VARCHAR" property="gradeDesc" />
+    <result column="grade_suggest" jdbcType="VARCHAR" property="gradeSuggest" />
+    <result column="grade_time" jdbcType="TIMESTAMP" property="gradeTime" />
+    <result column="grade_sf" jdbcType="VARCHAR" property="gradeSf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    grade_id, course_id, child_id, grade_score, grade_desc, grade_suggest, grade_time, 
+    grade_sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from grade
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from grade
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Grade">
+    insert into grade (grade_id, course_id, child_id, 
+      grade_score, grade_desc, grade_suggest, 
+      grade_time, grade_sf)
+    values (#{gradeId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{childId,jdbcType=INTEGER}, 
+      #{gradeScore,jdbcType=DECIMAL}, #{gradeDesc,jdbcType=VARCHAR}, #{gradeSuggest,jdbcType=VARCHAR}, 
+      #{gradeTime,jdbcType=TIMESTAMP}, #{gradeSf,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Grade">
+    insert into grade
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gradeId != null">
+        grade_id,
+      </if>
+      <if test="courseId != null">
+        course_id,
+      </if>
+      <if test="childId != null">
+        child_id,
+      </if>
+      <if test="gradeScore != null">
+        grade_score,
+      </if>
+      <if test="gradeDesc != null">
+        grade_desc,
+      </if>
+      <if test="gradeSuggest != null">
+        grade_suggest,
+      </if>
+      <if test="gradeTime != null">
+        grade_time,
+      </if>
+      <if test="gradeSf != null">
+        grade_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gradeId != null">
+        #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="childId != null">
+        #{childId,jdbcType=INTEGER},
+      </if>
+      <if test="gradeScore != null">
+        #{gradeScore,jdbcType=DECIMAL},
+      </if>
+      <if test="gradeDesc != null">
+        #{gradeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeSuggest != null">
+        #{gradeSuggest,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeTime != null">
+        #{gradeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gradeSf != null">
+        #{gradeSf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Grade">
+    update grade
+    <set>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="childId != null">
+        child_id = #{childId,jdbcType=INTEGER},
+      </if>
+      <if test="gradeScore != null">
+        grade_score = #{gradeScore,jdbcType=DECIMAL},
+      </if>
+      <if test="gradeDesc != null">
+        grade_desc = #{gradeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeSuggest != null">
+        grade_suggest = #{gradeSuggest,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeTime != null">
+        grade_time = #{gradeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gradeSf != null">
+        grade_sf = #{gradeSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.Grade">
+    update grade
+    set course_id = #{courseId,jdbcType=INTEGER},
+      child_id = #{childId,jdbcType=INTEGER},
+      grade_score = #{gradeScore,jdbcType=DECIMAL},
+      grade_desc = #{gradeDesc,jdbcType=VARCHAR},
+      grade_suggest = #{gradeSuggest,jdbcType=VARCHAR},
+      grade_time = #{gradeTime,jdbcType=TIMESTAMP},
+      grade_sf = #{gradeSf,jdbcType=VARCHAR}
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+</mapper>

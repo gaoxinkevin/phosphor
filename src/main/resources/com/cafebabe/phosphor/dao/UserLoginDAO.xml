@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.UserLoginDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.UserLogin">
+    <id column="user_login_id" jdbcType="INTEGER" property="userLoginId" />
+    <result column="user_login_phone" jdbcType="VARCHAR" property="userLoginPhone" />
+    <result column="user_login_pwd" jdbcType="VARCHAR" property="userLoginPwd" />
+    <result column="user_login_status" jdbcType="INTEGER" property="userLoginStatus" />
+    <result column="user_login_time" jdbcType="TIMESTAMP" property="userLoginTime" />
+    <result column="user_login_sf" jdbcType="VARCHAR" property="userLoginSf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_login_id, user_login_phone, user_login_pwd, user_login_status, user_login_time, 
+    user_login_sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_login
+    where user_login_id = #{userLoginId,jdbcType=INTEGER}
+  </select>
+  <select id="getUserLoginDao" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_login
+    where user_login_phone=#{userLoginPhone}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_login
+    where user_login_id = #{userLoginId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.UserLogin">
+    insert into user_login (user_login_id, user_login_phone, user_login_pwd, 
+      user_login_status, user_login_time, user_login_sf
+      )
+    values (#{userLoginId,jdbcType=INTEGER}, #{userLoginPhone,jdbcType=VARCHAR}, #{userLoginPwd,jdbcType=VARCHAR}, 
+      #{userLoginStatus,jdbcType=INTEGER}, #{userLoginTime,jdbcType=TIMESTAMP}, #{userLoginSf,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.UserLogin">
+    insert into user_login
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userLoginId != null">
+        user_login_id,
+      </if>
+      <if test="userLoginPhone != null">
+        user_login_phone,
+      </if>
+      <if test="userLoginPwd != null">
+        user_login_pwd,
+      </if>
+      <if test="userLoginStatus != null">
+        user_login_status,
+      </if>
+      <if test="userLoginTime != null">
+        user_login_time,
+      </if>
+      <if test="userLoginSf != null">
+        user_login_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userLoginId != null">
+        #{userLoginId,jdbcType=INTEGER},
+      </if>
+      <if test="userLoginPhone != null">
+        #{userLoginPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userLoginPwd != null">
+        #{userLoginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userLoginStatus != null">
+        #{userLoginStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userLoginTime != null">
+        #{userLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userLoginSf != null">
+        #{userLoginSf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.UserLogin">
+    update user_login
+    <set>
+      <if test="userLoginPhone != null">
+        user_login_phone = #{userLoginPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userLoginPwd != null">
+        user_login_pwd = #{userLoginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userLoginStatus != null">
+        user_login_status = #{userLoginStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userLoginTime != null">
+        user_login_time = #{userLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userLoginSf != null">
+        user_login_sf = #{userLoginSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_login_id = #{userLoginId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.UserLogin">
+    update user_login
+    set user_login_phone = #{userLoginPhone,jdbcType=VARCHAR},
+      user_login_pwd = #{userLoginPwd,jdbcType=VARCHAR},
+      user_login_status = #{userLoginStatus,jdbcType=INTEGER},
+      user_login_time = #{userLoginTime,jdbcType=TIMESTAMP},
+      user_login_sf = #{userLoginSf,jdbcType=VARCHAR}
+    where user_login_id = #{userLoginId,jdbcType=INTEGER}
+  </update>
+</mapper>

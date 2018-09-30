@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.GroupCourseDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.GroupCourse">
+    <id column="group_course_id" jdbcType="INTEGER" property="groupCourseId" />
+    <result column="course_id" jdbcType="INTEGER" property="courseId" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="group_course_sf" jdbcType="VARCHAR" property="groupCourseSf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    group_course_id, course_id, group_id, group_course_sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from group_course
+    where group_course_id = #{groupCourseId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from group_course
+    where group_course_id = #{groupCourseId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.GroupCourse">
+    insert into group_course (group_course_id, course_id, group_id, 
+      group_course_sf)
+    values (#{groupCourseId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, 
+      #{groupCourseSf,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.GroupCourse">
+    insert into group_course
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="groupCourseId != null">
+        group_course_id,
+      </if>
+      <if test="courseId != null">
+        course_id,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="groupCourseSf != null">
+        group_course_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="groupCourseId != null">
+        #{groupCourseId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="groupCourseSf != null">
+        #{groupCourseSf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.GroupCourse">
+    update group_course
+    <set>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="groupCourseSf != null">
+        group_course_sf = #{groupCourseSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where group_course_id = #{groupCourseId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.GroupCourse">
+    update group_course
+    set course_id = #{courseId,jdbcType=INTEGER},
+      group_id = #{groupId,jdbcType=INTEGER},
+      group_course_sf = #{groupCourseSf,jdbcType=VARCHAR}
+    where group_course_id = #{groupCourseId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.OrderDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.Order">
+    <id column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
+    <result column="order_state" jdbcType="INTEGER" property="orderState" />
+    <result column="order_price" jdbcType="DECIMAL" property="orderPrice" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="child_id" jdbcType="INTEGER" property="childId" />
+    <result column="course_id" jdbcType="INTEGER" property="courseId" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="order_end_time" jdbcType="TIMESTAMP" property="orderEndTime" />
+    <result column="order_create_time" jdbcType="TIMESTAMP" property="orderCreateTime" />
+    <result column="order_sf" jdbcType="VARCHAR" property="orderSf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, order_number, order_state, order_price, parent_id, child_id, course_id, 
+    group_id, activity_id, order_end_time, order_create_time, order_sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Order">
+    insert into order (order_id, order_number, order_state, 
+      order_price, parent_id, child_id, 
+      course_id, group_id, activity_id, 
+      order_end_time, order_create_time, order_sf
+      )
+    values (#{orderId,jdbcType=INTEGER}, #{orderNumber,jdbcType=VARCHAR}, #{orderState,jdbcType=INTEGER}, 
+      #{orderPrice,jdbcType=DECIMAL}, #{parentId,jdbcType=INTEGER}, #{childId,jdbcType=INTEGER}, 
+      #{courseId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, 
+      #{orderEndTime,jdbcType=TIMESTAMP}, #{orderCreateTime,jdbcType=TIMESTAMP}, #{orderSf,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Order">
+    insert into order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="orderNumber != null">
+        order_number,
+      </if>
+      <if test="orderState != null">
+        order_state,
+      </if>
+      <if test="orderPrice != null">
+        order_price,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="childId != null">
+        child_id,
+      </if>
+      <if test="courseId != null">
+        course_id,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="activityId != null">
+        activity_id,
+      </if>
+      <if test="orderEndTime != null">
+        order_end_time,
+      </if>
+      <if test="orderCreateTime != null">
+        order_create_time,
+      </if>
+      <if test="orderSf != null">
+        order_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNumber != null">
+        #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderState != null">
+        #{orderState,jdbcType=INTEGER},
+      </if>
+      <if test="orderPrice != null">
+        #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="childId != null">
+        #{childId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null">
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="orderEndTime != null">
+        #{orderEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderCreateTime != null">
+        #{orderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderSf != null">
+        #{orderSf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Order">
+    update order
+    <set>
+      <if test="orderNumber != null">
+        order_number = #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderState != null">
+        order_state = #{orderState,jdbcType=INTEGER},
+      </if>
+      <if test="orderPrice != null">
+        order_price = #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="childId != null">
+        child_id = #{childId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null">
+        activity_id = #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="orderEndTime != null">
+        order_end_time = #{orderEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderCreateTime != null">
+        order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderSf != null">
+        order_sf = #{orderSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.Order">
+    update order
+    set order_number = #{orderNumber,jdbcType=VARCHAR},
+      order_state = #{orderState,jdbcType=INTEGER},
+      order_price = #{orderPrice,jdbcType=DECIMAL},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      child_id = #{childId,jdbcType=INTEGER},
+      course_id = #{courseId,jdbcType=INTEGER},
+      group_id = #{groupId,jdbcType=INTEGER},
+      activity_id = #{activityId,jdbcType=INTEGER},
+      order_end_time = #{orderEndTime,jdbcType=TIMESTAMP},
+      order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
+      order_sf = #{orderSf,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.GroupDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.Group">
+    <id column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="group_status" jdbcType="INTEGER" property="groupStatus" />
+    <result column="group_end_time" jdbcType="DATE" property="groupEndTime" />
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="group_discount" jdbcType="DECIMAL" property="groupDiscount" />
+    <result column="group_content" jdbcType="VARCHAR" property="groupContent" />
+    <result column="group_create_time" jdbcType="DATE" property="groupCreateTime" />
+    <result column="group_sf" jdbcType="VARCHAR" property="groupSf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    group_id, group_status, group_end_time, group_name, group_discount, group_content, 
+    group_create_time, group_sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from group
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from group
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Group">
+    insert into group (group_id, group_status, group_end_time, 
+      group_name, group_discount, group_content, 
+      group_create_time, group_sf)
+    values (#{groupId,jdbcType=INTEGER}, #{groupStatus,jdbcType=INTEGER}, #{groupEndTime,jdbcType=DATE}, 
+      #{groupName,jdbcType=VARCHAR}, #{groupDiscount,jdbcType=DECIMAL}, #{groupContent,jdbcType=VARCHAR}, 
+      #{groupCreateTime,jdbcType=DATE}, #{groupSf,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Group">
+    insert into group
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="groupStatus != null">
+        group_status,
+      </if>
+      <if test="groupEndTime != null">
+        group_end_time,
+      </if>
+      <if test="groupName != null">
+        group_name,
+      </if>
+      <if test="groupDiscount != null">
+        group_discount,
+      </if>
+      <if test="groupContent != null">
+        group_content,
+      </if>
+      <if test="groupCreateTime != null">
+        group_create_time,
+      </if>
+      <if test="groupSf != null">
+        group_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="groupStatus != null">
+        #{groupStatus,jdbcType=INTEGER},
+      </if>
+      <if test="groupEndTime != null">
+        #{groupEndTime,jdbcType=DATE},
+      </if>
+      <if test="groupName != null">
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupDiscount != null">
+        #{groupDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="groupContent != null">
+        #{groupContent,jdbcType=VARCHAR},
+      </if>
+      <if test="groupCreateTime != null">
+        #{groupCreateTime,jdbcType=DATE},
+      </if>
+      <if test="groupSf != null">
+        #{groupSf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Group">
+    update group
+    <set>
+      <if test="groupStatus != null">
+        group_status = #{groupStatus,jdbcType=INTEGER},
+      </if>
+      <if test="groupEndTime != null">
+        group_end_time = #{groupEndTime,jdbcType=DATE},
+      </if>
+      <if test="groupName != null">
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupDiscount != null">
+        group_discount = #{groupDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="groupContent != null">
+        group_content = #{groupContent,jdbcType=VARCHAR},
+      </if>
+      <if test="groupCreateTime != null">
+        group_create_time = #{groupCreateTime,jdbcType=DATE},
+      </if>
+      <if test="groupSf != null">
+        group_sf = #{groupSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.Group">
+    update group
+    set group_status = #{groupStatus,jdbcType=INTEGER},
+      group_end_time = #{groupEndTime,jdbcType=DATE},
+      group_name = #{groupName,jdbcType=VARCHAR},
+      group_discount = #{groupDiscount,jdbcType=DECIMAL},
+      group_content = #{groupContent,jdbcType=VARCHAR},
+      group_create_time = #{groupCreateTime,jdbcType=DATE},
+      group_sf = #{groupSf,jdbcType=VARCHAR}
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </update>
+</mapper>
