@@ -1,7 +1,8 @@
 package com.cafebabe.phosphor.dao;
 
-import com.cafebabe.phosphor.model.entity.Parent;
+
 import com.cafebabe.phosphor.model.entity.UserLogin;
+
 import org.apache.ibatis.annotations.Param;
 
 /**

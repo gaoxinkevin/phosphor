@@ -7,6 +7,9 @@ import com.cafebabe.phosphor.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.Session;
+import javax.servlet.http.HttpSession;
+
 /**
  *
  * @author supersuntangao@gmail.com
@@ -32,10 +35,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
     @Override
     public String getUserLoginService(String userLoginPhone,String userPassword) {
-        System.out.println(userLoginPhone);
-        System.out.println(userLoginDAO);
         UserLogin userLogin=userLoginDAO.getUserLoginDao(userLoginPhone);
-        System.out.println(userLogin.getUserLoginPwd());
         if (userLogin != null){
             String password=userLogin.getUserLoginPwd();
             if (userPassword.equals(password)){

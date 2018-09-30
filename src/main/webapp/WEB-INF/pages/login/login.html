@@ -33,7 +33,6 @@
 <script>
     const clientUrl = 'http://localhost:1250/userLogin/userLogin';
     const clientMethod = 'POST';
-
     const saveCustomer = ({ url, method, data }) => {
         return new Promise((resolve, reject) => {
             const client = new XMLHttpRequest();
@@ -69,8 +68,10 @@
 
         saveJsonCustomer(JSON.stringify(customer)).then((res) => {
             if (res.data === '用户名密码正确'){
+                window.sessionStorage.setItem("userLoginPhone",document.getElementById("tel").value)
                 window.location.href='http://localhost:1250/indexUi/returnIndexPage';
             }else if (res.message === "用户名或密码不正确，请确认后登录") {
+                alert(res.data);
                 window.location.href='http://localhost:1250/indexUi/returnIndexPage';
             }else {
                 alert(3);

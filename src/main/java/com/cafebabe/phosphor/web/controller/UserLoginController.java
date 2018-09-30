@@ -1,20 +1,22 @@
 package com.cafebabe.phosphor.web.controller;
 
-import com.cafebabe.phosphor.model.entity.Parent;
+
+import com.cafebabe.phosphor.util.JsonResponse;
 import com.cafebabe.phosphor.model.entity.UserLogin;
 import com.cafebabe.phosphor.service.serviceimpl.UserLoginServiceImpl;
-import com.cafebabe.phosphor.util.JsonResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+
+
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.servlet.http.HttpSession;
+
 
 /**
  *
@@ -36,6 +38,9 @@ public class UserLoginController {
 
     @Autowired
     private final UserLoginServiceImpl userLoginService;
+
+    @Autowired
+    HttpServletRequest httpServletRequest;
 
     public UserLoginController(UserLoginServiceImpl userLoginService) {
         this.userLoginService = userLoginService;
