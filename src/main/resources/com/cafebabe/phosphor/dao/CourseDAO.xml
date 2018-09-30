@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.CourseDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.Course">
+    <id column="course_id" jdbcType="INTEGER" property="courseId" />
+    <result column="course_name" jdbcType="VARCHAR" property="courseName" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="course_address" jdbcType="VARCHAR" property="courseAddress" />
+    <result column="course_price" jdbcType="DECIMAL" property="coursePrice" />
+    <result column="course_content" jdbcType="VARCHAR" property="courseContent" />
+    <result column="course_create_time" jdbcType="DATE" property="courseCreateTime" />
+    <result column="course_desc" jdbcType="VARCHAR" property="courseDesc" />
+    <result column="course_status" jdbcType="INTEGER" property="courseStatus" />
+    <result column="course_time" jdbcType="VARCHAR" property="courseTime" />
+    <result column="course_discount" jdbcType="INTEGER" property="courseDiscount" />
+    <result column="company_id" jdbcType="INTEGER" property="companyId" />
+    <result column="course_sf" jdbcType="VARCHAR" property="courseSf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    course_id, course_name, company_name, course_address, course_price, course_content, 
+    course_create_time, course_desc, course_status, course_time, course_discount, company_id, 
+    course_sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from course
+    where course_id = #{courseId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from course
+    where course_id = #{courseId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Course">
+    insert into course (course_id, course_name, company_name, 
+      course_address, course_price, course_content, 
+      course_create_time, course_desc, course_status, 
+      course_time, course_discount, company_id, 
+      course_sf)
+    values (#{courseId,jdbcType=INTEGER}, #{courseName,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, 
+      #{courseAddress,jdbcType=VARCHAR}, #{coursePrice,jdbcType=DECIMAL}, #{courseContent,jdbcType=VARCHAR}, 
+      #{courseCreateTime,jdbcType=DATE}, #{courseDesc,jdbcType=VARCHAR}, #{courseStatus,jdbcType=INTEGER}, 
+      #{courseTime,jdbcType=VARCHAR}, #{courseDiscount,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, 
+      #{courseSf,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Course">
+    insert into course
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courseId != null">
+        course_id,
+      </if>
+      <if test="courseName != null">
+        course_name,
+      </if>
+      <if test="companyName != null">
+        company_name,
+      </if>
+      <if test="courseAddress != null">
+        course_address,
+      </if>
+      <if test="coursePrice != null">
+        course_price,
+      </if>
+      <if test="courseContent != null">
+        course_content,
+      </if>
+      <if test="courseCreateTime != null">
+        course_create_time,
+      </if>
+      <if test="courseDesc != null">
+        course_desc,
+      </if>
+      <if test="courseStatus != null">
+        course_status,
+      </if>
+      <if test="courseTime != null">
+        course_time,
+      </if>
+      <if test="courseDiscount != null">
+        course_discount,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="courseSf != null">
+        course_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="courseName != null">
+        #{courseName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="courseAddress != null">
+        #{courseAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="coursePrice != null">
+        #{coursePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="courseContent != null">
+        #{courseContent,jdbcType=VARCHAR},
+      </if>
+      <if test="courseCreateTime != null">
+        #{courseCreateTime,jdbcType=DATE},
+      </if>
+      <if test="courseDesc != null">
+        #{courseDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="courseStatus != null">
+        #{courseStatus,jdbcType=INTEGER},
+      </if>
+      <if test="courseTime != null">
+        #{courseTime,jdbcType=VARCHAR},
+      </if>
+      <if test="courseDiscount != null">
+        #{courseDiscount,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="courseSf != null">
+        #{courseSf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Course">
+    update course
+    <set>
+      <if test="courseName != null">
+        course_name = #{courseName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="courseAddress != null">
+        course_address = #{courseAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="coursePrice != null">
+        course_price = #{coursePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="courseContent != null">
+        course_content = #{courseContent,jdbcType=VARCHAR},
+      </if>
+      <if test="courseCreateTime != null">
+        course_create_time = #{courseCreateTime,jdbcType=DATE},
+      </if>
+      <if test="courseDesc != null">
+        course_desc = #{courseDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="courseStatus != null">
+        course_status = #{courseStatus,jdbcType=INTEGER},
+      </if>
+      <if test="courseTime != null">
+        course_time = #{courseTime,jdbcType=VARCHAR},
+      </if>
+      <if test="courseDiscount != null">
+        course_discount = #{courseDiscount,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="courseSf != null">
+        course_sf = #{courseSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where course_id = #{courseId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.Course">
+    update course
+    set course_name = #{courseName,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      course_address = #{courseAddress,jdbcType=VARCHAR},
+      course_price = #{coursePrice,jdbcType=DECIMAL},
+      course_content = #{courseContent,jdbcType=VARCHAR},
+      course_create_time = #{courseCreateTime,jdbcType=DATE},
+      course_desc = #{courseDesc,jdbcType=VARCHAR},
+      course_status = #{courseStatus,jdbcType=INTEGER},
+      course_time = #{courseTime,jdbcType=VARCHAR},
+      course_discount = #{courseDiscount,jdbcType=INTEGER},
+      company_id = #{companyId,jdbcType=INTEGER},
+      course_sf = #{courseSf,jdbcType=VARCHAR}
+    where course_id = #{courseId,jdbcType=INTEGER}
+  </update>
+</mapper>

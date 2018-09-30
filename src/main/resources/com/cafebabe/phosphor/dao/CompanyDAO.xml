@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.CompanyDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.Company">
+    <id column="company_id" jdbcType="INTEGER" property="companyId" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_registration_id" jdbcType="VARCHAR" property="companyRegistrationId" />
+    <result column="company_address" jdbcType="VARCHAR" property="companyAddress" />
+    <result column="company_desc" jdbcType="VARCHAR" property="companyDesc" />
+    <result column="company_create_time" jdbcType="DATE" property="companyCreateTime" />
+    <result column="company_phone" jdbcType="VARCHAR" property="companyPhone" />
+    <result column="company_spare_phone" jdbcType="VARCHAR" property="companySparePhone" />
+    <result column="company_photo" jdbcType="VARCHAR" property="companyPhoto" />
+    <result column="company_sf" jdbcType="VARCHAR" property="companySf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    company_id, company_name, company_registration_id, company_address, company_desc, 
+    company_create_time, company_phone, company_spare_phone, company_photo, company_sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from company
+    where company_id = #{companyId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from company
+    where company_id = #{companyId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Company">
+    insert into company (company_id, company_name, company_registration_id, 
+      company_address, company_desc, company_create_time, 
+      company_phone, company_spare_phone, company_photo, 
+      company_sf)
+    values (#{companyId,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, #{companyRegistrationId,jdbcType=VARCHAR}, 
+      #{companyAddress,jdbcType=VARCHAR}, #{companyDesc,jdbcType=VARCHAR}, #{companyCreateTime,jdbcType=DATE}, 
+      #{companyPhone,jdbcType=VARCHAR}, #{companySparePhone,jdbcType=VARCHAR}, #{companyPhoto,jdbcType=VARCHAR}, 
+      #{companySf,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Company">
+    insert into company
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="companyName != null">
+        company_name,
+      </if>
+      <if test="companyRegistrationId != null">
+        company_registration_id,
+      </if>
+      <if test="companyAddress != null">
+        company_address,
+      </if>
+      <if test="companyDesc != null">
+        company_desc,
+      </if>
+      <if test="companyCreateTime != null">
+        company_create_time,
+      </if>
+      <if test="companyPhone != null">
+        company_phone,
+      </if>
+      <if test="companySparePhone != null">
+        company_spare_phone,
+      </if>
+      <if test="companyPhoto != null">
+        company_photo,
+      </if>
+      <if test="companySf != null">
+        company_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="companyId != null">
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyRegistrationId != null">
+        #{companyRegistrationId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null">
+        #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="companyDesc != null">
+        #{companyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="companyCreateTime != null">
+        #{companyCreateTime,jdbcType=DATE},
+      </if>
+      <if test="companyPhone != null">
+        #{companyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="companySparePhone != null">
+        #{companySparePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyPhoto != null">
+        #{companyPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="companySf != null">
+        #{companySf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Company">
+    update company
+    <set>
+      <if test="companyName != null">
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyRegistrationId != null">
+        company_registration_id = #{companyRegistrationId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null">
+        company_address = #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="companyDesc != null">
+        company_desc = #{companyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="companyCreateTime != null">
+        company_create_time = #{companyCreateTime,jdbcType=DATE},
+      </if>
+      <if test="companyPhone != null">
+        company_phone = #{companyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="companySparePhone != null">
+        company_spare_phone = #{companySparePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyPhoto != null">
+        company_photo = #{companyPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="companySf != null">
+        company_sf = #{companySf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where company_id = #{companyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.Company">
+    update company
+    set company_name = #{companyName,jdbcType=VARCHAR},
+      company_registration_id = #{companyRegistrationId,jdbcType=VARCHAR},
+      company_address = #{companyAddress,jdbcType=VARCHAR},
+      company_desc = #{companyDesc,jdbcType=VARCHAR},
+      company_create_time = #{companyCreateTime,jdbcType=DATE},
+      company_phone = #{companyPhone,jdbcType=VARCHAR},
+      company_spare_phone = #{companySparePhone,jdbcType=VARCHAR},
+      company_photo = #{companyPhoto,jdbcType=VARCHAR},
+      company_sf = #{companySf,jdbcType=VARCHAR}
+    where company_id = #{companyId,jdbcType=INTEGER}
+  </update>
+</mapper>
