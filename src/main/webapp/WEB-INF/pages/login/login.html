@@ -68,12 +68,10 @@
         };
 
         saveJsonCustomer(JSON.stringify(customer)).then((res) => {
-            if (res.message = "用户密码正确"){
-               alert(1);
+            if (res.data === '用户名密码正确'){
                 window.location.href='http://localhost:1250/indexUi/returnIndexPage';
-            }else if (res.message = "用户名或密码不正确，请确认后登录") {
-                alert(2);
-
+            }else if (res.message === "用户名或密码不正确，请确认后登录") {
+                window.location.href='http://localhost:1250/indexUi/returnIndexPage';
             }else {
                 alert(3);
             }
@@ -90,11 +88,15 @@
         const innerValue= document.getElementById('tel').value;
         if (innerValue.length !== 0){
             const reg =/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
-            const bottomLine =document.getElementById("bottomLine");
+            const bottomLine = document.getElementById("bottomLine");
+            const userLoginA = document.getElementById("userLoginA");
             if (reg.test(innerValue)){
+                userLoginA.setAttribute("href","javascript:void(0); onclick=submitBtn()");
                 bottomLine.style.backgroundColor="#658db5"
             }else {
                 bottomLine.style.backgroundColor="red";
+                userLoginA.style.opacity="0.2";
+                userLoginA.removeAttribute('href');
             }
         }
     }
@@ -102,6 +104,7 @@
 </script>
 
 <div id="wrapper">
+
     <div id="preloader">
         <img class="preloader" src="/images/loader.gif" alt="">
     </div>
@@ -186,9 +189,11 @@
 
 
                         <div class="btn-wrapper">
-                            <a href="javascript:void(0); onclick=submitBtn()" class="btn btn-primary">登录</a>
+                            <a href="javascript:void(0); onclick=submitBtn()" id="userLoginA" class="btn btn-primary">登录</a>
                             <a href="javascript:void(0);onclick=submitBtn()" class="btn btn-primary" style="margin-left: 10px">注册</a>
                         </div>
+                        <hr class="invis" style="margin-top: 10px">
+
                         <a href="">忘记密码</a>
 
                     </div><!-- end module -->
