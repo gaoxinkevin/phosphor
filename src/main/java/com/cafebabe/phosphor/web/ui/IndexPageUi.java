@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.web.ui;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,8 @@ import java.io.IOException;
 @RequestMapping("/indexUi")
 public class IndexPageUi {
 
+    @Autowired
+    HttpServletRequest httpServletRequest;
     @RequestMapping("returnIndexPage")
     public void returnIndexPage(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/index.html").forward(httpServletRequest,httpServletResponse);

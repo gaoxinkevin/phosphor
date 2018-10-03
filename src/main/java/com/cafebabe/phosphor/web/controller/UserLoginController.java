@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -53,6 +55,8 @@ public class UserLoginController {
         String loginPhone = userLogin.getUserLoginPhone();
         String result = userLoginService.getUserLoginService(loginPhone,password);
         if ("用户名密码正确".equals(result)){
+            HttpSession session=httpServletRequest.getSession();
+            session.setAttribute("userLoginPhone",userLogin.getUserLoginPhone());
             return new JsonResponse(20000,"用户名密码正确",result);
         }else if ("用户名或密码不正确，请确认后登录".equals(result)){
             return new JsonResponse(10000,"用户名或密码不正确，请确认后登录",result);
