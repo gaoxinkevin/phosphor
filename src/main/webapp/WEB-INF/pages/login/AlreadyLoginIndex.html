@@ -22,9 +22,16 @@
     <link rel="stylesheet" href="/css/carousel.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/alreadyLogin.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+
+<script>
+    loginOut=()=>{
+        window.localStorage.removeItem("user")
+    }
+</script>
 
 <!-- LOADER 页面加载时显示的图片-->
 
@@ -77,14 +84,30 @@
                 </div>
 
                 <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right" id="ul">
                         <li><a href="/indexUi/returnIndexPage">首页</a></li>
                         <li><a href="">课程</a></li>
                         <li><a href="">活动</a></li>
                         <li><a href="">指导师</a></li>
                         <li><a href="">联系我们</a></li>
-                        <li><a href="/loginUi/loginUi">登录|注册</a></li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
+                                    <img src="/images/apple-touch-icon.png" alt="">
+                                </a>
+                                <ul class="dropdown-menu" >
+                                    <li><a href="#">用户中心</a></li>
+                                    <li><a href="#">我的关注</a></li>
+                                    <li><a href="#">我的收藏</a></li>
+                                    <li><a href="#">设置</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0); onclick=loginOut()">退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
                         <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
+
                     </ul>
                 </div>
 
