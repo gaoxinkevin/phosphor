@@ -110,7 +110,8 @@
             const userLoginA = document.getElementById("userLoginA");
             if (reg.test(innerValue)) {
                 userLoginA.setAttribute("href", "javascript:void(0); onclick=submitBtn()");
-                bottomLine.style.backgroundColor = "#658db5"
+                bottomLine.style.backgroundColor = "#658db5";
+                userLoginA.style.opacity="1";
             } else {
                 bottomLine.style.backgroundColor = "red";
                 userLoginA.style.opacity = "0.2";
