@@ -18,5 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public interface ParentService {
 
+    /**
+     * 创建用户 测试用
+     * @param parentMail
+     * @return
+     */
     Integer insertParentService(String parentMail);
+
+    /**
+     * 获取用户所对应的用户头像
+     * @param parentPhone
+     * @return
+     */
+    String  getParentImgUrlService(String parentPhone);
 }

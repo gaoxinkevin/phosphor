@@ -14,7 +14,6 @@
     <meta name="author" content="">
     <!-- Site Icons -->
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
-    <link rel="icon" href="/images/favicon.ico">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
@@ -25,7 +24,6 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleLogin.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -68,8 +66,25 @@
 
         saveJsonCustomer(JSON.stringify(customer)).then((res) => {
             if (res.data === '用户名密码正确') {
-                window.localStorage.setItem("userLoginPhone", document.getElementById("tel").value);
-                window.location.href = 'http://localhost:1250/indexUi/returnIndexPage';
+                function setLocalStorage(key, value) {
+                    var curtime = new Date().getTime(); // 获取当前时间 ，转换成JSON字符串序列
+                    var valueDate = JSON.stringify({
+                        val: value,
+                        timer: curtime
+                    });
+                    try {
+                        localStorage.setItem(key, valueDate);
+                    } catch(e) {
+                        if(isQuotaExceeded(e)) {
+                            console.log("Error: 本地存储超过限制");
+                            localStorage.clear();
+                        } else {
+                            console.log("Error: 保存到本地存储失败");
+                        }
+                    }
+                }
+                setLocalStorage("userLoginPhone", document.getElementById("tel").value);
+                window.location.href = 'http://localhost:1250/loginUi/alreadyLoginUi';
             } else if (res.message === "用户名或密码不正确，请确认后登录") {
                 document.body.style.overflowX = "hidden";
                 document.body.style.overflowY = "hidden";

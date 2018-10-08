@@ -12,25 +12,103 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Site Icons -->
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
     <link rel="icon" href="/images/favicon.ico">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
     <!-- Custom & Default Styles -->
+    <script src="/js/login.js"></script>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/carousel.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/alreadyLogin.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        let a = window.localStorage.getItem("userLoginPhone");
+        if (a === null) {
+            window.location.href = 'http://localhost:1250/indexUi/returnIndexPage';
+        }
+    </script>
 </head>
 <body>
 
 <script>
-    loginOut=()=>{
+    const clientUrl = 'http://localhost:1250/userLogin/userLogin';
+    const clientMethod = 'POST';
+    const saveCustomer = ({url, method, data}) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open(clientMethod, clientUrl);
+            client.responseType = 'json';
+            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send(data);
+        });
+    };
+
+    const saveJsonCustomer = (data) => saveCustomer(
+        {
+            url: clientUrl,
+            method: clientMethod,
+            data
+        }
+    );
+
+    submitBtn = () => {
+        let customer = {
+            userLoginPhone: document.getElementById('tel').value,
+            userLoginPwd: document.getElementById('password').value,
+        };
+
+        saveJsonCustomer(JSON.stringify(customer)).then((res) => {
+            if (res.data === '用户名密码正确') {
+                window.localStorage.setItem("userLoginPhone", document.getElementById("tel").value);
+                window.location.href = 'http://localhost:1250/indexUi/returnIndexPage';
+            } else if (res.message === "用户名或密码不正确，请确认后登录") {
+                document.body.style.overflowX = "hidden";
+                document.body.style.overflowY = "hidden";
+                let dialog = document.getElementById("dialog");
+                let vModal = document.getElementById("v-modal");
+                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+                let elButton = document.getElementById("el-button");
+                elButton.innerText = "重新登录";
+                vModal.style.display = "block";
+                dialog.style.display = "block";
+                dialogPInnerHtml.innerText = res.data;
+            } else {
+                document.body.style.overflowX = "hidden";
+                document.body.style.overflowY = "hidden";
+                let dialog = document.getElementById("dialog");
+                let vModal = document.getElementById("v-modal");
+                let elButton = document.getElementById("el-button");
+                elButton.innerText = "前往注册界面";
+                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+                vModal.style.display = "block";
+                dialog.style.display = "block";
+                dialogPInnerHtml.innerText = res.data;
+            }
+        }, err => {
+            alert('失败 ');
+            console.log(err)
+        })
+    }
+
+</script>
+
+<script>
+    loginOut = () => {
         window.localStorage.removeItem("userLoginPhone");
-        window.location.href="http://localhost:1250/indexUi/returnIndexPage";
+        window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
     }
 </script>
 
@@ -72,7 +150,8 @@
             <nav class="navbar navbar-default yamm">
                 <div class="navbar-header">
 
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -91,13 +170,14 @@
                         <li><a href="">活动</a></li>
                         <li><a href="">指导师</a></li>
                         <li><a href="">联系我们</a></li>
-                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
+                                class="fa fa-search"></i></a></li>
                         <li>
                             <div class="dropdown">
                                 <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
                                     <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
                                 </a>
-                                <ul class="dropdown-menu" >
+                                <ul class="dropdown-menu">
                                     <li><a href="#">用户中心</a></li>
                                     <li><a href="#">我的关注</a></li>
                                     <li><a href="#">我的收藏</a></li>
@@ -119,7 +199,10 @@
         <div class="home-text-wrapper relative container">
             <div class="home-message">
                 <p>孩子梦想开始的地方</p>
-                <small>Edulogy is the ideal choice for your organization, your business and your online education system. Create your online course now with unlimited page templates, color options, and menu features.</small>
+                <small>Edulogy is the ideal choice for your organization, your business and your online education
+                    system. Create your online course now with unlimited page templates, color options, and menu
+                    features.
+                </small>
             </div>
         </div>
 
@@ -138,11 +221,16 @@
                 </div><!-- end col -->
                 <div class="col-md-8">
                     <div class="custom-module p40l">
-                        <h2>We are a passionate <mark>learning system</mark> from<br>
+                        <h2>We are a passionate
+                            <mark>learning system</mark>
+                            from<br>
                             London. Do beautiful and easy-to-use digital <br>
-                            design & web development</h2>
+                            design & web development
+                        </h2>
 
-                        <p>Nam dictum sem, ipsum aliquam . Etiam sit amet fringilla lacus. Pellentesque suscipit ante at ullamcorper pulvinar neque porttitor. Integer lectus. Praesent sed nisi eleifend, fermentum orci amet, iaculis libero.</p>
+                        <p>Nam dictum sem, ipsum aliquam . Etiam sit amet fringilla lacus. Pellentesque suscipit ante at
+                            ullamcorper pulvinar neque porttitor. Integer lectus. Praesent sed nisi eleifend, fermentum
+                            orci amet, iaculis libero.</p>
 
                         <hr class="invis">
 
@@ -192,7 +280,8 @@
         <div class="container">
             <div class="section-title text-center">
                 <h3>Recent Courses</h3>
-                <p>Maecenas sit amet tristique turpis. Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
+                <p>Maecenas sit amet tristique turpis. Quisque porttitor eros quis leo pulvinar, at hendrerit sapien
+                    iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
             </div><!-- end title -->
 
             <div id="owl-01" class="owl-carousel owl-theme owl-theme-01">
@@ -273,7 +362,8 @@
                                 <small>PHP Coding</small>
                                 <a href="#" title="">How to Become a Web Developer: Learn PHP</a>
                             </h4>
-                            <p>Donec auctor nec nibh sit amet pulvinar. Mauris nulla elit, lacinia ac facilisis mattis.</p>
+                            <p>Donec auctor nec nibh sit amet pulvinar. Mauris nulla elit, lacinia ac facilisis
+                                mattis.</p>
                         </div><!-- end details -->
                         <div class="course-footer clearfix">
                             <div class="pull-left">
@@ -370,7 +460,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tagline-message text-center">
-                        <h3>Howdy, we are Edulogy, we have brought together the best quality services, offers, projects for you!</h3>
+                        <h3>Howdy, we are Edulogy, we have brought together the best quality services, offers, projects
+                            for you!</h3>
                     </div>
                 </div><!-- end col -->
             </div><!-- end row -->
@@ -393,7 +484,8 @@
                     <div class="box m30">
                         <i class="flaticon-monitor-tablet-and-smartohone"></i>
                         <h4>Works all mobile devices</h4>
-                        <p>The most important feature of this template is that it is compatible with all mobile devices. Your customers can also visit your site easily from tablets and phones.</p>
+                        <p>The most important feature of this template is that it is compatible with all mobile devices.
+                            Your customers can also visit your site easily from tablets and phones.</p>
                         <a href="#" class="readmore">Read more</a>
                     </div>
                 </div><!-- end col -->
@@ -415,7 +507,8 @@
                     <div class="box">
                         <i class="flaticon-html5"></i> <i class="flaticon-css-3"></i>
                         <h4>Compatible HTML5 & CSS3</h4>
-                        <p>HTML5 is a markup language used for structuring and presenting content on the World Wide Web. It is the fifth and current version of the HTML standard.</p>
+                        <p>HTML5 is a markup language used for structuring and presenting content on the World Wide Web.
+                            It is the fifth and current version of the HTML standard.</p>
                         <a href="#" class="readmore">Read more</a>
                     </div>
                 </div><!-- end col -->
@@ -424,7 +517,9 @@
                     <div class="box">
                         <i class="flaticon-html-coding"></i>
                         <h4>Bootstrap Framework</h4>
-                        <p>Bootstrap is a technique of loading a program into a computer by means of a few initial instructions which enable the introduction of the rest of the program from an input device.</p>
+                        <p>Bootstrap is a technique of loading a program into a computer by means of a few initial
+                            instructions which enable the introduction of the rest of the program from an input
+                            device.</p>
                         <a href="#" class="readmore">Read more</a>
                     </div>
                 </div><!-- end col -->
@@ -438,7 +533,8 @@
                 <div class="col-lg-4 col-md-4">
                     <div class="stat-count">
                         <h4 class="stat-timer">1230</h4>
-                        <h3><i class="flaticon-black-graduation-cap-tool-of-university-student-for-head"></i> Happy Students</h3>
+                        <h3><i class="flaticon-black-graduation-cap-tool-of-university-student-for-head"></i> Happy
+                            Students</h3>
                         <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. </p>
                     </div><!-- stat-count -->
                 </div><!-- end col -->
@@ -466,14 +562,17 @@
         <div class="container">
             <div class="section-title text-center">
                 <h3>Testimonials</h3>
-                <p>Maecenas sit amet tristique turpis. Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
+                <p>Maecenas sit amet tristique turpis. Quisque porttitor eros quis leo pulvinar, at hendrerit sapien
+                    iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
             </div><!-- end title -->
 
             <div class="row">
                 <div class="col-md-4">
                     <div class="box testimonial">
-                        <p class="testiname"><strong><img src="/upload/testimonial_01.png" alt="" class="img-circle"> Jenny LUXURY</strong></p>
-                        <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
+                        <p class="testiname"><strong><img src="/upload/testimonial_01.png" alt="" class="img-circle">
+                            Jenny LUXURY</strong></p>
+                        <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur
+                            accumsan arcu, sit amet fringilla ex ultricies.</p>
                         <div class="rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -486,8 +585,10 @@
 
                 <div class="col-md-4">
                     <div class="box testimonial">
-                        <p class="testiname"><strong><img src="/upload/testimonial_02.png" alt="" class="img-circle"> Martin LEO</strong></p>
-                        <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
+                        <p class="testiname"><strong><img src="/upload/testimonial_02.png" alt="" class="img-circle">
+                            Martin LEO</strong></p>
+                        <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur
+                            accumsan arcu, sit amet fringilla ex ultricies.</p>
                         <div class="rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -500,8 +601,10 @@
 
                 <div class="col-md-4">
                     <div class="box testimonial">
-                        <p class="testiname"><strong><img src="/upload/testimonial_03.png" alt="" class="img-circle"> John DOE</strong></p>
-                        <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
+                        <p class="testiname"><strong><img src="/upload/testimonial_03.png" alt="" class="img-circle">
+                            John DOE</strong></p>
+                        <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur
+                            accumsan arcu, sit amet fringilla ex ultricies.</p>
                         <div class="rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -519,7 +622,8 @@
         <div class="container">
             <div class="section-title text-center">
                 <h3>Recent News</h3>
-                <p>Maecenas sit amet tristique turpis. Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
+                <p>Maecenas sit amet tristique turpis. Quisque porttitor eros quis leo pulvinar, at hendrerit sapien
+                    iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
             </div><!-- end title -->
 
             <div class="row">
@@ -534,7 +638,8 @@
 
                         <div class="blog-desc">
                             <h4><a href="">How to learn perfect code with Javascript</a></h4>
-                            <p>Praesent at suscipit ligula. Suspendisse pre neque, quis suscipit enim. sed maximus, mia auctor.</p>
+                            <p>Praesent at suscipit ligula. Suspendisse pre neque, quis suscipit enim. sed maximus, mia
+                                auctor.</p>
                         </div><!-- end blog-desc -->
 
                         <div class="post-meta">
@@ -558,7 +663,8 @@
 
                         <div class="blog-desc">
                             <h4><a href="">The most suitable web design & development tutorials</a></h4>
-                            <p>Sed suscipit neque in erat posuere tristique aliquam porta vestibulum. Cras placerat tincidunt. </p>
+                            <p>Sed suscipit neque in erat posuere tristique aliquam porta vestibulum. Cras placerat
+                                tincidunt. </p>
                         </div><!-- end blog-desc -->
 
                         <div class="post-meta">
@@ -582,7 +688,8 @@
 
                         <div class="blog-desc">
                             <h4><a href="">Design for all mobile devices! This is name "responsive"</a></h4>
-                            <p>Suspendisse scelerisque ex ac mattis molestie vel enim ut massa placerat faucibus sed ut dui vivamus. </p>
+                            <p>Suspendisse scelerisque ex ac mattis molestie vel enim ut massa placerat faucibus sed ut
+                                dui vivamus. </p>
                         </div><!-- end blog-desc -->
 
                         <div class="post-meta">
@@ -608,7 +715,8 @@
                     </div><!-- end col -->
 
                     <div class="col-md-8">
-                        <p class="lead">Limited time offer! Your profile will be added to our "Students" directory as well. </p>
+                        <p class="lead">Limited time offer! Your profile will be added to our "Students" directory as
+                            well. </p>
                     </div>
                 </div><!-- end row -->
             </a>
@@ -622,11 +730,13 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">Subscribe Our Newsletter</h3>
                         <div class="newsletter-widget">
-                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.</p>
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
+                                policy</a>.</p>
                             <form class="form-inline" role="search">
                                 <div class="form-1">
                                     <input type="text" class="form-control" placeholder="Enter email here..">
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                    </button>
                                 </div>
                             </form>
                             <img src="/images/payments.png" alt="" class="img-responsive">

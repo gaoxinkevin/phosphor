@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import com.cafebabe.phosphor.model.entity.Parent;
 import com.cafebabe.phosphor.service.serviceimpl.ParentServiceImpl;
 
+import com.cafebabe.phosphor.util.JsonResponse;
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpResponse;
@@ -23,6 +24,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -42,13 +45,17 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 @RequestMapping("/parent")
 public class ParentController {
 
-    @Autowired
     private final ParentServiceImpl parentService;
 
+    @Autowired
     public ParentController(ParentServiceImpl parentService) {
         this.parentService = parentService;
     }
 
+    @Autowired
+    HttpServletRequest httpServletRequest;
+
+    @SuppressWarnings("all")
     @RequestMapping("parentRegister")
     public Integer parentRegister(@RequestBody Parent parent) throws IOException {
         final String url = "http://api.sendcloud.net/apiv2/mail/send";
@@ -80,5 +87,15 @@ public class ParentController {
         }
         httPost.releaseConnection();
         return parentService.insertParentService(parent.getParentMail());
+    }
+
+    @ResponseBody
+    @PostMapping("parentImgUrl")
+    public JsonResponse parentImgUrl(Gson parentPhone){
+        String a = parentPhone.toString();
+
+        System.out.println(a);
+        String parentImgUrl =  parentService.getParentImgUrlService(a);
+        return new JsonResponse(20000,"成功",parentImgUrl);
     }
 }
