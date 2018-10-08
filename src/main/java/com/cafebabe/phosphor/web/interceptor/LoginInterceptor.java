@@ -24,11 +24,13 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-
+        System.out.println(1);
         String userLoginPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
         if (userLoginPhone!=null){
+            System.out.println(2);
             return true;
         }else {
+            System.out.println(3);
             httpServletRequest.getRequestDispatcher("/indexUi/returnIndexPage").forward(httpServletRequest,httpServletResponse);
             return false;
         }

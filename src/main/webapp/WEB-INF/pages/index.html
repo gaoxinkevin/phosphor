@@ -23,12 +23,35 @@
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="/js/login.js"></script>
     <script>
-        let a =window.localStorage.getItem("userLoginPhone");
-        if (a !== null){
-            window.location.href = 'http://localhost:1250/loginUi/alreadyLoginUi';
-        }
+        const clientUrl = 'http://localhost:1250/parent/isSessionExit';
+        const clientMethod = 'GET';
+        const queryAllJson = (url) => {
+            return new Promise((resolve) => {
+                const client = new XMLHttpRequest();
+                client.open(clientMethod, url);
+                client.responseType = 'json';
+                client.onreadystatechange = () => {
+                    if (4 === client.readyState && 200 === client.status) {
+                        resolve(client.response)
+                    }
+                };
+                client.send();
+            });
+        };
+        const ListAll = () => queryAllJson(clientUrl);
+        ListAll().then((res) => {
+            if ("session不存在" === res.message){
+                localStorage.clear();
+            }else if ("成功" === res.message && localStorage.getItem("userLoginPhone") !== null) {
+                window.location.href="http://localhost:1250/loginUi/alreadyLoginUi";
+            }
+        }).catch(error => {
+            console.log(error);
+        });
     </script>
+
 </head>
 <body>
 

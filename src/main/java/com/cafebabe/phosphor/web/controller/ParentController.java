@@ -12,6 +12,7 @@ import com.cafebabe.phosphor.service.serviceimpl.ParentServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -91,11 +92,21 @@ public class ParentController {
 
     @ResponseBody
     @PostMapping("parentImgUrl")
-    public JsonResponse parentImgUrl(Gson parentPhone){
-        String a = parentPhone.toString();
-
-        System.out.println(a);
-        String parentImgUrl =  parentService.getParentImgUrlService(a);
+    public JsonResponse parentImgUrl(){
+        String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
+        System.out.println(parentPhone);
+        String parentImgUrl =  parentService.getParentImgUrlService(parentPhone);
         return new JsonResponse(20000,"成功",parentImgUrl);
+    }
+
+    @ResponseBody
+    @RequestMapping("isSessionExit")
+    public JsonResponse isSessionExit(){
+        String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
+        if (parentPhone!=null){
+            return new JsonResponse(20000,"成功",parentPhone);
+        }else {
+            return new JsonResponse(30000,"session不存在",null);
+        }
     }
 }

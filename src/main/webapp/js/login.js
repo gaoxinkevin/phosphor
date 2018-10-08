@@ -28,7 +28,7 @@ function getLocalStorage(key) {
         let isTimed = (new Date().getTime() - dataObj.timer) > exp;
         if (isTimed) {
             console.log("存储已过期");
-            window.location.href = "http://localStroage:1250/loginUi/returnIndexPage";
+            // window.location.href = "http://localStroage:1250/loginUi/returnIndexPage";
             localStorage.removeItem(key);
             return null;
         } else {
@@ -39,7 +39,3 @@ function getLocalStorage(key) {
         return null;
     }
 }
-
-window.onunload = function () {
-    localStorage.clear();
-};
