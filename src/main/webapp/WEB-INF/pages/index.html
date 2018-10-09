@@ -27,21 +27,25 @@
     <script>
         const clientUrl = 'http://localhost:1250/parent/isSessionExit';
         const clientMethod = 'GET';
-        const queryAllJson = (url) => {
-            return new Promise((resolve) => {
+        const isSessionExit = (url) => {
+            return new Promise((resolve,reject) => {
                 const client = new XMLHttpRequest();
                 client.open(clientMethod, url);
                 client.responseType = 'json';
                 client.onreadystatechange = () => {
-                    if (4 === client.readyState && 200 === client.status) {
-                        resolve(client.response)
+                    if (client.readyState === 4) {
+                        if (client.status === 200) {
+                            resolve(client.response);
+                        } else {
+                            reject(client.status);
+                        }
                     }
                 };
                 client.send();
             });
         };
-        const ListAll = () => queryAllJson(clientUrl);
-        ListAll().then((res) => {
+        const sessionList = () => isSessionExit(clientUrl);
+        sessionList().then((res) => {
             if ("session不存在" === res.message){
                 localStorage.clear();
             }else if ("成功" === res.message && localStorage.getItem("userLoginPhone") !== null) {

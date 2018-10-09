@@ -42,7 +42,6 @@ public class ParentController {
     @PostMapping("parentImgUrl")
     public JsonResponse parentImgUrl(){
         String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
-        System.out.println(parentPhone);
         String parentImgUrl =  parentService.getParentImgUrlService(parentPhone);
         return new JsonResponse(20000,"成功",parentImgUrl);
     }
@@ -51,7 +50,6 @@ public class ParentController {
     @RequestMapping("isSessionExit")
     public JsonResponse isSessionExit(){
         String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
-        System.out.println(parentPhone);
         if (parentPhone!=null){
             return new JsonResponse(20000,"成功",parentPhone);
         }else {
