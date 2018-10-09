@@ -27,8 +27,8 @@ function getLocalStorage(key) {
         // 如果(当前时间 - 存储的元素在创建时候设置的时间) > 过期时间
         let isTimed = (new Date().getTime() - dataObj.timer) > exp;
         if (isTimed) {
-            console.log("存储已过期");
-            // window.location.href = "http://localStroage:1250/loginUi/returnIndexPage";
+            alert("存储已过期");
+            window.location.href = "http://localStroage:1250/loginUi/returnIndexPage";
             localStorage.removeItem(key);
             return null;
         } else {
