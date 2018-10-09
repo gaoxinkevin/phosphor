@@ -1,15 +1,21 @@
-package com.cafebabe.phosphor.dao;
+package com.cafebabe.phosphor.service;
 
 import com.cafebabe.phosphor.model.entity.Group;
-import org.apache.ibatis.annotations.Param;
 import java.math.BigDecimal;
 import java.util.List;
-
 /**
- * GroupDAO继承基类
- */
-public interface GroupDAO extends MyBatisBaseDao<Group, Integer> {
-
+ *
+ * @author thethingyk@gmail.com
+ *
+ * class_name: GroupService
+ *
+ * create_date: 2018/10/9
+ *
+ * create_time: 19:30
+ *
+ * description: 套餐service层接口
+ **/
+public interface GroupService {
 
     /**
      * 添加套餐
@@ -29,13 +35,13 @@ public interface GroupDAO extends MyBatisBaseDao<Group, Integer> {
      * @param groupDiscount   套餐折扣
      * @return 0=>false | 1=>true
      */
-    Integer updateGroupDiscount(@Param("groupDiscount") BigDecimal groupDiscount,@Param("groupId") Integer groupId);
+    Integer updateGroupDiscount( BigDecimal groupDiscount, Integer groupId);
 
     /**
      * 修改套餐状态
      * @return 0=>false | 1=>true
      */
-    Integer updateGroupStatus(@Param("groupStatus") Integer groupStatus,@Param("groupId") Integer groupId);
+    Integer updateGroupStatus( Integer groupStatus, Integer groupId);
 
     /**
      * 删除套餐
@@ -75,6 +81,6 @@ public interface GroupDAO extends MyBatisBaseDao<Group, Integer> {
      * @param maxDiscount 最大折扣
      * @return 套餐信息列表
      */
-    List<Group> getGroupListByDiscountScope(@Param("minDiscount") BigDecimal minDiscount,@Param("maxDiscount") BigDecimal maxDiscount);
+    List<Group> getGroupListByDiscountScope( BigDecimal minDiscount, BigDecimal maxDiscount);
 
 }

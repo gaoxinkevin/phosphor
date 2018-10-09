@@ -3,6 +3,7 @@ package com.cafebabe.phosphor.model.entity;
 import lombok.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -40,7 +41,7 @@ public class Group implements Serializable {
     /**
      * 套餐折扣
      */
-    private Long groupDiscount;
+    private BigDecimal groupDiscount;
 
     /**
      * 套餐简介
