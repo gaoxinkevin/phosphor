@@ -1,0 +1,452 @@
+
+.mtw30 {
+    margin-top: 30px;
+}
+.inputCont label, .inputCont a.forgetName {
+    color: #4a4a4a;
+    font-size: 14px;
+    line-height: 17px;
+}
+.inputCont a.forgetName:hover {
+    color: #4a66a1;
+}
+.siginBtn {
+    background: #f4d122 none repeat scroll 0 0;
+    border: 1px solid #f4d122;
+    border-radius: 0;
+    color: #4a4a4a;
+    cursor: pointer;
+    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    width: 302px;
+}
+
+.signIn {
+    margin: 0 0 0 65px;
+    width: 207px;
+}
+.signIn h4 {
+    color: #797979;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+}
+.signIn div {
+    margin-top: 20px;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px #f1f1f1;
+    color: #fff;
+    font-size: 14px;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+}
+.signIn div a {
+    color: #fff;
+    display: block;
+    height: 36px;
+    line-height: 36px;
+    padding-left: 18px;
+    background-size: 11%;
+    background-position: 39px 13px;
+}
+.signIn div.sina a {
+    background-position: 40px 12px;
+    background-size: 10%;
+}
+.signIn div.weixin {
+    background: #51b342 none repeat scroll 0 0;
+}
+.signIn div.sina {
+    background: #eb5d3b none repeat scroll 0 0;
+}
+/*ç™»å½•æµ®æ¡† end*/
+
+#main_message {
+    margin: 0;
+    opacity: 1;
+    width: 100%;
+}
+.login_title {
+    background: rgba(0, 0, 0, 0.4) ;
+    border-radius: 0;
+    color: white;
+    height: 50px;
+    margin: 0 auto;
+    position: static;
+    text-align: center;
+    top: -12px;
+    width: 100%;
+}
+
+.login_wp,.rigsiter_wp,.lostpw_wp {
+    background-size: cover;
+    position: relative;
+    height: 846px;
+}
+.login_frm,.rigsiter_frm,.lostpw_frm {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 792px;
+    height: 400px;
+}
+.lostpw_frm {
+    background: #fff;
+}
+.rigsiter_title,.lostpw_title {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid #f1f1f1;
+    /*border-top: 1px solid transparent;*/
+    color: #c0bfbe;
+    font-size: 20px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+}
+.login_title {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid #f1f1f1;
+    color: #c0bfbe;
+    font-size: 20px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+}
+.login_title h3 a,.rigsiter_title h3 a {
+    color: #c0bfbe;
+}
+.login_title h3,.rigsiter_title h3 {
+    width: 50%;
+}
+.login_box,.rigsiter_box {
+    background: #fff none repeat scroll 0 0;
+    border: medium none;
+    padding: 40px 56px;
+    width: 683px;
+}
+.active {
+    background: #fff none repeat scroll 0 0;
+    color: #4a4a4a;
+}
+h3.active a {
+    color: #4a4a4a;
+}
+
+.rigsiter_form,.login_form {
+    border-right: 1px solid #f1f1f1;
+    padding-right: 74px;
+    width: 322px;
+}
+#layer_reg {
+    padding: 0;
+}
+.rfm {
+    width: 322px;
+}
+.inputBox {
+    height: 40px;
+    margin-bottom: 12px;
+    position: relative;
+    width: 322px;
+}
+.inputBox input {
+    border: 1px solid #f1f1f1;
+    font-size: 14px;
+    height: 38px;
+    line-height: 24px;
+    padding-left: 10px;
+    width: 324px;
+}
+
+
+input.er {
+    background: none;
+    border: 1px solid #f85858;
+}
+.inputBox input:focus {
+    border: 1px solid #4ca0f9;
+    box-shadow:  0 1px 4px  #3b99fc
+}
+.tipcol3 {
+    position: absolute;
+    right: 4px;
+    top: 6px;
+    height: 28px;
+    text-align: right;
+}
+.tipcol3 .yzmts {
+    background: #f85858 none repeat scroll 0 0;
+    color: #fff;
+    font-size: 12px;
+    line-height: 28px;
+    padding: 8px 3px;
+    display: none;
+}
+
+.tipcol3 .checkbtn {
+    background: #469de6 none repeat scroll 0 0;
+    color: #fff;
+    font-size: 12px;
+    line-height: 28px;
+    padding: 8px;
+}
+.tipcol3 .checkbtn.count {
+    background: #eaeaea;
+    color: #797979;
+}
+.siginBtn {
+    background: #57adfd none repeat scroll 0 0;
+    border: 1px solid #57adfd;
+    border-radius: 0;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    width: 324px;
+    text-align: center;
+}
+.checkedOpt {
+    width: 18px !important;
+}
+
+
+.px, .pt, .ps, select {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+}
+
+#layer_reginfo_b {
+    margin-top: 20px;
+}
+.signIn {
+    margin: 0 0 0 65px;
+    width: 207px;
+}
+.signIn h4 {
+    color: #797979;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+}
+.signIn div {
+    margin-top: 20px;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px #f1f1f1;
+    color: #fff;
+    font-size: 14px;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+}
+.signIn div a {
+    color: #fff;
+    display: block;
+    height: 42px;
+    line-height: 42px;
+    padding-left: 18px;
+    background-size: 11%;
+    background-position: 39px 13px;
+}
+.signIn div.sina a {
+    background-position: 40px 12px;
+    background-size: 10%;
+}
+.signIn div.weixin {
+    background: #51b342 none repeat scroll 0 0;
+}
+.signIn div.sina {
+    background: #eb5d3b none repeat scroll 0 0;
+}
+.inputCont {
+    color: #4a4a4a;
+    font-size: 12px;
+    width: 324px;
+    margin: 32px 0 12px;
+}
+.form_item .yzmts {
+    display: block;
+}
+.yzma_already {
+    display: none;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    width: 80px;
+}
+.yzma a {
+    color: #fff;
+}
+.lostpw_form {
+    border-right: medium none;
+    margin: 0 auto;
+    padding: 0 0 40px;
+}
+
+#sms_msg {
+    color: red;
+    display: block;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    height: 20px;
+    line-height: 20px;
+    margin: 0 auto;
+}
+.step {
+    background: #fff none repeat scroll 0 0;
+    height: 54px;
+    margin: 60px auto 35px;
+    width: 396px;
+    text-align: justify;
+    position: relative;
+}
+.step:before {
+    content: "";
+    width: 133px;
+    height: 3px;
+    background-color: #C0BFBE;
+    position: absolute;
+    left: 47px;
+    top: 12px;
+}
+.step:after {
+    content: "";
+    width: 133px;
+    height: 3px;
+    background-color: #C0BFBE;
+    position: absolute;
+    right: 47px;
+    top: 12px;
+}
+.step li.stepLi {
+    display: inline-block;
+    height: 18px;
+    width: 56px;
+    text-align: center;
+    position: relative;
+    padding-top: 36px;
+    line-height: 18px;
+    color: #4a4a4a;
+}
+.step li.stepLi:before {
+    content: "1";
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #C0BFBE;
+    text-align: center;
+    font-size: 17px;
+    line-height: 28px;
+    color: #fff;
+    position: absolute;
+    left: 14px;
+    top: 0;
+}
+.step li.stepLi.active1:before {
+    background: #41BE63;
+}
+.step li.stepLi:nth-child(2):before {
+    content: "2"
+}
+.step li.stepLi:nth-child(3):before {
+    content: "3"
+}
+.justify_fix {
+    display:inline-block;
+    width:100%;
+    height:0;
+    overflow:hidden;
+}
+
+.formStep1, .formStep2 {
+    display: none;
+}
+.formShow {
+    display: block;
+}
+.formInfo {
+    color: red;
+    font-size: 12px;
+    line-height: 30px;
+}
+.formInfo .btn1 {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: medium none;
+    color: red;
+    cursor: pointer;
+}
+.formInfo .btn1.disable {
+    color: #4a4a4a;
+    cursor: wait;
+}
+
+.tipcol {
+    color: #fff;
+    font-size: 14px;
+    height: 26px;
+    line-height: 26px;
+    position: absolute;
+    right: 10px;
+    top: 7px;
+}
+
+.rfm {
+    border: medium none;
+}
+.rfm .p_chk, .rfm .p_tip {
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: calc(100% + 10px);
+    position: static;
+    background-color: #f85858;
+    color: #fff;
+    text-align: center;
+}
+.rfm .p_tip{
+    padding: 5px 0;
+    width: 0;
+    overflow: hidden;
+}
+.rfm .p_chk{
+    display: block;
+    width: calc(100% + 10px);
+}
+.p_right {
+    background-position: 0 0;
+    width: 30px;
+}
+.tipcol2{
+    position: absolute;
+    top: 5px;
+    right: 0;
+    min-width: 100px;
+    height: 30px;
+    background-color: #f85858;
+    color: #fff;
+    font-size: 12px;
+    line-height: 30px;
+    display: none;
+    padding: 0 3px;
+}
+
+.checksec_form{
+    background-color: #fff;
+    width: 440px;
+    padding: 20px;
+    box-shadow: 2px 3px 10px 0 #888;
+}
+.checksec_form .rfm{
+    width: 100%;
+}
+.tsInfo{
+    margin-top: 10px;
+}
+
+
