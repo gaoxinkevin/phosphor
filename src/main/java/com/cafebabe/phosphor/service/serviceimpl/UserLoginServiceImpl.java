@@ -26,9 +26,9 @@ import javax.servlet.http.HttpSession;
 @Service
 public class UserLoginServiceImpl implements UserLoginService {
 
-    @Autowired
     private final UserLoginDAO userLoginDAO;
 
+    @Autowired
     public UserLoginServiceImpl(UserLoginDAO userLoginDAO) {
         this.userLoginDAO = userLoginDAO;
     }
@@ -46,5 +46,12 @@ public class UserLoginServiceImpl implements UserLoginService {
         }
         return "用户名不存在请注册后登录";
 
+    }
+
+    @Override
+    public boolean updateUserLoginPasswordService(UserLogin userLogin) {
+        System.out.println(userLogin);
+        boolean resultUpdateUserLoginPassword = userLoginDAO.updateParentPasswordDao(userLogin);
+        return resultUpdateUserLoginPassword;
     }
 }

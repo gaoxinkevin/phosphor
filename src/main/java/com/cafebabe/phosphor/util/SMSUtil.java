@@ -6,7 +6,7 @@ import java.util.Map;
 
 public final class SMSUtil {
 
-    private static final String TPL_ID = "106235";
+    private static final String TPL_ID = "106234";
 
     private static final String TPL_VALUE= "#code#=";
 

@@ -8,11 +8,8 @@ import com.cafebabe.phosphor.service.serviceimpl.UserLoginServiceImpl;
 
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -38,14 +35,15 @@ import java.util.List;
 @RequestMapping("/userLogin")
 public class UserLoginController {
 
-    @Autowired
+
     private final UserLoginServiceImpl userLoginService;
 
-    @Autowired
-    HttpServletRequest httpServletRequest;
+    private final HttpServletRequest httpServletRequest;
 
-    public UserLoginController(UserLoginServiceImpl userLoginService) {
+    @Autowired
+    public UserLoginController(UserLoginServiceImpl userLoginService, HttpServletRequest httpServletRequest) {
         this.userLoginService = userLoginService;
+        this.httpServletRequest = httpServletRequest;
     }
 
     @RequestMapping("userLogin")
@@ -63,5 +61,15 @@ public class UserLoginController {
         }else {
             return new JsonResponse(30000,"未注册，失败",result);
         }
+    }
+
+    @PostMapping("updateUserLoginPwd")
+    @ResponseBody
+    public JsonResponse updateUserLoginPwd(@RequestBody UserLogin userLogin){
+        boolean result = userLoginService.updateUserLoginPasswordService(userLogin);
+        if (result){
+            return new JsonResponse(20000,"修改密码成功",result);
+        }
+            return new JsonResponse(30000,"修改密码失败",result);
     }
 }

@@ -110,4 +110,22 @@
       user_login_sf = #{userLoginSf,jdbcType=VARCHAR}
     where user_login_id = #{userLoginId,jdbcType=INTEGER}
   </update>
+  <update id="updateParentPasswordDao" parameterType="com.cafebabe.phosphor.model.entity.UserLogin">
+    update user_login
+    <set>
+      <if test="userLoginPwd != null">
+        user_login_pwd = #{userLoginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userLoginStatus != null">
+        user_login_status = #{userLoginStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userLoginTime != null">
+        user_login_time = #{userLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userLoginSf != null">
+        user_login_sf = #{userLoginSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_login_phone = #{userLoginPhone,jdbcType=INTEGER}
+  </update>
 </mapper>
