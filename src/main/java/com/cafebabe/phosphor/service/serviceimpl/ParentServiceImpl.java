@@ -1,6 +1,7 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
 import com.cafebabe.phosphor.dao.ParentDAO;
+import com.cafebabe.phosphor.model.entity.Parent;
 import com.cafebabe.phosphor.service.ParentService;
 
 import org.springframework.stereotype.Service;
@@ -38,6 +39,16 @@ public class ParentServiceImpl implements ParentService {
     @Override
     public String getParentImgUrlService(String parentPhone) {
         return parentDAO.getParentImgUrlDao(parentPhone);
+    }
+
+    @Override
+    public String getParentByParentPhoneService(String parentPhone) {
+        Parent  parent = parentDAO.getParentByParentPhoneDao(parentPhone);
+        if (null !=parent){
+            return "true";
+        }else {
+            return "false";
+        }
     }
 
 }

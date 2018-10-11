@@ -31,4 +31,6 @@ public interface ParentService {
      * @return
      */
     String  getParentImgUrlService(String parentPhone);
+
+    String getParentByParentPhoneService(String parentPhone);
 }

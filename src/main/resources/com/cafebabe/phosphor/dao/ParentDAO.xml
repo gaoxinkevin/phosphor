@@ -161,4 +161,10 @@
     from parent
     where parent_phone=#{parentPhone};
   </select>
+    <select id="getParentByParentPhoneDao" parameterType="java.lang.String" resultType="com.cafebabe.phosphor.model.entity.Parent">
+      select
+      <include refid="Base_Column_List" />
+      from parent
+      where parent_phone = #{parentPhone}
+    </select>
 </mapper>
