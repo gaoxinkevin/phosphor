@@ -37,4 +37,9 @@ public class LoginUi {
     public void alreadyLogin(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/login/alreadyLoginIndex.html").forward(httpServletRequest,httpServletResponse);
     }
+
+    @RequestMapping("registrationUi")
+    public void registration(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/login/registrationPage.html").forward(httpServletRequest,httpServletResponse);
+    }
 }

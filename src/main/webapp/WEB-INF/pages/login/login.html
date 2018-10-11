@@ -8,7 +8,7 @@
     <!-- Mobile Meta -->
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Site Meta -->
-    <title>Phosphor</title>
+    <title>用户登录</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -67,8 +67,8 @@
         saveJsonCustomer(JSON.stringify(customer)).then((res) => {
             if (res.data === '用户名密码正确') {
                 function setLocalStorage(key, value) {
-                    var curtime = new Date().getTime(); // 获取当前时间 ，转换成JSON字符串序列
-                    var valueDate = JSON.stringify({
+                    let curtime = new Date().getTime(); // 获取当前时间 ，转换成JSON字符串序列
+                    let valueDate = JSON.stringify({
                         val: value,
                         timer: curtime
                     });
@@ -111,7 +111,7 @@
         }, err => {
             console.log(err)
         })
-    }
+    };
 
     checkOutPhoneNumber = () => {
         const innerValue = document.getElementById('tel').value;
@@ -129,6 +129,11 @@
                 userLoginA.removeAttribute('href');
             }
         }
+    }
+
+    //注册界面跳转
+    jumpToRegistrationPage=()=>{
+        window.location.href='http://localhost:1250/loginUi/registrationUi';
     }
 
 </script>
@@ -229,7 +234,7 @@
                         <div class="btn-wrapper">
                             <a href="javascript:void(0); onclick=submitBtn()" id="userLoginA"
                                class="btn btn-primary">登录</a>
-                            <a href="javascript:void(0);onclick=submitBtn()" class="btn btn-primary"
+                            <a href="javascript:void(0);onclick=jumpToRegistrationPage()" class="btn btn-primary"
                                style="margin-left: 10px">注册</a>
                         </div>
                         <hr class="invis" style="margin-top: 10px">

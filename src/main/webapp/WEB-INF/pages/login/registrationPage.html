@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Site Meta -->
+    <title>用户注册</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+    <!-- Custom & Default Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleRegistration.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+<!--Ajax向后台输出数据-->
+<script>
+    const clientUrl = 'http://localhost:1250/userLogin/userLogin';
+    const clientMethod = 'POST';
+    const saveCustomer = ({url, method, data}) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open(clientMethod, clientUrl);
+            client.responseType = 'json';
+            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send(data);
+        });
+    };
+
+    const saveJsonCustomer = (data) => saveCustomer(
+        {
+            url: clientUrl,
+            method: clientMethod,
+            data
+        }
+    );
+
+    submitBtn = () => {
+        let customer = {
+            userLoginPhone: document.getElementById('tel').value,
+            userLoginPwd: document.getElementById('password').value,
+        };
+
+        saveJsonCustomer(JSON.stringify(customer)).then((res) => {
+            if (res.data === '用户名密码正确') {
+                function setLocalStorage(key, value) {
+                    let curtime = new Date().getTime(); // 获取当前时间 ，转换成JSON字符串序列
+                    let valueDate = JSON.stringify({
+                        val: value,
+                        timer: curtime
+                    });
+                    try {
+                        localStorage.setItem(key, valueDate);
+                    } catch (e) {
+                        if (isQuotaExceeded(e)) {
+                            console.log("Error: 本地存储超过限制");
+                            localStorage.clear();
+                        } else {
+                            console.log("Error: 保存到本地存储失败");
+                        }
+                    }
+                }
+
+                setLocalStorage("userLoginPhone", document.getElementById("tel").value);
+                window.location.href = 'http://localhost:1250/loginUi/alreadyLoginUi';
+            } else if (res.message === "用户名或密码不正确，请确认后登录") {
+                document.body.style.overflowX = "hidden";
+                document.body.style.overflowY = "hidden";
+                let dialog = document.getElementById("dialog");
+                let vModal = document.getElementById("v-modal");
+                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+                let elButton = document.getElementById("el-button");
+                elButton.innerText = "重新登录";
+                vModal.style.display = "block";
+                dialog.style.display = "block";
+                dialogPInnerHtml.innerText = res.data;
+            } else {
+                document.body.style.overflowX = "hidden";
+                document.body.style.overflowY = "hidden";
+                let dialog = document.getElementById("dialog");
+                let vModal = document.getElementById("v-modal");
+                let elButton = document.getElementById("el-button");
+                elButton.innerText = "前往注册界面";
+                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+                vModal.style.display = "block";
+                dialog.style.display = "block";
+                dialogPInnerHtml.innerText = res.data;
+            }
+        }, err => {
+            console.log(err)
+        })
+    };
+
+    checkOutPhoneNumber = () => {
+        const innerValue = document.getElementById('tel').value;
+        if (innerValue.length !== 0) {
+            const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+            const bottomLine = document.getElementById("bottomLine");
+            const userLoginA = document.getElementById("userLoginA");
+            if (reg.test(innerValue)) {
+                userLoginA.setAttribute("href", "javascript:void(0); onclick=submitBtn()");
+                bottomLine.style.backgroundColor = "#658db5";
+                userLoginA.style.opacity = "1";
+            } else {
+                bottomLine.style.backgroundColor = "red";
+                userLoginA.style.opacity = "0.2";
+                userLoginA.removeAttribute('href');
+            }
+        }
+    }
+
+    cancelTORegistered = () => {
+        window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
+    }
+
+</script>
+
+<div id="wrapper">
+
+    <div id="preloader">
+        <img class="preloader" src="/images/loader.gif" alt="">
+    </div>
+
+
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3" style="border: 2px #66cccc solid; height: 740px;">
+                    <div class="custom-module p40l" >
+
+                        <h2>我们是专业的
+                            <mark>儿童教育机构</mark>
+                            <br>
+                            为您的
+                            <mark>孩子</mark>
+                            ,带来优质的教育资源<br>
+                            欢迎来到
+                            <mark>启明星</mark>
+                            ，您孩子的梦想腾飞之地
+                        </h2>
+
+                        <div style=" width: 490px;">
+                            <div class="input-container" style="width: 400px">
+                                <input type="number" id="tel" placeholder="手机号" onblur="checkOutPhoneNumber()">
+                                <label for="tel" id="telLabel">请输入手机号</label>
+                                <div class="bottom-line" id="bottomLine"></div>
+                            </div>
+                            <button class="btn-danger btn-sm" disabled
+                                    style="float:right;margin-top: -32px;cursor: default;display: none">用户已注册
+                            </button>
+                        </div>
+
+                        <div style=" width: 490px;">
+                            <div class="input-container" style="width: 400px">
+                                <input type="password" id="verificationCode" placeholder="请输入验证码" disabled>
+                                <label for="verificationCode">请输入验证码</label>
+                                <div class="bottom-line"></div>
+                            </div>
+                            <button class="btn-primary btn-sm" style="float:right;margin-top: -32px;cursor: default"
+                                    disabled>获取验证码
+                            </button>
+                        </div>
+
+
+                        <div style=" width: 515px;">
+                            <div class="input-container" style="width: 400px">
+                                <input type="password" id="password" placeholder="密码" disabled>
+                                <label for="password">请输入密码</label>
+                                <div class="bottom-line"></div>
+                            </div>
+                            <button class="btn-danger btn-sm" disabled
+                                    style="float:right;margin-top: -32px;cursor: default;display: none">密码不符合规范
+                            </button>
+                        </div>
+
+                        <div style=" width: 515px;">
+                            <div class="input-container" style="width: 400px">
+                                <input type="password" id="passwordConfirm" placeholder="请确认输入密码" disabled>
+                                <label for="passwordConfirm">请确认输入密码</label>
+                                <div class="bottom-line"></div>
+                            </div>
+                            <button class="btn-danger btn-sm" disabled
+                                    style="float:right;margin-top: -32px;cursor: default;display: none">两次密码不相同
+                            </button>
+                        </div>
+
+
+                        <hr class="invis" style="margin: 20px 0">
+
+
+                        <div class="btn-wrapper">
+                            <a href="javascript:void(0);" disabled onclick=""  style="cursor: default" class="btn btn-primary aStyle">注册</a>
+
+                            <a href="javascript:void(0);" onclick="cancelTORegistered()" class="btn btn-primary aStyle">取消</a>
+                        </div>
+                    </div><!-- end module -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section>
+
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/customLogin.js"></script>
+</body>
+
+</html>
