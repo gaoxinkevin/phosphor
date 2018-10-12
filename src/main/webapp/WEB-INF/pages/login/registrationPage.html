@@ -29,127 +29,219 @@
 <body>
 <!--Ajax向后台输出数据-->
 <script>
-    const clientUrl = 'http://localhost:1250/userLogin/userLogin';
-    const clientMethod = 'POST';
-    const saveCustomer = ({url, method, data}) => {
-        return new Promise((resolve, reject) => {
-            const client = new XMLHttpRequest();
-            client.open(clientMethod, clientUrl);
-            client.responseType = 'json';
-            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-            client.onreadystatechange = () => {
-                if (client.readyState === 4) {
-                    if (client.status === 200) {
-                        resolve(client.response);
-                    } else {
-                        reject(client.status);
-                    }
-                }
-            };
-            client.send(data);
-        });
-    };
 
-    const saveJsonCustomer = (data) => saveCustomer(
-        {
-            url: clientUrl,
-            method: clientMethod,
-            data
-        }
-    );
+    <!--后期实现 属性为disabled的下划线有特殊的颜色 去除后是另外一种颜色 提醒用户哪些是可以使用的  那些是不可使用的-->
 
-    submitBtn = () => {
-        let customer = {
-            userLoginPhone: document.getElementById('tel').value,
-            userLoginPwd: document.getElementById('password').value,
-        };
-
-        saveJsonCustomer(JSON.stringify(customer)).then((res) => {
-            if (res.data === '用户名密码正确') {
-                function setLocalStorage(key, value) {
-                    let curtime = new Date().getTime(); // 获取当前时间 ，转换成JSON字符串序列
-                    let valueDate = JSON.stringify({
-                        val: value,
-                        timer: curtime
-                    });
-                    try {
-                        localStorage.setItem(key, valueDate);
-                    } catch (e) {
-                        if (isQuotaExceeded(e)) {
-                            console.log("Error: 本地存储超过限制");
-                            localStorage.clear();
-                        } else {
-                            console.log("Error: 保存到本地存储失败");
-                        }
-                    }
-                }
-
-                setLocalStorage("userLoginPhone", document.getElementById("tel").value);
-                window.location.href = 'http://localhost:1250/loginUi/alreadyLoginUi';
-            } else if (res.message === "用户名或密码不正确，请确认后登录") {
-                document.body.style.overflowX = "hidden";
-                document.body.style.overflowY = "hidden";
-                let dialog = document.getElementById("dialog");
-                let vModal = document.getElementById("v-modal");
-                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
-                let elButton = document.getElementById("el-button");
-                elButton.innerText = "重新登录";
-                vModal.style.display = "block";
-                dialog.style.display = "block";
-                dialogPInnerHtml.innerText = res.data;
-            } else {
-                document.body.style.overflowX = "hidden";
-                document.body.style.overflowY = "hidden";
-                let dialog = document.getElementById("dialog");
-                let vModal = document.getElementById("v-modal");
-                let elButton = document.getElementById("el-button");
-                elButton.innerText = "前往注册界面";
-                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
-                vModal.style.display = "block";
-                dialog.style.display = "block";
-                dialogPInnerHtml.innerText = res.data;
-            }
-        }, err => {
-            console.log(err)
-        })
-    };
-
-    checkOutPhoneNumber = () => {
-        const innerValue = document.getElementById('tel').value;
-        if (innerValue.length !== 0) {
-            const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
-            const bottomLine = document.getElementById("bottomLine");
-            const userLoginA = document.getElementById("userLoginA");
-            if (reg.test(innerValue)) {
-                userLoginA.setAttribute("href", "javascript:void(0); onclick=submitBtn()");
-                bottomLine.style.backgroundColor = "#658db5";
-                userLoginA.style.opacity = "1";
-            } else {
-                bottomLine.style.backgroundColor = "red";
-                userLoginA.style.opacity = "0.2";
-                userLoginA.removeAttribute('href');
-            }
-        }
+    let Num = "";
+    for (let i = 0; i < 6; i++) {
+        Num += Math.floor(Math.random() * 10);
     }
+
+    // const NumInteger = Number(Num);
 
     cancelTORegistered = () => {
         window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
-    }
+    };
 
+    //验证手机号的 相关数据
+    checkOutPhoneNumber = () => {
+        const innerValue = document.getElementById('tel').value;
+        //写入数据进行判断，不写入数据不进行写入
+        if (innerValue.length !== 0) {
+            const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+            const errorBtn = document.getElementById("errorBtn");
+            const accessBtn = document.getElementById("accessBtn");
+            const verificationCode = document.getElementById("verificationCode");
+            const verificationCodeBtn = document.getElementById("verificationCodeBtn");
+            const errorBtn2 = document.getElementById("errorBtn2");
+
+            if (reg.test(innerValue)) {
+                //Ajax获取用户是否注册注册，注册过
+                const clientUrl = 'http://localhost:1250/parent/isParentExistByParentPhone';
+                const clientMethod = 'POST';
+                const isParentExist = ({url, method, data}) => {
+                    return new Promise((resolve, reject) => {
+                        const client = new XMLHttpRequest();
+                        client.open(clientMethod, clientUrl);
+                        client.responseType = 'json';
+                        client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                        client.onreadystatechange = () => {
+                            if (client.readyState === 4) {
+                                if (client.status === 200) {
+                                    resolve(client.response);
+                                } else {
+                                    reject(client.status);
+                                }
+                            }
+                        };
+                        client.send(data);
+                    });
+                };
+                const parentList = (data) => isParentExist(
+                    {
+                        url: clientUrl,
+                        method: clientMethod,
+                        data
+                    }
+                );
+
+                let parent = {
+                    parentPhone: document.getElementById('tel').value
+                };
+                parentList(JSON.stringify(parent)).then((res) => {
+                    if (res.code === 20000) {
+                        //   用户进行过注册
+                        errorBtn.style.display = "";
+                        accessBtn.style.display = "none";
+                        errorBtn2.style.display = "none";
+                        verificationCode.disabled = true;
+                        verificationCodeBtn.disabled = true;
+                        verificationCodeBtn.style.cursor = "default";
+                    } else {
+                        //    用户没有进行过注册
+                        accessBtn.style.display = "";
+                        errorBtn.style.display = "none";
+                        errorBtn2.style.display = "none";
+                        verificationCode.disabled = false;
+                        verificationCodeBtn.disabled = false;
+                        verificationCodeBtn.style.cursor = "pointer";
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+
+            } else {
+                errorBtn2.style.display = "";
+                accessBtn.style.display = "none";
+                errorBtn.style.display = "none";
+                verificationCode.disabled = true;
+                verificationCodeBtn.disabled = true;
+                verificationCodeBtn.style.cursor = "default";
+            }
+        } else {
+
+        }
+    };
+
+    //调用API，发送验证码
+    getVerificationCode = () => {
+        // const clientUrl = 'http://localhost:1250/parent/verificationCode';
+        // const clientMethod = 'POST';
+        // const verificationCode = ({url, method, data}) => {
+        //     return new Promise((resolve, reject) => {
+        //         const client = new XMLHttpRequest();
+        //         client.open(clientMethod, clientUrl);
+        //         client.responseType = 'json';
+        //         client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        //         client.onreadystatechange = () => {
+        //             if (client.readyState === 4) {
+        //                 if (client.status === 200) {
+        //                     resolve(client.response);
+        //                 } else {
+        //                     reject(client.status);
+        //                 }
+        //             }
+        //         };
+        //         client.send(data);
+        //     });
+        // };
+        //
+        // const codeList = (data) => verificationCode(
+        //     {
+        //         url: clientUrl,
+        //         method: clientMethod,
+        //         data
+        //     }
+        // );
+        //
+        // const mobile = document.getElementById('checkval').value;
+        //
+        // let mobileAndRandomCode = {
+        //     mobile: mobile,
+        //     randomCode: NumInteger
+        // };
+        //
+        //
+        // codeList(JSON.stringify(mobileAndRandomCode)).then((res) => {
+        //     const btnSubmit = document.getElementById("popup-submit");
+        //     const yzmVal = document.getElementById("yzmVal");
+        //     btnSubmit.style.background = "#ccc";
+        //     btnSubmit.disabled = true;
+        //     btnSubmit.innerText = "获取验证码成功";
+        //     yzmVal.disabled = false;
+        //     console.log(res);
+        // }).catch(err => {
+        //     const btnSubmit = document.getElementById("popup-submit");
+        //     btnSubmit.backgroundColor = "#ccc";
+        //     btnSubmit.disable = false;
+        //     btnSubmit.innerText = "获取验证码失败";
+        //     console.log(err);
+        // })
+
+        alert("调用成功");
+    };
+
+    //验证验证码是否正确
+    checkOurVerificationCode = () => {
+        const verificationCode = document.getElementById("verificationCode").value;
+        const parentNameInput = document.getElementById("parentName");
+        const passwordInput = document.getElementById("password");
+        const passwordConfirmInput = document.getElementById("passwordConfirm");
+
+        if (0 !== verificationCode.length) {
+            alert("验证码正确，可进行下一步");
+            parentNameInput.disabled = false;
+            passwordInput.disabled = false;
+            passwordConfirmInput.disabled = false;
+        } else {
+            parentNameInput.disabled = true;
+            parentNameInput.disabled = true;
+            passwordConfirmInput.disabled = true;
+        }
+    };
+
+    //验证手机号两次密码是否相同 如果两次密码相同 可以进行注册
+
+    checkTwoInputIsFormat = () => {
+        const firstInput = document.getElementById("password").value;
+        const secondInput = document.getElementById("passwordConfirm").value;
+        const submitBtn23 = document.getElementById("submitBtn23");
+        const errorMessage3 = document.getElementById("errorMessage3Btn");
+        const errorMessage4 = document.getElementById("errorMessage4Btn");
+        if (firstInput.length > 5 && secondInput.length > 5 && firstInput === secondInput) {
+            errorMessage3.style.display = "none";
+            errorMessage4.style.display = "none";
+            submitBtn23.setAttribute("href","javascript:void(0);saveParent()")
+        }
+        if (firstInput.length < 6) {
+            errorMessage3.style.display = "";
+            errorMessage4.style.display = "none";
+        } else {
+            errorMessage3.style.display = "none";
+        }
+
+        if (firstInput !== secondInput) {
+            errorMessage4.style.display="";
+        }
+    };
+
+    saveParent=()=>{
+        alert(1);
+    }
 </script>
 
-<div id="wrapper">
+<div id="wrapper" style="overflow: hidden">
 
     <div id="preloader">
         <img class="preloader" src="/images/loader.gif" alt="">
     </div>
 
 
-    <section class="section">
+    <section class="section" style="padding: 1rem 0">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3" style="border: 2px #66cccc solid; height: 740px;">
-                    <div class="custom-module p40l" >
+                <div class="col-md-6 col-md-offset-3" style="border: 2px #66cccc solid; height: 770px;">
+                    <div class="custom-module p40l">
 
                         <h2>我们是专业的
                             <mark>儿童教育机构</mark>
@@ -159,50 +251,99 @@
                             ,带来优质的教育资源<br>
                             欢迎来到
                             <mark>启明星</mark>
-                            ，您孩子的梦想腾飞之地
                         </h2>
 
-                        <div style=" width: 490px;">
+                        <!--验证手机号是否符合规范,验证用户是否注册过,注册过不可以再进行注册-->
+
+                        <!--START-->
+
+                        <div style=" width: 508px;">
                             <div class="input-container" style="width: 400px">
                                 <input type="number" id="tel" placeholder="手机号" onblur="checkOutPhoneNumber()">
                                 <label for="tel" id="telLabel">请输入手机号</label>
                                 <div class="bottom-line" id="bottomLine"></div>
                             </div>
+
                             <button class="btn-danger btn-sm" disabled
-                                    style="float:right;margin-top: -32px;cursor: default;display: none">用户已注册
+                                    style="float:right;margin-top: -30px;cursor: default;display: none" id="errorBtn">
+                                用户已注册
                             </button>
+
+                            <button class="btn-primary btn-sm" disabled
+                                    style="float:right;margin-top: -30px;cursor: default;display: none" id="accessBtn">
+                                用户可注册
+                            </button>
+
+                            <button class="btn-danger btn-sm" disabled
+                                    style="float:right;margin-top: -30px;cursor: default;display: none" id="errorBtn2">
+                                请输入正确号码
+                            </button>
+
                         </div>
 
-                        <div style=" width: 490px;">
+                        <!--END-->
+
+                        <!--发送手机验证码,验证输入和发送的验证码是否相同相同的话，可以进行注册-->
+
+                        <!--START-->
+
+                        <div style=" width: 508px;">
                             <div class="input-container" style="width: 400px">
-                                <input type="password" id="verificationCode" placeholder="请输入验证码" disabled>
+                                <input type="password" id="verificationCode" placeholder="请输入验证码" disabled
+                                       onblur="checkOurVerificationCode()">
                                 <label for="verificationCode">请输入验证码</label>
                                 <div class="bottom-line"></div>
                             </div>
-                            <button class="btn-primary btn-sm" style="float:right;margin-top: -32px;cursor: default"
-                                    disabled>获取验证码
+                            <button class="btn-primary btn-sm" id="verificationCodeBtn"
+                                    style="float:right;margin-top: -30px;cursor: default"
+                                    disabled onclick="getVerificationCode()">获取验证码
+                            </button>
+
+                            <button class="btn-danger btn-sm" disabled
+                                    style="float:right;margin-top: -30px;cursor: default;display: none">请输入验证码
+                            </button>
+
+                            <button class="btn-danger btn-sm" disabled
+                                    style="float:right;margin-top: -30px;cursor: default;display: none">验证码不正确
+                            </button>
+
+                        </div>
+
+                        <!--END-->
+
+
+                        <div style=" width: 515px;">
+                            <div class="input-container" style="width: 400px">
+                                <input type="text" id="parentName" placeholder="请输入用户名" disabled>
+                                <label for="password">请输入用户名</label>
+                                <div class="bottom-line"></div>
+                            </div>
+                            <button class="btn-danger btn-sm" disabled
+                                    style="float:right;margin-top: -32px;cursor: default;display: none">用户名不符合规范
                             </button>
                         </div>
 
 
                         <div style=" width: 515px;">
                             <div class="input-container" style="width: 400px">
-                                <input type="password" id="password" placeholder="密码" disabled>
-                                <label for="password">请输入密码</label>
+                                <input type="password" id="password" placeholder="密码" disabled
+                                       onblur="checkTwoInputIsFormat()">
+                                <label for="password">请最少8位输入密码</label>
                                 <div class="bottom-line"></div>
                             </div>
-                            <button class="btn-danger btn-sm" disabled
+                            <button class="btn-danger btn-sm" disabled id="errorMessage3Btn"
                                     style="float:right;margin-top: -32px;cursor: default;display: none">密码不符合规范
                             </button>
                         </div>
 
                         <div style=" width: 515px;">
                             <div class="input-container" style="width: 400px">
-                                <input type="password" id="passwordConfirm" placeholder="请确认输入密码" disabled>
-                                <label for="passwordConfirm">请确认输入密码</label>
+                                <input type="password" id="passwordConfirm" placeholder="请确认输入密码" disabled
+                                       onblur="checkTwoInputIsFormat()">
+                                <label for="passwordConfirm">请确认密码</label>
                                 <div class="bottom-line"></div>
                             </div>
-                            <button class="btn-danger btn-sm" disabled
+                            <button class="btn-danger btn-sm" disabled id="errorMessage4Btn"
                                     style="float:right;margin-top: -32px;cursor: default;display: none">两次密码不相同
                             </button>
                         </div>
@@ -212,7 +353,8 @@
 
 
                         <div class="btn-wrapper">
-                            <a href="javascript:void(0);" disabled onclick=""  style="cursor: default" class="btn btn-primary aStyle">注册</a>
+                            <a  style="cursor: default" id="submitBtn23"
+                               class="btn btn-primary aStyle">注册</a>
 
                             <a href="javascript:void(0);" onclick="cancelTORegistered()" class="btn btn-primary aStyle">取消</a>
                         </div>

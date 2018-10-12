@@ -33,4 +33,11 @@ public interface UserLoginDAO extends MyBatisBaseDao<UserLogin, Integer> {
      * @return
      */
     boolean   updateParentPasswordDao(UserLogin userLogin);
+
+    /**
+     * 添加用户登录状态
+     * @param userLogin
+     * @return
+     */
+    boolean   insertUserLogin(UserLogin userLogin);
 }

@@ -1,6 +1,7 @@
 package com.cafebabe.phosphor.service;
 
 import com.cafebabe.phosphor.dao.ParentDAO;
+import com.cafebabe.phosphor.model.entity.Parent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -32,5 +33,10 @@ public interface ParentService {
      */
     String  getParentImgUrlService(String parentPhone);
 
+    /**
+     * 通过手机号获取 用户信息
+     * @param parentPhone
+     * @return
+     */
     String getParentByParentPhoneService(String parentPhone);
 }

@@ -7,8 +7,6 @@ import com.cafebabe.phosphor.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.mail.Session;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -50,8 +48,6 @@ public class UserLoginServiceImpl implements UserLoginService {
 
     @Override
     public boolean updateUserLoginPasswordService(UserLogin userLogin) {
-        System.out.println(userLogin);
-        boolean resultUpdateUserLoginPassword = userLoginDAO.updateParentPasswordDao(userLogin);
-        return resultUpdateUserLoginPassword;
+        return userLoginDAO.updateParentPasswordDao(userLogin);
     }
 }

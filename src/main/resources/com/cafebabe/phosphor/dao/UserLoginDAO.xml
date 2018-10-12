@@ -37,7 +37,7 @@
       #{userLoginStatus,jdbcType=INTEGER}, #{userLoginTime,jdbcType=TIMESTAMP}, #{userLoginSf,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.UserLogin">
+  <insert id="insertUserLogin" parameterType="com.cafebabe.phosphor.model.entity.UserLogin">
     insert into user_login
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userLoginId != null">
@@ -80,7 +80,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.UserLogin">
+    <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.UserLogin">
     update user_login
     <set>
       <if test="userLoginPhone != null">

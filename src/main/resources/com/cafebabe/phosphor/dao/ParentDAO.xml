@@ -37,7 +37,8 @@
       #{parentMail,jdbcType=VARCHAR}, #{parentPrephone,jdbcType=VARCHAR}, #{parentCreateTime,jdbcType=TIMESTAMP}, 
       #{parentSf,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Parent">
+
+  <insert id="insertParentDao" parameterType="com.cafebabe.phosphor.model.entity.Parent">
     insert into parent
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="parentId != null">
@@ -150,11 +151,6 @@
       parent_sf = #{parentSf,jdbcType=VARCHAR}
     where parent_id = #{parentId,jdbcType=INTEGER}
   </update>
-  
-  <insert id="insertParentDao" parameterType="java.lang.String">
-    insert into parent
-    values (#{parentMail,jdbcType=VARCHAR})
-  </insert>
 
   <select id="getParentImgUrlDao" parameterType="java.lang.String" resultType="java.lang.String">
     select  parent_photo

@@ -38,4 +38,11 @@ public interface ParentDAO extends MyBatisBaseDao<Parent, Integer> {
      * @return
      */
     Parent  getParentByParentPhoneDao(@Param("parentPhone") String parentPhone);
+
+    /**
+     * 用户插入到数据库中
+     * @param parent
+     * @return
+     */
+    boolean insertParentDao(Parent parent);
 }

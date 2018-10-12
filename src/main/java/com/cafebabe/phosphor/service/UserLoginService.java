@@ -32,4 +32,5 @@ public interface UserLoginService {
      * @return
      */
     boolean updateUserLoginPasswordService(UserLogin userLogin);
+
 }
