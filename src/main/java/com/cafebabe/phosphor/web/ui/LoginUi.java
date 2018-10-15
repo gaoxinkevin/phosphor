@@ -40,6 +40,6 @@ public class LoginUi {
 
     @RequestMapping("registrationUi")
     public void registration(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/login/registrationPage.html").forward(httpServletRequest,httpServletResponse);
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/registrationPage.html").forward(httpServletRequest,httpServletResponse);
     }
 }

@@ -1,8 +1,10 @@
 package com.cafebabe.phosphor.web.controller;
 
 
+import com.cafebabe.phosphor.model.dto.InsertParent;
 import com.cafebabe.phosphor.model.dto.MobileAndRandomCode;
 import com.cafebabe.phosphor.model.entity.Parent;
+import com.cafebabe.phosphor.service.serviceimpl.InsertParentServiceImpl;
 import com.cafebabe.phosphor.service.serviceimpl.ParentServiceImpl;
 import com.cafebabe.phosphor.util.GsonUtil;
 import com.cafebabe.phosphor.util.JsonResponse;
@@ -39,6 +41,7 @@ public class ParentController {
 
     private final ParentServiceImpl parentService;
     private final HttpServletRequest httpServletRequest;
+    private final InsertParentServiceImpl insertParentService;
     private static final String TRUE_RESULT = "true";
     private static final String FALSE_RESULT = "false";
 
@@ -46,9 +49,10 @@ public class ParentController {
      * 短信接口相关
      */
     @Autowired
-    public ParentController(ParentServiceImpl parentService, HttpServletRequest httpServletRequest) {
+    public ParentController(ParentServiceImpl parentService, InsertParentServiceImpl insertParentService, HttpServletRequest httpServletRequest) {
         this.parentService = parentService;
         this.httpServletRequest = httpServletRequest;
+        this.insertParentService = insertParentService;
     }
 
     @ResponseBody
@@ -91,6 +95,19 @@ public class ParentController {
             return new JsonResponse(20000,"成功",parentPhone);
         }else {
             return new JsonResponse(30000,"session不存在",null);
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("insertParent")
+    public JsonResponse insertParent(@RequestBody InsertParent insertParent){
+        boolean result = insertParentService.insertIntoParent(insertParent);
+        if (result){
+            httpServletRequest.getSession().setAttribute("userLoginPhone",insertParent.getInsertParentPhone());
+            httpServletRequest.getSession().getAttribute("userLoginPhone");
+            return new JsonResponse(20000,"成功",true);
+        }else {
+            return new JsonResponse(30000,"插入失败",false);
         }
     }
 }
