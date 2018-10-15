@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.web.ui;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,13 +30,15 @@ import java.io.IOException;
 @RequestMapping("/parentUi")
 public class ParentUi {
 
-    @RequestMapping("parentRegisterUi")
-    public void registerForward(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentRegister.html").forward(httpServletRequest,httpServletResponse);
-    }
+
 
     @RequestMapping("forgetPasswordUi")
     public void forgetPassword(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/login/forgetPassword.html").forward(httpServletRequest,httpServletResponse);
+    }
+
+    @RequestMapping("parentSettingsUi")
+    public void parentSettings(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentSettings.html").forward(httpServletRequest,httpServletResponse);
     }
 }
