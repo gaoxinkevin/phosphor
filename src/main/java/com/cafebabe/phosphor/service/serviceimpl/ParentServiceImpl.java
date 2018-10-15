@@ -31,10 +31,6 @@ public class ParentServiceImpl implements ParentService {
         this.parentDAO = parentDAO;
     }
 
-    @Override
-    public Integer insertParentService(String parentMail) {
-        return parentDAO.insertParentDao(parentMail);
-    }
 
     @Override
     public String getParentImgUrlService(String parentPhone) {
@@ -49,5 +45,15 @@ public class ParentServiceImpl implements ParentService {
         }else {
             return "false";
         }
+    }
+
+    @Override
+    public Parent getAllInfoAboutParentService(String parentPhone) {
+        return parentDAO.getAllInfoAboutParentDao(parentPhone);
+    }
+
+    @Override
+    public Integer updateByParentPhoneService(Parent parent) {
+        return parentDAO.updateByParentPhoneDao(parent);
     }
 }

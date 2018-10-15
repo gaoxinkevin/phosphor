@@ -108,9 +108,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Parent">
     update parent
     <set>
-      <if test="parentName != null">
-        parent_name = #{parentName,jdbcType=VARCHAR},
-      </if>
       <if test="parentPhone != null">
         parent_phone = #{parentPhone,jdbcType=VARCHAR},
       </if>
@@ -151,16 +148,52 @@
       parent_sf = #{parentSf,jdbcType=VARCHAR}
     where parent_id = #{parentId,jdbcType=INTEGER}
   </update>
+  <update id="updateByParentPhoneDao" parameterType="com.cafebabe.phosphor.model.entity.Parent">
+    update parent
+    <set>
+      <if test="parentAddress != null">
+        parent_address = #{parentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="parentDesc != null">
+        parent_desc = #{parentDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="parentPhoto != null">
+        parent_photo = #{parentPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMail != null">
+        parent_mail = #{parentMail,jdbcType=VARCHAR},
+      </if>
+      <if test="parentPrephone != null">
+        parent_prephone = #{parentPrephone,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCreateTime != null">
+        parent_create_time = #{parentCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="parentSf != null">
+        parent_sf = #{parentSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where parent_phone=#{parentPhone}
+  </update>
 
   <select id="getParentImgUrlDao" parameterType="java.lang.String" resultType="java.lang.String">
     select  parent_photo
     from parent
     where parent_phone=#{parentPhone};
   </select>
+
     <select id="getParentByParentPhoneDao" parameterType="java.lang.String" resultType="com.cafebabe.phosphor.model.entity.Parent">
       select
       <include refid="Base_Column_List" />
       from parent
       where parent_phone = #{parentPhone}
     </select>
+  <select id="getAllInfoAboutParentDao" parameterType="java.lang.String" resultType="com.cafebabe.phosphor.model.entity.Parent">
+    select
+    <include refid="Base_Column_List" />
+    from parent
+    where parent_phone = #{parentPhone}
+  </select>
+
+
 </mapper>

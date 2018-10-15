@@ -110,4 +110,20 @@ public class ParentController {
             return new JsonResponse(30000,"插入失败",false);
         }
     }
+
+    @ResponseBody
+    @PostMapping("parentAllInfo")
+    public JsonResponse parentAllInfo(){
+        String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
+        return new JsonResponse(20000,"成功 ",parentService.getAllInfoAboutParentService(parentPhone));
+    }
+
+    @ResponseBody
+    @PostMapping("updateParent")
+    public JsonResponse updateParent(@RequestBody Parent parent){
+        String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
+        System.out.println(parent);
+        parentService.updateByParentPhoneService(parent);
+        return new JsonResponse(22222,"",parent);
+    }
 }
