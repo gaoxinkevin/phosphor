@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  * description:
  **/
+
 @Controller
 @CrossOrigin
 @RequestMapping("/company")
 public class CompanyController {
+
     @Autowired
     private final CompanyServiceImpl companyService;
     public CompanyController(CompanyServiceImpl companyService) { this.companyService = companyService; }

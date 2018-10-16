@@ -21,9 +21,9 @@ import java.util.List;
  **/
 @Service
 public class CompanyServiceImpl implements CompanyService {
-    @Autowired
-    private final CompanyDAO companyDAO;
 
+    private final CompanyDAO companyDAO;
+    @Autowired
     public CompanyServiceImpl(CompanyDAO companyDAO) {
         this.companyDAO = companyDAO;
     }
