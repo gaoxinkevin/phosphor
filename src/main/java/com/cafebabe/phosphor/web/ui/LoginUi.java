@@ -32,4 +32,14 @@ public class LoginUi {
     public void login(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/login/login.html").forward(httpServletRequest,httpServletResponse);
     }
+
+    @RequestMapping("alreadyLoginUi")
+    public void alreadyLogin(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/login/alreadyLoginIndex.html").forward(httpServletRequest,httpServletResponse);
+    }
+
+    @RequestMapping("registrationUi")
+    public void registration(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/registrationPage.html").forward(httpServletRequest,httpServletResponse);
+    }
 }

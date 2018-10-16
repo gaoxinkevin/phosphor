@@ -1,7 +1,8 @@
 package com.cafebabe.phosphor.dao;
 
-import com.cafebabe.phosphor.model.entity.Parent;
+
 import com.cafebabe.phosphor.model.entity.UserLogin;
+
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -25,4 +26,18 @@ public interface UserLoginDAO extends MyBatisBaseDao<UserLogin, Integer> {
      * @return
      */
     UserLogin getUserLoginDao(@Param("userLoginPhone") String userLoginPhone);
+
+    /**
+     * 更改用户的登录密码
+     * @param userLogin
+     * @return
+     */
+    boolean   updateParentPasswordDao(UserLogin userLogin);
+
+    /**
+     * 添加用户登录状态
+     * @param userLogin
+     * @return
+     */
+    boolean   insertUserLogin(UserLogin userLogin);
 }

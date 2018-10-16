@@ -19,17 +19,18 @@ import com.cafebabe.phosphor.util.JsonResponse;
 public interface UserLoginService {
 
     /**
-     *
-     * @author supersuntangao@gmail.com
-     *
-     * class_name: UserLoginService
-     *
-     * create_date: 2018/9/30
-     *
-     * create_time: 08:48
-     *
-     * description: 验证用户登录
-     **/
-
+     * 判断用户的密码与用户名吻合可以登录
+     * @param userLoginPhone
+     * @param userPassword
+     * @return
+     */
     String getUserLoginService(String userLoginPhone,String userPassword);
+
+    /**
+     * 更改用户密码
+     * @param userLogin
+     * @return
+     */
+    boolean updateUserLoginPasswordService(UserLogin userLogin);
+
 }

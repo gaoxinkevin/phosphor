@@ -7,6 +7,7 @@ import com.cafebabe.phosphor.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 /**
  *
  * @author supersuntangao@gmail.com
@@ -23,19 +24,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserLoginServiceImpl implements UserLoginService {
 
-    @Autowired
     private final UserLoginDAO userLoginDAO;
 
+    @Autowired
     public UserLoginServiceImpl(UserLoginDAO userLoginDAO) {
         this.userLoginDAO = userLoginDAO;
     }
 
     @Override
     public String getUserLoginService(String userLoginPhone,String userPassword) {
-        System.out.println(userLoginPhone);
-        System.out.println(userLoginDAO);
         UserLogin userLogin=userLoginDAO.getUserLoginDao(userLoginPhone);
-        System.out.println(userLogin.getUserLoginPwd());
         if (userLogin != null){
             String password=userLogin.getUserLoginPwd();
             if (userPassword.equals(password)){
@@ -46,5 +44,10 @@ public class UserLoginServiceImpl implements UserLoginService {
         }
         return "用户名不存在请注册后登录";
 
+    }
+
+    @Override
+    public boolean updateUserLoginPasswordService(UserLogin userLogin) {
+        return userLoginDAO.updateParentPasswordDao(userLogin);
     }
 }

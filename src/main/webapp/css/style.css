@@ -1632,9 +1632,8 @@ TESTIMONIAL
 }
 
 .testimonial:after {
-    content: "\f10e";
     padding: 5px;
-    font-family: FontAwesome;
+    font-family: FontAwesome, serif;
     position: absolute;
     bottom: 0px;
     color: #f6f6f6;
@@ -1643,9 +1642,7 @@ TESTIMONIAL
 }
 
 .testimonial:before {
-    content: "\f10d";
     padding: 5px;
-    font-family: FontAwesome;
     position: absolute;
     top: 0;
     color: #f6f6f6;
