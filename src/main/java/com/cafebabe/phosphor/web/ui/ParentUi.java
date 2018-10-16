@@ -24,14 +24,10 @@ import java.io.IOException;
  * description: 家长信息跳转界面
  **/
 
-
 @Controller
 @CrossOrigin
 @RequestMapping("/parentUi")
 public class ParentUi {
-
-
-
     @RequestMapping("forgetPasswordUi")
     public void forgetPassword(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/login/forgetPassword.html").forward(httpServletRequest,httpServletResponse);
@@ -40,5 +36,10 @@ public class ParentUi {
     @RequestMapping("parentSettingsUi")
     public void parentSettings(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentSettings.html").forward(httpServletRequest,httpServletResponse);
+    }
+
+    @RequestMapping("parentChangePasswordUi")
+    public void parentChangePassword(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentChangePassword.html").forward(httpServletRequest,httpServletResponse);
     }
 }
