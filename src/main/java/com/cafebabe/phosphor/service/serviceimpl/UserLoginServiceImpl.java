@@ -50,4 +50,8 @@ public class UserLoginServiceImpl implements UserLoginService {
     public boolean updateUserLoginPasswordService(UserLogin userLogin) {
         return userLoginDAO.updateParentPasswordDao(userLogin);
     }
+
+    public String getUserLoginPassword(String userLoginPhone){
+        return userLoginDAO.getUserLoginDao(userLoginPhone).getUserLoginPwd();
+    }
 }
