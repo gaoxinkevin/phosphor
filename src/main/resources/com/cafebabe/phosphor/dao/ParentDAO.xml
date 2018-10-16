@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.ParentDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.Parent">
+    <id column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="parent_name" jdbcType="VARCHAR" property="parentName" />
+    <result column="parent_phone" jdbcType="VARCHAR" property="parentPhone" />
+    <result column="parent_address" jdbcType="VARCHAR" property="parentAddress" />
+    <result column="parent_desc" jdbcType="VARCHAR" property="parentDesc" />
+    <result column="parent_photo" jdbcType="VARCHAR" property="parentPhoto" />
+    <result column="parent_mail" jdbcType="VARCHAR" property="parentMail" />
+    <result column="parent_prephone" jdbcType="VARCHAR" property="parentPrephone" />
+    <result column="parent_create_time" jdbcType="TIMESTAMP" property="parentCreateTime" />
+    <result column="parent_sf" jdbcType="VARCHAR" property="parentSf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    parent_id, parent_name, parent_phone, parent_address, parent_desc, parent_photo, 
+    parent_mail, parent_prephone, parent_create_time, parent_sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from parent
+    where parent_id = #{parentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from parent
+    where parent_id = #{parentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Parent">
+    insert into parent (parent_id, parent_name, parent_phone, 
+      parent_address, parent_desc, parent_photo, 
+      parent_mail, parent_prephone, parent_create_time, 
+      parent_sf)
+    values (#{parentId,jdbcType=INTEGER}, #{parentName,jdbcType=VARCHAR}, #{parentPhone,jdbcType=VARCHAR}, 
+      #{parentAddress,jdbcType=VARCHAR}, #{parentDesc,jdbcType=VARCHAR}, #{parentPhoto,jdbcType=VARCHAR}, 
+      #{parentMail,jdbcType=VARCHAR}, #{parentPrephone,jdbcType=VARCHAR}, #{parentCreateTime,jdbcType=TIMESTAMP}, 
+      #{parentSf,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertParentDao" parameterType="com.cafebabe.phosphor.model.entity.Parent">
+    insert into parent
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="parentName != null">
+        parent_name,
+      </if>
+      <if test="parentPhone != null">
+        parent_phone,
+      </if>
+      <if test="parentAddress != null">
+        parent_address,
+      </if>
+      <if test="parentDesc != null">
+        parent_desc,
+      </if>
+      <if test="parentPhoto != null">
+        parent_photo,
+      </if>
+      <if test="parentMail != null">
+        parent_mail,
+      </if>
+      <if test="parentPrephone != null">
+        parent_prephone,
+      </if>
+      <if test="parentCreateTime != null">
+        parent_create_time,
+      </if>
+      <if test="parentSf != null">
+        parent_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="parentName != null">
+        #{parentName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentPhone != null">
+        #{parentPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="parentAddress != null">
+        #{parentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="parentDesc != null">
+        #{parentDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="parentPhoto != null">
+        #{parentPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMail != null">
+        #{parentMail,jdbcType=VARCHAR},
+      </if>
+      <if test="parentPrephone != null">
+        #{parentPrephone,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCreateTime != null">
+        #{parentCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="parentSf != null">
+        #{parentSf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Parent">
+    update parent
+    <set>
+      <if test="parentPhone != null">
+        parent_phone = #{parentPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="parentAddress != null">
+        parent_address = #{parentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="parentDesc != null">
+        parent_desc = #{parentDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="parentPhoto != null">
+        parent_photo = #{parentPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMail != null">
+        parent_mail = #{parentMail,jdbcType=VARCHAR},
+      </if>
+      <if test="parentPrephone != null">
+        parent_prephone = #{parentPrephone,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCreateTime != null">
+        parent_create_time = #{parentCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="parentSf != null">
+        parent_sf = #{parentSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where parent_id = #{parentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.Parent">
+    update parent
+    set parent_name = #{parentName,jdbcType=VARCHAR},
+      parent_phone = #{parentPhone,jdbcType=VARCHAR},
+      parent_address = #{parentAddress,jdbcType=VARCHAR},
+      parent_desc = #{parentDesc,jdbcType=VARCHAR},
+      parent_photo = #{parentPhoto,jdbcType=VARCHAR},
+      parent_mail = #{parentMail,jdbcType=VARCHAR},
+      parent_prephone = #{parentPrephone,jdbcType=VARCHAR},
+      parent_create_time = #{parentCreateTime,jdbcType=TIMESTAMP},
+      parent_sf = #{parentSf,jdbcType=VARCHAR}
+    where parent_id = #{parentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByParentPhoneDao" parameterType="com.cafebabe.phosphor.model.entity.Parent">
+    update parent
+    <set>
+      <if test="parentAddress != null">
+        parent_address = #{parentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="parentDesc != null">
+        parent_desc = #{parentDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="parentPhoto != null">
+        parent_photo = #{parentPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMail != null">
+        parent_mail = #{parentMail,jdbcType=VARCHAR},
+      </if>
+      <if test="parentPrephone != null">
+        parent_prephone = #{parentPrephone,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCreateTime != null">
+        parent_create_time = #{parentCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="parentSf != null">
+        parent_sf = #{parentSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where parent_phone=#{parentPhone}
+  </update>
+
+  <select id="getParentImgUrlDao" parameterType="java.lang.String" resultType="java.lang.String">
+    select  parent_photo
+    from parent
+    where parent_phone=#{parentPhone};
+  </select>
+
+    <select id="getParentByParentPhoneDao" parameterType="java.lang.String" resultType="com.cafebabe.phosphor.model.entity.Parent">
+      select
+      <include refid="Base_Column_List" />
+      from parent
+      where parent_phone = #{parentPhone}
+    </select>
+  <select id="getAllInfoAboutParentDao" parameterType="java.lang.String" resultType="com.cafebabe.phosphor.model.entity.Parent">
+    select
+    <include refid="Base_Column_List" />
+    from parent
+    where parent_phone = #{parentPhone}
+  </select>
+
+
+</mapper>

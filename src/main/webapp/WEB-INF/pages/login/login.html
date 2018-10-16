@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Site Meta -->
+    <title>用户登录</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+    <!-- Custom & Default Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleLogin.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+<!--Ajax向后台输出数据-->
+<script>
+    const clientUrl = 'http://localhost:1250/userLogin/userLogin';
+    const clientMethod = 'POST';
+    const saveCustomer = ({url, method, data}) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open(clientMethod, clientUrl);
+            client.responseType = 'json';
+            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send(data);
+        });
+    };
+
+    const saveJsonCustomer = (data) => saveCustomer(
+        {
+            url: clientUrl,
+            method: clientMethod,
+            data
+        }
+    );
+
+    submitBtn = () => {
+        let customer = {
+            userLoginPhone: document.getElementById('tel').value,
+            userLoginPwd: document.getElementById('password').value,
+        };
+
+        saveJsonCustomer(JSON.stringify(customer)).then((res) => {
+            if (res.data === '用户名密码正确') {
+                function setLocalStorage(key, value) {
+                    let curtime = new Date().getTime(); // 获取当前时间 ，转换成JSON字符串序列
+                    let valueDate = JSON.stringify({
+                        val: value,
+                        timer: curtime
+                    });
+                    try {
+                        localStorage.setItem(key, valueDate);
+                    } catch(e) {
+                        if(isQuotaExceeded(e)) {
+                            console.log("Error: 本地存储超过限制");
+                            localStorage.clear();
+                        } else {
+                            console.log("Error: 保存到本地存储失败");
+                        }
+                    }
+                }
+                setLocalStorage("userLoginPhone", document.getElementById("tel").value);
+                window.location.href = 'http://localhost:1250/loginUi/alreadyLoginUi';
+            } else if (res.message === "用户名或密码不正确，请确认后登录") {
+                document.body.style.overflowX = "hidden";
+                document.body.style.overflowY = "hidden";
+                let dialog = document.getElementById("dialog");
+                let vModal =document.getElementById("v-modal");
+                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+                let elButton = document.getElementById("el-button");
+                elButton.innerText="重新登录";
+                vModal.style.display="block";
+                dialog.style.display="block";
+                dialogPInnerHtml.innerText=res.data;
+            } else {
+                document.body.style.overflowX = "hidden";
+                document.body.style.overflowY = "hidden";
+                let dialog = document.getElementById("dialog");
+                let vModal =document.getElementById("v-modal");
+                let elButton = document.getElementById("el-button");
+                elButton.innerText="前往注册界面";
+                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+                vModal.style.display="block";
+                dialog.style.display="block";
+                dialogPInnerHtml.innerText=res.data;
+            }
+        }, err => {
+            console.log(err)
+        })
+    };
+
+    checkOutPhoneNumber = () => {
+        const innerValue = document.getElementById('tel').value;
+        if (innerValue.length !== 0) {
+            const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+            const bottomLine = document.getElementById("bottomLine");
+            const userLoginA = document.getElementById("userLoginA");
+            if (reg.test(innerValue)) {
+                userLoginA.setAttribute("href", "javascript:void(0); onclick=submitBtn()");
+                bottomLine.style.backgroundColor = "#658db5";
+                userLoginA.style.opacity="1";
+            } else {
+                bottomLine.style.backgroundColor = "red";
+                userLoginA.style.opacity = "0.2";
+                userLoginA.removeAttribute('href');
+            }
+        }
+    }
+
+    //注册界面跳转
+    jumpToRegistrationPage=()=>{
+        window.location.href='http://localhost:1250/loginUi/registrationUi';
+    }
+
+</script>
+
+<div id="wrapper">
+
+    <div id="preloader">
+        <img class="preloader" src="/images/loader.gif" alt="">
+    </div>
+
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <form id="login-form">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="flaticon-add" aria-hidden="true"></span>
+                        </button>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="What you are looking for?" required>
+                        </div>
+                    </form><!-- End # Login Form -->
+                </div><!-- End # DIV Form -->
+            </div>
+        </div>
+    </div>
+
+    <header class="header affix">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="">课程</a></li>
+                        <li><a href="">活动</a></li>
+                        <li><a href="">指导师</a></li>
+                        <li><a href="">联系我们</a></li>
+                        <li><a href="/loginUi/loginUi">登录|注册</a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
+                                class="fa fa-search"></i></a></li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+    <section class="section" style="min-height: 700px">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="custom-module p40l">
+
+                        <hr class="invis">
+
+                        <h2 style="margin: 20px 0 60px">我们是专业的
+                            <mark>儿童教育机构</mark>
+                            <br>
+                            为您的
+                            <mark>孩子</mark>
+                            ,带来优质的教育资源<br>
+                            欢迎来到
+                            <mark>启明星</mark>
+                        </h2>
+
+                        <div class="input-container">
+                            <input type="number" id="tel" placeholder="手机号" onblur="checkOutPhoneNumber()">
+                            <label for="tel" id="telLabel">请输入手机号</label>
+                            <div class="bottom-line" id="bottomLine"></div>
+                        </div>
+
+                        <div class="input-container">
+                            <input type="password" id="password" placeholder="密码">
+                            <label for="password">请输入密码</label>
+                            <div class="bottom-line"></div>
+                        </div>
+
+                        <hr class="invis">
+
+
+                        <div class="btn-wrapper">
+                            <a href="javascript:void(0); onclick=submitBtn()" id="userLoginA"
+                               class="btn btn-primary">登录</a>
+                            <a href="javascript:void(0);onclick=jumpToRegistrationPage()" class="btn btn-primary"
+                               style="margin-left: 10px">注册</a>
+                        </div>
+                        <hr class="invis" style="margin-top: 10px">
+
+                        <a href="/parentUi/forgetPasswordUi">忘记密码</a>
+
+                    </div><!-- end module -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section>
+
+    <footer class="section footer noover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
+                                policy</a>.</p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags-widget">
+                            <ul class="list-inline">
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Support</h3>
+                        <div class="list-widget">
+                            <ul>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing & Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer>
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div>
+
+    <div id="dialog">
+        <div class="el-message-box">
+            <div class="el-message-box__content">
+                <div class="el-message-box__status"></div>
+                <div class="el-message-box__message">
+                    <p id="dialogPInnerHtml"></p>
+                </div>
+                <div class="el-message-box__input" style="display: none;">
+                    <div class="el-input">
+                        <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                    </div>
+                    <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+                </div>
+            </div>
+            <div class="el-message-box__btns">
+                <a href="/loginUi/loginUi" id="el-button" class="el-button"></a>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="v-modal" style="z-index: 9998"></div>
+
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/customLogin.js"></script>
+</body>
+
+</html>

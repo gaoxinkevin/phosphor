@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.CourseCollectionDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.CourseCollection">
+    <id column="course_collection_id" jdbcType="INTEGER" property="courseCollectionId" />
+    <result column="course_id" jdbcType="INTEGER" property="courseId" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="course_collection_sf" jdbcType="VARCHAR" property="courseCollectionSf" />
+    <result column="course_collection_status" jdbcType="INTEGER" property="courseCollectionStatus" />
+    <result column="course_collection_create_time" jdbcType="TIMESTAMP" property="courseCollectionCreateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    course_collection_id, course_id, parent_id, course_collection_sf, course_collection_status, 
+    course_collection_create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from course_collection
+    where course_collection_id = #{courseCollectionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from course_collection
+    where course_collection_id = #{courseCollectionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.CourseCollection">
+    insert into course_collection (course_collection_id, course_id, parent_id, 
+      course_collection_sf, course_collection_status, 
+      course_collection_create_time)
+    values (#{courseCollectionId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 
+      #{courseCollectionSf,jdbcType=VARCHAR}, #{courseCollectionStatus,jdbcType=INTEGER}, 
+      #{courseCollectionCreateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.CourseCollection">
+    insert into course_collection
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courseCollectionId != null">
+        course_collection_id,
+      </if>
+      <if test="courseId != null">
+        course_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="courseCollectionSf != null">
+        course_collection_sf,
+      </if>
+      <if test="courseCollectionStatus != null">
+        course_collection_status,
+      </if>
+      <if test="courseCollectionCreateTime != null">
+        course_collection_create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courseCollectionId != null">
+        #{courseCollectionId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="courseCollectionSf != null">
+        #{courseCollectionSf,jdbcType=VARCHAR},
+      </if>
+      <if test="courseCollectionStatus != null">
+        #{courseCollectionStatus,jdbcType=INTEGER},
+      </if>
+      <if test="courseCollectionCreateTime != null">
+        #{courseCollectionCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.CourseCollection">
+    update course_collection
+    <set>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="courseCollectionSf != null">
+        course_collection_sf = #{courseCollectionSf,jdbcType=VARCHAR},
+      </if>
+      <if test="courseCollectionStatus != null">
+        course_collection_status = #{courseCollectionStatus,jdbcType=INTEGER},
+      </if>
+      <if test="courseCollectionCreateTime != null">
+        course_collection_create_time = #{courseCollectionCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where course_collection_id = #{courseCollectionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.CourseCollection">
+    update course_collection
+    set course_id = #{courseId,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      course_collection_sf = #{courseCollectionSf,jdbcType=VARCHAR},
+      course_collection_status = #{courseCollectionStatus,jdbcType=INTEGER},
+      course_collection_create_time = #{courseCollectionCreateTime,jdbcType=TIMESTAMP}
+    where course_collection_id = #{courseCollectionId,jdbcType=INTEGER}
+  </update>
+</mapper>

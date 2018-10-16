@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.ActivityDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.Activity">
+    <id column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="teacher_id" jdbcType="INTEGER" property="teacherId" />
+    <result column="company_id" jdbcType="INTEGER" property="companyId" />
+    <result column="activity_title" jdbcType="VARCHAR" property="activityTitle" />
+    <result column="activity_desc" jdbcType="VARCHAR" property="activityDesc" />
+    <result column="activity_start_time" jdbcType="TIMESTAMP" property="activityStartTime" />
+    <result column="activity_address" jdbcType="VARCHAR" property="activityAddress" />
+    <result column="activity_state" jdbcType="INTEGER" property="activityState" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="activity_sf" jdbcType="VARCHAR" property="activitySf" />
+    <result column="activity_apply_start_time" jdbcType="TIMESTAMP" property="activityApplyStartTime" />
+    <result column="activity_apply_end_time" jdbcType="TIMESTAMP" property="activityApplyEndTime" />
+    <result column="activity_end_time" jdbcType="TIMESTAMP" property="activityEndTime" />
+    <result column="activity_content" jdbcType="VARCHAR" property="activityContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    activity_id, teacher_id, company_id, activity_title, activity_desc, activity_start_time, 
+    activity_address, activity_state, company_name, activity_sf, activity_apply_start_time, 
+    activity_apply_end_time, activity_end_time, activity_content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from activity
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from activity
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Activity">
+    insert into activity (activity_id, teacher_id, company_id, 
+      activity_title, activity_desc, activity_start_time, 
+      activity_address, activity_state, company_name, 
+      activity_sf, activity_apply_start_time, activity_apply_end_time, 
+      activity_end_time, activity_content)
+    values (#{activityId,jdbcType=INTEGER}, #{teacherId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, 
+      #{activityTitle,jdbcType=VARCHAR}, #{activityDesc,jdbcType=VARCHAR}, #{activityStartTime,jdbcType=TIMESTAMP}, 
+      #{activityAddress,jdbcType=VARCHAR}, #{activityState,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, 
+      #{activitySf,jdbcType=VARCHAR}, #{activityApplyStartTime,jdbcType=TIMESTAMP}, #{activityApplyEndTime,jdbcType=TIMESTAMP}, 
+      #{activityEndTime,jdbcType=TIMESTAMP}, #{activityContent,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Activity">
+    insert into activity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="activityId != null">
+        activity_id,
+      </if>
+      <if test="teacherId != null">
+        teacher_id,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="activityTitle != null">
+        activity_title,
+      </if>
+      <if test="activityDesc != null">
+        activity_desc,
+      </if>
+      <if test="activityStartTime != null">
+        activity_start_time,
+      </if>
+      <if test="activityAddress != null">
+        activity_address,
+      </if>
+      <if test="activityState != null">
+        activity_state,
+      </if>
+      <if test="companyName != null">
+        company_name,
+      </if>
+      <if test="activitySf != null">
+        activity_sf,
+      </if>
+      <if test="activityApplyStartTime != null">
+        activity_apply_start_time,
+      </if>
+      <if test="activityApplyEndTime != null">
+        activity_apply_end_time,
+      </if>
+      <if test="activityEndTime != null">
+        activity_end_time,
+      </if>
+      <if test="activityContent != null">
+        activity_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="activityId != null">
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherId != null">
+        #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="activityTitle != null">
+        #{activityTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="activityDesc != null">
+        #{activityDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="activityStartTime != null">
+        #{activityStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityAddress != null">
+        #{activityAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="activityState != null">
+        #{activityState,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="activitySf != null">
+        #{activitySf,jdbcType=VARCHAR},
+      </if>
+      <if test="activityApplyStartTime != null">
+        #{activityApplyStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityApplyEndTime != null">
+        #{activityApplyEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityEndTime != null">
+        #{activityEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityContent != null">
+        #{activityContent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Activity">
+    update activity
+    <set>
+      <if test="teacherId != null">
+        teacher_id = #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="activityTitle != null">
+        activity_title = #{activityTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="activityDesc != null">
+        activity_desc = #{activityDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="activityStartTime != null">
+        activity_start_time = #{activityStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityAddress != null">
+        activity_address = #{activityAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="activityState != null">
+        activity_state = #{activityState,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null">
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="activitySf != null">
+        activity_sf = #{activitySf,jdbcType=VARCHAR},
+      </if>
+      <if test="activityApplyStartTime != null">
+        activity_apply_start_time = #{activityApplyStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityApplyEndTime != null">
+        activity_apply_end_time = #{activityApplyEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityEndTime != null">
+        activity_end_time = #{activityEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityContent != null">
+        activity_content = #{activityContent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.Activity">
+    update activity
+    set teacher_id = #{teacherId,jdbcType=INTEGER},
+      company_id = #{companyId,jdbcType=INTEGER},
+      activity_title = #{activityTitle,jdbcType=VARCHAR},
+      activity_desc = #{activityDesc,jdbcType=VARCHAR},
+      activity_start_time = #{activityStartTime,jdbcType=TIMESTAMP},
+      activity_address = #{activityAddress,jdbcType=VARCHAR},
+      activity_state = #{activityState,jdbcType=INTEGER},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      activity_sf = #{activitySf,jdbcType=VARCHAR},
+      activity_apply_start_time = #{activityApplyStartTime,jdbcType=TIMESTAMP},
+      activity_apply_end_time = #{activityApplyEndTime,jdbcType=TIMESTAMP},
+      activity_end_time = #{activityEndTime,jdbcType=TIMESTAMP},
+      activity_content = #{activityContent,jdbcType=VARCHAR}
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+</mapper>
