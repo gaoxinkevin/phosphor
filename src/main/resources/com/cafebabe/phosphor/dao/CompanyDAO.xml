@@ -150,4 +150,69 @@
       company_sf = #{companySf,jdbcType=VARCHAR}
     where company_id = #{companyId,jdbcType=INTEGER}
   </update>
+  <select id="getCompanyListAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from company
+  </select>
+  <insert id="insertCompany" parameterType="com.cafebabe.phosphor.model.entity.Company">
+    insert into company (company_id, company_name, company_registration_id,
+      company_address, company_desc, company_create_time,
+      company_phone, company_spare_phone, company_photo,
+      company_sf)
+    values (#{companyId,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, #{companyRegistrationId,jdbcType=VARCHAR},
+      #{companyAddress,jdbcType=VARCHAR}, #{companyDesc,jdbcType=VARCHAR}, #{companyCreateTime,jdbcType=DATE},
+      #{companyPhone,jdbcType=VARCHAR}, #{companySparePhone,jdbcType=VARCHAR}, #{companyPhoto,jdbcType=VARCHAR},
+      #{companySf,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateCompany" parameterType="com.cafebabe.phosphor.model.entity.Company">
+    update company
+    <set>
+      <if test="companyName != null">
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyRegistrationId != null">
+        company_registration_id = #{companyRegistrationId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null">
+        company_address = #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="companyDesc != null">
+        company_desc = #{companyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="companyCreateTime != null">
+        company_create_time = #{companyCreateTime,jdbcType=DATE},
+      </if>
+      <if test="companyPhone != null">
+        company_phone = #{companyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="companySparePhone != null">
+        company_spare_phone = #{companySparePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyPhoto != null">
+        company_photo = #{companyPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="companySf != null">
+        company_sf = #{companySf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where company_id = #{companyId,jdbcType=INTEGER}
+  </update>
+  <delete id="removeCompany" parameterType="java.lang.Integer">
+    delete from company
+    where company_id = #{companyId,jdbcType=INTEGER}
+  </delete>
+  <select id="getCompanyById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from company
+    where company_id = #{companyId,jdbcType=INTEGER}
+  </select>
+  <select id="getCompanyListByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from company
+    where company_name like "%" #{companyName,jdbcType=VARCHAR} "%"
+  </select>
+
 </mapper>
