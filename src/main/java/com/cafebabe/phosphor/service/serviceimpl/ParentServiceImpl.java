@@ -1,11 +1,16 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
 import com.cafebabe.phosphor.dao.ParentDAO;
+import com.cafebabe.phosphor.dao.UserLoginDAO;
+import com.cafebabe.phosphor.model.dto.InsertParent;
 import com.cafebabe.phosphor.model.entity.Parent;
+import com.cafebabe.phosphor.model.entity.UserLogin;
 import com.cafebabe.phosphor.service.ParentService;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
 
 
 /**
@@ -25,10 +30,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ParentServiceImpl implements ParentService {
 
     private final ParentDAO parentDAO;
+    private final UserLoginDAO userLoginDAO;
 
     @Autowired
-    public ParentServiceImpl(ParentDAO parentDAO){
+    public ParentServiceImpl(ParentDAO parentDAO, UserLoginDAO userLoginDAO){
         this.parentDAO = parentDAO;
+        this.userLoginDAO = userLoginDAO;
     }
 
 
@@ -55,5 +62,20 @@ public class ParentServiceImpl implements ParentService {
     @Override
     public Integer updateByParentPhoneService(Parent parent) {
         return parentDAO.updateByParentPhoneDao(parent);
+    }
+
+    @Override
+    public boolean insertIntoParent(InsertParent insertParent) {
+        Parent parent = new Parent();
+        UserLogin userLogin = new UserLogin();
+
+        parent.setParentCreateTime(new Date());
+        parent.setParentName(insertParent.getInsertParentName());
+        parent.setParentPhone(insertParent.getInsertParentPhone());
+
+        userLogin.setUserLoginPhone(insertParent.getInsertParentPhone());
+        userLogin.setUserLoginPwd(insertParent.getInsetParentPassword());
+
+        return parentDAO.insertParentDao(parent) && userLoginDAO.insertUserLogin(userLogin);
     }
 }

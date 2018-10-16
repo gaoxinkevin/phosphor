@@ -17,10 +17,5 @@ import com.cafebabe.phosphor.model.dto.InsertParent;
  **/
 
 public interface InsertParentService {
-    /**
-     * 插入用户
-     * @param insertParent
-     * @return
-     */
-    boolean insertIntoParent(InsertParent insertParent);
+
 }
