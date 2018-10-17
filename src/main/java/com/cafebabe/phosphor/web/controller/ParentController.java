@@ -119,9 +119,17 @@ public class ParentController {
     @ResponseBody
     @PostMapping("updateParent")
     public JsonResponse updateParent(@RequestBody Parent parent){
-        String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
         System.out.println(parent);
         parentService.updateByParentPhoneService(parent);
         return new JsonResponse(22222,"",parent);
     }
+
+//    @ResponseBody
+//    @RequestMapping("updateParent")
+//    public JsonResponse getUpdateParent(@RequestBody Parent parent){
+//        System.out.println(parent);
+//        parentService.updateByParentPhoneService(parent);
+//        return new JsonResponse(22222,"",parent);
+//    }
+
 }

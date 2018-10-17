@@ -42,4 +42,9 @@ public class ParentUi {
     public void parentChangePassword(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentChangePassword.html").forward(httpServletRequest,httpServletResponse);
     }
+
+    @RequestMapping("parentChangeAvatarUi")
+    public void parentChangeAvatarUi(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentChangeAvatar.html").forward(httpServletRequest,httpServletResponse);
+    }
 }

@@ -60,4 +60,12 @@ public interface ParentDAO extends MyBatisBaseDao<Parent, Integer> {
      * @return 受影响的行数
      */
     Integer updateByParentPhoneDao(Parent parent);
+
+    /**
+     * 根据用户手机号修改用户头像
+     * @param parentPhoto 用户头像  前台获取
+     * @param parentPhone 用户手机号 根据session获取
+     * @return 更改成功还是失败
+     */
+    boolean updateParentImg(@Param("parentPhoto")String parentPhoto,@Param("parentPhone") String parentPhone);
 }

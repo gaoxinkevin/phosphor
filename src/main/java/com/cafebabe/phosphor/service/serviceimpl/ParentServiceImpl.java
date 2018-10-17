@@ -60,8 +60,8 @@ public class ParentServiceImpl implements ParentService {
     }
 
     @Override
-    public Integer updateByParentPhoneService(Parent parent) {
-        return parentDAO.updateByParentPhoneDao(parent);
+    public void updateByParentPhoneService(Parent parent) {
+        parentDAO.updateByParentPhoneDao(parent);
     }
 
     @Override
@@ -77,5 +77,10 @@ public class ParentServiceImpl implements ParentService {
         userLogin.setUserLoginPwd(insertParent.getInsetParentPassword());
 
         return parentDAO.insertParentDao(parent) && userLoginDAO.insertUserLogin(userLogin);
+    }
+
+    @Override
+    public boolean updateParentImg(String parentPhoto, String parentPhone) {
+        return parentDAO.updateParentImg(parentPhoto,parentPhone);
     }
 }
