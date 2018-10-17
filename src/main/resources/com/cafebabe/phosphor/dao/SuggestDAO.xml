@@ -11,10 +11,11 @@
     <result column="suggest_photo" jdbcType="VARCHAR" property="suggestPhoto" />
     <result column="suggest_create_time" jdbcType="TIMESTAMP" property="suggestCreateTime" />
     <result column="suggest_sf" jdbcType="VARCHAR" property="suggestSf" />
+    <result column="course_id" jdbcType="INTEGER" property="courseId" />
   </resultMap>
   <sql id="Base_Column_List">
     suggest_id, order_id, parent_id, parent_name, suggest_content, suggest_status, suggest_photo, 
-    suggest_create_time, suggest_sf
+    suggest_create_time, suggest_sf, course_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -29,12 +30,12 @@
   <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Suggest">
     insert into suggest (suggest_id, order_id, parent_id, 
       parent_name, suggest_content, suggest_status, 
-      suggest_photo, suggest_create_time, suggest_sf
-      )
+      suggest_photo, suggest_create_time, suggest_sf, 
+      course_id)
     values (#{suggestId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 
       #{parentName,jdbcType=VARCHAR}, #{suggestContent,jdbcType=VARCHAR}, #{suggestStatus,jdbcType=INTEGER}, 
-      #{suggestPhoto,jdbcType=VARCHAR}, #{suggestCreateTime,jdbcType=TIMESTAMP}, #{suggestSf,jdbcType=VARCHAR}
-      )
+      #{suggestPhoto,jdbcType=VARCHAR}, #{suggestCreateTime,jdbcType=TIMESTAMP}, #{suggestSf,jdbcType=VARCHAR}, 
+      #{courseId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Suggest">
     insert into suggest
@@ -66,6 +67,9 @@
       <if test="suggestSf != null">
         suggest_sf,
       </if>
+      <if test="courseId != null">
+        course_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="suggestId != null">
@@ -94,6 +98,9 @@
       </if>
       <if test="suggestSf != null">
         #{suggestSf,jdbcType=VARCHAR},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -124,6 +131,9 @@
       <if test="suggestSf != null">
         suggest_sf = #{suggestSf,jdbcType=VARCHAR},
       </if>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
     </set>
     where suggest_id = #{suggestId,jdbcType=INTEGER}
   </update>
@@ -136,7 +146,8 @@
       suggest_status = #{suggestStatus,jdbcType=INTEGER},
       suggest_photo = #{suggestPhoto,jdbcType=VARCHAR},
       suggest_create_time = #{suggestCreateTime,jdbcType=TIMESTAMP},
-      suggest_sf = #{suggestSf,jdbcType=VARCHAR}
+      suggest_sf = #{suggestSf,jdbcType=VARCHAR},
+      course_id = #{courseId,jdbcType=INTEGER}
     where suggest_id = #{suggestId,jdbcType=INTEGER}
   </update>
 </mapper>
