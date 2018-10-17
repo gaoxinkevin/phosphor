@@ -35,7 +35,11 @@ public class CompanyController {
     @ResponseBody
     public JsonResponse getCompany(Integer companyId){
         Company company = companyService.getCompanyById(companyId);
-        return new JsonResponse(200,"success",company);
+        if (company == null) {
+            return new JsonResponse(404,"can not find resourse",null);
+        }
+        System.out.println(company);
+        return new JsonResponse(20000,"success",company);
     }
 
 }

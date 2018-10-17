@@ -8,7 +8,7 @@
     <!-- Mobile Meta -->
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Site Meta -->
-    <title>用户登录</title>
+    <title>公司简介</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -34,20 +34,20 @@
     const saveCustomer = ({url, method, data}) => {
         return new Promise((resolve, reject) => {
             const client = new XMLHttpRequest();
-            client.open(clientMethod, clientUrl);
-            client.responseType = 'json';
-            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-            client.onreadystatechange = () => {
-                if (client.readyState === 4) {
-                    if (client.status === 200) {
-                        resolve(client.response);
-                    } else {
-                        reject(client.status);
-                    }
+        client.open(clientMethod, clientUrl);
+        client.responseType = 'json';
+        client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        client.onreadystatechange = () => {
+            if (client.readyState === 4) {
+                if (client.status === 200) {
+                    resolve(client.response);
+                } else {
+                    reject(client.status);
                 }
-            };
-            client.send(data);
-        });
+            }
+        };
+        client.send(data);
+    });
     };
 
     const saveJsonCustomer = (data) => saveCustomer(
@@ -57,85 +57,6 @@
             data
         }
     );
-
-    submitBtn = () => {
-        let customer = {
-            userLoginPhone: document.getElementById('tel').value,
-            userLoginPwd: document.getElementById('password').value,
-        };
-
-        saveJsonCustomer(JSON.stringify(customer)).then((res) => {
-            if (res.data === '用户名密码正确') {
-                function setLocalStorage(key, value) {
-                    let curtime = new Date().getTime(); // 获取当前时间 ，转换成JSON字符串序列
-                    let valueDate = JSON.stringify({
-                        val: value,
-                        timer: curtime
-                    });
-                    try {
-                        localStorage.setItem(key, valueDate);
-                    } catch(e) {
-                        if(isQuotaExceeded(e)) {
-                            console.log("Error: 本地存储超过限制");
-                            localStorage.clear();
-                        } else {
-                            console.log("Error: 保存到本地存储失败");
-                        }
-                    }
-                }
-                setLocalStorage("userLoginPhone", document.getElementById("tel").value);
-                window.location.href = 'http://localhost:1250/loginUi/alreadyLoginUi';
-            } else if (res.message === "用户名或密码不正确，请确认后登录") {
-                document.body.style.overflowX = "hidden";
-                document.body.style.overflowY = "hidden";
-                let dialog = document.getElementById("dialog");
-                let vModal =document.getElementById("v-modal");
-                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
-                let elButton = document.getElementById("el-button");
-                elButton.innerText="重新登录";
-                vModal.style.display="block";
-                dialog.style.display="block";
-                dialogPInnerHtml.innerText=res.data;
-            } else {
-                document.body.style.overflowX = "hidden";
-                document.body.style.overflowY = "hidden";
-                let dialog = document.getElementById("dialog");
-                let vModal =document.getElementById("v-modal");
-                let elButton = document.getElementById("el-button");
-                elButton.innerText="前往注册界面";
-                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
-                vModal.style.display="block";
-                dialog.style.display="block";
-                dialogPInnerHtml.innerText=res.data;
-            }
-        }, err => {
-            console.log(err)
-        })
-    };
-
-    checkOutPhoneNumber = () => {
-        const innerValue = document.getElementById('tel').value;
-        if (innerValue.length !== 0) {
-            const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
-            const bottomLine = document.getElementById("bottomLine");
-            const userLoginA = document.getElementById("userLoginA");
-            if (reg.test(innerValue)) {
-                userLoginA.setAttribute("href", "javascript:void(0); onclick=submitBtn()");
-                bottomLine.style.backgroundColor = "#658db5";
-                userLoginA.style.opacity="1";
-            } else {
-                bottomLine.style.backgroundColor = "red";
-                userLoginA.style.opacity = "0.2";
-                userLoginA.removeAttribute('href');
-            }
-        }
-    }
-
-    //注册界面跳转
-    jumpToRegistrationPage=()=>{
-        window.location.href='http://localhost:1250/loginUi/registrationUi';
-    }
-
 </script>
 
 <div id="wrapper">
@@ -174,7 +95,6 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-
                     <div class="logo-normal">
                         <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
                     </div>
@@ -186,7 +106,7 @@
                         <li><a href="">课程</a></li>
                         <li><a href="">活动</a></li>
                         <li><a href="">指导师</a></li>
-                        <li><a href="/companyUi/companyUi">联系我们</a></li>
+                        <li><a href="">联系我们</a></li>
                         <li><a href="/loginUi/loginUi">登录|注册</a></li>
                         <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
                                 class="fa fa-search"></i></a></li>
@@ -197,52 +117,116 @@
         </div>
     </header>
 
-    <section class="section" style="min-height: 700px">
+    <section class="section db p120" style="background: url('/upload/chixing.jpg')">
         <div class="container">
             <div class="row">
-                <div class="col-md-8">
-                    <div class="custom-module p40l">
-
-                        <hr class="invis">
-
-                        <h2 style="margin: 20px 0 60px">我们是专业的
-                            <mark>儿童教育机构</mark>
-                            <br>
-                            为您的
-                            <mark>孩子</mark>
-                            ,带来优质的教育资源<br>
-                            欢迎来到
-                            <mark>启明星</mark>
-                        </h2>
-
-                        <div class="input-container">
-                            <input type="number" id="tel" placeholder="手机号" onblur="checkOutPhoneNumber()">
-                            <label for="tel" id="telLabel">请输入手机号</label>
-                            <div class="bottom-line" id="bottomLine"></div>
-                        </div>
-
-                        <div class="input-container">
-                            <input type="password" id="password" placeholder="密码">
-                            <label for="password">请输入密码</label>
-                            <div class="bottom-line"></div>
-                        </div>
-
-                        <hr class="invis">
-
-
-                        <div class="btn-wrapper">
-                            <a href="javascript:void(0); onclick=submitBtn()" id="userLoginA"
-                               class="btn btn-primary">登录</a>
-                            <a href="javascript:void(0);onclick=jumpToRegistrationPage()" class="btn btn-primary"
-                               style="margin-left: 10px">注册</a>
-                        </div>
-                        <hr class="invis" style="margin-top: 10px">
-
-                        <a href="/parentUi/forgetPasswordUi">忘记密码</a>
-
-                    </div><!-- end module -->
+                <div class="col-md-12">
+                    <div class="tagline-message page-title text-center">
+                        <h3>公司简介</h3>
+                        <ul class="breadcrumb">
+                            <li><a href="">Phosphor</a></li>
+                        </ul>
+                    </div>
                 </div><!-- end col -->
             </div><!-- end row -->
+        </div><!-- end container -->
+    </section><!-- end section -->
+
+    <section class="section gb nopadtop">
+        <div class="container">
+            <div class="boxed">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="content">
+                            <div class="blog-wrapper clearfix">
+                                <div class="blog-meta">
+                                    <small><a href="#">公司 & Phosphor</a></small>
+                                    <h3 align="center">苏州驰星教育</h3>
+                                    <ul class="list-inline">
+                                        <li><a href="#">公司创建时间:</a></li>
+                                        <li>2018-3-18</li>
+                                    </ul>
+                                    <ul class="list-inline">
+                                        <li><a href="#">联系方式:</a></li>
+                                        <li><mark>Tel</mark>18021605597</li>
+                                    </ul>
+                                </div><!-- end blog-meta -->
+
+                                <div class="blog-media">
+                                    <img src="upload/blog_01.jpg" alt="" class="img-responsive img-rounded">
+                                </div><!-- end media -->
+
+                                <div class="blog-desc-big">
+                                    <p class="lead">苏州驰星教育科技有限公司是由苏州思必驰和驰星创投联合政府,学校,研究机构及相关企业
+                                        以AI智能交互技术为核心共同打造的企业联合办学及企业服务平台。致力于为人工智能企业培养实操型技术及管理
+                                        人才,通过建立只会教育实验室,构建虚拟教师虚拟助教等平台,让AI技术服务于教育。</p>
+                                    <p>Integer eu urna sit amet dolor fringilla vulputate. Sed diam nunc,
+                                        pellentesque sed lobortis non, tincidunt et sem. Sed sollicitudin
+                                        elementum mi eget lobortis. Aliquam molestie rhoncus nisl, vitae molestie
+                                        leo imperdiet ac. Aliquam diam est, aliquam vitae tristique nec, pretium a
+                                        libero. Vivamus tempor sed turpis sit amet malesuada.</p>
+
+                                    <p> <a>校企联手研发课程</a>
+                                        企业自身为国内领先的人工智能高科技公司，创始团队来自剑桥人工
+                                        智能技术专家、项目经理、院校、研究院教授组成教学研发团队课程
+                                        研发团队汇集来自阿里、腾讯、百度、华为、乐视等资深专家 </p>
+                                    <p> <a>双师型企业师资</a>
+                                        教研师资教授基础课程模块，项目经理负责专业模块授课和项目指导
+                                        师资严格选拔培训，80%师资是硕士研究生以上学历,打造培训与企业
+                                        完成融合教学模式心课程师资具备一线企业实战背景 </p>
+                                    <p> <a>公司真实产品实战</a>
+                                        最大的优势在于拥有自己的行业内一流的人工智能企业，有自己的专
+                                        属实验室、在市场上拥有自己研发的产品 </p>
+                                    <p> <a>企业级项目开发环境</a>
+                                        塑造与企业高度融合的硬件环境，学习环境渗入产业园。项目管理、
+                                        开发规范、软件测试等环节按照公司项目开发环境执行</p>
+
+                                    <blockquote class="text-center">
+                                        "未来以来,你来不来,爱来不来!"
+                                    </blockquote>
+
+                                    <p>
+                                        教学团队具有十年以上教育行业经验从事教育行业十年以上，经验丰富，对教育
+                                        充满了激情和热情。静心的做老师，尽心的教学生，我们承诺：驰星教育用心培
+                                        养更优秀的你！
+                                        基于思必驰全链路的DUI平台，通过建立智慧教育实验室，构建虚拟教师、智慧助教等平台，让AI技术服务于教育！
+                                        思必驰携手驰星创投联合云从、神策、pingcap、德拓、达观数据等百余家
+                                        AI企业共同打造的人才联合培养及招募平台，致力于为人工智能企业培养实
+                                        操型技术及管理人才。
+                                    </p>
+
+                                    <p> Quisque at vestibulum neque. Duis eget sapien ac quam interdum euismod.
+                                        Mauris blandit tincidunt neque, vitae vestibulum tortor dapibus non.
+                                        Nunc eu sollicitudin diam. Proin vel erat vitae augue eleifend convallis.
+                                        Curabitur ut risus id ex finibus rhoncus sit amet a libero. Aenean a turpis
+                                        eget nisi posuere tempor. Aliquam iaculis sem eros. Fusce nec erat eget sem
+                                        aliquam congue quis vitae mi. Praesent varius dictum cursus. </p>
+
+                                    <hr class="invis">
+                                    <div class="tags-widget">
+                                        <ul class="list-inline">
+                                            <li><a href="#">AI课程</a></li>
+                                            <li><a href="#">益智</a></li>
+                                            <li><a href="#">语言</a></li>
+                                        </ul>
+                                    </div><!-- end list-widget -->
+                                </div><!-- end desc -->
+                            </div><!-- end blog -->
+                        </div><!-- end content -->
+
+                        <div class="authorbox">
+                            <div class="site-publisher clearfix">
+                                <img src="upload/people.jpg" alt="" class="img-responsive img-circle">
+                                <a href="" title=""><h4><small>about</small> <span>2018AIIA人工智能开发者大会</span></h4></a>
+                                <p>
+                                    2018AIIA人工智能开发者大会将于2018年10月15日到16日在苏州国际博览中心举办。
+                                    报名详情:<button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o">立即报名</i>
+                                </button></p>
+                            </div><!-- end publisher -->
+                        </div><!-- end details -->
+                    </div>
+                </div><!-- end row -->
+            </div><!-- end boxed -->
         </div><!-- end container -->
     </section>
 
@@ -359,7 +343,8 @@
 </div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/customLogin.js"></script>
+<script src="/js/animate.js"></script>
+<script src="/js/custom.js"></script>
 </body>
 
 </html>

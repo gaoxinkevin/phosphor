@@ -8,7 +8,7 @@
     <!-- Mobile Meta -->
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Site Meta -->
-    <title>用户登录</title>
+    <title>套餐详情</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -57,85 +57,6 @@
             data
         }
     );
-
-    submitBtn = () => {
-        let customer = {
-            userLoginPhone: document.getElementById('tel').value,
-            userLoginPwd: document.getElementById('password').value,
-        };
-
-        saveJsonCustomer(JSON.stringify(customer)).then((res) => {
-            if (res.data === '用户名密码正确') {
-                function setLocalStorage(key, value) {
-                    let curtime = new Date().getTime(); // 获取当前时间 ，转换成JSON字符串序列
-                    let valueDate = JSON.stringify({
-                        val: value,
-                        timer: curtime
-                    });
-                    try {
-                        localStorage.setItem(key, valueDate);
-                    } catch(e) {
-                        if(isQuotaExceeded(e)) {
-                            console.log("Error: 本地存储超过限制");
-                            localStorage.clear();
-                        } else {
-                            console.log("Error: 保存到本地存储失败");
-                        }
-                    }
-                }
-                setLocalStorage("userLoginPhone", document.getElementById("tel").value);
-                window.location.href = 'http://localhost:1250/loginUi/alreadyLoginUi';
-            } else if (res.message === "用户名或密码不正确，请确认后登录") {
-                document.body.style.overflowX = "hidden";
-                document.body.style.overflowY = "hidden";
-                let dialog = document.getElementById("dialog");
-                let vModal =document.getElementById("v-modal");
-                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
-                let elButton = document.getElementById("el-button");
-                elButton.innerText="重新登录";
-                vModal.style.display="block";
-                dialog.style.display="block";
-                dialogPInnerHtml.innerText=res.data;
-            } else {
-                document.body.style.overflowX = "hidden";
-                document.body.style.overflowY = "hidden";
-                let dialog = document.getElementById("dialog");
-                let vModal =document.getElementById("v-modal");
-                let elButton = document.getElementById("el-button");
-                elButton.innerText="前往注册界面";
-                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
-                vModal.style.display="block";
-                dialog.style.display="block";
-                dialogPInnerHtml.innerText=res.data;
-            }
-        }, err => {
-            console.log(err)
-        })
-    };
-
-    checkOutPhoneNumber = () => {
-        const innerValue = document.getElementById('tel').value;
-        if (innerValue.length !== 0) {
-            const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
-            const bottomLine = document.getElementById("bottomLine");
-            const userLoginA = document.getElementById("userLoginA");
-            if (reg.test(innerValue)) {
-                userLoginA.setAttribute("href", "javascript:void(0); onclick=submitBtn()");
-                bottomLine.style.backgroundColor = "#658db5";
-                userLoginA.style.opacity="1";
-            } else {
-                bottomLine.style.backgroundColor = "red";
-                userLoginA.style.opacity = "0.2";
-                userLoginA.removeAttribute('href');
-            }
-        }
-    }
-
-    //注册界面跳转
-    jumpToRegistrationPage=()=>{
-        window.location.href='http://localhost:1250/loginUi/registrationUi';
-    }
-
 </script>
 
 <div id="wrapper">
@@ -197,54 +118,112 @@
         </div>
     </header>
 
-    <section class="section" style="min-height: 700px">
+    <section class="section db p120">
         <div class="container">
             <div class="row">
-                <div class="col-md-8">
-                    <div class="custom-module p40l">
-
-                        <hr class="invis">
-
-                        <h2 style="margin: 20px 0 60px">我们是专业的
-                            <mark>儿童教育机构</mark>
-                            <br>
-                            为您的
-                            <mark>孩子</mark>
-                            ,带来优质的教育资源<br>
-                            欢迎来到
-                            <mark>启明星</mark>
-                        </h2>
-
-                        <div class="input-container">
-                            <input type="number" id="tel" placeholder="手机号" onblur="checkOutPhoneNumber()">
-                            <label for="tel" id="telLabel">请输入手机号</label>
-                            <div class="bottom-line" id="bottomLine"></div>
-                        </div>
-
-                        <div class="input-container">
-                            <input type="password" id="password" placeholder="密码">
-                            <label for="password">请输入密码</label>
-                            <div class="bottom-line"></div>
-                        </div>
-
-                        <hr class="invis">
-
-
-                        <div class="btn-wrapper">
-                            <a href="javascript:void(0); onclick=submitBtn()" id="userLoginA"
-                               class="btn btn-primary">登录</a>
-                            <a href="javascript:void(0);onclick=jumpToRegistrationPage()" class="btn btn-primary"
-                               style="margin-left: 10px">注册</a>
-                        </div>
-                        <hr class="invis" style="margin-top: 10px">
-
-                        <a href="/parentUi/forgetPasswordUi">忘记密码</a>
-
-                    </div><!-- end module -->
+                <div class="col-md-12">
+                    <div class="tagline-message page-title text-center">
+                        <h3>Blog & News</h3>
+                        <ul class="breadcrumb">
+                            <li><a href="">Edulogy</a></li>
+                            <li class="active">Blog</li>
+                        </ul>
+                    </div>
                 </div><!-- end col -->
             </div><!-- end row -->
         </div><!-- end container -->
+    </section><!-- end section -->
+
+    <section class="section gb nopadtop">
+        <div class="container">
+            <div class="boxed">
+                <div class="row">
+                    <div class="sidebar col-md-12">
+                        <div class="widget clearfix">
+                            <div class="banner-widget">
+                                <img src="/upload/blog_01.jpeg" alt="" class="img-responsive img-rounded">
+                            </div>
+                        </div>
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">套餐课程</h3>
+                            <div class="post-widget">
+                                <div class="media">
+                                    <img src="/upload/01_team.png" alt="" class="img-responsive alignleft img-rounded">
+                                    <div class="media-body">
+                                        <h5 class="mt-0"><a href="">Learning English Like a Pro..</a></h5>
+                                        <div class="blog-meta">
+                                            <ul class="list-inline">
+                                                <li>4 days ago</li>
+                                                <li><span>by</span> <a href="#">Edulogy Team</a></li>
+                                            </ul>
+                                        </div><!-- end blog-meta -->
+                                    </div>
+                                </div>
+
+                                <div class="media">
+                                    <img src="/upload/01_team.png" alt="" class="img-responsive alignleft img-rounded">
+                                    <div class="media-body">
+                                        <h5 class="mt-0"><a href="/">How to create a beautiful website with Bootstrap</a></h5>
+                                        <div class="blog-meta">
+                                            <ul class="list-inline">
+                                                <li>5 days ago</li>
+                                                <li><span>by</span> <a href="#">Boby DOE</a></li>
+                                            </ul>
+                                        </div><!-- end blog-meta -->
+                                    </div>
+                                </div>
+
+                                <div class="media">
+                                    <img src="/upload/01_team.png" alt="" class="img-responsive alignleft img-rounded">
+                                    <div class="media-body">
+                                        <h5 class="mt-0"><a href="/">Don't forget to update your Google web master tools</a></h5>
+                                        <div class="blog-meta">
+                                            <ul class="list-inline">
+                                                <li>6 days ago</li>
+                                                <li><span>by</span> <a href="#">Martin</a></li>
+                                            </ul>
+                                        </div><!-- end blog-meta -->
+                                    </div>
+                                </div>
+                            </div><!-- end post-widget -->
+                        </div><!-- end widget -->
+
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                            <div class="newsletter-widget">
+                                <p>You can opt out of our newsletters at any time. See our <a href="#">privacy policy</a>.</p>
+                                <form class="form-inline" role="search">
+                                    <div class="form-1">
+                                        <input type="text" class="form-control" placeholder="Enter email here..">
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
+                                    </div>
+                                </form>
+                            </div><!-- end newsletter -->
+                        </div><!-- end widget -->
+
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">Popular Tags</h3>
+                            <div class="tags-widget">
+                                <ul class="list-inline">
+                                    <li><a href="#">course</a></li>
+                                    <li><a href="#">web design</a></li>
+                                    <li><a href="#">development</a></li>
+                                    <li><a href="#">language</a></li>
+                                    <li><a href="#">teacher</a></li>
+                                    <li><a href="#">speaking</a></li>
+                                    <li><a href="#">material</a></li>
+                                    <li><a href="#">css3</a></li>
+                                    <li><a href="#">html</a></li>
+                                    <li><a href="#">learning</a></li>
+                                </ul>
+                            </div><!-- end list-widget -->
+                        </div><!-- end widget -->
+                    </div><!-- end sidebar -->
+                </div><!-- end row -->
+            </div><!-- end boxed -->
+        </div><!-- end container -->
     </section>
+
 
     <footer class="section footer noover">
         <div class="container">
@@ -359,7 +338,8 @@
 </div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/customLogin.js"></script>
+<script src="/js/animate.js"></script>
+<script src="/js/custom.js"></script>
 </body>
 
 </html>
