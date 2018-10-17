@@ -66,7 +66,7 @@
 <!--Ajax向后台输出数据-->
 <script>
 
-    <!--判断用户登录-->
+     //判断用户登录
     let a = localStorage.getItem("userLoginPhone");
     if (a === null) {
         localStorage.clear();
@@ -112,8 +112,8 @@
 
 
     showAvatar = (picId, fileId) => {
-        document.getElementById("avatarDiv").style.display="";
-        document.getElementById("defaultImg2").style.display="";
+        document.getElementById("avatarDiv").style.display = "";
+        document.getElementById("defaultImg2").style.display = "";
         const pic = document.getElementById(picId);
         const file = document.getElementById(fileId);
         if (window.FileReader) {
@@ -140,17 +140,17 @@
         }
     };
 
-    uploadAvatar=()=>{
+    uploadAvatar = () => {
 
-        let parent=  {
-            parentPhoto : document.getElementById("defaultImg2").src,
-            parentPhone : JSON.parse(localStorage.getItem("userLoginPhone")).val,
+        let parent = {
+            parentPhoto: document.getElementById("defaultImg2").src,
+            parentPhone: JSON.parse(localStorage.getItem("userLoginPhone")).val,
         };
 
         //AjaxBegin
         const clientMethod = 'POST';
         const clientUrl = 'http://localhost:1250/parent/updateParent';
-        const updateParent = ({url, method, data}) => {
+        const updateParent = ({ url, method, data }) => {
             return new Promise((resolve, reject) => {
                 const client = new XMLHttpRequest();
                 client.open(clientMethod, url);
@@ -181,16 +181,16 @@
 
         resultList(JSON.stringify(parent)).then((res) => {
             console.log(res);
-            window.location.href='/loginUi/alreadyLoginUi';
+            window.location.href = '/loginUi/alreadyLoginUi';
         }).catch(error => {
             console.log(error);
         });
     };
 
-    test=()=>{
+    test = () => {
         const clientMethod = 'POST';
         const clientUrl = 'http://localhost:1250/upload/fileupload.do';
-        const updateParent = ({url, method, data}) => {
+        const updateParent = ({ url, method, data }) => {
             return new Promise((resolve, reject) => {
                 const client = new XMLHttpRequest();
                 client.open(clientMethod, url);
@@ -220,7 +220,7 @@
 
         resultList(JSON.stringify(parent)).then((res) => {
             console.log(res);
-            window.location.href='/loginUi/alreadyLoginUi';
+            window.location.href = '/loginUi/alreadyLoginUi';
         }).catch(error => {
             console.log(error);
         });
@@ -229,7 +229,7 @@
 
     function submitForm() {
 
-        var formData = new FormData($("#aForm")[0]);//必须是new FormData后台才能接收到
+        const formData = new FormData($("#aForm")[0]);//必须是new FormData后台才能接收到
         $.ajax({
             url: "/upload/fileupload.do",
             data: formData,
@@ -237,8 +237,8 @@
             datatype: "json",
             contentType: false,//必须false才会自动加上正确的Content-Type
             processData: false,//必须false才会避开jQuery对 formdata 的默认处理，XMLHttpRequest会对 formdata 进行正确的处理
-            success: function (jdata) {
-                window.location.href='/loginUi/alreadyLoginUi'
+            success: function () {
+                window.location.href = '/loginUi/alreadyLoginUi'
             }
         });
 
@@ -256,7 +256,6 @@
     }
 
 </script>
-
 <div id="wrapper">
 
     <div id="preloader">
@@ -306,8 +305,7 @@
                         <li><a href="">活动</a></li>
                         <li><a href="">指导师</a></li>
                         <li><a href="">联系我们</a></li>
-                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
-                                class="fa fa-search"></i></a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
                         <li>
                             <div class="dropdown">
                                 <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
@@ -349,8 +347,8 @@
                                     <tr>
                                         <td>
                                             <div style="width: 200px;height: 200px;">
-                                                <img id="defaultImg" style="max-width: 100%;max-height: 100%;
-                                                min-width: 200px;border-radius: 150px;min-height: 200px;"/>
+                                                <img src="" id="defaultImg" style="max-width: 100%;max-height: 100%;
+                                                  min-width: 200px;border-radius: 150px;min-height: 200px;" />
                                             </div>
                                         </td>
                                     </tr>
@@ -367,7 +365,7 @@
                                         <td>
                                             <div style="width: 200px;height: 200px;display: none" id="avatarDiv">
                                                 <img id="defaultImg2" style="display: none;max-width: 100%;max-height: 100%;
-                                                min-width: 200px;border-radius: 150px;min-height: 200px;"/>
+                                                  min-width: 200px;border-radius: 150px;min-height: 200px;"  src=""/>
                                             </div>
                                         </td>
                                     </tr>
@@ -375,7 +373,8 @@
                                     <tr>
                                         <td>
                                             <form id="aForm" enctype="multipart/form-data">
-                                                <a href="javascript:void(0);" class="file" style="padding: 8px 10px;margin-right: 10px;" name="a">更换头像
+                                                <a href="javascript:void(0);" class="file" style="padding: 8px 10px;margin-right: 10px;"
+                                                   name="a">更换头像
                                                     <input type="file" name="file" id="file1" onchange="showAvatar('defaultImg2','file1')">
                                                 </a>
                                                 <!--<input class="btn-sm btn-primary"  name="btn" onclick="submitForm()" value="确认更改">-->
@@ -384,11 +383,10 @@
 
                                         <td>
 
-                                            <button  id="cancelAvatarBtn2" class="btn-sm btn-primary" onclick="submitForm()">
-                                                    确认更改
+                                            <button id="cancelAvatarBtn2" class="btn-sm btn-primary" onclick="submitForm()">
+                                                确认更改
                                             </button>
-                                            <button  id="cancelAvatarBtn" class="btn-sm btn-primary"
-                                                    onclick="cancelChange()">取消更改
+                                            <button id="cancelAvatarBtn" class="btn-sm btn-primary" onclick="cancelChange()">取消更改
                                             </button>
                                         </td>
                                     </tr>
@@ -403,14 +401,11 @@
 
                         <div class="sd_box">
                             <div class="group_sd_mymembers cr_grs">
-                                <div class="avat"
-                                     style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
+                                <div class="avat" style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
                                     <a target="_blank" sl-processed="1">
-                                        <img id="avatarImg2"
-                                             src="http://www.dgtle.com/uc_server/images/noavatar_big.gif"
-                                             style="max-width: 100%;min-height: 100px;
-                                                    min-width: 100px;max-height: 100%;
-                                                    margin: 0">
+                                        <img id="avatarImg2" src="http://www.dgtle.com/uc_server/images/noavatar_big.gif" style="max-width: 100%;min-height: 100px;
+                                                      min-width: 100px;max-height: 100%;
+                                                      margin: 0">
                                     </a>
                                 </div>
                                 <div class="mporf cl">
@@ -427,29 +422,24 @@
 
                             <ul>
 
-                                <li>
-                                    <a href=""
-                                       sl-processed="1">修改头像</a>
-                                </li>
-
                                 <li class="a">
-                                    <a href="/parentUi/parentSettingsUi"
-                                       sl-processed="1">个人资料</a>
+                                    <a href="#" sl-processed="1">修改头像</a>
                                 </li>
 
                                 <li>
-                                    <a href="#"
-                                       sl-processed="1">密码安全</a>
+                                    <a href="/parentUi/parentSettingsUi" sl-processed="1">个人资料</a>
                                 </li>
 
                                 <li>
-                                    <a href=""
-                                       sl-processed="1">孩子资料</a>
+                                    <a href="/parentUi/parentChangePasswordUi" sl-processed="1">密码安全</a>
                                 </li>
 
                                 <li>
-                                    <a href=""
-                                       sl-processed="1">帐号绑定</a>
+                                    <a href="" sl-processed="1">孩子资料</a>
+                                </li>
+
+                                <li>
+                                    <a href="" sl-processed="1">帐号绑定</a>
                                 </li>
                             </ul>
 
