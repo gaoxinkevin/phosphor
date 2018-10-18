@@ -7,6 +7,7 @@ import com.cafebabe.phosphor.model.entity.Parent;
 import com.cafebabe.phosphor.model.entity.UserLogin;
 import com.cafebabe.phosphor.service.ParentService;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,6 +40,7 @@ public class ParentServiceImpl implements ParentService {
     }
 
 
+    @Cacheable(cacheNames = "parentPhone")
     @Override
     public String getParentImgUrlService(String parentPhone) {
         return parentDAO.getParentImgUrlDao(parentPhone);

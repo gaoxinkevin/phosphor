@@ -5,6 +5,7 @@ import com.cafebabe.phosphor.model.entity.UserLogin;
 import com.cafebabe.phosphor.service.UserLoginService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 
@@ -31,6 +32,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         this.userLoginDAO = userLoginDAO;
     }
 
+    @Cacheable(cacheNames = "userLogin")
     @Override
     public String getUserLoginService(String userLoginPhone,String userPassword) {
         UserLogin userLogin=userLoginDAO.getUserLoginDao(userLoginPhone);
