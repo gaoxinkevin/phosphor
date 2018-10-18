@@ -40,18 +40,26 @@ import java.util.Map;
 public class ParentController {
 
     private final ParentServiceImpl parentService;
-    private final HttpServletRequest httpServletRequest;
+    @Autowired(required = false)
+    private HttpServletRequest httpServletRequest;
     private final InsertParentServiceImpl insertParentService;
     private static final String TRUE_RESULT = "true";
     private static final String FALSE_RESULT = "false";
+
+    public HttpServletRequest getHttpServletRequest() {
+        return httpServletRequest;
+    }
+
+    public void setHttpServletRequest(HttpServletRequest httpServletRequest) {
+        this.httpServletRequest = httpServletRequest;
+    }
 
     /**
      * 短信接口相关
      */
     @Autowired
-    public ParentController(ParentServiceImpl parentService, InsertParentServiceImpl insertParentService, HttpServletRequest httpServletRequest) {
+    public ParentController(ParentServiceImpl parentService, InsertParentServiceImpl insertParentService) {
         this.parentService = parentService;
-        this.httpServletRequest = httpServletRequest;
         this.insertParentService = insertParentService;
     }
 

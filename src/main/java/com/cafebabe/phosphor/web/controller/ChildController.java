@@ -6,7 +6,7 @@ import com.cafebabe.phosphor.util.JsonResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,6 +27,7 @@ import java.util.List;
 
 
 @Controller
+@CrossOrigin
 @RequestMapping("/child")
 public class ChildController {
 
@@ -42,7 +43,7 @@ public class ChildController {
     @ResponseBody
     public JsonResponse findAllChild(){
         List<Child> children = childService.getChildService();
-        return new JsonResponse(20000,"成功",children);
+        return new JsonResponse(200,"成功",children);
     }
 
 }
