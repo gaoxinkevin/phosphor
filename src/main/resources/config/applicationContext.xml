@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -20,7 +20,8 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <context:property-placeholder location="classpath:config/dbConfig.properties"/>
-    <context:property-placeholder location="classpath:config/redisConfig.properties"/>
+
+
 
     <!--配置数据库-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -44,9 +45,10 @@
         <property name="maxUploadSize" value="-1"/>
     </bean>
 
-    <!-- **************************************************redis********************************************************** -->
-
-    <!-- 配置 JedisPoolConfig 实例 -->
+    <!--配置事物-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="driverManagerUtil"/>
+    </bean>
 
     <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxIdle" value="300"/>
@@ -63,32 +65,37 @@
         <property name="poolConfig" ref="poolConfig"/>
     </bean>
 
-    <!-- 配置RedisTemplate -->
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-        <property name="connectionFactory" ref="jedisConnectionFactory"/>
+        <property name="connectionFactory" ref="jedisConnectionFactory" />
+
+        <!-- 序列化方式 建议key/hashKey采用StringRedisSerializer -->
+        <property name="keySerializer">
+            <bean
+                    class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="valueSerializer">
+            <bean
+                    class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+        </property>
+        <property name="hashKeySerializer">
+            <bean
+                    class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="hashValueSerializer">
+            <bean
+                    class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+        </property>
+        <!-- 开启REIDS事务支持 -->
+        <property name="enableTransactionSupport" value="false" />
     </bean>
 
-    <!-- 配置RedisCacheManager -->
-    <!--<bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">-->
-        <!--&lt;!&ndash;<constructor-arg name="redisOperations" ref="redisTemplate"/>&ndash;&gt;-->
-        <!--&lt;!&ndash;<property name="defaultExpiration" value="${redis.expiration}"/>&ndash;&gt;-->
-        <!--<property name="transactionAware" value="false"/>-->
-    <!--</bean>-->
-    <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
-        <constructor-arg name="redisOperations" ref="redisTemplate" />
-        <property name="defaultExpiration" value="1800" />
-    </bean>
-    <!-- 配置RedisCacheConfig -->
-    <bean id="redisCacheConfig" class="com.cafebabe.phosphor.util.RedisCacheConfig">
-        <constructor-arg ref="jedisConnectionFactory"/>
-        <constructor-arg ref="redisTemplate"/>
-        <constructor-arg ref="redisCacheManager"/>
+    <!-- 对string操作的封装 -->
+    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+        <constructor-arg ref="jedisConnectionFactory" />
+        <!-- 开启REIDS事务支持 -->
+        <property name="enableTransactionSupport" value="false" />
     </bean>
 
-    <!--配置事物-->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="driverManagerUtil"/>
-    </bean>
 
     <tx:annotation-driven proxy-target-class="true"/>
 

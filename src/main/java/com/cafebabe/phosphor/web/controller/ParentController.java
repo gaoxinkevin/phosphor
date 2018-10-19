@@ -69,7 +69,7 @@ public class ParentController {
 
     @SuppressWarnings("all")
     @ResponseBody
-    @PostMapping("/verificationCode")
+    @PostMapping("verificationCode")
     public JsonResponse getVerCode(@RequestBody MobileAndRandomCode mobile){
         String result = SMSUtil.sendVerCode(mobile.getMobile(),mobile.getRandomCode());
         Map map=GsonUtil.GsonToMaps(result);
@@ -119,7 +119,6 @@ public class ParentController {
     @ResponseBody
     @PostMapping("updateParent")
     public JsonResponse updateParent(@RequestBody Parent parent){
-        System.out.println(parent);
         parentService.updateByParentPhoneService(parent);
         return new JsonResponse(22222,"",parent);
     }
