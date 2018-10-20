@@ -27,10 +27,35 @@
     from course
     where course_id = #{courseId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+
+  <!--查询所有课程-->
+    <select id="getAllCourse" resultType="com.cafebabe.phosphor.model.entity.Course">
+      select
+      <include refid="Base_Column_List" />
+      from course
+    </select>
+
+  <!--根据课程名查询课程-->
+  <select id="getCourseByName" resultType="com.cafebabe.phosphor.model.entity.Course">
+    select
+    <include refid="Base_Column_List" />
+    from course
+    where course_name = #{courseName,jdbcType=INTEGER}
+  </select>
+
+    <!--查询某个公司的课程-->
+    <select id="getCourseByCompanyName" resultType="com.cafebabe.phosphor.model.entity.Course">
+        select
+        <include refid="Base_Column_List" />
+        from course
+        where company_name = #{companyName,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from course
     where course_id = #{courseId,jdbcType=INTEGER}
   </delete>
+  <!--插入课程信息-->
   <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Course">
     insert into course (course_id, course_name, company_name, 
       course_address, course_price, course_content, 
@@ -43,6 +68,7 @@
       #{courseTime,jdbcType=VARCHAR}, #{courseDiscount,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, 
       #{courseSf,jdbcType=VARCHAR})
   </insert>
+
   <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Course">
     insert into course
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -128,6 +154,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Course">
     update course
     <set>
@@ -170,6 +197,8 @@
     </set>
     where course_id = #{courseId,jdbcType=INTEGER}
   </update>
+
+  <!--根据id修改课程信息-->
   <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.Course">
     update course
     set course_name = #{courseName,jdbcType=VARCHAR},
