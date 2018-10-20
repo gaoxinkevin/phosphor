@@ -1,19 +1,17 @@
-package com.cafebabe.phosphor.dao;
-
-import com.cafebabe.phosphor.model.entity.TeacherLike;
+package com.cafebabe.phosphor.service;
 
 /**
  * @author kevingx2016@gmail.com
  *
- * class_name: TeacherLikeDAO
+ * class_name: TeacherLikeService
  *
  * create_date: 2018/10/17
  *
- * create_time: 09:37
+ * create_time: 16:34
  *
- * description: 教师点赞模块
+ * description: 教师点赞 Service
  **/
-public interface TeacherLikeDAO extends MyBatisBaseDao<TeacherLike, Integer> {
+public interface TeacherLikeService {
 
     /**
      * 根据教师ID为教师点赞数加一
@@ -21,5 +19,4 @@ public interface TeacherLikeDAO extends MyBatisBaseDao<TeacherLike, Integer> {
      * @return 受影响的行数
      */
     int updateTeacherLikeCountAdd(Integer teacherId);
-
 }

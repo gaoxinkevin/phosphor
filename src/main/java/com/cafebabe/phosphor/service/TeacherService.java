@@ -1,4 +1,4 @@
-package com.cafebabe.phosphor.dao;
+package com.cafebabe.phosphor.service;
 
 import com.cafebabe.phosphor.model.entity.Teacher;
 
@@ -7,15 +7,15 @@ import java.util.List;
 /**
  * @author kevingx2016@gmail.com
  *
- * class_name: TeacherDAO
+ * class_name: TeacherService
  *
  * create_date: 2018/10/17
  *
- * create_time: 09:34
+ * create_time: 09:47
  *
- * description: 教师模块
+ * description: 教师 Service
  **/
-public interface TeacherDAO extends MyBatisBaseDao<Teacher, Integer> {
+public interface TeacherService {
 
     /**
      * 获取所有在职的教师的信息
@@ -36,5 +36,5 @@ public interface TeacherDAO extends MyBatisBaseDao<Teacher, Integer> {
      * @return 某公司所有在职教师
      */
     List<Teacher> getTeacherByCompanyId(Integer companyId);
-
 }
+

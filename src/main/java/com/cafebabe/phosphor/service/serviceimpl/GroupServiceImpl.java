@@ -5,6 +5,7 @@ import com.cafebabe.phosphor.model.entity.Group;
 import com.cafebabe.phosphor.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,7 +23,8 @@ import java.util.List;
  *
  * description: 套餐service层的实现类
  **/
-@Controller
+
+@Service
 public class GroupServiceImpl implements GroupService {
 
     @Autowired

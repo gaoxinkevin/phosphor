@@ -10,7 +10,7 @@ IMPORT
     font-style: normal;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
     @font-face {
         font-family: "Flaticon";
         src: url("/fonts/Flaticon.svg#Flaticon") format("svg");
@@ -81,7 +81,14 @@ IMPORT
     content: "\f10d";
 }
 
-.tlinks{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
+.tlinks {
+    text-indent: -9999px;
+    height: 0;
+    line-height: 0;
+    font-size: 0;
+    overflow: hidden;
+}
+
 /******************************************
 SKELETON
 ******************************************/
@@ -90,7 +97,8 @@ body {
     background-color: #f6f6f6;
     line-height: 1.6;
     font-size: 16px;
-    color: #a2a2a2;
+    /*color: #a2a2a2;*/
+    color: #2f2f2f;
 }
 
 body,
@@ -154,7 +162,8 @@ a {
     padding-left: 0
 }
 
-.check li a {}
+.check li a {
+}
 
 .authorbox,
 blockquote {
@@ -189,7 +198,6 @@ blockquote:before {
     font-size: 24px;
     left: 10px;
 }
-
 
 /******************************************
 HEADER
@@ -242,7 +250,7 @@ HEADER
     background-color: #fff;
 }
 
-.header-normal .navbar-default .nav>li>a {
+.header-normal .navbar-default .nav > li > a {
     color: #848484 !important;
 }
 
@@ -273,7 +281,7 @@ HEADER
     border: 0;
 }
 
-.navbar-default .nav>li>a {
+.navbar-default .nav > li > a {
     color: #fff !important;
     text-transform: capitalize;
     font-size: 15px;
@@ -320,10 +328,10 @@ HEADER
     opacity: 0.8;
 }
 
-.navbar-default .navbar-nav .open .dropdown-menu>li>a,
-.navbar-default .navbar-nav>.open>a,
-.navbar-default .navbar-nav>.open>a:hover,
-.navbar-default .navbar-nav>.open>a:focus {
+.navbar-default .navbar-nav .open .dropdown-menu > li > a,
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
     background-color: transparent !important;
 }
 
@@ -420,7 +428,6 @@ HEADER
     padding-left: 8px !important;
 }
 
-
 /******************************************
 MEGA MENU
 ******************************************/
@@ -440,7 +447,8 @@ MEGA MENU
     position: relative;
 }
 
-.yamm .dropdown.yamm-fw .dropdown-menu {}
+.yamm .dropdown.yamm-fw .dropdown-menu {
+}
 
 .yamm .dropdown {
     position: relative;
@@ -547,7 +555,6 @@ MEGA MENU
     text-transform: capitalize;
 }
 
-
 /******************************************
 PAGES
 ******************************************/
@@ -566,15 +573,15 @@ PAGES
     padding: 0;
 }
 
-.breadcrumb>li a,
-.breadcrumb>li+li::before,
-.breadcrumb>.active {
+.breadcrumb > li a,
+.breadcrumb > li + li::before,
+.breadcrumb > .active {
     color: #aaa;
 }
 
-.section.cb .breadcrumb>li a,
-.section.cb .breadcrumb>li+li::before,
-.section.cb .breadcrumb>.active {
+.section.cb .breadcrumb > li a,
+.section.cb .breadcrumb > li + li::before,
+.section.cb .breadcrumb > .active {
     color: #fff;
 }
 
@@ -592,7 +599,7 @@ PAGES
     margin: 0 !important;
 }
 
-.breadcrumb>li+li::before {
+.breadcrumb > li + li::before {
     content: "\f107";
     vertical-align: middle;
     padding-left: 5px;
@@ -608,10 +615,10 @@ PAGES
     font-size: 14px;
 }
 
-.pagination>li:first-child>a,
-.pagination>li:first-child>span,
-.pagination>li:last-child>a,
-.pagination>li:last-child>span {
+.pagination > li:first-child > a,
+.pagination > li:first-child > span,
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
     border-radius: 0;
 }
 
@@ -623,8 +630,8 @@ PAGES
     margin: 0;
 }
 
-.pagination>li>a,
-.pagination>li>span {
+.pagination > li > a,
+.pagination > li > span {
     background-color: #fff;
     border: 1px solid #eeeeee !important;
     color: #999;
@@ -637,8 +644,8 @@ PAGES
     text-decoration: none;
 }
 
-.pager li>a,
-.pager li>span {
+.pager li > a,
+.pager li > span {
     background-color: #2c2f33;
     border: 1px solid #2c2f33;
     color: #fff;
@@ -660,7 +667,6 @@ PAGES
     font-size: 13px;
     vertical-align: baseline;
 }
-
 
 /******************************************
 EVENTS
@@ -798,7 +804,6 @@ teammembers .magnifier {
     margin: 0;
 }
 
-
 /******************************************
 CONTACT
 ******************************************/
@@ -915,7 +920,6 @@ CONTACT
     padding-bottom: 5px;
     text-transform: capitalize;
 }
-
 
 /******************************************
 SECTIONS
@@ -1043,7 +1047,6 @@ SECTIONS
     padding: 10px;
 }
 
-
 .home-text-wrapper {
     display: table;
     width: 100%;
@@ -1160,7 +1163,6 @@ hr.invis {
     margin: 30px 0;
 }
 
-
 /******************************************
 COURSE MODULES
 ******************************************/
@@ -1177,7 +1179,7 @@ COURSE MODULES
 }
 
 .course-details {
-    padding: 3rem 2rem;
+    padding: 2rem 2rem;
 }
 
 .course-details h4 {
@@ -1265,7 +1267,6 @@ COURSE MODULES
     color: #fff !important;
 }
 
-
 /************************************
 WIDGETS
 ************************************/
@@ -1320,7 +1321,6 @@ WIDGETS
 .sidebar .media:last-child {
     margin-bottom: 0;
 }
-
 
 /************************************
 BLOG
@@ -1378,7 +1378,7 @@ BLOG
 }
 
 .media-right,
-.media>.pull-right {
+.media > .pull-right {
     color: #999 !important;
     font-size: 11px;
     letter-spacing: 2px;
@@ -1529,7 +1529,7 @@ BLOG
     color: #aaa;
 }
 
-.post-meta .list-inline>li {
+.post-meta .list-inline > li {
     padding-left: 0;
     padding-right: 0;
     margin-right: 10px;
@@ -1596,7 +1596,6 @@ BLOG
 .blog-grid .col-md-4 {
     margin-bottom: 30px
 }
-
 
 /******************************************
 TESTIMONIAL
@@ -1736,7 +1735,6 @@ TESTIMONIAL
     margin: 0;
 }
 
-
 /******************************************
 SHOP
 ******************************************/
@@ -1771,7 +1769,7 @@ SHOP
 }
 
 .btn-group.open .dropdown-toggle,
-.bootstrap-select>.dropdown-toggle {
+.bootstrap-select > .dropdown-toggle {
     background: #ffffff none repeat scroll 0 0 !important;
     box-shadow: none !important;
     color: #b9b9b9 !important;
@@ -1814,7 +1812,7 @@ SHOP
     border: 3px solid #f6f6f6;
 }
 
-.shop-extra .nav-tabs>li>a {
+.shop-extra .nav-tabs > li > a {
     background-color: #ffffff !important;
     border: 0 !important;
     border-bottom: 3px solid transparent !important;
@@ -1832,8 +1830,8 @@ SHOP
     border-bottom: 3px solid #f6f6f6 !important;
 }
 
-.shop-extra .nav-tabs>li:hover a,
-.shop-extra .nav-tabs>li.active a {
+.shop-extra .nav-tabs > li:hover a,
+.shop-extra .nav-tabs > li.active a {
     border-bottom-color: #111 !important;
 }
 
@@ -1864,7 +1862,6 @@ SHOP
     font-size: 20px;
     padding-bottom: 10px;
 }
-
 
 /******************************************
 FOOTER
@@ -2019,7 +2016,6 @@ FOOTER
     color: rgba(255, 255, 255, 0.6);
 }
 
-
 /******************************************
 BUTTONS
 ******************************************/
@@ -2038,7 +2034,6 @@ BUTTONS
     color: #ffffff;
     border: 1px solid #fff;
 }
-
 
 /************************************
 MICS
@@ -2080,7 +2075,6 @@ MICS
     border-radius: 50%
 }
 
-
 /******************************************
 COLOR BLUE
 ******************************************/
@@ -2102,7 +2096,7 @@ blockquote:after,
 .small-box i,
 .copyrights ul li:hover a,
 .footer .readmore,
-.breadcrumb>li a,
+.breadcrumb > li a,
 .yamm h4,
 .yamm-content li:hover a,
 .yamm .hassubmenu li:hover a,
@@ -2120,8 +2114,8 @@ a:focus,
     color: #01bacf;
 }
 
-.shop-extra .nav-tabs>li:hover a,
-.shop-extra .nav-tabs>li.active a,
+.shop-extra .nav-tabs > li:hover a,
+.shop-extra .nav-tabs > li.active a,
 .modal .form-control,
 .form-control:focus,
 .btn-transparent {
@@ -2131,12 +2125,12 @@ a:focus,
 .cb,
 .box .event-desc small,
 .pagination a,
-.pagination>.active>a,
-.pagination>.active>a:focus,
-.pagination>.active>a:hover,
-.pagination>.active>span,
-.pagination>.active>span:focus,
-.pagination>.active>span:hover,
+.pagination > .active > a,
+.pagination > .active > a:focus,
+.pagination > .active > a:hover,
+.pagination > .active > span,
+.pagination > .active > span:focus,
+.pagination > .active > span:hover,
 .tags-widget a,
 .owl-theme-01 .owl-nav [class*="owl-"]:hover,
 .yamm .dropdown-menu li:hover .menu-button,
@@ -2162,7 +2156,6 @@ mark,
     border-color: #00a8bd;
 }
 
-
 /******************************************
 COLOR GREEN
 ******************************************/
@@ -2186,7 +2179,6 @@ COLOR GREEN
     border-color: #74a632;
 }
 
-
 /******************************************
 RESPONSIVE
 ******************************************/
@@ -2195,55 +2187,67 @@ RESPONSIVE
     .p120 {
         padding-bottom: 8rem !important;
     }
+
     .boxed {
         margin-top: 4rem;
     }
+
     .blog-box,
     .testimonial,
     .stat-count {
         margin: 30px 0;
     }
+
     .m30 {
         margin-top: 30px;
     }
+
     .absolute-widget {
         background-image: none;
     }
+
     .sidebar {
         margin-top: 30px;
     }
+
     .container {
         min-width: 100% !important;
     }
+
     .footer .widget {
         margin: 30px 0;
     }
 }
 
 @media (max-width: 768px) {
-    .shop-extra .nav-tabs>li>a,
-    .shop-extra .nav-tabs>li {
+    .shop-extra .nav-tabs > li > a,
+    .shop-extra .nav-tabs > li {
         float: none;
         display: block;
         width: 100%;
         text-align: center;
     }
+
     .shop-extra {
         padding: 30px 10px;
     }
+
     .home-message p {
         font-size: 28px;
     }
+
     .topbar .text-left {
         text-align: center;
     }
+
     .authorbox img {
         float: none;
         margin: 0 0 30px !important;
         min-width: 100px;
     }
+
     .media-left,
-    .media>.pull-left {
+    .media > .pull-left {
         display: block;
         float: none;
         margin: 0 0 30px;
@@ -2261,12 +2265,14 @@ RESPONSIVE
     .yamm-fw {
         position: relative;
     }
-    .hassubmenu:hover>ul,
-    .yamm-fw:hover>ul {
+
+    .hassubmenu:hover > ul,
+    .yamm-fw:hover > ul {
         visibility: visible;
         opacity: 1;
         top: 100%;
     }
+
     .hassubmenu ul,
     .navbar-nav .yamm-fw ul {
         -webkit-transition: visibility 0.35s ease-in-out, opacity 0.35s ease-in-out, top 0.35s ease-in-out, bottom 0.35s ease-in-out, left 0.35s ease-in-out, right 0.35s ease-in-out;
@@ -2274,6 +2280,7 @@ RESPONSIVE
         -o-transition: visibility 0.35s ease-in-out, opacity 0.35s ease-in-out, top 0.35s ease-in-out, bottom 0.35s ease-in-out, left 0.35s ease-in-out, right 0.35s ease-in-out;
         transition: visibility 0.35s ease-in-out, opacity 0.35s ease-in-out, top 0.35s ease-in-out, bottom 0.35s ease-in-out, left 0.35s ease-in-out, right 0.35s ease-in-out;
     }
+
     .yamm-fw .dropdown-menu {
         min-width: 240px;
         padding: 0;
@@ -2281,18 +2288,21 @@ RESPONSIVE
         -moz-border-radius: 0;
         border-radius: 0;
     }
-    .hassubmenu>ul,
-    .yamm-fw>ul {
+
+    .hassubmenu > ul,
+    .yamm-fw > ul {
         position: absolute;
         top: 160%;
         visibility: hidden;
         display: block;
         opacity: 0;
     }
-    .yamm-fw>ul li {
+
+    .yamm-fw > ul li {
         position: relative;
     }
-    .yamm-fw>ul li:hover>ul {
+
+    .yamm-fw > ul li:hover > ul {
         visibility: visible;
         opacity: 1;
         left: 100%;
@@ -2300,7 +2310,22 @@ RESPONSIVE
 }
 
 @media (max-width: 1200px) {
-    .nav>li>a {
+    .nav > li > a {
         padding: 1em 0.7em;
     }
 }
+
+/******************************************
+customize
+******************************************/
+.customizeDiv {
+    width: 805px;
+    height: 270px;
+    float: left;
+}
+
+.customizeFont{
+    font-size: 20px;
+    font-weight: bold;
+}
+
