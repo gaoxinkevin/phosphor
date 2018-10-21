@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.dao;
 
+import com.cafebabe.phosphor.model.dto.Page;
 import com.cafebabe.phosphor.model.entity.Activity;
 
 import java.util.List;
@@ -22,6 +23,22 @@ public interface ActivityDAO extends MyBatisBaseDao<Activity, Integer> {
      * @date        2018/10/17 18:51
     */
     Activity getActivityByID(Integer id);
+
+    /**
+     * @description 获取Activity的总条数
+     * @param
+     * @return
+     * @date        2018/10/19 14:07
+    */
+    Integer getActivityCount();
+
+    /**
+     * @description 分页获取Activity
+     * @param   page 封装有分页所需的数据
+     * @return
+     * @date        2018/10/19 14:09
+    */
+    List<Activity> getActivityByPage(Page page);
 
     /**
      * 添加一个活动

@@ -1,5 +1,7 @@
 package com.cafebabe.phosphor.web.controller;
 
+import com.cafebabe.phosphor.model.dto.ActivityInfo;
+import com.cafebabe.phosphor.model.dto.Page;
 import com.cafebabe.phosphor.model.entity.Activity;
 import com.cafebabe.phosphor.service.serviceimpl.ActivityServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
@@ -28,10 +30,25 @@ public class ActivityController {
         this.activityService = activityService;
     }
 
-    @RequestMapping("activityAll")
+    @RequestMapping("getActivityAll")
     @ResponseBody
     public JsonResponse getActivityAll(){
         List<Activity> activityList = activityService.getActivityAll();
         return new JsonResponse(200, "success", activityList);
+    }
+
+    @RequestMapping("getActivityInfoAll")
+    @ResponseBody
+    public JsonResponse getActivityInfoAll(){
+        List<ActivityInfo> activityInfoList = activityService.getActivityInfoAll();
+        return new JsonResponse(200, "success", activityInfoList);
+    }
+
+    @RequestMapping("getActivityInfoByPage")
+    @ResponseBody
+    public  JsonResponse getActivityInfoByPage(Integer pageIndex, Integer pageSize){
+        System.out.println(pageIndex +"========" + pageSize +"");
+        Page page = activityService.getActivityInfoByPage(pageIndex, pageSize);
+        return new JsonResponse(200, "success", page);
     }
 }

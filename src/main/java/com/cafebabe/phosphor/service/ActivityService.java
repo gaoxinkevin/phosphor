@@ -1,5 +1,7 @@
 package com.cafebabe.phosphor.service;
 
+import com.cafebabe.phosphor.model.dto.ActivityInfo;
+import com.cafebabe.phosphor.model.dto.Page;
 import com.cafebabe.phosphor.model.entity.Activity;
 
 import java.util.List;
@@ -13,9 +15,17 @@ import java.util.List;
 public interface ActivityService {
     List<Activity> getActivityAll();
 
+    List<ActivityInfo> getActivityInfoAll();
+
+    Page getActivityInfoByPage(Integer pageIndex, Integer pageSize);
+
+    Integer getActivityCount();
+
     Activity getActivityByID(Integer id);
 
     Integer insertActivity(Activity activity);
 
     Integer deleteActivityByID(Integer id);
+
+    List<ActivityInfo> merge(List<Activity> activityList);
 }
