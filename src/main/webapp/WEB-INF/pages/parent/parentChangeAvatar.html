@@ -57,9 +57,19 @@
             color: #004974;
             text-decoration: none;
         }
+        .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
+            background-color:#82B43F;
+            border-color: #82B43F;
+        }
+        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+            background: #82B43F;
+            color: #ffffff !important;
+        }
+        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+            background: #82B43F none repeat scroll 0 0 !important;
+
+        }
     </style>
-
-
 </head>
 
 <body>
@@ -187,46 +197,6 @@
         });
     };
 
-    test = () => {
-        const clientMethod = 'POST';
-        const clientUrl = 'http://localhost:1250/upload/fileupload.do';
-        const updateParent = ({ url, method, data }) => {
-            return new Promise((resolve, reject) => {
-                const client = new XMLHttpRequest();
-                client.open(clientMethod, url);
-                client.responseType = 'json';
-                client.setRequestHeader("multipart/form-data", "application/json; charset=utf-8");
-                client.onreadystatechange = () => {
-                    if (client.readyState === 4) {
-                        if (client.status === 200) {
-                            resolve(client.response);
-                        } else {
-                            reject(client.status);
-                        }
-                    }
-                };
-                client.send(data);
-            });
-        };
-
-        const resultList = (data) => updateParent(
-            {
-                url: clientUrl,
-                method: clientMethod,
-                data
-            }
-        );
-
-
-        resultList(JSON.stringify(parent)).then((res) => {
-            console.log(res);
-            window.location.href = '/loginUi/alreadyLoginUi';
-        }).catch(error => {
-            console.log(error);
-        });
-
-    };
-
     function submitForm() {
 
         const formData = new FormData($("#aForm")[0]);//必须是new FormData后台才能接收到
@@ -304,6 +274,21 @@
                         <li><a href="">课程</a></li>
                         <li><a href="">活动</a></li>
                         <li><a href="">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">官方套餐</a></li>
+                                    <li><a href="#">自定义套餐</a></li>
+                                </ul>
+                            </div>
+                        </li>
                         <li><a href="">联系我们</a></li>
                         <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
                         <li>
@@ -435,8 +420,14 @@
                                 </li>
 
                                 <li>
-                                    <a href="" sl-processed="1">孩子资料</a>
+                                    <a href="" sl-processed="1">订单查询</a>
                                 </li>
+
+                                <li>
+                                    <a href="/children/infoUi" sl-processed="1">孩子资料</a>
+                                </li>
+
+
 
                                 <li>
                                     <a href="" sl-processed="1">帐号绑定</a>
