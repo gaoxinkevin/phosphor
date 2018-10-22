@@ -8,10 +8,7 @@ import com.cafebabe.phosphor.util.JsonResponse;
 import com.cafebabe.phosphor.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-<<<<<<< HEAD
-=======
 import org.springframework.web.bind.annotation.CrossOrigin;
->>>>>>> devlnt
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 

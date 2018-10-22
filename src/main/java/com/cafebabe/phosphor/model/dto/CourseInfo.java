@@ -1,6 +1,5 @@
 package com.cafebabe.phosphor.model.dto;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.*;
 import java.io.Serializable;
 import java.sql.Time;
@@ -82,13 +81,11 @@ public class CourseInfo implements Serializable {
      * 上课时间
      */
 
-    @JSONField(format ="HH:mm:ss")
     private Time courseStartTime;
 
     /**
      * 下课时间
      */
-    @JSONField(format ="HH:mm:ss")
     private Time courseEndTime;
 
     /**
