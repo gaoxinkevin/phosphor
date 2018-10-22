@@ -81,14 +81,11 @@ public class CourseInfo implements Serializable {
     /**
      * 上课时间
      */
-
-    @JSONField(format ="HH:mm:ss")
     private Time courseStartTime;
 
     /**
      * 下课时间
      */
-    @JSONField(format ="HH:mm:ss")
     private Time courseEndTime;
 
     /**
