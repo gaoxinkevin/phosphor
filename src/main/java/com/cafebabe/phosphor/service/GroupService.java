@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.service;
 
+import com.cafebabe.phosphor.model.dto.GroupDTO;
 import com.cafebabe.phosphor.model.entity.Group;
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,7 +22,7 @@ public interface GroupService {
      * 添加套餐
      * @return 0=>false | 1=>true
      */
-    Integer insertGroup(Group group);
+    Integer insertGroup(GroupDTO group);
 
     /**
      * 修改套餐
@@ -56,6 +57,12 @@ public interface GroupService {
      */
     Group getGroupById(Integer id);
 
+    /**
+     * 根据套餐的id查询套餐信息
+     * @param id 套餐id
+     * @return 套餐信息
+     */
+    GroupDTO getGroupDTOById(Integer id);
     /**
      * 获取所有的套餐信息
      * @return group的列表

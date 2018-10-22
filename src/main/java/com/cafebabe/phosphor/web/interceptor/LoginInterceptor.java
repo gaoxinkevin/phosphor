@@ -24,6 +24,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         String userLoginPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
+        System.out.println(userLoginPhone);
         System.out.println("拦截器启动");
         if (userLoginPhone != null) {
             System.out.println("拦截器放行");

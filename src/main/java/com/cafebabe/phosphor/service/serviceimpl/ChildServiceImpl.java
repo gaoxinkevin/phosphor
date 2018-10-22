@@ -1,10 +1,11 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
 import com.cafebabe.phosphor.dao.ChildDAO;
-import com.cafebabe.phosphor.model.entity.Child;
+import com.cafebabe.phosphor.model.dto.ChildrenInfoDto;
 import com.cafebabe.phosphor.service.ChildService;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -24,16 +25,15 @@ import java.util.List;
 @Service
 public class ChildServiceImpl implements ChildService {
 
-    @Autowired
     private final ChildDAO childDAO;
 
+    @Autowired
     public ChildServiceImpl(ChildDAO childDAO) {
         this.childDAO = childDAO;
     }
 
-
     @Override
-    public List<Child> getChildService() {
-        return childDAO.getChildDao();
+    public List<ChildrenInfoDto> getChildInfo(Integer parentId) {
+        return childDAO.getChildInfoDao(parentId);
     }
 }

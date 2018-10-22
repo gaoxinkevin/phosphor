@@ -42,7 +42,6 @@ public class UserLoginController {
     @Autowired
     public UserLoginController(UserLoginServiceImpl userLoginService) {
         this.userLoginService = userLoginService;
-        this.httpServletRequest = httpServletRequest;
     }
 
     @RequestMapping("userLogin")
@@ -70,5 +69,12 @@ public class UserLoginController {
             return new JsonResponse(20000, "修改密码成功", result);
         }
         return new JsonResponse(30000, "修改密码失败", result);
+    }
+
+    @PostMapping("getUserLoginPassword")
+    @ResponseBody
+    public JsonResponse getUserLoginPassword(){
+        String userLoginPhone =  (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
+        return new JsonResponse(20000,"成功",userLoginService.getUserLoginPassword(userLoginPhone));
     }
 }

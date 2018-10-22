@@ -3,6 +3,8 @@ package com.cafebabe.phosphor.model.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
+
 /**
  *
  * @author supersuntangao@gmail.com
@@ -23,11 +25,13 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class InsertParent {
+public class InsertParent implements Serializable {
 
     private String insertParentPhone;
 
     private String insertParentName;
 
     private String insetParentPassword;
+
+    private static final long serialVersionUID = 1L;
 }

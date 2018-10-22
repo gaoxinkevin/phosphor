@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.service;
 
+import com.cafebabe.phosphor.model.dto.InsertParent;
 import com.cafebabe.phosphor.model.entity.Parent;
 
 /**
@@ -41,7 +42,21 @@ public interface ParentService {
     /**
      * 用户更新service
      * @param parent 更新后的用户信息
-     * @return 受影响的行数
      */
-    Integer updateByParentPhoneService(Parent parent);
+    void updateByParentPhoneService(Parent parent);
+
+    /**
+     * 插入用户
+     * @param insertParent 要插入的用户的信息
+     * @return 插入用户是否成功
+     */
+    boolean insertIntoParent(InsertParent insertParent);
+
+    /**
+     * 更改用户信息是否成功
+     * @param parentPhone 用户手机号
+     * @param parentPhoto 用户头像信息
+     * @return 是否更新成功
+     */
+    boolean updateParentImg(String parentPhoto,String parentPhone);
 }

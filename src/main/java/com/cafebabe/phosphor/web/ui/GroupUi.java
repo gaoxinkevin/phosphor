@@ -23,22 +23,23 @@ import java.io.IOException;
  **/
 @Controller
 @CrossOrigin
-@RequestMapping("/GroupUi")
+@RequestMapping("/groupUi")
 public class GroupUi {
 
-    @RequestMapping("GroupListUi")
+    @RequestMapping("groupListUi")
     public void GroupList(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse)throws IOException,ServletException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/Group/GroupList.html").forward(httpServletRequest,httpServletResponse);
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/group/groupList.html").forward(httpServletRequest,httpServletResponse);
     }
 
-    @RequestMapping("GroupUi")
+    @RequestMapping("groupUi")
     public void Group(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse)throws IOException,ServletException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/Group/Group.html").forward(httpServletRequest,httpServletResponse);
+        System.out.println("进入");
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/group/group.html").forward(httpServletRequest,httpServletResponse);
     }
 
-    @RequestMapping("GroupDiyUi")
+    @RequestMapping("groupDiyUi")
     public void GroupDiy(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse)throws IOException,ServletException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/Group/GroupDiy.html").forward(httpServletRequest,httpServletResponse);
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/group/groupDiy.html").forward(httpServletRequest,httpServletResponse);
     }
 
 

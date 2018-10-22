@@ -66,7 +66,4 @@ public class Parent implements Serializable {
      * 冗余字段
      */
     private String parentSf;
-
-    private static final long serialVersionUID = 1L;
-
 }
