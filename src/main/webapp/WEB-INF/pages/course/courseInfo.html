@@ -45,18 +45,32 @@
             });
         };
 
-        const course = () => getJsonCourse(clientUrl);
+        const courseInfo = () => getJsonCourse(clientUrl);
 
-        course().then(({data}) => {
+        courseInfo().then(({data}) => {
             const courseName = document.getElementById("courseName");
             const coursePrice = document.getElementById("coursePrice");
             const courseDesc = document.getElementById("courseDesc");
+            const companyName = document.getElementById("companyName");
+            const courseType = document.getElementById("courseType");
             const courseContent = document.getElementById("courseContent");
+            const courseStartDay = document.getElementById("courseStartDay");
+            const courseStartTime = document.getElementById("courseStartTime");
+            const courseEndTime = document.getElementById("courseEndTime");
+            const courseAddress = document.getElementById("courseAddress");
+            const courseTeacher = document.getElementById("courseTeacher")
 
             courseName.innerText = data.courseName;
             coursePrice.innerText = data.coursePrice;
             courseDesc.innerText = data.courseDesc;
+            companyName.innerText = data.companyName;
+            courseType.innerText = data.typeName;
             courseContent.innerText = data.courseContent;
+            courseStartDay.innerText = data.courseStartDay;
+            courseStartTime.innerText = data.courseStartTime;
+            courseEndTime.innerText = data.courseEndTime;
+            courseAddress.innerText = data.courseAddress;
+            courseTeacher.innerText = data.teacherName;
 
         }).catch(error => {
             console.log(error);
@@ -208,9 +222,10 @@
                             <div class="shop-meta">
                                 <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#" class="btn btn-primary">立即购买</a>
                                 <ul class="list-inline">
-                                    <li> SKU: product-111</li>
-                                    <li>Categories: <a
-                                            href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">Bags</a>
+                                    <li>公司: <span id="companyName"></span></li>
+                                    <li>类别:
+                                        <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">
+                                            <span id="courseType">Bags</span></a>
                                     </li>
                                 </ul>
                             </div><!-- end shop meta -->
@@ -238,24 +253,32 @@
                             <div class="tab-content">
                                 <div id="home" class="tab-pane fade active in">
                                     <p id="courseContent">这里是课程介绍</p>
-
-                                    <p>课程介绍</p>
                                 </div>
                                 <div id="menu1" class="tab-pane fade">
-                                    <h3>课程信息</h3>
                                     <table class="table">
                                         <tbody>
                                         <tr>
-                                            <td><strong>时间</strong></td>
-                                            <td id="courseTime"></td>
+                                            <td><strong>开课日期</strong></td>
+                                            <td>
+                                                <span id="courseStartDay"></span>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>地点</strong></td>
-                                            <td id="companyAddress"></td>
+                                            <td><strong>上课时间</strong></td>
+                                            <td>
+                                                <span id="courseStartTime"></span>
+                                                <span>- -</span>
+                                                <span id="courseEndTime"></span>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>上课地点</strong></td>
+                                            <td><span id="courseAddress"></span></td>
                                         </tr>
                                         <tr>
-                                            <td><strong>教师</strong></td>
-                                            <td id="courseTeacher"></td>
+                                            <td><strong>授课教师</strong></td>
+                                            <td><span id="courseTeacher"></span></td>
                                         </tr>
                                         </tbody>
                                     </table>

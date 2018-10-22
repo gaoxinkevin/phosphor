@@ -1,8 +1,9 @@
 package com.cafebabe.phosphor.model.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.*;
-
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -60,21 +61,6 @@ public class CourseInfo implements Serializable {
      */
     private String courseDesc;
 
-    /**
-     * 课程状态
-     * 0：未购买 1:已经购买 2：未评价 3：已经评价
-     */
-    private Integer courseStatus;
-
-    /**
-     * 上课时间
-     */
-    private String courseTime;
-
-    /**
-     * 是否可以打折
-     */
-    private Integer courseDiscount;
 
     /**
      * 类型名称
@@ -89,17 +75,21 @@ public class CourseInfo implements Serializable {
     /**
      * 开课日期
      */
+
     private Date courseStartDay;
 
     /**
      * 上课时间
      */
-    private Date courseStartTime;
+
+    @JSONField(format ="HH:mm:ss")
+    private Time courseStartTime;
 
     /**
      * 下课时间
      */
-    private Date courseEndTime;
+    @JSONField(format ="HH:mm:ss")
+    private Time courseEndTime;
 
     /**
      * 课程持续时间（周数）

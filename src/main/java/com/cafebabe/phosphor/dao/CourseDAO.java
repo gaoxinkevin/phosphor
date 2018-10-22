@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.dao;
 
+import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.entity.Course;
 
 import java.util.List;
@@ -36,4 +37,11 @@ public interface CourseDAO extends MyBatisBaseDao<Course, Integer> {
      * @return 课程列表
      */
     List<Course> getCourseByCompanyName(String companyName);
+
+    /**
+     * g根据主键查询某课程所有信息
+     * @param courseId 课程id
+     * @return 课程信息
+     */
+    CourseInfo getCourseInfo (Integer courseId);
 }

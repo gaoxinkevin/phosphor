@@ -16,11 +16,25 @@
     <result column="company_id" jdbcType="INTEGER" property="companyId" />
     <result column="course_sf" jdbcType="VARCHAR" property="courseSf" />
   </resultMap>
+  <!---->
   <sql id="Base_Column_List">
     course_id, course_name, company_name, course_address, course_price, course_content, 
-    course_create_time, course_desc, course_status, course_time, course_discount, company_id, 
-    course_sf
+    course_create_time, course_desc, course_status, course_time, course_discount,
   </sql>
+
+  <select id="getCourseInfo" resultType="com.cafebabe.phosphor.model.dto.CourseInfo">
+    select course_name, company_name, course_address, course_price, course_content,
+    course_create_time, course_desc, teacher_name,type_name, course_start_day,
+    course_start_time,course_start_time,course_end_time,course_continued_time, course_time_status
+    from course
+    join teacher_course on course.course_id=teacher_course.course_id
+    join teacher on teacher_course.teacher_id=teacher.teacher_id
+    join course_type on course.course_id=course_type.course_id
+    join type on course_type.type_id=type.type_id
+    join course_time on course.course_id=course_time.course_id
+    where course.course_id=#{courseId,jdbcType=INTEGER}
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -28,7 +42,7 @@
     where course_id = #{courseId,jdbcType=INTEGER}
   </select>
 
-  <!--查询所有课程-->
+  <!--select all course-->
     <select id="getAllCourse" resultType="com.cafebabe.phosphor.model.entity.Course">
       select
       <include refid="Base_Column_List" />
@@ -43,7 +57,7 @@
     where course_name = #{courseName,jdbcType=INTEGER}
   </select>
 
-    <!--查询某个公司的课程-->
+    <!--select courses of a company-->
     <select id="getCourseByCompanyName" resultType="com.cafebabe.phosphor.model.entity.Course">
         select
         <include refid="Base_Column_List" />
@@ -51,7 +65,7 @@
         where company_name = #{companyName,jdbcType=INTEGER}
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from course
     where course_id = #{courseId,jdbcType=INTEGER}
   </delete>

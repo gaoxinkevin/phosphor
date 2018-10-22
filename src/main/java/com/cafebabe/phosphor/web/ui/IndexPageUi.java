@@ -29,7 +29,7 @@ import java.io.IOException;
 @RequestMapping("/indexUi")
 public class IndexPageUi {
 
-    @Autowired
+    @Autowired(required = false)
     HttpServletRequest httpServletRequest;
     @RequestMapping("returnIndexPage")
     public void returnIndexPage(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {

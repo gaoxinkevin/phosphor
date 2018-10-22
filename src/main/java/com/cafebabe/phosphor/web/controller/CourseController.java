@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.web.controller;
 
+import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.entity.Course;
 import com.cafebabe.phosphor.service.serviceimpl.CourseServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
@@ -36,7 +37,7 @@ public class CourseController {
     @ResponseBody
     @GetMapping("/findCourseInfo")
     public JsonResponse findCourseInfo(){
-        Course course = courseService.getCourseService("武术");
-        return new JsonResponse(20000,"成功",course);
+        CourseInfo courseInfo = courseService.getCourseInfoService(10000);
+        return new JsonResponse(20000,"成功",courseInfo);
     }
 }
