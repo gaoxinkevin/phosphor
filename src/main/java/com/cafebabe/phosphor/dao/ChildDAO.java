@@ -1,6 +1,8 @@
 package com.cafebabe.phosphor.dao;
 
+import com.cafebabe.phosphor.model.dto.ChildrenInfoDto;
 import com.cafebabe.phosphor.model.entity.Child;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,9 +23,11 @@ import java.util.List;
  **/
 
 public interface ChildDAO extends MyBatisBaseDao<Child, Integer> {
+
     /**
-     * 查询全部的孩子信息
-     * @return 查询全部的孩子信息
+     * 查询当前登录的用户，的所有孩子信息
+     * @param parentId 当前用户的id
+     * @return 当前用户的所有孩子信息
      */
-    List<Child> getChildDao();
+    List<ChildrenInfoDto> getChildInfoDao(@Param("parentId")Integer parentId);
 }

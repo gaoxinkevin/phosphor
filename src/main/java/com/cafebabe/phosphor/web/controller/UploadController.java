@@ -98,7 +98,7 @@ public class UploadController {
 
 
 
-    @RequestMapping("/fileupload.do")
+    @RequestMapping("fileupload.do")
     @ResponseBody
     public String upload(@RequestBody MultipartFile file) throws IOException{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSS");

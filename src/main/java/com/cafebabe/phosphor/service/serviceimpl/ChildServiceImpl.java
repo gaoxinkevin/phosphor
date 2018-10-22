@@ -1,7 +1,7 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
 import com.cafebabe.phosphor.dao.ChildDAO;
-import com.cafebabe.phosphor.model.entity.Child;
+import com.cafebabe.phosphor.model.dto.ChildrenInfoDto;
 import com.cafebabe.phosphor.service.ChildService;
 
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class ChildServiceImpl implements ChildService {
     }
 
     @Override
-    public List<Child> getChildService() {
-        return childDAO.getChildDao();
+    public List<ChildrenInfoDto> getChildInfo(Integer parentId) {
+        return childDAO.getChildInfoDao(parentId);
     }
 }
