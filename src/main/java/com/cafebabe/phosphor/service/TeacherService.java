@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.service;
 
+import com.cafebabe.phosphor.model.dto.TeacherInformation;
 import com.cafebabe.phosphor.model.entity.Teacher;
 import com.cafebabe.phosphor.util.PageModel;
 
@@ -23,14 +24,14 @@ public interface TeacherService {
      * @param startRecord 分页信息
      * @return 在职的教师信息
      */
-    PageModel<Teacher> getTeacherList(Integer startRecord);
+    PageModel<TeacherInformation> getTeacherList(Integer startRecord);
 
     /**
      * 根据教师ID获取某个老师的信息
      * @param teacherId 教师ID
      * @return 教师信息
      */
-    Teacher getTeacherById(Integer teacherId);
+    TeacherInformation getTeacherById(Integer teacherId);
 
     /**
      * 根据公司ID获取属于该公司的所有在职教师

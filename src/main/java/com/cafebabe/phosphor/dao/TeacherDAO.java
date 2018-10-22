@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.dao;
 
+import com.cafebabe.phosphor.model.dto.TeacherInformation;
 import com.cafebabe.phosphor.model.entity.Teacher;
 import com.cafebabe.phosphor.util.PageModel;
 
@@ -23,7 +24,7 @@ public interface TeacherDAO extends MyBatisBaseDao<Teacher, Integer> {
      * @param pageModel 分页信息
      * @return 在职的教师信息
      */
-    List<Teacher> getTeacherList(PageModel<Teacher> pageModel);
+    List<TeacherInformation> getTeacherList(PageModel<TeacherInformation> pageModel);
 
     /**
      * 获取所有在职的教师数量
@@ -36,7 +37,7 @@ public interface TeacherDAO extends MyBatisBaseDao<Teacher, Integer> {
      * @param teacherId 教师ID
      * @return 教师信息
      */
-    Teacher getTeacherById(Integer teacherId);
+    TeacherInformation getTeacherById(Integer teacherId);
 
     /**
      * 根据公司ID获取属于该公司的所有在职教师
