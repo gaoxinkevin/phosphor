@@ -54,7 +54,6 @@ public class ChildController {
 
     @RequestMapping("childInfo")
     @ResponseBody
-<<<<<<< HEAD
     public JsonResponse childrenInfo(){
         String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
         Integer parentId = parentService.getAllInfoAboutParentService(parentPhone).getParentId();
@@ -66,10 +65,5 @@ public class ChildController {
             RedisUtil.setList("childAllINfo"+parentPhone,list);
             return new JsonResponse(20000,"成功",list);
         }
-=======
-    public JsonResponse findAllChild(){
-        List<Child> children = childService.getChildService();
-        return new JsonResponse(200,"成功",children);
->>>>>>> devlnt
     }
 }

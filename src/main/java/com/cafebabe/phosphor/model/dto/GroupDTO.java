@@ -1,22 +1,33 @@
-package com.cafebabe.phosphor.model.entity;
+package com.cafebabe.phosphor.model.dto;
 
+import com.cafebabe.phosphor.model.entity.Course;
 import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
 
 /**
- * group
- * @author 
- */
+ *
+ * @author thethingyk@gmail.com
+ *
+ * class_name: GroupDTO
+ *
+ * create_date: 18-10-22
+ *
+ * create_time: 上午9:36
+ *
+ * description: group数据传输对象
+ **/
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Group implements Serializable {
+public class GroupDTO implements Serializable {
     /**
      * 套餐ID
      */
@@ -72,5 +83,10 @@ public class Group implements Serializable {
      * 套餐图片
      */
     private String groupPhoto;
+
+    /**
+     * 套餐包含的所有的课程
+     */
+    private List<Course> Courses;
 
 }

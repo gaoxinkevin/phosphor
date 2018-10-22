@@ -32,14 +32,10 @@ import javax.servlet.http.HttpServletRequest;
 public class ValidateRegisterController {
 
     @Autowired(required = false)
-    private HttpServletRequest httpServletRequest;
+    HttpServletRequest httpServletRequest;
 
-    public HttpServletRequest getHttpServletRequest() {
-        return httpServletRequest;
-    }
-
-    public void setHttpServletRequest(HttpServletRequest httpServletRequest) {
-        this.httpServletRequest = httpServletRequest;
+    @Autowired
+    public ValidateRegisterController() {
     }
 
     @Autowired

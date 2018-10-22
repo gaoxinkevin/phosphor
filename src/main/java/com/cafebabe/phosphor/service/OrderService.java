@@ -1,24 +1,11 @@
-package com.cafebabe.phosphor.dao;
+package com.cafebabe.phosphor.service;
 
+import com.cafebabe.phosphor.dao.OrderDAO;
 import com.cafebabe.phosphor.model.entity.Order;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-/**
- *
- * @author thethingyk@gmail.com
- *
- * class_name: OrderDAO
- *
- * create_date: 18-10-19
- *
- * create_time: 下午8:43
- *
- * description:
- **/
-public interface OrderDAO extends MyBatisBaseDao<Order, Integer> {
-
+public interface OrderService {
     /**
      * 添加订单
      * @param order 订单对象
@@ -70,7 +57,7 @@ public interface OrderDAO extends MyBatisBaseDao<Order, Integer> {
      * @param courseId 课程编号
      * @return order的列表
      */
-    List<Order> getCourseOrderList(@Param("parentId") Integer parentId, @Param("courseId") Integer courseId);
+    List<Order> getCourseOrderList( Integer parentId, Integer courseId);
 
     /**
      * 查询单个用户的所有的套餐订单
@@ -78,7 +65,7 @@ public interface OrderDAO extends MyBatisBaseDao<Order, Integer> {
      * @param groupId 套餐编号
      * @return order的列表
      */
-    List<Order> getGroupOrderList(@Param("parentId") Integer parentId, @Param("groupId") Integer groupId);
+    List<Order> getGroupOrderList(Integer parentId, Integer groupId);
 
     /**
      * 查询单个用户的所有的活动订单
@@ -86,7 +73,5 @@ public interface OrderDAO extends MyBatisBaseDao<Order, Integer> {
      * @param activityId 活动编号
      * @return order的列表
      */
-    List<Order> getActivityOrderList(@Param("parentId") Integer parentId, @Param("activityId") Integer activityId);
-
-
+    List<Order> getActivityOrderList(Integer parentId, Integer activityId);
 }
