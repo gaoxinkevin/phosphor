@@ -38,7 +38,6 @@ public class CompanyController {
         if (company == null) {
             return new JsonResponse(404,"can not find resourse",null);
         }
-        System.out.println(company);
         return new JsonResponse(20000,"success",company);
     }
 

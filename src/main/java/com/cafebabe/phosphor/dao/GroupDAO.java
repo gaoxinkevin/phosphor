@@ -29,13 +29,13 @@ public interface GroupDAO extends MyBatisBaseDao<Group, Integer> {
      * @param groupDiscount   套餐折扣
      * @return 0=>false | 1=>true
      */
-    Integer updateGroupDiscount(@Param("groupDiscount") BigDecimal groupDiscount,@Param("groupId") Integer groupId);
+    Integer updateGroupDiscount(@Param("groupDiscount") BigDecimal groupDiscount, @Param("groupId") Integer groupId);
 
     /**
      * 修改套餐状态
      * @return 0=>false | 1=>true
      */
-    Integer updateGroupStatus(@Param("groupStatus") Integer groupStatus,@Param("groupId") Integer groupId);
+    Integer updateGroupStatus(@Param("groupStatus") Integer groupStatus, @Param("groupId") Integer groupId);
 
     /**
      * 删除套餐
@@ -75,6 +75,6 @@ public interface GroupDAO extends MyBatisBaseDao<Group, Integer> {
      * @param maxDiscount 最大折扣
      * @return 套餐信息列表
      */
-    List<Group> getGroupListByDiscountScope(@Param("minDiscount") BigDecimal minDiscount,@Param("maxDiscount") BigDecimal maxDiscount);
+    List<Group> getGroupListByDiscountScope(@Param("minDiscount") BigDecimal minDiscount, @Param("maxDiscount") BigDecimal maxDiscount);
 
 }

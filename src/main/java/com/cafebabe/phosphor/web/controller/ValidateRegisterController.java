@@ -31,12 +31,11 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/validateRegister")
 public class ValidateRegisterController {
 
-    final
+    @Autowired(required = false)
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    public ValidateRegisterController(HttpServletRequest httpServletRequest) {
-        this.httpServletRequest = httpServletRequest;
+    public ValidateRegisterController() {
     }
 
     @RequestMapping("/parentValidateRegister")

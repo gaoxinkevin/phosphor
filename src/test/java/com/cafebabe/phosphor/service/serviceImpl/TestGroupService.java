@@ -24,4 +24,10 @@ public class TestGroupService {
         List<Group> list = groupDAO.getGroupListByDiscountScope(new BigDecimal(0.9),new BigDecimal(1.0));
         list.forEach(System.out::println);
     }
+    @Test
+    public void testGetGroupById(){
+        Group list = groupDAO.getGroupById(10001);
+
+        System.out.println(list);
+    }
 }

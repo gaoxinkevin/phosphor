@@ -1,23 +1,24 @@
-package com.cafebabe.phosphor.model.entity;
-
-import lombok.*;
+package com.cafebabe.phosphor.model.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
- * order
+ *
  * @author thethingyk@gmail.com
- */
+ *
+ * class_name: OrderList
+ *
+ * create_date: 18-10-18
+ *
+ * create_time: 上午11:24
+ *
+ * description: 订单列表
+ **/
+public class OrderDTO implements Serializable {
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
-@NoArgsConstructor
-public class Order implements Serializable {
     /**
      * 订单ID
      */
@@ -49,19 +50,9 @@ public class Order implements Serializable {
     private Integer childId;
 
     /**
-     * 课程ID
+     * 订单详情
      */
-    private Integer courseId;
-
-    /**
-     * 套餐ID
-     */
-    private Integer groupId;
-
-    /**
-     * 活动ID
-     */
-    private Integer activityId;
+    private List<OrderDetail> details;
 
     /**
      * 订单结束时间
@@ -77,7 +68,4 @@ public class Order implements Serializable {
      * 冗余字段
      */
     private String orderSf;
-
-    private static final long serialVersionUID = 1L;
-
 }

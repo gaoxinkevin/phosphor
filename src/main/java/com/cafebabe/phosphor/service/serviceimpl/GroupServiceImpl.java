@@ -1,6 +1,8 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
+import com.cafebabe.phosphor.dao.GroupCourseDAO;
 import com.cafebabe.phosphor.dao.GroupDAO;
+import com.cafebabe.phosphor.model.dto.GroupDTO;
 import com.cafebabe.phosphor.model.entity.Group;
 import com.cafebabe.phosphor.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +27,25 @@ import java.util.List;
 @Controller
 public class GroupServiceImpl implements GroupService {
 
-    @Autowired
-    private final GroupDAO groupDAO;
 
-    public GroupServiceImpl(GroupDAO groupDAO) { this.groupDAO=groupDAO; }
+
+    private final GroupDAO groupDAO;
+    private final GroupCourseDAO groupCourseDAO;
+    @Autowired
+    public GroupServiceImpl(GroupDAO groupDAO,GroupCourseDAO groupCourseDAO) {
+        this.groupDAO=groupDAO;
+        this.groupCourseDAO=groupCourseDAO;
+    }
 
     @Override
-    public Integer insertGroup(Group group) { return groupDAO.insertGroup(group); }
+    public Integer insertGroup(GroupDTO group) {
+        if ((1==groupDAO.insertGroup(toGroup(group)))
+                &&(1==groupCourseDAO.insertGroupCourses(group.getCourses()))){
+            return 1;
+        }else{
+            return 1;
+        }
+    }
 
     @Override
     public Integer updateGroup(Group group) { return groupDAO.updateGroup(group); }
@@ -53,10 +67,20 @@ public class GroupServiceImpl implements GroupService {
     public Group getGroupById(Integer id) { return groupDAO.getGroupById(id); }
 
     @Override
-    public List<Group> getGroupListAll() { return groupDAO.getGroupListAll(); }
+    public GroupDTO getGroupDTOById(Integer id) {
+        return null;
+        //return toGroupDTO(groupDAO.getGroupById(id));
+    }
 
     @Override
-    public List<Group> getGroupListAlive() { return groupDAO.getGroupListAlive(); }
+    public List<Group> getGroupListAll() {
+        return groupDAO.getGroupListAll();
+    }
+
+    @Override
+    public List<Group> getGroupListAlive() {
+        return groupDAO.getGroupListAlive();
+    }
 
     @Override
     public List<Group> getGroupListByDiscount(BigDecimal discount) {
@@ -67,4 +91,41 @@ public class GroupServiceImpl implements GroupService {
     public List<Group> getGroupListByDiscountScope(BigDecimal minDiscount, BigDecimal maxDiscount) {
         return groupDAO.getGroupListByDiscountScope(minDiscount,maxDiscount);
     }
+
+    private Group toGroup(GroupDTO groupDTO){
+        if (groupDTO == null) {
+            return null;
+        }
+        return new Group(groupDTO.getGroupId(),
+                groupDTO.getGroupStatus(),
+                groupDTO.getGroupEndTime(),
+                groupDTO.getGroupName(),
+                groupDTO.getGroupDiscount(),
+                groupDTO.getGroupContent(),
+                groupDTO.getGroupCreateTime(),
+                groupDTO.getGroupSf(),
+                groupDTO.getGroupPrice(),
+                groupDTO.getGroupCourseNumber(),
+                groupDTO.getGroupPhoto()
+        );
+    }
+
+/*    private GroupDTO toGroupDTO(Group group){
+        if (group == null) {
+            return null;
+        }
+        return new GroupDTO(group.getGroupId(),
+                group.getGroupStatus(),
+                group.getGroupEndTime(),
+                group.getGroupName(),
+                group.getGroupDiscount(),
+                group.getGroupContent(),
+                group.getGroupCreateTime(),
+                group.getGroupSf(),
+                group.getGroupPrice(),
+                group.getGroupCourseNumber(),
+                group.getGroupPhoto(),
+                groupDAO.getCourseByGroupId(group.getGroupId()));
+    }*/
+
 }

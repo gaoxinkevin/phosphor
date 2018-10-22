@@ -29,14 +29,13 @@
 <body>
 <!--Ajax向后台输出数据-->
 <script>
-    const clientUrl = 'http://localhost:1250/userLogin/userLogin';
-    const clientMethod = 'POST';
-    const saveCustomer = ({url, method, data}) => {
-        return new Promise((resolve, reject) => {
+    const clientUrl = 'http://localhost:1250/group/group?groupId=10001';
+    const clientMethod = 'GET';
+    const getJsonGroup = (url) => {
+        return new Promise((resolve,reject) => {
             const client = new XMLHttpRequest();
-            client.open(clientMethod, clientUrl);
+            client.open(clientMethod, url);
             client.responseType = 'json';
-            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
             client.onreadystatechange = () => {
                 if (client.readyState === 4) {
                     if (client.status === 200) {
@@ -46,17 +45,35 @@
                     }
                 }
             };
-            client.send(data);
+            client.send();
         });
     };
 
-    const saveJsonCustomer = (data) => saveCustomer(
-        {
-            url: clientUrl,
-            method: clientMethod,
-            data
-        }
-    );
+    const group = () => getJsonGroup(clientUrl) ;
+
+    group().then(({data}) => {
+
+        const groupName = document.getElementById("groupName");
+        const groupContent = document.getElementById("groupContent");
+        const groupPrice = document.getElementById("groupPrice");
+        const groupDiscount = document.getElementById("groupDiscount");
+        const groupCourseNumber = document.getElementById("groupCourseNumber");
+        const groupPhoto = document.getElementById("groupPhoto");
+        const groupPrettyPhoto = document.getElementById("groupPrettyPhoto");
+
+        groupName.innerText = data.groupName;
+        groupContent.innerText = data.groupContent;
+        groupPrice.innerText = data.groupPrice ;
+        groupDiscount.innerText =data.groupPrice * data.groupDiscount;
+        groupCourseNumber.innerText = data.groupCourseNumber;
+        groupPhoto.src = data.groupPhoto;
+        groupPrettyPhoto.href = data.groupPhoto;
+        groupPrettyPhoto.innerText =data.groupName;
+
+
+    }).catch(error => {
+        console.log(error);
+    });
 </script>
 
 <div id="wrapper">
@@ -134,22 +151,59 @@
         </div><!-- end container -->
     </section><!-- end section -->
 
-    <section class="section gb nopadtop">
+    <section class="section">
         <div class="container">
-            <div class="boxed">
+            <div class=" ">
+                <div class="row">
+                    <div class="col-md-6 shop-media">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="image-wrap entry">
+                                    <img  src="" alt="" class="img-responsive" id="groupPhoto">
+                                    <div class="magnifier">
+                                        <a  rel="prettyPhoto[inline]" href="" title="" id="groupPrettyPhoto"></a>
+                                    </div>
+                                </div><!-- end image-wrap -->
+                            </div>
+                        </div><!-- end row -->
+                    </div><!-- end col -->
+
+                    <div class="col-md-6">
+                        <div class="shop-desc">
+                            <h3 id="groupName"></h3>
+                            <ul>
+                                <li id="groupPrice"></li>
+                                <li id="groupCourseNumber"></li>
+                            </ul>
+                            <small id="groupDiscount"></small>
+                            <p id="groupContent"></p>
+                            <div class="shop-meta">
+                                <a href="javascript:groupOrder(groupId);" class="btn btn-primary">立即购买</a>
+                                <ul class="list-inline">
+                                    <li> Tip: 套餐购买是促销活动,购买<a href="#">课程</a>的所有权益均保留</li>
+                                </ul>
+                            </div><!-- end shop meta -->
+                        </div><!-- end desc -->
+                    </div><!-- end col -->
+                </div><!-- end row -->
+
+                <hr class="invis">
                 <div class="row">
                     <div class="sidebar col-md-12">
                         <div class="widget clearfix">
                             <div class="banner-widget">
-                                <img src="/upload/blog_01.jpeg" alt="" class="img-responsive img-rounded">
+                                <img src="" alt="" class="img-responsive img-rounded">
                             </div>
                         </div>
                         <div class="widget clearfix">
                             <h3 class="widget-title">套餐课程</h3>
                             <div class="post-widget">
                                 <div class="media">
-                                    <img src="/upload/01_team.png" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
+                                    <div class="col-md-3">
+                                        <img src="/upload/01_team.png" alt="" class="img-responsive alignleft img-rounded">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="media-body">
                                         <h5 class="mt-0"><a href="">Learning English Like a Pro..</a></h5>
                                         <div class="blog-meta">
                                             <ul class="list-inline">
@@ -157,6 +211,7 @@
                                                 <li><span>by</span> <a href="#">Edulogy Team</a></li>
                                             </ul>
                                         </div><!-- end blog-meta -->
+                                        </div>
                                     </div>
                                 </div>
 
@@ -189,7 +244,7 @@
                         </div><!-- end widget -->
 
                         <div class="widget clearfix">
-                            <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                            <h3 class="widget-title">套餐须知:</h3>
                             <div class="newsletter-widget">
                                 <p>You can opt out of our newsletters at any time. See our <a href="#">privacy policy</a>.</p>
                                 <form class="form-inline" role="search">
@@ -220,6 +275,111 @@
                         </div><!-- end widget -->
                     </div><!-- end sidebar -->
                 </div><!-- end row -->
+                <hr class="invis">
+
+                <div class="related-products">
+                    <div class="text-widget">
+                        <h3>Related Products</h3>
+                    </div><!-- end title -->
+
+                    <div class="row blog-grid shop-grid">
+                        <div class="col-md-4">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/shop_01.jpg" alt="" class="img-responsive">
+                                    <div class="magnifier">
+                                        <a href="shop-single.html" title=""><i class="flaticon-add"></i></a>
+                                    </div>
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4>
+                                        <a href="shop-single.html" title="">Brown leather bag</a>
+                                        <small>Bags</small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">$441.00</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+
+                        <div class="col-md-4">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/shop_02.jpg" alt="" class="img-responsive">
+                                    <div class="magnifier">
+                                        <a href="" title=""><i class="flaticon-add"></i></a>
+                                    </div>
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4>
+                                        <a href="/shop-single.html" title="">Long coat jacket</a>
+                                        <small>Jackets</small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">$122.00</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+
+                        <div class="col-md-4">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/shop_03.jpg" alt="" class="img-responsive">
+                                    <div class="magnifier">
+                                        <a href="shop-single.html" title=""><i class="flaticon-add"></i></a>
+                                    </div>
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4>
+                                        <a href="shop-single.html" title="">Style own glasses</a>
+                                        <small>Glasses</small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">$52.00</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                </div><!-- end related -->
             </div><!-- end boxed -->
         </div><!-- end container -->
     </section>
