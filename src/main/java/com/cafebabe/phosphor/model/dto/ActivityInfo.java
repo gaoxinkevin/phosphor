@@ -22,6 +22,7 @@ public class ActivityInfo {
     private Integer activityId;
     private Integer teacherId;
     private String teacherName;
+    private Integer companyId;
     private String companyName;
     private String activityTitle;
     private String activityDesc;

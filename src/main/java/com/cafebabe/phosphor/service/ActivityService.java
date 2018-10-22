@@ -27,5 +27,4 @@ public interface ActivityService {
 
     Integer deleteActivityByID(Integer id);
 
-    List<ActivityInfo> merge(List<Activity> activityList);
 }

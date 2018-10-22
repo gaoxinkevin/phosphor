@@ -4,7 +4,7 @@
 function getActivityAll() {
     let request = getXhr();
     request.open("GET", "/activity/getActivityInfoAll", true);
-    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     request.send(null);
     
     request.onreadystatechange = function () {
@@ -75,7 +75,11 @@ function loadActivityListByPage(pageJson) {
     refreshUlPagination(currentPageCode, totalPages);
 }
 
-
+/**
+ * 刷新活动
+ * @param activityInfoList
+ * @param pageSize
+ */
 function refreshGrid(activityInfoList, pageSize) {
     let div = document.getElementById("activityGrid");
     let length = activityInfoList.length;
@@ -205,7 +209,7 @@ function generateDiv(activityInfo) {
     imgResponsive.classList.add("img-responsive", "img-circle");
 
     let aTitle = document.createElement("a");
-    aTitle.setAttribute("href", "/activity/activityDetail?activityID="+activityInfo.activityID);
+    aTitle.setAttribute("href", "/activity/activityDetail?activityId="+activityInfo.activityID);
 
     let h4 = document.createElement("h4");
 
@@ -242,6 +246,9 @@ function generateDiv(activityInfo) {
     return divGrid;
 }
 
+/**
+ * 跳转到指定页面
+ */
 function newPage() {
     let pageIndex = parseInt(this.innerText) - 1;
     getActivityByPage(pageIndex, 4);

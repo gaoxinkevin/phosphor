@@ -47,8 +47,16 @@ public class ActivityController {
     @RequestMapping("getActivityInfoByPage")
     @ResponseBody
     public  JsonResponse getActivityInfoByPage(Integer pageIndex, Integer pageSize){
-        System.out.println(pageIndex +"========" + pageSize +"");
         Page page = activityService.getActivityInfoByPage(pageIndex, pageSize);
         return new JsonResponse(200, "success", page);
     }
+
+
+    @RequestMapping("activityDetail")
+    @ResponseBody
+    public JsonResponse getActivityDetail(Integer activityId){
+        Activity activity = activityService.getActivityByID(activityId);
+        return new JsonResponse(200, "success", activity);
+    }
+    
 }
