@@ -3,11 +3,12 @@ package com.cafebabe.phosphor.model.entity;
 import lombok.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * order
- * @author 
+ * @author thethingyk@gmail.com
  */
 
 @Getter
@@ -35,7 +36,7 @@ public class Order implements Serializable {
     /**
      * 订单价格
      */
-    private Long orderPrice;
+    private BigDecimal orderPrice;
 
     /**
      * 家长ID

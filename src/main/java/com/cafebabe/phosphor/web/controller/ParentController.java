@@ -5,18 +5,19 @@ import com.cafebabe.phosphor.model.dto.InsertParent;
 import com.cafebabe.phosphor.model.dto.MobileAndRandomCode;
 import com.cafebabe.phosphor.model.entity.Parent;
 
+import com.cafebabe.phosphor.service.serviceimpl.InsertParentServiceImpl;
 import com.cafebabe.phosphor.service.serviceimpl.ParentServiceImpl;
 
 import com.cafebabe.phosphor.util.GsonUtil;
 import com.cafebabe.phosphor.util.JsonResponse;
 import com.cafebabe.phosphor.util.SMSUtil;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 
@@ -40,7 +41,9 @@ import java.util.Map;
 public class ParentController {
 
     private final ParentServiceImpl parentService;
-    private final HttpServletRequest httpServletRequest;
+    @Autowired(required = false)
+    private HttpServletRequest httpServletRequest;
+    private final InsertParentServiceImpl insertParentService;
     private static final String TRUE_RESULT = "true";
     private static final String FALSE_RESULT = "false";
 
@@ -48,9 +51,9 @@ public class ParentController {
      * 短信接口相关
      */
     @Autowired
-    public ParentController(ParentServiceImpl parentService, HttpServletRequest httpServletRequest) {
+    public ParentController(ParentServiceImpl parentService, InsertParentServiceImpl insertParentService) {
         this.parentService = parentService;
-        this.httpServletRequest = httpServletRequest;
+        this.insertParentService = insertParentService;
     }
 
     @ResponseBody
