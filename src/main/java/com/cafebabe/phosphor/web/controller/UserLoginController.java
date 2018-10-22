@@ -38,13 +38,17 @@ public class UserLoginController {
 
     private final UserLoginServiceImpl userLoginService;
 
-    private final HttpServletRequest httpServletRequest;
+    @Autowired(required = false)
+    private  HttpServletRequest httpServletRequest;
+
+    public HttpServletRequest getHttpServletRequest() {
+        return httpServletRequest;
+    }
 
 
     @Autowired
-    public UserLoginController(UserLoginServiceImpl userLoginService, HttpServletRequest httpServletRequest) {
+    public UserLoginController(UserLoginServiceImpl userLoginService) {
         this.userLoginService = userLoginService;
-        this.httpServletRequest = httpServletRequest;
     }
 
     @RequestMapping("userLogin")

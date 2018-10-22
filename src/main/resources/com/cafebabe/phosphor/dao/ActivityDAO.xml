@@ -16,11 +16,12 @@
     <result column="activity_apply_end_time" jdbcType="TIMESTAMP" property="activityApplyEndTime" />
     <result column="activity_end_time" jdbcType="TIMESTAMP" property="activityEndTime" />
     <result column="activity_content" jdbcType="VARCHAR" property="activityContent" />
+    <result column="activity_price" jdbcType="DECIMAL" property="activityPrice" />
   </resultMap>
   <sql id="Base_Column_List">
     activity_id, teacher_id, company_id, activity_title, activity_desc, activity_start_time, 
     activity_address, activity_state, company_name, activity_sf, activity_apply_start_time, 
-    activity_apply_end_time, activity_end_time, activity_content
+    activity_apply_end_time, activity_end_time, activity_content, activity_price
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -28,6 +29,21 @@
     from activity
     where activity_id = #{activityId,jdbcType=INTEGER}
   </select>
+  <select id="getActivityAll" resultType="com.cafebabe.phosphor.model.entity.Activity">
+    select
+    <include refid="Base_Column_List"/>
+    from activity
+  </select>
+
+  <select id="getActivityByPage" resultType="com.cafebabe.phosphor.model.entity.Activity" parameterType="com.cafebabe.phosphor.model.dto.Page">
+    select
+    <include refid="Base_Column_List"/>
+    from activity limit #{startRecord}, #{pageSize}
+  </select>
+
+    <select id="getActivityCount" resultType="java.lang.Integer">
+        select count(*) from activity
+    </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from activity
     where activity_id = #{activityId,jdbcType=INTEGER}
@@ -37,12 +53,14 @@
       activity_title, activity_desc, activity_start_time, 
       activity_address, activity_state, company_name, 
       activity_sf, activity_apply_start_time, activity_apply_end_time, 
-      activity_end_time, activity_content)
+      activity_end_time, activity_content, activity_price
+      )
     values (#{activityId,jdbcType=INTEGER}, #{teacherId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, 
       #{activityTitle,jdbcType=VARCHAR}, #{activityDesc,jdbcType=VARCHAR}, #{activityStartTime,jdbcType=TIMESTAMP}, 
       #{activityAddress,jdbcType=VARCHAR}, #{activityState,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, 
       #{activitySf,jdbcType=VARCHAR}, #{activityApplyStartTime,jdbcType=TIMESTAMP}, #{activityApplyEndTime,jdbcType=TIMESTAMP}, 
-      #{activityEndTime,jdbcType=TIMESTAMP}, #{activityContent,jdbcType=VARCHAR})
+      #{activityEndTime,jdbcType=TIMESTAMP}, #{activityContent,jdbcType=VARCHAR}, #{activityPrice,jdbcType=DECIMAL}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Activity">
     insert into activity
@@ -89,6 +107,9 @@
       <if test="activityContent != null">
         activity_content,
       </if>
+      <if test="activityPrice != null">
+        activity_price,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="activityId != null">
@@ -132,6 +153,9 @@
       </if>
       <if test="activityContent != null">
         #{activityContent,jdbcType=VARCHAR},
+      </if>
+      <if test="activityPrice != null">
+        #{activityPrice,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -177,6 +201,9 @@
       <if test="activityContent != null">
         activity_content = #{activityContent,jdbcType=VARCHAR},
       </if>
+      <if test="activityPrice != null">
+        activity_price = #{activityPrice,jdbcType=DECIMAL},
+      </if>
     </set>
     where activity_id = #{activityId,jdbcType=INTEGER}
   </update>
@@ -194,7 +221,8 @@
       activity_apply_start_time = #{activityApplyStartTime,jdbcType=TIMESTAMP},
       activity_apply_end_time = #{activityApplyEndTime,jdbcType=TIMESTAMP},
       activity_end_time = #{activityEndTime,jdbcType=TIMESTAMP},
-      activity_content = #{activityContent,jdbcType=VARCHAR}
+      activity_content = #{activityContent,jdbcType=VARCHAR},
+      activity_price = #{activityPrice,jdbcType=DECIMAL}
     where activity_id = #{activityId,jdbcType=INTEGER}
   </update>
 </mapper>
