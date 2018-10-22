@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -33,8 +34,16 @@ public class GroupController {
     public GroupController(GroupServiceImpl groupService) { this.groupService = groupService; }
 
     @GetMapping("groupList")
+    @ResponseBody
     public JsonResponse getGroupList(){
-        List<Group> groupList =groupService.getGroupListAlive();
+        List<Group> groupList =groupService.getGroupListAll();
         return new JsonResponse(200,"success",groupList);
+    }
+
+    @GetMapping("group")
+    @ResponseBody
+    public JsonResponse getGroup(Integer groupId){
+        Group group =groupService.getGroupById(groupId);
+        return new JsonResponse(200,"success",group);
     }
 }

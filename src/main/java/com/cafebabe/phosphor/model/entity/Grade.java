@@ -57,6 +57,6 @@ public class Grade implements Serializable {
      */
     private String gradeSf;
 
-    private static final long serialVersionUID = 1L;
+
 
 }

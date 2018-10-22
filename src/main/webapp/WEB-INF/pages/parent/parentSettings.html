@@ -8,7 +8,7 @@
     <!-- Mobile Meta -->
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Site Meta -->
-    <title>个人中心</title>
+    <title>个人中心-基本信息</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -29,7 +29,20 @@
 
     <!--自己写的 -->
     <link rel="stylesheet" href="/css/alreadyLogin.css">
+    <style>
+        .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
+            background-color:#82B43F;
+            border-color: #82B43F;
+        }
+        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+            background: #82B43F;
+            color: #ffffff !important;
+        }
+        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+            background: #82B43F none repeat scroll 0 0 !important;
 
+        }
+    </style>
 
 </head>
 
@@ -37,7 +50,7 @@
 <!--Ajax向后台输出数据-->
 <script>
 
-    <!--判断用户登录-->
+    // <!--判断用户登录-->
     let a = localStorage.getItem("userLoginPhone");
     if (a === null) {
         localStorage.clear();
@@ -95,51 +108,51 @@
         let detailAddress = document.getElementById("site2").value;
         let address;
 
-        if (trSite4.style.display === "none"){
+        if (trSite4.style.display === "none") {
 
-            let province2  =  document.getElementById("province");
-            let city2 =  document.getElementById("city");
-            let area2  = document.getElementById("area");
+            let province2 = document.getElementById("province");
+            let city2 = document.getElementById("city");
+            let area2 = document.getElementById("area");
 
-            let cityName2= "";
-            let areaName2="";
-            let provinceName2 ="";
+            let cityName2 = "";
+            let areaName2 = "";
+            let provinceName2 = "";
 
-            if (province2.options[province2.value] !== undefined){
-                provinceName2 = province2.options[Number(province2.value)+1].text;
+            if (province2.options[province2.value] !== undefined) {
+                provinceName2 = province2.options[Number(province2.value) + 1].text;
             } else {
-                provinceName2 =  "请选择省份";
+                provinceName2 = "请选择省份";
             }
 
-            if (city2.options[Number(city2.value)] !== undefined ){
-                 cityName2= city2.options[Number(city2.value)].text;
+            if (city2.options[Number(city2.value)] !== undefined) {
+                cityName2 = city2.options[Number(city2.value)].text;
             } else {
                 cityName2 = "请选择城市";
             }
 
-            if (area2.options[Number(area2.value)] !==  undefined){
+            if (area2.options[Number(area2.value)] !== undefined) {
                 areaName2 = area2.options[Number(area2.value)].text;
             } else {
                 areaName2 = "请选择地区";
             }
-             address = provinceName2+cityName2+areaName2+detailAddress;
+            address = provinceName2 + cityName2 + areaName2 + detailAddress;
         } else {
-            address  = familyAdress
+            address = familyAdress
         }
 
         console.log(address);
 
-        let parent=  {
-            parentDesc : document.getElementById("bio").value,
-            parentPrephone : document.getElementById("site3").value,
-            parentPhone : JSON.parse(localStorage.getItem("userLoginPhone")).val,
-            parentAddress : address
+        let parent = {
+            parentDesc: document.getElementById("bio").value,
+            parentPrephone: document.getElementById("site3").value,
+            parentPhone: JSON.parse(localStorage.getItem("userLoginPhone")).val,
+            parentAddress: address
         };
 
         //AjaxBegin
         const clientMethod = 'POST';
         const clientUrl = 'http://localhost:1250/parent/updateParent';
-        const updateParent = ({url, method, data}) => {
+        const updateParent = ({ url, method, data }) => {
             return new Promise((resolve, reject) => {
                 const client = new XMLHttpRequest();
                 client.open(clientMethod, url);
@@ -169,7 +182,7 @@
 
         resultList(JSON.stringify(parent)).then((res) => {
             console.log(res);
-            window.location.href='/parentUi/parentSettingsUi'
+            window.location.href = '/parentUi/parentSettingsUi'
         }).catch(error => {
             console.log(error);
         });
@@ -249,10 +262,23 @@
                         <li><a href="">课程</a></li>
                         <li><a href="">活动</a></li>
                         <li><a href="">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">官方套餐</a></li>
+                                    <li><a href="#">自定义套餐</a></li>
+                                </ul>
+                            </div>
+                        </li>
                         <li><a href="">联系我们</a></li>
-                        <li><a href="/loginUi/loginUi">登录|注册</a></li>
-                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
-                                class="fa fa-search"></i></a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
                         <li>
                             <div class="dropdown">
                                 <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
@@ -278,6 +304,8 @@
         <div id="dgtle_body_bg" style="margin-top: 110px">
             <div id="wp" class="wp">
                 <div id="ct" class="ct2 wp cl dgtle_wpct2">
+
+
                     <div class="mn">
                         <div class="bm bw0">
                             <h1 class="mt">个人资料
@@ -288,7 +316,7 @@
                                     <a href="/parentUi/parentSettingsUi" sl-processed="1">基本信息</a>
                                 </li>
                                 <li>
-                                    <a sl-processed="1">密码安全</a>
+                                    <a href="/parentUi/parentChangePasswordUi" sl-processed="1">密码安全</a>
                                 </li>
                             </ul>
                             <div>
@@ -305,17 +333,17 @@
                                             <div class="docs-methods">
                                                 <label for="province"></label>
                                                 <select id="province" onchange="chooseProvince(this)">
-                                                    <option value=""  selected disabled="">请选择省份</option>
+                                                    <option value="" selected disabled="">请选择省份</option>
                                                 </select>
 
                                                 <label for="city"></label>
                                                 <select id="city" onChange="chooseCity(this)">
-                                                    <option value=""  selected disabled="">请选择城市</option>
+                                                    <option value="" selected disabled="">请选择城市</option>
                                                 </select>
 
                                                 <label for="area"></label>
                                                 <select id="area">
-                                                    <option value=""  selected disabled="">请选择城镇</option>
+                                                    <option value="" selected disabled="">请选择城镇</option>
                                                 </select>
                                             </div>
                                         </td>
@@ -325,25 +353,24 @@
                                     <tr id="tr_site2" style="display: none;">
                                         <th id="th_site2">详细地址</th>
                                         <td id="td_site2">
-                                            <input type="text" name="site" id="site2" class="px" value="" tabindex="1"
-                                                   style="height: auto;margin-left: 3px"
+                                            <input type="text" name="site" id="site2" class="px" value="" tabindex="1" style="height: auto;margin-left: 3px"
                                                    placeholder="详细地址：如街道，门牌号，小区，楼栋好，单元号，室等">
-                                            <button class="btn-danger  btn-sm" style="padding: 3px  16px"
-                                                    onclick="cancelChangeAddress()" id="cancelAddressBtn">
+                                            <button class="btn-danger  btn-sm" style="padding: 3px  16px" onclick="cancelChangeAddress()"
+                                                    id="cancelAddressBtn">
                                                 取消
                                             </button>
                                             <div class="rq mtn" id="showerror_site2"></div>
-                                            <p class="d"></p></td>
+                                            <p class="d"></p>
+                                        </td>
                                     </tr>
 
                                     <tr id="tr_site4">
                                         <th id="th_site4">家庭地址</th>
                                         <td id="td_site4">
                                             <label for="site4"></label>
-                                            <input type="text" name="site" id="site4" class="px" value="" tabindex="1"
-                                                   style="height: auto" readonly>
-                                            <button class="btn-primary  btn-sm" style="padding: 3px  16px"
-                                                    onclick="changeAddress()" id="addressBtn">更改
+                                            <input type="text" name="site" id="site4" class="px" value="" tabindex="1" style="height: auto"
+                                                   readonly>
+                                            <button class="btn-primary  btn-sm" style="padding: 3px  16px" onclick="changeAddress()" id="addressBtn">更改
                                             </button>
                                             <div class="rq mtn" id="showerror_site4"></div>
                                             <p class="d"></p>
@@ -354,22 +381,21 @@
                                         <th id="th_site3">备用手机号</th>
                                         <td id="td_site3">
                                             <label for="site3"></label>
-                                            <input type="number" name="site"
-                                                   id="site3" class="px" value="" tabindex="1"
-                                                   style="height: auto"/>
+                                            <input type="number" name="site" id="site3" class="px" value="" tabindex="1" style="height: auto" />
                                             <div class="rq mtn" id="showerror_site3"></div>
-                                            <p class="d"></p></td>
+                                            <p class="d"></p>
+                                        </td>
                                     </tr>
 
                                     <tr id="tr_bio">
                                         <th id="th_bio">自我介绍</th>
                                         <td id="td_bio">
                                             <label for="bio"></label>
-                                            <textarea name="bio" id="bio" class="pt"
-                                                      rows="3" cols="40" tabindex="1">
+                                            <textarea name="bio" id="bio" class="pt" rows="3" cols="40" tabindex="1">
                                             </textarea>
                                             <div class="rq mtn" id="showerror_bio"></div>
-                                            <p class="d"></p></td>
+                                            <p class="d"></p>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>&nbsp;</th>
@@ -395,12 +421,11 @@
 
                         <div class="sd_box">
                             <div class="group_sd_mymembers cr_grs">
-                                <div class="avat"
-                                     style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
+                                <div class="avat" style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
                                     <a target="_blank" sl-processed="1">
-                                        <img id="avatarImg2"
-                                             src="http://www.dgtle.com/uc_server/images/noavatar_big.gif"
-                                             style="max-width: 100%">
+                                        <img id="avatarImg2" src="http://www.dgtle.com/uc_server/images/noavatar_big.gif" style="max-width: 100%;min-height: 100px;
+                                                    min-width: 100px;max-height: 100%;
+                                                    margin: 0">
                                     </a>
                                 </div>
                                 <div class="mporf cl">
@@ -418,28 +443,27 @@
                             <ul>
 
                                 <li>
-                                    <a href=""
-                                       sl-processed="1">修改头像</a>
+                                    <a href="/parentUi/parentChangeAvatarUi" sl-processed="1">修改头像</a>
                                 </li>
 
                                 <li class="a">
-                                    <a href=""
-                                       sl-processed="1">个人资料</a>
+                                    <a href="#" sl-processed="1">个人资料</a>
                                 </li>
 
                                 <li>
-                                    <a href=""
-                                       sl-processed="1">密码安全</a>
+                                    <a href="/parentUi/parentChangePasswordUi" sl-processed="1">密码安全</a>
                                 </li>
 
                                 <li>
-                                    <a href=""
-                                       sl-processed="1">孩子资料</a>
+                                    <a href="" sl-processed="1">订单查询</a>
                                 </li>
 
                                 <li>
-                                    <a href=""
-                                       sl-processed="1">帐号绑定</a>
+                                    <a href="/children/infoUi" sl-processed="1">孩子资料</a>
+                                </li>
+
+                                <li>
+                                    <a href="" sl-processed="1">帐号绑定</a>
                                 </li>
                             </ul>
 

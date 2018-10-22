@@ -29,8 +29,8 @@ import java.io.IOException;
 @RequestMapping("/indexUi")
 public class IndexPageUi {
 
-//    @Autowired(required = false)
-//    private HttpServletRequest httpServletRequest;
+    @Autowired(required = false)
+    HttpServletRequest httpServletRequest;
     @RequestMapping("returnIndexPage")
     public void returnIndexPage(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/index.html").forward(httpServletRequest,httpServletResponse);

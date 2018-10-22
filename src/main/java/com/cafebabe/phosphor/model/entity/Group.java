@@ -10,7 +10,6 @@ import java.util.Date;
  * group
  * @author 
  */
-
 @Getter
 @Setter
 @ToString
@@ -30,6 +29,7 @@ public class Group implements Serializable {
 
     /**
      * 套餐结束时间
+
      */
     private Date groupEndTime;
 
@@ -58,6 +58,19 @@ public class Group implements Serializable {
      */
     private String groupSf;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 套餐原价
+     */
+    private BigDecimal groupPrice;
+
+    /**
+     * 套餐包含课程数目
+     */
+    private Integer groupCourseNumber;
+
+    /**
+     * 套餐图片
+     */
+    private String groupPhoto;
 
 }

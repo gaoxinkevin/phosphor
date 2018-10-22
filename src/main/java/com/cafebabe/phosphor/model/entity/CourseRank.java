@@ -38,6 +38,6 @@ public class CourseRank implements Serializable {
      */
     private String courseRankSf;
 
-    private static final long serialVersionUID = 1L;
+
 
 }

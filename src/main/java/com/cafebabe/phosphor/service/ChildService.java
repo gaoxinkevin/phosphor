@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.service;
 
+import com.cafebabe.phosphor.model.dto.ChildrenInfoDto;
 import com.cafebabe.phosphor.model.entity.Child;
 
 import java.util.List;
@@ -18,10 +19,10 @@ import java.util.List;
  **/
 
 public interface ChildService {
-
     /**
-     * 孩子
-     * @return
+     * 用户孩子信息
+     * @param parentId 用户ID
+     * @return 孩子信息
      */
-    List<Child> getChildService();
+    List<ChildrenInfoDto> getChildInfo(Integer parentId);
 }
