@@ -43,19 +43,36 @@ function getActivityByPage(pageIndex, pageSize) {
 function loadActivityListByPage(pageJson) {
     let page = JSON.parse(pageJson);
     let activityInfoListData = page.data;
+
     let totalPages =activityInfoListData.totalPages;
+    let hidTotalPages = document.getElementById("totalPages");
+    hidTotalPages.setAttribute("value", totalPages);
+
     let currentPageCode = activityInfoListData.currentPageCode;
+    let hidCurrentPageIndex = document.getElementById("currentPageCode");
+    hidCurrentPageIndex.value = currentPageCode;
     let pageSize = activityInfoListData.pageSize;
+
     if(currentPageCode > (totalPages - 1)){
         getActivityByPage(0, pageSize);
         return void(0);
     }
     let currentPage = document.getElementById("currentPageCode");
     currentPage.setAttribute("value", currentPageCode);
-    let activityInfoList = activityInfoListData.modelList;
 
-    refreshGrid(activityInfoList);
-    refreshUlPagination(totalPages, currentPageCode);
+    let activityInfoList = activityInfoListData.modelList;
+    if (activityInfoList.length <= 0 && currentPageCode == 0){
+        alert("暂无数据");
+        return void(0);
+    }
+    else if(activityInfoList.length <= 0 && currentPageCode != 0)
+    {
+        getActivityByPage(0, pageSize);
+    }
+    else{
+        refreshGrid(activityInfoList, pageSize);
+    }
+    refreshUlPagination(currentPageCode, totalPages);
 }
 
 
@@ -78,8 +95,8 @@ function refreshGrid(activityInfoList, pageSize) {
 
     }
     for(let i = 0; i < (pageSize - length); i ++){
-        let gridUseless = div.childNodes[pageSize - i];
-        gridUseless.style.display = "none";
+        let gridUseless = div.getElementsByClassName("activityGrid")[(pageSize - 1) - i];
+        gridUseless.style.visibility = "hidden";
     }
 }
 /**
@@ -87,88 +104,58 @@ function refreshGrid(activityInfoList, pageSize) {
  * @param totalPages
  * @returns {Node}  页码列表
  */
-function refreshUlPagination(totalPages, currentPageCode, totalPages) {
+function refreshUlPagination(currentPageCode, totalPages) {
+
     let uPagination = document.getElementById("uPagination");
+
     let liPrePage = document.getElementById("perPage");
     let aPrePage = liPrePage.getElementsByTagName("a")[0];
+
+    let liNextPage = document.getElementById("nextPage");
+    let aNextPage = liNextPage.getElementsByTagName("a")[0];
+
     if(currentPageCode == 0){
         liPrePage.classList.add("disable");
+        aPrePage.classList.add("disable");
         aPrePage.setAttribute("disable", true);
     }
 
+    if(currentPageCode == totalPages){
+        liNextPage.classList.add("disable");
+        aNextPage.classList.add("disable");
+        aNextPage.setAttribute("disable", true);
+    }
+
+    clearPageIndex(uPagination);
     for(let i = 0; i < totalPages; i++){
-        let liPageIndex = createPageIndexLi(i);
+        let liPageIndex = document.createElement("li");
+        let aPageIndex= document.createElement("a");
+        aPageIndex.innerText = (i + 1) + "";
+        liPageIndex.classList.add("pageIndex");
+        aPageIndex.onclick = newPage;
+        liPageIndex.appendChild(aPageIndex);
         if(i == currentPageCode){
             liPageIndex.classList.add("active");
         }
+        uPagination.insertBefore(liPageIndex, liNextPage);
     }
 
-
-    let liNext = document.createElement("nextPage");
-    let aNext = liNext.getElementsByTagName("a")[0];
-    if(currentPageCode == (totalPages -1)) {
-        liNext.classList.add("disable");
-        aNext.setAttribute("disable", true);
-    }
 }
 
 /**
- * 生成单个页码
- * @param pageCode  页码
- * @returns {HTMLElement}   对应页面的标签
+ * 清除页码li，重新刷新
+ * @param pageUl
  */
-function createPageIndexLi(pageCode) {
-    let liPageIndex = document.createElement("li");
-    let aPageIndex = document.createElement("a");
-    aPageIndex.innerText = pageCode+" .";
-    aPageIndex.onclick = getActivityByPage(pageCode, 4);
-    liPageIndex.appendChild(aPageIndex);
-    return liPageIndex;
+function clearPageIndex(pageUl) {
+    let pageIndexList = pageUl.getElementsByClassName("pageIndex");
+    if(pageIndexList.length == 0)
+        return void(0);
+    for(let i =pageIndexList.length -1; i>=0; i--)
+        pageUl.removeChild(pageIndexList[i]);
 }
 
-/**
- * 加载上一页数据，并刷新页面
- */
 
-function perPage(currentPageCode) {
-    if(currentPageCode <= 0)
-        return false;
-    else{
-        getActivityByPage(currentPageCode + 1, 4);
-    }
-}
 
-/**
- * 加载下一页数据并刷新页面
- * @param currentPageCode
- */
-function nextPage(currentPageCode) {
-    getActivityByPage(currentPageCode + 1, 4);
-}
-/**
- * 动态生成li标签加入到页码条中
- * @param pageIndex
- * @returns {HTMLElement}
- */
-function getLi(pageIndex) {
-    let li = document.createElement("li");
-    li.classList.add("disable");
-    let a = document.createElement("a");
-    a.innerText = pageIndex +"";
-    return li;
-}
-
-/**
- * 清除元素中的子节点，用于加载新页面的数据
- * @param ele
- * @returns 清理后的节点
- */
-function clearEle(ele) {
-    while(ele.hasChildNodes()){
-        ele.removeChild(ele.firstChild)
-    }
-    return ele;
-}
 /**
  * 获取Xhr对象
  * @returns {any}
@@ -193,6 +180,7 @@ function loadActivityList(activityInfoListJson) {
     let activityInfoList = JSON.parse(activityInfoListJson);
     let div = document.getElementById("activityGrid");
     let activityInfoListData = activityInfoList.data;
+
     for(let i = 0; i < activityInfoListData.length ; i++){
 
         let divGrid = generateDiv(activityInfoListData[i]);
@@ -252,4 +240,34 @@ function generateDiv(activityInfo) {
 
     divGrid.appendChild(divSitePublisher);
     return divGrid;
+}
+
+function newPage() {
+    let pageIndex = parseInt(this.innerText) - 1;
+    getActivityByPage(pageIndex, 4);
+}
+
+/**
+ * 加载上一页数据，并刷新页面
+ */
+
+function perPage() {
+    let currentPageCode = document.getElementById("currentPageCode").getAttribute("value");
+    if(currentPageCode <= 0)
+        return false;
+    else{
+        getActivityByPage(currentPageCode - 1, 4);
+    }
+}
+
+/**
+ * 加载下一页数据并刷新页面
+ * @param currentPageCode
+ */
+function nextPage() {
+    let currentPageCode = parseInt(document.getElementById("currentPageCode").getAttribute("value"));
+    let totalPages = parseInt(document.getElementById("totalPages").getAttribute("value"));
+    if(currentPageCode >= (totalPages - 1))
+        return void(0);
+    getActivityByPage((currentPageCode + 1), 4);
 }

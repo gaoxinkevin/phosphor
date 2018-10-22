@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Site Meta -->
-    <title>Edulogy</title>
+    <title>phosphor</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -34,7 +34,6 @@
     <!--[if lt IE 9]>
     <!--<script src="/js/vendor/html5shiv.min.js"></script>-->
     <script src="/js/vendor/respond.min.js"></script>
-    <![endif]-->
 
     <script src="/js/activity.js"></script>
 
@@ -282,6 +281,7 @@
                         <script type="text/javascript">
                             getActivityByPage(0, 4);
                         </script>
+                        <input type="hidden" id="hidCurrentPageIndex">
                         <!--单个活动-->
                         <div class="row activityGrid">
                             <div class="authorbox">
@@ -363,6 +363,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <input type="hidden" id="currentPageCode">
+                                <input type="hidden" id="totalPages">
                                 <ul class="pagination" id="uPagination">
                                     <!--上一页-->
                                     <li id="perPage">
@@ -373,29 +374,6 @@
                                         <a href="javascript:void(0)" onclick="nextPage()">»</a>
                                     </li>
                                 </ul>
-                                <script type="text/javascript">
-                                    /**
-                                     * 加载上一页数据，并刷新页面
-                                     */
-
-                                    function perPage() {
-                                        let currentPageCode = document.getElementById("currentPageCode").getAttribute("value");
-                                        if(currentPageCode <= 0)
-                                            return false;
-                                        else{
-                                            getActivityByPage(currentPageCode - 1, 4);
-                                        }
-                                    }
-
-                                    /**
-                                     * 加载下一页数据并刷新页面
-                                     * @param currentPageCode
-                                     */
-                                    function nextPage() {
-                                        let currentPageCode = document.getElementById("currentPageCode").getAttribute("value");
-                                        getActivityByPage(currentPageCode + 1, 4);
-                                    }
-                                </script>
                             </div><!-- end col -->
                         </div>
                     </div><!-- end col -->
