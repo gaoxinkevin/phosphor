@@ -26,6 +26,7 @@ import java.util.Date;
 @ToString
 @EqualsAndHashCode
 public class ChildrenInfoDto implements Serializable {
+    private Integer childId;
     private String  childName;
     private Integer childGender;
     @DateTimeFormat(pattern = "yyyy-MM-dd")

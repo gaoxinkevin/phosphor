@@ -120,9 +120,15 @@
             for (let item in res.data) {
                 const li = document.createElement("li");
                 const ali = document.createElement("a");
+                const div = document.createElement("div");
+
                 li.id = res.data[item].childId;
                 li.appendChild(ali);
                 ali.innerText = res.data[item].childName;
+                ali.id = "a"+res.data[item].childId;
+                ali.cursor = "pointer";
+                ali.setAttribute("href","javascript:void(0);");
+                ali.onclick=addA;
                 urlChild.appendChild(li);
                 console.log(res.data[item])
             }
@@ -135,6 +141,16 @@
     }).catch(error => {
         console.log(error);
     });
+
+    function addA(){
+        this.className = "active";
+        const  a = document.getElementById(this.id);
+        a.className = "active";
+        a.style.color = "red";
+        console.log(this.id);
+        console.log(this.innerHTML);
+    }
+
 
 
     uploadAvatar = () => {
