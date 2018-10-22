@@ -1,4 +1,4 @@
-package com.cafebabe.phosphor.dao;
+package com.cafebabe.phosphor.service;
 
 import com.cafebabe.phosphor.model.entity.Feedback;
 
@@ -7,15 +7,15 @@ import java.util.List;
 /**
  * @author kevingx2016@gmail.com
  *
- * class_name: FeedbackDAO
+ * class_name: FeedbackService
  *
  * create_date: 2018/10/17
  *
- * create_time: 09:38
+ * create_time: 16:53
  *
- * description: 教师评价模块
+ * description: 评价的Service
  **/
-public interface FeedbackDAO extends MyBatisBaseDao<Feedback, Integer> {
+public interface FeedbackService {
 
     /**
      * 根据教师ID获取该教师所有评价

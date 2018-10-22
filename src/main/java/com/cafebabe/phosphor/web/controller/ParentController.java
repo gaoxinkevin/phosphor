@@ -11,12 +11,12 @@ import com.cafebabe.phosphor.util.GsonUtil;
 import com.cafebabe.phosphor.util.JsonResponse;
 import com.cafebabe.phosphor.util.SMSUtil;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 
@@ -40,54 +40,19 @@ import java.util.Map;
 public class ParentController {
 
     private final ParentServiceImpl parentService;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    private final HttpServletRequest httpServletRequest;
-=======
-=======
->>>>>>> devYK
-=======
-
->>>>>>> devWJC
     @Autowired(required = false)
     private HttpServletRequest httpServletRequest;
     private final InsertParentServiceImpl insertParentService;
->>>>>>> devlnt
     private static final String TRUE_RESULT = "true";
     private static final String FALSE_RESULT = "false";
-
-    public HttpServletRequest getHttpServletRequest() {
-        return httpServletRequest;
-    }
-
-    public void setHttpServletRequest(HttpServletRequest httpServletRequest) {
-        this.httpServletRequest = httpServletRequest;
-    }
 
     /**
      * 短信接口相关
      */
     @Autowired
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    public ParentController(ParentServiceImpl parentService, HttpServletRequest httpServletRequest) {
-        this.parentService = parentService;
-        this.httpServletRequest = httpServletRequest;
-=======
     public ParentController(ParentServiceImpl parentService, InsertParentServiceImpl insertParentService) {
         this.parentService = parentService;
-=======
-    public ParentController(ParentServiceImpl parentService, InsertParentServiceImpl insertParentService) {
-        this.parentService = parentService;
->>>>>>> devYK
-=======
-    public ParentController(ParentServiceImpl parentService, InsertParentServiceImpl insertParentService) {
-        this.parentService = parentService;
->>>>>>> devWJC
         this.insertParentService = insertParentService;
->>>>>>> devlnt
     }
 
     @ResponseBody
