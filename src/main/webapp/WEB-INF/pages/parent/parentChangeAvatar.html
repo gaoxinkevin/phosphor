@@ -8,7 +8,7 @@
     <!-- Mobile Meta -->
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Site Meta -->
-    <title>个人中心-基本信息</title>
+    <title>个人中心-更改密码</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -29,7 +29,34 @@
 
     <!--自己写的 -->
     <link rel="stylesheet" href="/css/alreadyLogin.css">
+
     <style>
+        .file {
+            position: relative;
+            display: inline-block;
+            background: #01bacf;
+            overflow: hidden;
+            color: white;
+            text-indent: 0;
+            font-size: 12px;
+            line-height: 1.5;
+            border-radius: 3px;
+            box-shadow: inset 0 0 0 0 #00a8bd;
+        }
+        .file input {
+            position: absolute;
+            font-size: 100px;
+
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .file:hover {
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
         .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
             background-color:#82B43F;
             border-color: #82B43F;
@@ -43,14 +70,13 @@
 
         }
     </style>
-
 </head>
 
 <body>
 <!--Ajax向后台输出数据-->
 <script>
 
-    // <!--判断用户登录-->
+     //判断用户登录
     let a = localStorage.getItem("userLoginPhone");
     if (a === null) {
         localStorage.clear();
@@ -83,70 +109,52 @@
     JsonResponseList().then((res) => {
         const imgSrc = document.getElementById("avatarImg");
         const imgSrc1 = document.getElementById("avatarImg2");
-        const parentName = document.getElementById("parentName");
-        const parentDesc = document.getElementById("bio");
+        const imgSrc3 = document.getElementById("defaultImg");
         const parentName2 = document.getElementById("aName");
-        const parentAddress = document.getElementById("site4");
-        const parentPrephone = document.getElementById("site3");
-
         imgSrc.src = res.data.parentPhoto;
         imgSrc1.src = res.data.parentPhoto;
-        parentName.innerText = res.data.parentName;
+        imgSrc3.src = res.data.parentPhoto;
         parentName2.innerText = res.data.parentName;
-        parentDesc.innerText = res.data.parentDesc;
-        parentAddress.value = res.data.parentAddress;
-        parentPrephone.value = res.data.parentPrephone;
 
     }).catch(error => {
         console.log(error);
     });
 
-    updateParent = () => {
 
-        const trSite4 = document.getElementById("tr_site4");
-        const familyAdress = document.getElementById("site4").value;
-        let detailAddress = document.getElementById("site2").value;
-        let address;
-
-        if (trSite4.style.display === "none") {
-
-            let province2 = document.getElementById("province");
-            let city2 = document.getElementById("city");
-            let area2 = document.getElementById("area");
-
-            let cityName2 = "";
-            let areaName2 = "";
-            let provinceName2 = "";
-
-            if (province2.options[province2.value] !== undefined) {
-                provinceName2 = province2.options[Number(province2.value) + 1].text;
-            } else {
-                provinceName2 = "请选择省份";
-            }
-
-            if (city2.options[Number(city2.value)] !== undefined) {
-                cityName2 = city2.options[Number(city2.value)].text;
-            } else {
-                cityName2 = "请选择城市";
-            }
-
-            if (area2.options[Number(area2.value)] !== undefined) {
-                areaName2 = area2.options[Number(area2.value)].text;
-            } else {
-                areaName2 = "请选择地区";
-            }
-            address = provinceName2 + cityName2 + areaName2 + detailAddress;
-        } else {
-            address = familyAdress
+    showAvatar = (picId, fileId) => {
+        document.getElementById("avatarDiv").style.display = "";
+        document.getElementById("defaultImg2").style.display = "";
+        const pic = document.getElementById(picId);
+        const file = document.getElementById(fileId);
+        if (window.FileReader) {
+            let oFReader = new FileReader();
+            oFReader.readAsDataURL(file.files[0]);
+            oFReader.onload = function (oFREvent) {
+                pic.src = oFREvent.target.result;
+            };
         }
+        else if (document.getElementsByTagName("*")) {//IE8-
+            file.select();
+            let reallocalpath = document.selection.createRange().text;
+            if (window.ie6) pic.src = reallocalpath; //IE6浏览器设置img的src为本地路径可以直接显示图片
+            else { //非IE6版本的IE由于安全问题直接设置img的src无法显示本地图片，但是可以通过滤镜来实现，IE10浏览器不支持滤镜，需要用FileReader来实现，所以注意判断FileReader先
+                pic.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='image',src=\"" + reallocalpath + "\")";
+                pic.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';//设置img的src为base64编码的透明图片，要不会显示红xx
+            }
+        }
+        else if (file.files) {//firefox6-
+            if (file.files.item(0)) {
+                url = file.files.item(0).getAsDataURL();
+                pic.src = url;
+            }
+        }
+    };
 
-        console.log(address);
+    uploadAvatar = () => {
 
         let parent = {
-            parentDesc: document.getElementById("bio").value,
-            parentPrephone: document.getElementById("site3").value,
+            parentPhoto: document.getElementById("defaultImg2").src,
             parentPhone: JSON.parse(localStorage.getItem("userLoginPhone")).val,
-            parentAddress: address
         };
 
         //AjaxBegin
@@ -179,41 +187,45 @@
             }
         );
 
+        console.log(JSON.stringify(parent));
 
         resultList(JSON.stringify(parent)).then((res) => {
             console.log(res);
-            window.location.href = '/parentUi/parentSettingsUi'
+            window.location.href = '/loginUi/alreadyLoginUi';
         }).catch(error => {
             console.log(error);
         });
-        //AjaxEnd
     };
 
+    function submitForm() {
 
-    changeAddress = () => {
-        const trSite4 = document.getElementById("tr_site4");
-        const trSite = document.getElementById("tr_site");
-        const trSite2 = document.getElementById("tr_site2");
-        trSite.style.display = "";
-        trSite2.style.display = "";
-        trSite4.style.display = "none";
-    };
+        const formData = new FormData($("#aForm")[0]);//必须是new FormData后台才能接收到
+        $.ajax({
+            url: "/upload/fileupload.do",
+            data: formData,
+            type: 'post',
+            datatype: "json",
+            contentType: false,//必须false才会自动加上正确的Content-Type
+            processData: false,//必须false才会避开jQuery对 formdata 的默认处理，XMLHttpRequest会对 formdata 进行正确的处理
+            success: function () {
+                window.location.href = '/loginUi/alreadyLoginUi'
+            }
+        });
 
-    cancelChangeAddress = () => {
-        const trSite4 = document.getElementById("tr_site4");
-        const trSite = document.getElementById("tr_site");
-        const trSite2 = document.getElementById("tr_site2");
-        trSite.style.display = "none";
-        trSite2.style.display = "none";
-        trSite4.style.display = "";
+    }
+
+
+
+    cancelChange = () => {
+        window.location.href = "/parentUi/parentSettingsUi"
     };
 
     loginOut = () => {
         window.localStorage.clear();
         window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
     }
-</script>
 
+</script>
 <div id="wrapper">
 
     <div id="preloader">
@@ -305,117 +317,70 @@
             <div id="wp" class="wp">
                 <div id="ct" class="ct2 wp cl dgtle_wpct2">
 
-
                     <div class="mn">
                         <div class="bm bw0">
-                            <h1 class="mt">个人资料
-                            </h1>
-                            <!--don't close the div here-->
-                            <ul class="tb cl">
-                                <li class="a">
-                                    <a href="/parentUi/parentSettingsUi" sl-processed="1">基本信息</a>
-                                </li>
-                                <li>
-                                    <a href="/parentUi/parentChangePasswordUi" sl-processed="1">密码安全</a>
-                                </li>
-                            </ul>
+                            <h1 class="mt">修改头像</h1>
                             <div>
-                                <table cellspacing="0" cellpadding="0" class="tfm" id="profilelist">
+
+                                <table cellspacing="0" cellpadding="0" class="tfm">
+                                    <caption>
+                                        <h2 class="xs2">当前我的头像</h2>
+                                        <p>如果您还没有设置自己的头像，系统会显示为默认头像，您需要自己上传一张新照片来作为自己的个人头像 </p>
+                                    </caption>
+
                                     <tbody>
                                     <tr>
-                                        <th>用户名</th>
-                                        <td id="parentName"></td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr id="tr_site" style="display: none">
-                                        <th id="th_site">所在地区</th>
-                                        <td id="td_site1">
-                                            <div class="docs-methods">
-                                                <label for="province"></label>
-                                                <select id="province" onchange="chooseProvince(this)">
-                                                    <option value="" selected disabled="">请选择省份</option>
-                                                </select>
-
-                                                <label for="city"></label>
-                                                <select id="city" onChange="chooseCity(this)">
-                                                    <option value="" selected disabled="">请选择城市</option>
-                                                </select>
-
-                                                <label for="area"></label>
-                                                <select id="area">
-                                                    <option value="" selected disabled="">请选择城镇</option>
-                                                </select>
+                                        <td>
+                                            <div style="width: 200px;height: 200px;">
+                                                <img src="" id="defaultImg" style="max-width: 100%;max-height: 100%;
+                                                  min-width: 200px;border-radius: 150px;min-height: 200px;" />
                                             </div>
                                         </td>
-
                                     </tr>
-
-                                    <tr id="tr_site2" style="display: none;">
-                                        <th id="th_site2">详细地址</th>
-                                        <td id="td_site2">
-                                            <input type="text" name="site" id="site2" class="px" value="" tabindex="1" style="height: auto;margin-left: 3px"
-                                                   placeholder="详细地址：如街道，门牌号，小区，楼栋好，单元号，室等">
-                                            <button class="btn-danger  btn-sm" style="padding: 3px  16px" onclick="cancelChangeAddress()"
-                                                    id="cancelAddressBtn">
-                                                取消
-                                            </button>
-                                            <div class="rq mtn" id="showerror_site2"></div>
-                                            <p class="d"></p>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tr_site4">
-                                        <th id="th_site4">家庭地址</th>
-                                        <td id="td_site4">
-                                            <label for="site4"></label>
-                                            <input type="text" name="site" id="site4" class="px" value="" tabindex="1" style="height: auto"
-                                                   readonly>
-                                            <button class="btn-primary  btn-sm" style="padding: 3px  16px" onclick="changeAddress()" id="addressBtn">更改
-                                            </button>
-                                            <div class="rq mtn" id="showerror_site4"></div>
-                                            <p class="d"></p>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tr_site3" style="height: auto">
-                                        <th id="th_site3">备用手机号</th>
-                                        <td id="td_site3">
-                                            <label for="site3"></label>
-                                            <input type="number" name="site" id="site3" class="px" value="" tabindex="1" style="height: auto" />
-                                            <div class="rq mtn" id="showerror_site3"></div>
-                                            <p class="d"></p>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tr_bio">
-                                        <th id="th_bio">自我介绍</th>
-                                        <td id="td_bio">
-                                            <label for="bio"></label>
-                                            <textarea name="bio" id="bio" class="pt" rows="3" cols="40" tabindex="1">
-                                            </textarea>
-                                            <div class="rq mtn" id="showerror_bio"></div>
-                                            <p class="d"></p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>&nbsp;</th>
-                                        <td colspan="2">
-                                            <input type="hidden" name="profilesubmit" value="true">
-                                            <button id="profilesubmitbtn" class="pn pnc" onclick="updateParent()">
-                                                <strong>保存</strong>
-                                            </button>
-                                            <span id="submit_result" class="rq"></span>
-                                        </td>
-                                    </tr>
-
                                     </tbody>
                                 </table>
+
+                                <table cellspacing="0" cellpadding="0" class="tfm">
+                                    <caption>
+                                        <h2 class="xs2">设置我的新头像</h2>
+                                        <p>请选择一个新照片进行上传编辑。<br>头像保存后，您可能需要刷新一下本页面(按F5键)，才能查看最新的头像效果 </p>
+                                    </caption>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div style="width: 200px;height: 200px;display: none" id="avatarDiv">
+                                                <img id="defaultImg2" style="display: none;max-width: 100%;max-height: 100%;
+                                                  min-width: 200px;border-radius: 150px;min-height: 200px;"  src=""/>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <form id="aForm" enctype="multipart/form-data">
+                                                <a href="javascript:void(0);" class="file" style="padding: 8px 10px;margin-right: 10px;"
+                                                   name="a">更换头像
+                                                    <input type="file" name="file" id="file1" onchange="showAvatar('defaultImg2','file1')">
+                                                </a>
+                                                <!--<input class="btn-sm btn-primary"  name="btn" onclick="submitForm()" value="确认更改">-->
+                                            </form>
+                                        </td>
+
+                                        <td>
+
+                                            <button id="cancelAvatarBtn2" class="btn-sm btn-primary" onclick="submitForm()">
+                                                确认更改
+                                            </button>
+                                            <button id="cancelAvatarBtn" class="btn-sm btn-primary" onclick="cancelChange()">取消更改
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
                             </div>
                         </div>
                     </div>
-
-
-                    <!--START-->
                     <!--右侧边栏-->
                     <div class="appl">
 
@@ -424,8 +389,8 @@
                                 <div class="avat" style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
                                     <a target="_blank" sl-processed="1">
                                         <img id="avatarImg2" src="http://www.dgtle.com/uc_server/images/noavatar_big.gif" style="max-width: 100%;min-height: 100px;
-                                                    min-width: 100px;max-height: 100%;
-                                                    margin: 0">
+                                                      min-width: 100px;max-height: 100%;
+                                                      margin: 0">
                                     </a>
                                 </div>
                                 <div class="mporf cl">
@@ -442,12 +407,12 @@
 
                             <ul>
 
-                                <li>
-                                    <a href="/parentUi/parentChangeAvatarUi" sl-processed="1">修改头像</a>
+                                <li class="a">
+                                    <a href="#" sl-processed="1">修改头像</a>
                                 </li>
 
-                                <li class="a">
-                                    <a href="#" sl-processed="1">个人资料</a>
+                                <li>
+                                    <a href="/parentUi/parentSettingsUi" sl-processed="1">个人资料</a>
                                 </li>
 
                                 <li>
@@ -462,6 +427,8 @@
                                     <a href="/children/infoUi" sl-processed="1">孩子资料</a>
                                 </li>
 
+
+
                                 <li>
                                     <a href="" sl-processed="1">帐号绑定</a>
                                 </li>
@@ -469,7 +436,6 @@
 
                         </div>
                     </div>
-                    <!--END-->
 
                 </div>
             </div>
@@ -564,11 +530,6 @@
     </div>
 
 </div>
-
-
-<!--自己写的-->
-
-<script src="/js/city-picker.js"></script>
 <!--模版自带-->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>

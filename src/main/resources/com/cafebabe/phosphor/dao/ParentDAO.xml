@@ -175,8 +175,13 @@
     </set>
     where parent_phone=#{parentPhone}
   </update>
+    <update id="updateParentImg">
+      update parent
+      set parent_photo = #{parentPhoto}
+      where parent_phone=#{parentPhone}
+    </update>
 
-  <select id="getParentImgUrlDao" parameterType="java.lang.String" resultType="java.lang.String">
+    <select id="getParentImgUrlDao" parameterType="java.lang.String" resultType="java.lang.String">
     select  parent_photo
     from parent
     where parent_phone=#{parentPhone};

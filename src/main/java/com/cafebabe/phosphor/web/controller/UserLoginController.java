@@ -40,6 +40,7 @@ public class UserLoginController {
 
     private final HttpServletRequest httpServletRequest;
 
+
     @Autowired
     public UserLoginController(UserLoginServiceImpl userLoginService, HttpServletRequest httpServletRequest) {
         this.userLoginService = userLoginService;
@@ -68,8 +69,16 @@ public class UserLoginController {
     public JsonResponse updateUserLoginPwd(@RequestBody UserLogin userLogin){
         boolean result = userLoginService.updateUserLoginPasswordService(userLogin);
         if (result){
+            httpServletRequest.getSession().removeAttribute("userLoginPhone");
             return new JsonResponse(20000,"修改密码成功",result);
         }
             return new JsonResponse(30000,"修改密码失败",result);
+    }
+
+    @PostMapping("getUserLoginPassword")
+    @ResponseBody
+    public JsonResponse getUserLoginPassword(){
+        String userLoginPhone =  (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
+        return new JsonResponse(20000,"成功",userLoginService.getUserLoginPassword(userLoginPhone));
     }
 }

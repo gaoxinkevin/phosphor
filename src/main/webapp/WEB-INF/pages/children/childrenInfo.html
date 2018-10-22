@@ -8,7 +8,7 @@
     <!-- Mobile Meta -->
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Site Meta -->
-    <title>用户登录</title>
+    <title>个人中心-孩子信息</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -17,40 +17,56 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
-    <!-- Custom & Default Styles -->
+    <!--FontAwesome-->
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom & Default Styles  外部-->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/carousel.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/styleLogin.css">
-    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styleDgtle.css">
+    <link rel="stylesheet" href="/css/styleCommon.css">
+
+    <!--自己写的 -->
+    <link rel="stylesheet" href="/css/alreadyLogin.css">
+
     <style>
-        .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
-            background-color:#82B43F;
+        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
+            background-color: #82B43F;
             border-color: #82B43F;
         }
-        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
             background: #82B43F;
             color: #ffffff !important;
         }
-        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
             background: #82B43F none repeat scroll 0 0 !important;
 
         }
+
     </style>
 </head>
 
 <body>
 <!--Ajax向后台输出数据-->
 <script>
-    const clientUrl = 'http://localhost:1250/userLogin/userLogin';
+
+    //判断用户登录
+    let a = localStorage.getItem("userLoginPhone");
+    if (a === null) {
+        localStorage.clear();
+        window.location.href = "http://localhost:1250/indexUi/returnIndexPage"
+    }
+
+    const clientUrl = 'http://localhost:1250/parent/parentAllInfo';
     const clientMethod = 'POST';
-    const saveCustomer = ({url, method, data}) => {
+    const getParentImg = (url) => {
         return new Promise((resolve, reject) => {
             const client = new XMLHttpRequest();
-            client.open(clientMethod, clientUrl);
+            client.open(clientMethod, url);
             client.responseType = 'json';
-            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
             client.onreadystatechange = () => {
                 if (client.readyState === 4) {
                     if (client.status === 200) {
@@ -60,98 +76,121 @@
                     }
                 }
             };
-            client.send(data);
+            client.send();
+        });
+    };
+    const JsonResponseList = () => getParentImg(clientUrl);
+    JsonResponseList().then((res) => {
+        const imgSrc = document.getElementById("avatarImg");
+        const imgSrc1 = document.getElementById("avatarImg2");
+        const imgSrc3 = document.getElementById("defaultImg");
+        const parentName2 = document.getElementById("aName");
+        imgSrc.src = res.data.parentPhoto;
+        imgSrc1.src = res.data.parentPhoto;
+        imgSrc3.src = res.data.parentPhoto;
+        parentName2.innerText = res.data.parentName;
+
+    }).catch(error => {
+        console.log(error);
+    });
+
+    const clientUrl1 = 'http://localhost:1250/child/childInfo';
+    const getAllChildrenInfo = (url) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open(clientMethod, url);
+            client.responseType = 'json';
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send();
         });
     };
 
-    const saveJsonCustomer = (data) => saveCustomer(
-        {
-            url: clientUrl,
-            method: clientMethod,
-            data
+    const childrenInfoList = () => getAllChildrenInfo(clientUrl1);
+    childrenInfoList().then((res) => {
+        if (res.data.length  > 0){
+            const urlChild = document.getElementById("navUrl");
+            for (let item in res.data) {
+                const li = document.createElement("li");
+                const ali = document.createElement("a");
+                li.id = res.data[item].childId;
+                li.appendChild(ali);
+                ali.innerText = res.data[item].childName;
+                urlChild.appendChild(li);
+                console.log(res.data[item])
+            }
+        } else {
+            const addChild = document.getElementById("addChild");
+            addChild.style.display="";
         }
-    );
 
-    submitBtn = () => {
-        let customer = {
-            userLoginPhone: document.getElementById('tel').value,
-            userLoginPwd: document.getElementById('password').value,
+        console.log(res)
+    }).catch(error => {
+        console.log(error);
+    });
+
+
+    uploadAvatar = () => {
+
+        let parent = {
+            parentPhoto: document.getElementById("defaultImg2").src,
+            parentPhone: JSON.parse(localStorage.getItem("userLoginPhone")).val,
         };
 
-        saveJsonCustomer(JSON.stringify(customer)).then((res) => {
-            if (res.data === '用户名密码正确') {
-                function setLocalStorage(key, value) {
-                    let curtime = new Date().getTime(); // 获取当前时间 ，转换成JSON字符串序列
-                    let valueDate = JSON.stringify({
-                        val: value,
-                        timer: curtime
-                    });
-                    try {
-                        localStorage.setItem(key, valueDate);
-                    } catch(e) {
-                        if(isQuotaExceeded(e)) {
-                            console.log("Error: 本地存储超过限制");
-                            localStorage.clear();
+        //AjaxBegin
+        const clientMethod = 'POST';
+        const clientUrl = 'http://localhost:1250/parent/updateParent';
+        const updateParent = ({url, method, data}) => {
+            return new Promise((resolve, reject) => {
+                const client = new XMLHttpRequest();
+                client.open(clientMethod, url);
+                client.responseType = 'json';
+                client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                client.onreadystatechange = () => {
+                    if (client.readyState === 4) {
+                        if (client.status === 200) {
+                            resolve(client.response);
                         } else {
-                            console.log("Error: 保存到本地存储失败");
+                            reject(client.status);
                         }
                     }
-                }
-                setLocalStorage("userLoginPhone", document.getElementById("tel").value);
-                window.location.href = 'http://localhost:1250/loginUi/alreadyLoginUi';
-            } else if (res.message === "用户名或密码不正确，请确认后登录") {
-                document.body.style.overflowX = "hidden";
-                document.body.style.overflowY = "hidden";
-                let dialog = document.getElementById("dialog");
-                let vModal =document.getElementById("v-modal");
-                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
-                let elButton = document.getElementById("el-button");
-                elButton.innerText="重新登录";
-                vModal.style.display="block";
-                dialog.style.display="block";
-                dialogPInnerHtml.innerText=res.data;
-            } else {
-                document.body.style.overflowX = "hidden";
-                document.body.style.overflowY = "hidden";
-                let dialog = document.getElementById("dialog");
-                let vModal =document.getElementById("v-modal");
-                let elButton = document.getElementById("el-button");
-                elButton.innerText="前往注册界面";
-                let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
-                vModal.style.display="block";
-                dialog.style.display="block";
-                dialogPInnerHtml.innerText=res.data;
+                };
+                client.send(data);
+            });
+        };
+
+        const resultList = (data) => updateParent(
+            {
+                url: clientUrl,
+                method: clientMethod,
+                data
             }
-        }, err => {
-            console.log(err)
-        })
+        );
+
+        console.log(JSON.stringify(parent));
+
+        resultList(JSON.stringify(parent)).then((res) => {
+            console.log(res);
+            window.location.href = '/loginUi/alreadyLoginUi';
+        }).catch(error => {
+            console.log(error);
+        });
     };
 
-    checkOutPhoneNumber = () => {
-        const innerValue = document.getElementById('tel').value;
-        if (innerValue.length !== 0) {
-            const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
-            const bottomLine = document.getElementById("bottomLine");
-            const userLoginA = document.getElementById("userLoginA");
-            if (reg.test(innerValue)) {
-                userLoginA.setAttribute("href", "javascript:void(0); onclick=submitBtn()");
-                bottomLine.style.backgroundColor = "#658db5";
-                userLoginA.style.opacity="1";
-            } else {
-                bottomLine.style.backgroundColor = "red";
-                userLoginA.style.opacity = "0.2";
-                userLoginA.removeAttribute('href');
-            }
-        }
-    }
 
-    //注册界面跳转
-    jumpToRegistrationPage=()=>{
-        window.location.href='http://localhost:1250/loginUi/registrationUi';
+    loginOut = () => {
+        window.localStorage.clear();
+        window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
     }
 
 </script>
-
 <div id="wrapper">
 
     <div id="preloader">
@@ -216,9 +255,22 @@
                             </div>
                         </li>
                         <li><a href="">联系我们</a></li>
-                        <li><a href="/loginUi/loginUi">登录|注册</a></li>
                         <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
                                 class="fa fa-search"></i></a></li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
+                                    <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
+                                    <li><a href="#">我的关注</a></li>
+                                    <li><a href="#">我的收藏</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
 
@@ -226,54 +278,82 @@
         </div>
     </header>
 
-    <section class="section" style="min-height: 700px">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="custom-module p40l">
+    <div id="dgtle_body" style="min-height: 670px">
+        <div id="dgtle_body_bg" style="margin-top: 110px">
+            <div id="wp" class="wp">
+                <div id="ct" class="ct2 wp cl dgtle_wpct2">
+                    <div class="mn">
 
-                        <hr class="invis">
+                        <!--有孩子的可以添加孩子-->
+                        <ul class="nav nav-tabs" id="navUrl">
 
-                        <h2 style="margin: 20px 0 60px">我们是专业的
-                            <mark>儿童教育机构</mark>
-                            <br>
-                            为您的
-                            <mark>孩子</mark>
-                            ,带来优质的教育资源<br>
-                            欢迎来到
-                            <mark>启明星</mark>
-                        </h2>
+                        </ul>
 
-                        <div class="input-container">
-                            <input type="number" id="tel" placeholder="手机号" onblur="checkOutPhoneNumber()">
-                            <label for="tel" id="telLabel">请输入手机号</label>
-                            <div class="bottom-line" id="bottomLine"></div>
+                        <!--没有孩子可添加孩子-->
+                        <div class="addChild" id="addChild" style="width: 200px;display: none;height: 200px;background: #3caf36;margin: 0 auto">
+                            <img src="/images/加号2.png" alt="">
+                        </div>
+                    </div>
+                    <!--右侧边栏-->
+                    <div class="appl">
+
+                        <div class="sd_box">
+                            <div class="group_sd_mymembers cr_grs">
+                                <div class="avat"
+                                     style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
+                                    <a target="_blank" sl-processed="1">
+                                        <img id="avatarImg2"
+                                             src="http://www.dgtle.com/uc_server/images/noavatar_big.gif" style="max-width: 100%;min-height: 100px;
+                                                      min-width: 100px;max-height: 100%;
+                                                      margin: 0">
+                                    </a>
+                                </div>
+                                <div class="mporf cl">
+                                    <p class="homeusername">
+                                        <a id="aName" style="margin-left: 80px;margin-top: 20px"></a>
+                                    </p>
+
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="input-container">
-                            <input type="password" id="password" placeholder="密码">
-                            <label for="password">请输入密码</label>
-                            <div class="bottom-line"></div>
+                        <div class="tbn">
+                            <h2 class="mt bbda">设置</h2>
+
+                            <ul>
+
+                                <li>
+                                    <a href="/parentUi/parentChangeAvatarUi" sl-processed="1">修改头像</a>
+                                </li>
+
+                                <li>
+                                    <a href="/parentUi/parentSettingsUi" sl-processed="1">个人资料</a>
+                                </li>
+
+                                <li>
+                                    <a href="/parentUi/parentChangePasswordUi" sl-processed="1">密码安全</a>
+                                </li>
+
+                                <li>
+                                    <a href="#" sl-processed="1">订单查询</a>
+                                </li>
+
+                                <li class="a">
+                                    <a href="#" sl-processed="1">孩子资料</a>
+                                </li>
+
+                                <li>
+                                    <a href="" sl-processed="1">帐号绑定</a>
+                                </li>
+                            </ul>
+
                         </div>
+                    </div>
 
-                        <hr class="invis">
-
-
-                        <div class="btn-wrapper">
-                            <a href="javascript:void(0); onclick=submitBtn()" id="userLoginA"
-                               class="btn btn-primary">登录</a>
-                            <a href="javascript:void(0);onclick=jumpToRegistrationPage()" class="btn btn-primary"
-                               style="margin-left: 10px">注册</a>
-                        </div>
-                        <hr class="invis" style="margin-top: 10px">
-
-                        <a href="/parentUi/forgetPasswordUi">忘记密码</a>
-
-                    </div><!-- end module -->
-                </div><!-- end col -->
-            </div><!-- end row -->
-        </div><!-- end container -->
-    </section>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="section footer noover">
         <div class="container">
@@ -362,30 +442,8 @@
         </div><!-- end container -->
     </div>
 
-    <div id="dialog">
-        <div class="el-message-box">
-            <div class="el-message-box__content">
-                <div class="el-message-box__status"></div>
-                <div class="el-message-box__message">
-                    <p id="dialogPInnerHtml"></p>
-                </div>
-                <div class="el-message-box__input" style="display: none;">
-                    <div class="el-input">
-                        <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
-                    </div>
-                    <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
-                </div>
-            </div>
-            <div class="el-message-box__btns">
-                <a href="/loginUi/loginUi" id="el-button" class="el-button"></a>
-            </div>
-
-        </div>
-    </div>
-
-    <div id="v-modal" style="z-index: 9998"></div>
-
 </div>
+<!--模版自带-->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/customLogin.js"></script>

@@ -32,4 +32,6 @@ public class CourseCollection implements Serializable {
      */
     private Date courseCollectionCreateTime;
 
+    private static final long serialVersionUID = 1L;
+
 }
