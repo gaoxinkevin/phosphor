@@ -1,4 +1,4 @@
-package com.cafebabe.phosphor.model.entity;
+package com.cafebabe.phosphor.model.dto;
 
 import lombok.*;
 
@@ -6,9 +6,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * course
- * @author 
- */
+ *
+ * @author weijincong@outlook.com
+ *
+ * class_name: CourseInfo
+ *
+ * create_date: 2018/10/17
+ *
+ * create_time: 18:56
+ *
+ * description: 所有与课程相关的信息
+ **/
 
 @Getter
 @Setter
@@ -16,12 +24,7 @@ import java.util.Date;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Course implements Serializable {
-    /**
-     * 课程ID
-     */
-    private Integer courseId;
-
+public class CourseInfo implements Serializable {
     /**
      * 课程名称
      */
@@ -59,6 +62,7 @@ public class Course implements Serializable {
 
     /**
      * 课程状态
+     * 0：未购买 1:已经购买 2：未评价 3：已经评价
      */
     private Integer courseStatus;
 
@@ -73,14 +77,39 @@ public class Course implements Serializable {
     private Integer courseDiscount;
 
     /**
-     * 公司ID
+     * 类型名称
      */
-    private Integer companyId;
+    private String typeName;
 
     /**
-     * 冗余字段
+     * 教师名
      */
-    private String courseSf;
+    private String teacherName;
 
+    /**
+     * 开课日期
+     */
+    private Date courseStartDay;
+
+    /**
+     * 上课时间
+     */
+    private Date courseStartTime;
+
+    /**
+     * 下课时间
+     */
+    private Date courseEndTime;
+
+    /**
+     * 课程持续时间（周数）
+     */
+    private Integer courseContinuedTime;
+
+    /**
+     * 上课时段状态
+     * 0：周六 1：周天 2：寒暑假
+     */
+    private Integer courseTimeStatus;
 
 }

@@ -67,6 +67,6 @@ public class CourseTime implements Serializable {
      */
     private String courseTimeSf;
 
-    private static final long serialVersionUID = 1L;
+
 
 }

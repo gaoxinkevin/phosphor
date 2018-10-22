@@ -22,6 +22,6 @@ public class CourseType implements Serializable {
 
     private Integer courseId;
 
-    private static final long serialVersionUID = 1L;
+
 
 }
