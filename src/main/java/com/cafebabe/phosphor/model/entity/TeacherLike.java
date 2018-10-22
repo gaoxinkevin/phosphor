@@ -17,12 +17,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class TeacherLike implements Serializable {
     /**
-     * 评级ID
+     * 点赞ID
      */
     private Integer teacherLikeId;
 
     /**
-     * 等级
+     * 点赞数量
      */
     private Integer teacherLikeCount;
 

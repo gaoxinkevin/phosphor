@@ -6,6 +6,7 @@ import com.cafebabe.phosphor.dao.TeacherLikeDAO;
 import com.cafebabe.phosphor.model.entity.Teacher;
 import com.cafebabe.phosphor.service.TeacherService;
 import com.cafebabe.phosphor.service.serviceimpl.TeacherServiceImpl;
+import com.cafebabe.phosphor.util.PageModel;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -22,13 +23,15 @@ public class TestTeacherService {
 
     @Test
     public void testGetTeacherList() {
-        List<Teacher> list = teacherDAO.getTeacherList();
-        List<Teacher> list2 = service.getTeacherList();
-        System.out.println(service.getTeacherById(10000));
+        PageModel<Teacher> pageModel=new PageModel<>();
+        pageModel.setStartRecord(0);
+        List<Teacher> list = teacherDAO.getTeacherList(pageModel);
+//        List<Teacher> list2 = service.getTeacherList(0);
+//        System.out.println(service.getTeacherById(10000));
         for (Teacher t : list) {
             System.out.println(t);
         }
-        System.out.println(list2);
+//        System.out.println(list2);
     }
 
     @Test

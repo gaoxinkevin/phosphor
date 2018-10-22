@@ -6,6 +6,7 @@ import com.cafebabe.phosphor.model.entity.Teacher;
 import com.cafebabe.phosphor.service.TeacherService;
 import com.cafebabe.phosphor.service.serviceimpl.TeacherServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
+import com.cafebabe.phosphor.util.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -36,17 +37,16 @@ public class TeacherController {
         this.teacherService=teacherService;
     }
 
-    @RequestMapping("getTeacherList")
+    @RequestMapping("getTeacherList/{currentPageCode}")
     @ResponseBody
-    public JsonResponse getTeacherList() {
-        List<Teacher> teacherList = teacherService.getTeacherList();
-        return new JsonResponse(200,"success",teacherList);
+    public JsonResponse getTeacherList(@PathVariable Integer currentPageCode) {
+        return new JsonResponse(200,"success",teacherService.getTeacherList(currentPageCode));
     }
 
-    @RequestMapping("getTeacherById")
+    @RequestMapping("getTeacherById/{teacherId}")
     @ResponseBody
-    public JsonResponse getTeacherById(@RequestBody Teacher teacher){
-        return new JsonResponse(200,"success",teacherService.getTeacherById(teacher.getTeacherId()));
+    public JsonResponse getTeacherById(@PathVariable Integer teacherId){
+        return new JsonResponse(200,"success",teacherService.getTeacherById(teacherId));
     }
 
     @RequestMapping("getTeacherByCompanyId")

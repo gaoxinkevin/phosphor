@@ -3,6 +3,7 @@ package com.cafebabe.phosphor.service.serviceimpl;
 import com.cafebabe.phosphor.dao.TeacherDAO;
 import com.cafebabe.phosphor.model.entity.Teacher;
 import com.cafebabe.phosphor.service.TeacherService;
+import com.cafebabe.phosphor.util.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,13 +11,13 @@ import java.util.List;
 
 /**
  * @author kevingx2016@gmail.com
- *
+ * <p>
  * class_name: TeacherServiceImpl
- *
+ * <p>
  * create_date: 2018/10/17
- *
+ * <p>
  * create_time: 09:48
- *
+ * <p>
  * description: 教师service层的实现类
  **/
 
@@ -31,8 +32,14 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public List<Teacher> getTeacherList() {
-        return teacherDAO.getTeacherList();
+    public PageModel<Teacher> getTeacherList(Integer currentPageCode) {
+        PageModel<Teacher> pageModel = new PageModel<>();
+        pageModel.setCurrentPageCode(currentPageCode);
+        pageModel.setStartRecord((currentPageCode - 1) * pageModel.getPageSize());
+        pageModel.setTotalRecord(teacherDAO.getTeacherCount());
+        pageModel.setTotalPages(pageModel.getTotalRecord() % pageModel.getPageSize() == 0 ? pageModel.getTotalRecord() / pageModel.getPageSize() : pageModel.getTotalRecord() / pageModel.getPageSize() + 1);
+        pageModel.setModelList(teacherDAO.getTeacherList(pageModel));
+        return pageModel;
     }
 
     @Override

@@ -168,21 +168,29 @@
         select
         <include refid="Base_Column_List"/>
         from teacher
-        where teacher_status = 1
+        limit #{startRecord},#{pageSize}
     </select>
 
-    <select id="getTeacherById" parameterType="java.lang.Integer" resultType="com.cafebabe.phosphor.model.entity.Teacher">
+    <select id="getTeacherCount" resultType="java.lang.Integer">
+        select
+        count(*)
+        from teacher
+    </select>
+
+    <select id="getTeacherById" parameterType="java.lang.Integer"
+            resultType="com.cafebabe.phosphor.model.entity.Teacher">
         select
         <include refid="Base_Column_List"/>
         from teacher
         where teacher_id = #{teacherId,jdbcType=INTEGER}
     </select>
 
-    <select id="getTeacherByCompanyId" parameterType="java.lang.Integer" resultType="com.cafebabe.phosphor.model.entity.Teacher">
+    <select id="getTeacherByCompanyId" parameterType="java.lang.Integer"
+            resultType="com.cafebabe.phosphor.model.entity.Teacher">
         select
         <include refid="Base_Column_List"/>
         from teacher
-        where company_id = #{companyId,jdbcType=INTEGER} and teacher_status = 1
+        where company_id = #{companyId,jdbcType=INTEGER}
     </select>
 
 </mapper>

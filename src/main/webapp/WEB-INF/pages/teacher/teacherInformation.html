@@ -29,10 +29,12 @@
     <script src="/js/login.js"></script>
 
     <script>
-        getTeacherList = () => {
-            const clientUrl = 'http://localhost:1250/teacher/getTeacherList/1';
+        getTeacher = () => {
+            const teacherId = document.cookie.split(';')[0].trim();
+            const id = teacherId.split('=')[1].trim();
+            const clientUrl = 'http://localhost:1250/teacher/getTeacherById/' + id;
             const clientMethod = 'POST';
-            const teacherList = ({url}) => {
+            const teacher = ({url}) => {
                 return new Promise((resolve, reject) => {
                     const client = new XMLHttpRequest();
                     client.open(clientMethod, url);
@@ -51,66 +53,22 @@
                 });
             };
 
-            const resultList = () => teacherList(
+            const result = () => teacher(
                 {
                     url: clientUrl
                 }
             );
 
             let fatherDiv = document.getElementById("fatherDiv");
-            scrollTo(0,0);
-            resultList().then((res) => {
-                for (let i = 0; i < res.data.modelList.length; i++) {
-                    // console.log(res.data.modelList);
-                    let sonDiv = generateDiv(res.data.modelList[i]);
-                    fatherDiv.appendChild(sonDiv);
-                }
-                let pageDiv = generatePageDiv(res.data.currentPageCode, res.data.totalPages);
-                fatherDiv.appendChild(pageDiv);
+            scrollTo(0, 0);
+            result().then((res) => {
+                let sonDiv = generateDiv(res.data);
+                let descDiv = generateDescDiv(res.data.teacherDesc);
+                fatherDiv.appendChild(sonDiv);
+                fatherDiv.appendChild(descDiv);
             });
         }
 
-        getPageList = (pageCode) => {
-            const clientUrl = 'http://localhost:1250/teacher/getTeacherList/' + pageCode;
-            const clientMethod = 'POST';
-            const teacherList = ({url}) => {
-                return new Promise((resolve, reject) => {
-                    const client = new XMLHttpRequest();
-                    client.open(clientMethod, url);
-                    client.responseType = 'json';
-                    // client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-                    client.onreadystatechange = () => {
-                        if (client.readyState === 4) {
-                            if (client.status === 200) {
-                                resolve(client.response);
-                            } else {
-                                reject(client.status);
-                            }
-                        }
-                    };
-                    client.send();
-                });
-            };
-
-            const resultList = () => teacherList(
-                {
-                    url: clientUrl
-                }
-            );
-
-            let fatherDiv = document.getElementById("fatherDiv");
-            fatherDiv.innerText="";
-            scrollTo(0,0);
-            resultList().then((res) => {
-                for (let i = 0; i < res.data.modelList.length; i++) {
-                    // console.log(res.data.modelList);
-                    let sonDiv = generateDiv(res.data.modelList[i]);
-                    fatherDiv.appendChild(sonDiv);
-                }
-                let pageDiv = generatePageDiv(res.data.currentPageCode, res.data.totalPages);
-                fatherDiv.appendChild(pageDiv);
-            });
-        }
 
         generateDiv = (teacherData) => {
             let div = document.createElement("div");
@@ -143,15 +101,13 @@
             let divRightSpan3 = document.createElement("span");
             divRightSpan3.innerText = "教师邮箱：" + teacherData.teacherMail;
             let divRightSpan4 = document.createElement("span");
+            divRightSpan4.innerText = "工作时间：" + teacherData.teacherWorktime;
+            let divRightSpan5 = document.createElement("span");
             if (teacherData.teacherDesc == null || teacherData.teacherDesc == "") {
-                divRightSpan4.innerText = "教师简介：空";
+                divRightSpan5.innerText = "教师简介：空";
             } else {
-                divRightSpan4.innerText = "教师简介：" + teacherData.teacherDesc.slice(0, 30) + "...";
+                divRightSpan5.innerText = "教师简介：" + teacherData.teacherDesc;
             }
-            let divRightA = document.createElement("a");
-            divRightA.setAttribute("href", "http://localhost:1250/teacherUi/getTeacherInformation/" + teacherData.teacherId);
-            divRightA.innerText = "查看详情";
-            divRightA.classList.add("customizeA");
             divRight1.appendChild(divRight2);
             divRight2.appendChild(divRightSpan1);
             divRight2.appendChild(document.createElement("br"));
@@ -161,81 +117,22 @@
             divRight2.appendChild(document.createElement("br"));
             divRight2.appendChild(divRightSpan4);
             divRight2.appendChild(document.createElement("br"));
-            divRight2.appendChild(divRightA);
 
             div.appendChild(divRight1);
 
             return div;
         }
-        generatePageDiv = (currentPageCode, totalPages) => {
+
+        generateDescDiv = (teacherDesc) => {
             let div = document.createElement("div");
-            let hr = document.createElement("hr");
-            hr.classList.add("invis");
-            let div1 = document.createElement("div");
-            div1.classList.add("row", "text-center");
-            let div2 = document.createElement("div");
-            div2.classList.add("col-md-12");
-            let ul = document.createElement("ul");
-            ul.classList.add("pagination");
-            let liFirstPage = document.createElement("li");
-            let liLastPage = document.createElement("li");
-            let liEndPage = document.createElement("li");
-            let liNextPage = document.createElement("li");
-            let li = document.createElement("li");
-            li.classList.add("disabled");
-            if (currentPageCode == 1) {
-                liFirstPage.classList.add("customizeDisable");
-                liLastPage.classList.add("customizeDisable");
-            }
-            else {
-                liFirstPage.classList.add("active");
-                liLastPage.classList.add("active");
-            }
-
-            if (currentPageCode == totalPages) {
-                liEndPage.classList.add("customizeDisable");
-                liNextPage.classList.add("customizeDisable");
-            }
-            else {
-                liEndPage.classList.add("active");
-                liNextPage.classList.add("active");
-            }
-            let aFirstPage = document.createElement("a");
-            aFirstPage.setAttribute("href", "javascript:getPageList(1)");
-            aFirstPage.innerText = "首页";
-            let aLastPage = document.createElement("a");
-            aLastPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode - 1) + ")");
-            aLastPage.innerText = "上一页";
-            let aEndPage = document.createElement("a");
-            aEndPage.setAttribute("href", "javascript:getPageList(" + totalPages + ")");
-            aEndPage.innerText = "尾页";
-            let aNextPage = document.createElement("a");
-            aNextPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode + 1) + ")");
-            aNextPage.innerText = "下一页";
-            let a = document.createElement("a");
-            a.innerText = currentPageCode;
-
-            div.appendChild(hr);
-            div.appendChild(div1);
-            div1.appendChild(div2);
-            div2.appendChild(ul);
-            ul.appendChild(liFirstPage);
-            ul.appendChild(liLastPage);
-            ul.appendChild(li);
-            ul.appendChild(liNextPage);
-            ul.appendChild(liEndPage);
-            liFirstPage.appendChild(aFirstPage);
-            liLastPage.appendChild(aLastPage);
-            li.appendChild(a);
-            liNextPage.appendChild(aNextPage);
-            liEndPage.appendChild(aEndPage);
-
-            return div;
+            let span = document.createElement("span");
+            span.innerText = "教师简介：" + teacherDesc;
+            return div.appendChild(span);
         }
     </script>
 
 </head>
-<body onload="getTeacherList()">
+<body onload="getTeacher()">
 
 <!-- LOADER -->
 <div id="preloader">
@@ -371,16 +268,16 @@
                 <!--</div>-->
                 <!--<hr class="invis">-->
                 <!--<div class="row text-center">-->
-                    <!--<div class="col-md-12">-->
-                        <!--<ul class="pagination">-->
-                            <!--<li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>-->
-                            <!--<li class="active"><a href="javascript:void(0)">1</a></li>-->
-                            <!--<li><a href="javascript:void(0)">2</a></li>-->
-                            <!--<li><a href="javascript:void(0)">3</a></li>-->
-                            <!--<li><a href="javascript:void(0)">...</a></li>-->
-                            <!--<li><a href="javascript:void(0)">&raquo;</a></li>-->
-                        <!--</ul>-->
-                    <!--</div>&lt;!&ndash; end col &ndash;&gt;-->
+                <!--<div class="col-md-12">-->
+                <!--<ul class="pagination">-->
+                <!--<li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>-->
+                <!--<li class="active"><a href="javascript:void(0)">1</a></li>-->
+                <!--<li><a href="javascript:void(0)">2</a></li>-->
+                <!--<li><a href="javascript:void(0)">3</a></li>-->
+                <!--<li><a href="javascript:void(0)">...</a></li>-->
+                <!--<li><a href="javascript:void(0)">&raquo;</a></li>-->
+                <!--</ul>-->
+                <!--</div>&lt;!&ndash; end col &ndash;&gt;-->
                 <!--</div>&lt;!&ndash; end row &ndash;&gt;-->
             </div>
         </div><!-- end container -->

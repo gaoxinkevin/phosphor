@@ -1179,7 +1179,7 @@ COURSE MODULES
 }
 
 .course-details {
-    padding: 2rem 2rem;
+    padding: 3rem 2rem;
 }
 
 .course-details h4 {
@@ -2324,8 +2324,17 @@ customize
     float: left;
 }
 
-.customizeFont{
+.customizeFont {
     font-size: 20px;
     font-weight: bold;
+}
+
+.customizeA{
+    color: #01bacf;
+    font-size: 22px;
+}
+
+.customizeDisable {
+    visibility: hidden;
 }
 
