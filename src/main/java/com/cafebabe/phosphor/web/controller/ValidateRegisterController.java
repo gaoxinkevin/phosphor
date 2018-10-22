@@ -32,15 +32,9 @@ import javax.servlet.http.HttpServletRequest;
 public class ValidateRegisterController {
 
     @Autowired(required = false)
-    HttpServletRequest httpServletRequest;
+    private HttpServletRequest httpServletRequest;
 
-    @Autowired
-    public ValidateRegisterController() {
-    }
 
-    @Autowired
-    public ValidateRegisterController() {
-    }
 
     @RequestMapping("/parentValidateRegister")
     @ResponseBody

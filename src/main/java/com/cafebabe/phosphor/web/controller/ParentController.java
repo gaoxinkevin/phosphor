@@ -42,10 +42,14 @@ public class ParentController {
     private final ParentServiceImpl parentService;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     private final HttpServletRequest httpServletRequest;
 =======
 =======
 >>>>>>> devYK
+=======
+
+>>>>>>> devWJC
     @Autowired(required = false)
     private HttpServletRequest httpServletRequest;
     private final InsertParentServiceImpl insertParentService;
@@ -67,6 +71,7 @@ public class ParentController {
     @Autowired
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     public ParentController(ParentServiceImpl parentService, HttpServletRequest httpServletRequest) {
         this.parentService = parentService;
         this.httpServletRequest = httpServletRequest;
@@ -77,6 +82,10 @@ public class ParentController {
     public ParentController(ParentServiceImpl parentService, InsertParentServiceImpl insertParentService) {
         this.parentService = parentService;
 >>>>>>> devYK
+=======
+    public ParentController(ParentServiceImpl parentService, InsertParentServiceImpl insertParentService) {
+        this.parentService = parentService;
+>>>>>>> devWJC
         this.insertParentService = insertParentService;
 >>>>>>> devlnt
     }

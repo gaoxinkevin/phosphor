@@ -82,5 +82,5 @@ public class Course implements Serializable {
      */
     private String courseSf;
 
-    private static final long serialVersionUID = 1L;
+
 }
