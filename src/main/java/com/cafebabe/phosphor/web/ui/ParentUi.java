@@ -47,4 +47,10 @@ public class ParentUi {
     public void parentChangeAvatarUi(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentChangeAvatar.html").forward(httpServletRequest,httpServletResponse);
     }
+
+    @RequestMapping("companyCollectionUi")
+    public void companyCollectionUi(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/companyCollection.html").forward(httpServletRequest,httpServletResponse);
+    }
+
 }

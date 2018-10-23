@@ -62,4 +62,11 @@ public class PageModel<T> {
      * 冗余字段
      */
     private Integer sf;
+
+
+    /**
+     * 冗余字段
+     */
+    private String sfString;
+
 }
