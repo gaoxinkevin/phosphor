@@ -2,9 +2,12 @@ package com.cafebabe.phosphor.service.serviceImpl;
 
 import com.cafebabe.phosphor.dao.CourseDAO;
 import com.cafebabe.phosphor.model.dto.CourseInfo;
+import com.cafebabe.phosphor.model.dto.Page;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.List;
 
 /**
  *
@@ -26,5 +29,11 @@ public class TestCourseService {
     public void TestGetCourseInfo(){
         CourseInfo courseInfo = courseDAO.getCourseInfo(10000);
         System.out.println(courseInfo);
+    }
+
+    @Test
+    public void TestGetCourseByPage(){
+        Page page = new Page(2,2,2,2,2,2,List<>)
+        List<CourseInfo> courseInfoList = courseDAO.getCourseByPage()
     }
 }

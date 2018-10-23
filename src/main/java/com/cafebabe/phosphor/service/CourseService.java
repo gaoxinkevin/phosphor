@@ -1,6 +1,7 @@
 package com.cafebabe.phosphor.service;
 
 import com.cafebabe.phosphor.model.dto.CourseInfo;
+import com.cafebabe.phosphor.model.dto.Page;
 import com.cafebabe.phosphor.model.entity.Course;
 
 import java.util.List;
@@ -23,7 +24,13 @@ public interface CourseService {
      * 查询所有课程
      * @return 课程列表
      */
-    List<Course> getAllCourseService();
+
+    Page getAllCourseByPage(Integer pageIndex, Integer pageSize);
+
+    Integer getCourseCount();
+
+    List<CourseInfo> getAllCourseInfo ();
+
 
     /**
      * 根据名称查询某课程

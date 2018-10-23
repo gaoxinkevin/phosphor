@@ -1,0 +1,9 @@
+.img-responsive
+{
+    max-width: 238px;!important;
+}
+.row
+{
+    float: left;
+    width: auto;
+}
