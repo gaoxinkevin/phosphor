@@ -71,7 +71,6 @@ public class ActivityServiceImpl implements ActivityService {
         page.setEndRecord(pageSize * (pageIndex + 1) - 1);
         List<Activity> activityList = activityDAO.getActivityByPage(page);
         page.setModelList(activityList);
-        System.out.println(page.toString());
         return page;
     }
 

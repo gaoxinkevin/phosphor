@@ -33,6 +33,7 @@ function getActivityByPage(pageIndex, pageSize) {
             }
         }
     }
+    location.href = "#activityListTop";
 }
 
 /**
@@ -91,16 +92,22 @@ function refreshGrid(activityInfoList, pageSize) {
 
         let activityId = activityInfo.activityId;
         let aSign = document.getElementsByClassName("aDetail")[i];
-        aSign.setAttribute("href", "/activity/activityDetail?activityId="+activityId);
+        aSign.setAttribute("href", "/activityUi/returnActivityDetail?activityId="+activityId);
 
         let activityDesc = activityInfo.activityDesc;
         let spDesc = document.getElementsByClassName("spDesc")[i];
         spDesc.innerText = activityDesc;
 
     }
-    for(let i = 0; i < (pageSize - length); i ++){
-        let gridUseless = div.getElementsByClassName("activityGrid")[(pageSize - 1) - i];
-        gridUseless.style.visibility = "hidden";
+    for(let i = 0; i < pageSize; i ++){
+        if(i < (pageSize - length)){
+            let gridUseless = div.getElementsByClassName("activityGrid")[(pageSize - 1) - i];
+            gridUseless.style.visibility = "hidden";
+        }
+        else{
+            let gridUseless = div.getElementsByClassName("activityGrid")[(pageSize - 1) - i];
+            gridUseless.style.visibility = "visible";
+        }
     }
 }
 /**
@@ -209,7 +216,7 @@ function generateDiv(activityInfo) {
     imgResponsive.classList.add("img-responsive", "img-circle");
 
     let aTitle = document.createElement("a");
-    aTitle.setAttribute("href", "/activity/activityDetail?activityId="+activityInfo.activityID);
+    aTitle.setAttribute("href", "/activityUi/returnActivityDetail?activityId="+activityInfo.activityID);
 
     let h4 = document.createElement("h4");
 

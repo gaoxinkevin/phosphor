@@ -40,4 +40,9 @@ public class TeacherCourseController {
         return new JsonResponse(200,"success",teacherCourseService.getTeacherId(course.getCourseId()));
     }
 
+    @RequestMapping("getCoursesByTeacherId")
+    @ResponseBody
+    public JsonResponse getCoursesByTeacherId(Integer teacherId){
+        return new JsonResponse(200, "success", teacherCourseService.getCoursesByTeacherId(teacherId));
+    }
 }

@@ -52,10 +52,12 @@ public class ActivityController {
     }
 
 
-    @RequestMapping("activityDetail")
+    @RequestMapping("getActivityDetail")
     @ResponseBody
     public JsonResponse getActivityDetail(Integer activityId){
+        System.out.println("id======="+activityId);
         Activity activity = activityService.getActivityByID(activityId);
+        System.out.println(activity.toString());
         return new JsonResponse(200, "success", activity);
     }
     

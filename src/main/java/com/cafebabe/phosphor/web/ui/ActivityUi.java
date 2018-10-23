@@ -25,4 +25,9 @@ public class ActivityUi {
     public void returnActivityPage(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/activity/activityList.html").forward(httpServletRequest, httpServletResponse);
     }
+
+    @RequestMapping("returnActivityDetail")
+    public void returnActivityDetail(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/activity/activityDetail.html").forward(httpServletRequest, httpServletResponse);
+    }
 }

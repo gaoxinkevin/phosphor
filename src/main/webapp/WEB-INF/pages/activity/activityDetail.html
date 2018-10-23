@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<!--[if IE 9]> <html class="no-js ie9 fixed-layout" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--> <html class="no-js " lang="en"> <!--<![endif]-->
 <head>
 
     <!-- Basic -->
@@ -11,7 +9,7 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Site Meta -->
-    <title>Edulogy</title>
+    <title>phosphor</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -30,14 +28,20 @@
     <link rel="stylesheet" href="/css/carousel.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="/js/vendor/respond.min.js"></script>
     <![endif]-->
+    <!--载入js-->
+    <script src="/js/activity/activityDetail.js"></script>
+
 
 </head>
 <body>
-
+    <script type="text/javascript">
+        getActivityDetail();
+    </script>
 <!-- LOADER -->
 <div id="preloader">
     <img class="preloader" src="/images/loader.gif" alt="">
@@ -174,7 +178,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tagline-message page-title text-center">
-                        <h3 id="hActivityTitle">活动名</h3>
+                        <h3 class="hActivityTitle">活动名</h3>
                         <ul class="breadcrumb">
                             <li><a href="javascript:void(0)">Edulogy</a></li>
                             <li class="active">Blog</li>
@@ -194,11 +198,11 @@
                         <div class="content blog-list">
                             <div class="blog-wrapper clearfix">
                                 <div class="blog-meta">
-                                    <small><a href="/activity/getActivityAll">所有活动</a></small>
-                                    <h3>活动Title</h3>
+                                    <small><a href="/activityUi/returnActivityUi">所有活动</a></small>
+                                    <h3 class="hActivityTitle"></h3>
                                     <ul class="list-inline">
-                                        <li id="beginTime">活动开始时间</li>
-                                        <li><span>举办方：</span> <a id="aCompany">公司名</a></li>
+                                        <li id="beginTime">开始时间&nbsp; </li>
+                                        <li><span>举办方&nbsp;</span><small><a id="aCompany"></a></small></li>
                                     </ul>
                                 </div><!-- end blog-meta -->
 
@@ -209,20 +213,12 @@
                                 <div class="blog-desc-big">
                                     <p class="lead">Desc</p>
 
-                                    <blockquote class="text-center">
+                                    <blockquote class="text-center" id="activityContent">
                                         活动内容
                                     </blockquote>
 
                                     <hr class="invis">
 
-                                    <div class="tags-widget">
-                                        <ul class="list-inline">
-                                            <li><a href="#"></a></li>
-                                            <li><a href="#">web design</a></li>
-                                            <li><a href="#">development</a></li>
-                                            <li><a href="#">language</a></li>
-                                        </ul>
-                                    </div><!-- end list-widget -->
 
                                 </div><!-- end desc -->
                             </div><!-- end blog -->
@@ -232,18 +228,23 @@
                         <!--教师信息-->
                         <div class="authorbox">
                             <div class="site-publisher clearfix">
-                                <img src="/upload/people_10.jpeg" alt="" class="img-responsive img-circle">
-                                <a href="single-agency.html" title=""><h4><small>about</small> <span>教师名</span></h4></a>
-                                <p>Exercitation photo booth stumptown tote bag Banksy, elit small batch freegan sed. Craft beer elit seitan exercitation, photo booth.</p>
+                                <img src="/upload/people_10.jpeg" id="imgTeacher" alt="" class="img-responsive img-circle">
+                                <a href="" title="" id="aToTeacherDetail"><h4><small>about</small> <span id="spTeacherName"></span></h4></a>
+                                <p id="pTeacherDesc">
+                                </p>
 
                                 <div class="authorbox-social">
-                                    <ul class="list-inline">
-                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-envelope-o"></i></a></li>
-                                    </ul><!-- end list -->
+                                    <ul class="list-inline" id="teacher-info">
+                                        <li><a href="#"><i class="fa fa-phone" id="iTeacherPhone"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-envelope-o" id="iTeacherMail"></i></a></li>
+                                        <li><a href="#"><i class="fa" id="iWorkTime"></i></a></li>
+                                        <li><a href="#"><i class="fa" id="iTeacherStatus"></i></a></li>
+                                    </ul>
+                                    <div class="tags-widget">
+                                        <ul class="list-inline" id="teacher-courses">
+                                        </ul>
+                                    </div>
+                                    <!-- end list -->
                                 </div><!-- end share -->
                             </div><!-- end publisher -->
                         </div><!-- end details -->
