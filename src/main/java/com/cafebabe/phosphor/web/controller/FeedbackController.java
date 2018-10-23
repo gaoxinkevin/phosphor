@@ -36,8 +36,6 @@ public class FeedbackController {
     @RequestMapping("getFeedbackList")
     @ResponseBody
     public JsonResponse getFeedbackList(@RequestBody PageModel<FeedbackDTO> pageModel){
-        System.out.println(pageModel.getSf());
-        System.out.println(pageModel.getCurrentPageCode());
         return new JsonResponse(200,"success",feedbackService.getFeedbackList(pageModel));
     }
 

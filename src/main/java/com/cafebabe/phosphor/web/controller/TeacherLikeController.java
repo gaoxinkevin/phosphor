@@ -6,10 +6,7 @@ import com.cafebabe.phosphor.service.serviceimpl.TeacherLikeServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author kevingx2016@gmail.com
@@ -38,5 +35,10 @@ public class TeacherLikeController {
     @ResponseBody
     public JsonResponse teacherLikeAdd(@RequestBody Teacher teacher){
         return new JsonResponse(200,"success",teacherLikeService.updateTeacherLikeCountAdd(teacher.getTeacherId()));
+    }
+    @RequestMapping("getTeacherLikeCount/{teacherId}")
+    @ResponseBody
+    public JsonResponse getTeacherLikeCount(@PathVariable Integer teacherId){
+        return new JsonResponse(200,"success",teacherLikeService.getTeacherLikeCount(teacherId));
     }
 }

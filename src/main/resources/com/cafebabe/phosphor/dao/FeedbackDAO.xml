@@ -119,9 +119,10 @@
         limit #{startRecord},#{pageSize}
     </select>
 
-    <select id="getFeedbackCount" resultType="java.lang.Integer">
+    <select id="getFeedbackCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*)
         from feedback
+        where teacher_id =  #{teacherId,jdbcType=INTEGER}
     </select>
 
     <insert id="insertFeedback" parameterType="com.cafebabe.phosphor.model.entity.Feedback">
