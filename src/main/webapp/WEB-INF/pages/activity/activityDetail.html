@@ -249,7 +249,10 @@
                             </div><!-- end publisher -->
                         </div><!-- end details -->
                         <!--报名-->
-                        <button class="btn btn-primary" type="submit" onclick="signInForActivity()">提交</button>
+                        <button class="btn btn-primary" type="submit" id="btnSignIn" onclick="signInForActivity()">报名参加</button>
+                        <script type="text/javascript">
+                            window.setInterval("refreshBtnSignIn()",1000);
+                        </script>
                     </div><!-- end col -->
 
                     <div class="sidebar col-md-4">

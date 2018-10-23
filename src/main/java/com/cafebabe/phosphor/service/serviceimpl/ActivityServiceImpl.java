@@ -100,6 +100,7 @@ public class ActivityServiceImpl implements ActivityService {
             activityInfo.setActivityApplyEndTime(activity.getActivityApplyEndTime());
             activityInfo.setActivityContent(activity.getActivityContent());
             activityInfo.setActivityPrice(activity.getActivityPrice());
+            activityInfo.setActivitySf(activity.getActivitySf());
             activityInfoList.add(activityInfo);
         }
         return activityInfoList;

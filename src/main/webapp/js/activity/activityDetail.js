@@ -45,7 +45,6 @@ function loadView(activityDetail) {
     //时间戳转换为时间
     let timestamp = activityDetail.activityStartTime;
     let date = new Date(timestamp);
-
     let Y = date.getFullYear() + '-';
     let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + -'';
     let D = date.getDate() + ' ';
@@ -63,12 +62,30 @@ function loadView(activityDetail) {
     let activityContent = document.getElementById("activityContent");
     activityContent.innerText = activityDetail.activityContent;
 
+    btnSignIn = document.getElementById("btnSignIn");
+    btnSignIn.onclick = signInForActivity;
 
     let teacherId = activityDetail.teacherId;
     getTeacherInfo(teacherId);
+
+    timestampStopApply = activityDetail.activityApplyEndTime;
+
 }
 
-
+/**
+ * 定时刷新报名按钮
+ */
+function refreshBtnSignIn() {
+    let retainTime = getRemainTime(timestampStopApply);
+    if(retainTime == "0"){
+        btnSignIn.innerText = "报名截止";
+        btnSignIn.classList.add("disable");
+        btnSignIn.onclick = stopApply;
+    }
+    else{
+        btnSignIn.innerText = "立即报名 （剩余时间 "+retainTime+")";
+    }
+}
 /**
  * 请求获取teacher信息
  * @param teacherID teacherID
@@ -132,6 +149,10 @@ function loadTeacherInfo2View(teacherInfo) {
     
 }
 
+/**
+ * 根据教师信息获取其教授课程的信息
+ * @param teacherId 教师ID
+ */
 function getTeacherCourseInfo(teacherId) {
     let request = getXhr();
     request.open("GET", "/teacherCourse/getCoursesByTeacherId?teacherId="+teacherId);
@@ -147,6 +168,10 @@ function getTeacherCourseInfo(teacherId) {
     }
 }
 
+/**
+ * 渲染视图：教师教授的课程
+ * @param responseText  返回的JSON信息
+ */
 function loadTeacherCourse2View(responseText) {
     let courseList = JSON.parse(responseText).data;
     let ulCourse = document.getElementById("teacher-courses");
@@ -166,23 +191,43 @@ function loadTeacherCourse2View(responseText) {
     }
 }
 
+/**
+ * 获取报名剩余时间
+ * @param stopApplyTime 截止报名时间
+ * @returns {string}    处理后的剩余时间
+ */
 function getRemainTime(stopApplyTime) {
     let timestampNow = (new Date()).valueOf();
-    if(timestampNow >= stop())
-        return -1;
+    if(timestampNow >= stopApplyTime)
+        return "0";
     else {
         let timestampRemain = parseInt(stopApplyTime) -parseInt(timestampNow);
         //剩余的天数
-        let days = timestampRemain/ 86400000;
+        let days = parseInt(timestampRemain/ 86400000);
 
-        //let minus = ((timestampRemain/ % 3600000) / 60000;
+        //剩余小时数
+        let hours = parseInt((timestampRemain% 86400000) / 3600000);
+
+        //剩余分钟数
+        let minutes = parseInt((timestampRemain % 3600000) / 60000);
+
+        return days + "天 " + hours +" 时 " + minutes + " 分 ";
     }
 }
 
 
 /**
- *报名
+ *报名参加活动
  */
 function signInForActivity() {
+    //TODO 暂时先不设置路径
+    alert("报名成功");
+}
 
+/**
+ * 活动停止报名
+ */
+function stopApply() {
+    window.alert("报名时间已过");
+    return void(0);
 }

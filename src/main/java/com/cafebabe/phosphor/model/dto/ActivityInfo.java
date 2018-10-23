@@ -80,5 +80,8 @@ public class ActivityInfo {
      */
     private BigDecimal activityPrice;
 
-
+    /**
+     * 冗余字段，目前用于存储图片路径
+     */
+    private String activitySf;
 }
