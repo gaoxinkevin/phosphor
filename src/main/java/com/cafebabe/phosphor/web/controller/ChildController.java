@@ -40,11 +40,11 @@ public class ChildController {
     private final ChildServiceImpl childService;
     private final ParentServiceImpl parentService;
     @Autowired(required = false)
-    private HttpServletRequest httpServletRequest;
+    private  HttpServletRequest httpServletRequest;
 
 
     @Autowired
-    public ChildController(ChildServiceImpl childService,ParentServiceImpl parentService) {
+    public ChildController(ChildServiceImpl childService, ParentServiceImpl parentService) {
         this.childService = childService;
         this.parentService = parentService;
     }

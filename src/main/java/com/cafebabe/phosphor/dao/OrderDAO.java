@@ -54,39 +54,38 @@ public interface OrderDAO extends MyBatisBaseDao<Order, Integer> {
 
     /**
      * 获取所有单个用户的order
+     * @param parentId 用户id
      * @return order的列表
      */
-    List<Order> getOrderList(Integer id);
+    List<Order> getOrderList(Integer parentId);
 
     /**
      * 获取所有单个孩子的所有order
+     * @param childId 孩子id
      * @return order的列表
      */
-    List<Order> getOrderListByChildId(Integer id);
+    List<Order> getOrderListByChildId(Integer childId);
 
     /**
      * 查询单个用户的所有的课程订单
      * @param parentId 用户编号
-     * @param courseId 课程编号
      * @return order的列表
      */
-    List<Order> getCourseOrderList(@Param("parentId") Integer parentId, @Param("courseId") Integer courseId);
+    List<Order> getCourseOrderList(Integer parentId);
 
     /**
      * 查询单个用户的所有的套餐订单
      * @param parentId 用户编号
-     * @param groupId 套餐编号
      * @return order的列表
      */
-    List<Order> getGroupOrderList(@Param("parentId") Integer parentId, @Param("groupId") Integer groupId);
+    List<Order> getGroupOrderList(Integer parentId);
 
     /**
      * 查询单个用户的所有的活动订单
      * @param parentId 用户编号
-     * @param activityId 活动编号
      * @return order的列表
      */
-    List<Order> getActivityOrderList(@Param("parentId") Integer parentId, @Param("activityId") Integer activityId);
+    List<Order> getActivityOrderList(Integer parentId);
 
 
 }

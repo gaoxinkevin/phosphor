@@ -1,6 +1,7 @@
 package com.cafebabe.phosphor.web.controller;
 
 
+import com.cafebabe.phosphor.service.serviceimpl.ParentServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
 import com.cafebabe.phosphor.model.entity.UserLogin;
 import com.cafebabe.phosphor.service.serviceimpl.UserLoginServiceImpl;
@@ -35,13 +36,15 @@ import java.util.List;
 public class UserLoginController {
 
 
+    private final ParentServiceImpl parentService;
     private final UserLoginServiceImpl userLoginService;
     @Autowired(required = false)
     private HttpServletRequest httpServletRequest;
 
     @Autowired
-    public UserLoginController(UserLoginServiceImpl userLoginService) {
+    public UserLoginController(UserLoginServiceImpl userLoginService,ParentServiceImpl parentService) {
         this.userLoginService = userLoginService;
+        this.parentService =parentService;
     }
 
     @RequestMapping("userLogin")
@@ -53,6 +56,7 @@ public class UserLoginController {
         if ("用户名密码正确".equals(result)) {
             HttpSession session = httpServletRequest.getSession();
             session.setAttribute("userLoginPhone", userLogin.getUserLoginPhone());
+            session.setAttribute("parent",parentService.getAllInfoAboutParentService(loginPhone));
             return new JsonResponse(20000, "用户名密码正确", result);
         } else if ("用户名或密码不正确，请确认后登录".equals(result)) {
             return new JsonResponse(10000, "用户名或密码不正确，请确认后登录", result);

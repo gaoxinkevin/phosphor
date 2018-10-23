@@ -312,33 +312,38 @@
     <include refid="Base_Column_List" />
     from `order`
     where parent_id = #{parentId,jdbcType=INTEGER}
+    order by order_create_time desc
   </select>
   <select id="getOrderListByChildId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from `order`
     where child_id = #{childId,jdbcType=INTEGER}
+    order by order_create_time desc
   </select>
   <select id="getCourseOrderList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from `order`
     where parent_id = #{parentId,jdbcType=INTEGER}
-    and course_id = #{courseId,jdbcType=INTEGER}
+    and course_id !=null
+    order by order_create_time desc
   </select>
   <select id="getGroupOrderList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from `order`
     where parent_id = #{parentId,jdbcType=INTEGER}
-    and group_id = #{groupId,jdbcType=INTEGER}
+    and group_id !=null
+    order by order_create_time desc
   </select>
   <select id="getActivityOrderList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from `order`
     where parent_id = #{parentId,jdbcType=INTEGER}
-    and activity_id = #{activityId,jdbcType=INTEGER}
+    and activity_id !=null
+    order by order_create_time desc
   </select>
 
 </mapper>

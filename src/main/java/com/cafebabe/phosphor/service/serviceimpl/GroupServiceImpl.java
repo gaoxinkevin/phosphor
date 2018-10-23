@@ -41,12 +41,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Integer insertGroup(GroupDTO group) {
-        if ((1==groupDAO.insertGroup(toGroup(group)))
-                &&(1==groupCourseDAO.insertGroupCourses(group.getCourses()))){
-            return 1;
-        }else{
-            return 1;
-        }
+        return groupDAO.insertGroup(toGroup(group));
     }
 
     @Override

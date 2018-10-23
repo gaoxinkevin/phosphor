@@ -1,6 +1,5 @@
 package com.cafebabe.phosphor.model.dto;
 
-import com.cafebabe.phosphor.model.entity.Course;
 import lombok.*;
 
 import java.io.Serializable;
@@ -87,6 +86,6 @@ public class GroupDTO implements Serializable {
     /**
      * 套餐包含的所有的课程
      */
-    private List<Course> Courses;
+    private List<CourseInfo> courseInfos;
 
 }
