@@ -1,6 +1,9 @@
 package com.cafebabe.phosphor.dao;
 
+import com.cafebabe.phosphor.model.dto.FeedbackDTO;
 import com.cafebabe.phosphor.model.entity.Feedback;
+import com.cafebabe.phosphor.util.PageModel;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,10 +22,17 @@ public interface FeedbackDAO extends MyBatisBaseDao<Feedback, Integer> {
 
     /**
      * 根据教师ID获取该教师所有评价
-     * @param teacherId 教师ID
+     * @param pageModel 评价的分页信息
      * @return 该教师所有评价
      */
-    List<Feedback> getFeedbackList(Integer teacherId);
+    List<FeedbackDTO> getFeedbackList(PageModel<FeedbackDTO> pageModel);
+
+    /**
+     * 根据教师ID获取该教师评价数目
+     * @param teacherId 教师ID
+     * @return 评价数目
+     */
+    Integer getFeedbackCount(Integer teacherId);
 
     /**
      * 插入新的教师评价

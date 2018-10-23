@@ -145,7 +145,7 @@
             divRightSpan3.innerText = "教师邮箱：" + teacherData.teacherMail;
             let divRightSpan4 = document.createElement("span");
             if (teacherData.teacherDesc == null || teacherData.teacherDesc == "") {
-                divRightSpan4.innerText = "教师简介：空";
+                divRightSpan4.innerText = "教师简介：";
             } else {
                 divRightSpan4.innerText = "教师简介：" + teacherData.teacherDesc.slice(0, 30) + "...";
             }

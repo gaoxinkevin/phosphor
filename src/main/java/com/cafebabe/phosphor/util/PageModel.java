@@ -58,4 +58,8 @@ public class PageModel<T> {
      */
     private List<T> modelList;
 
+    /**
+     * 冗余字段
+     */
+    private Integer sf;
 }

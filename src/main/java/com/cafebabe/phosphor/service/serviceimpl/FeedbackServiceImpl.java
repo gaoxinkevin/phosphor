@@ -1,8 +1,10 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
 import com.cafebabe.phosphor.dao.FeedbackDAO;
+import com.cafebabe.phosphor.model.dto.FeedbackDTO;
 import com.cafebabe.phosphor.model.entity.Feedback;
 import com.cafebabe.phosphor.service.FeedbackService;
+import com.cafebabe.phosphor.util.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +32,13 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<Feedback> getFeedbackList(Integer teacherId) {
-        return feedbackDAO.getFeedbackList(teacherId);
+    public PageModel<FeedbackDTO> getFeedbackList(PageModel<FeedbackDTO> pageModel) {
+        pageModel.setTotalRecord(feedbackDAO.getFeedbackCount(pageModel.getSf()));
+        pageModel.setStartRecord((pageModel.getCurrentPageCode() - 1) * pageModel.getPageSize());
+        pageModel.setTotalPages(pageModel.getTotalRecord() % pageModel.getPageSize() == 0 ? pageModel.getTotalRecord() / pageModel.getPageSize() : pageModel.getTotalRecord() / pageModel.getPageSize() + 1);
+        pageModel.setModelList(feedbackDAO.getFeedbackList(pageModel));
+        System.out.println(pageModel);
+        return pageModel;
     }
 
     @Override

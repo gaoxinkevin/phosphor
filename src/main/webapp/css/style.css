@@ -2338,3 +2338,8 @@ customize
     visibility: hidden;
 }
 
+.customizeImage{
+    width: 60%;
+    margin: 30px auto;
+}
+

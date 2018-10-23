@@ -1,15 +1,14 @@
 package com.cafebabe.phosphor.web.controller;
 
+import com.cafebabe.phosphor.model.dto.FeedbackDTO;
 import com.cafebabe.phosphor.model.entity.Feedback;
 import com.cafebabe.phosphor.model.entity.Teacher;
 import com.cafebabe.phosphor.service.serviceimpl.FeedbackServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
+import com.cafebabe.phosphor.util.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author kevingx2016@gmail.com
@@ -36,8 +35,10 @@ public class FeedbackController {
 
     @RequestMapping("getFeedbackList")
     @ResponseBody
-    public JsonResponse getFeedbackList(@RequestBody Teacher teacher){
-        return new JsonResponse(200,"success",feedbackService.getFeedbackList(teacher.getTeacherId()));
+    public JsonResponse getFeedbackList(@RequestBody PageModel<FeedbackDTO> pageModel){
+        System.out.println(pageModel.getSf());
+        System.out.println(pageModel.getCurrentPageCode());
+        return new JsonResponse(200,"success",feedbackService.getFeedbackList(pageModel));
     }
 
     @RequestMapping("insertFeedback")
