@@ -1,6 +1,7 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
 import com.cafebabe.phosphor.dao.TeacherDAO;
+import com.cafebabe.phosphor.model.dto.TeacherInformation;
 import com.cafebabe.phosphor.model.entity.Teacher;
 import com.cafebabe.phosphor.service.TeacherService;
 import com.cafebabe.phosphor.util.PageModel;
@@ -32,8 +33,8 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public PageModel<Teacher> getTeacherList(Integer currentPageCode) {
-        PageModel<Teacher> pageModel = new PageModel<>();
+    public PageModel<TeacherInformation> getTeacherList(Integer currentPageCode) {
+        PageModel<TeacherInformation> pageModel = new PageModel<>();
         pageModel.setCurrentPageCode(currentPageCode);
         pageModel.setStartRecord((currentPageCode - 1) * pageModel.getPageSize());
         pageModel.setTotalRecord(teacherDAO.getTeacherCount());
@@ -43,7 +44,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher getTeacherById(Integer teacherId) {
+    public TeacherInformation getTeacherById(Integer teacherId) {
         return teacherDAO.getTeacherById(teacherId);
     }
 

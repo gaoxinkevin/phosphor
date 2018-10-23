@@ -164,25 +164,46 @@
         where teacher_id = #{teacherId,jdbcType=INTEGER}
     </update>
 
-    <select id="getTeacherList" resultType="com.cafebabe.phosphor.model.entity.Teacher">
-        select
-        <include refid="Base_Column_List"/>
+    <select id="getTeacherList" resultType="com.cafebabe.phosphor.model.dto.TeacherInformation">
+        select teacher.teacher_id,
+               teacher_name,
+               teache_phone,
+               teacher_mail,
+               teacher_photo,
+               teacher_worktime,
+               teacher_desc,
+               teacher_status,
+               teacher_sf,
+               teacher_like_count,
+               company_name
         from teacher
+                 join teacher_like on teacher_like.teacher_id = teacher.teacher_id
+                 join company on teacher.company_id = company.company_id
         limit #{startRecord},#{pageSize}
     </select>
 
     <select id="getTeacherCount" resultType="java.lang.Integer">
-        select
-        count(*)
+        select count(*)
         from teacher
     </select>
 
     <select id="getTeacherById" parameterType="java.lang.Integer"
-            resultType="com.cafebabe.phosphor.model.entity.Teacher">
-        select
-        <include refid="Base_Column_List"/>
+            resultType="com.cafebabe.phosphor.model.dto.TeacherInformation">
+        select teacher.teacher_id,
+               teacher_name,
+               teache_phone,
+               teacher_mail,
+               teacher_photo,
+               teacher_worktime,
+               teacher_desc,
+               teacher_status,
+               teacher_sf,
+               teacher_like_count,
+               company_name
         from teacher
-        where teacher_id = #{teacherId,jdbcType=INTEGER}
+                 join teacher_like on teacher_like.teacher_id = teacher.teacher_id
+                 join company on teacher.company_id = company.company_id
+        where teacher.teacher_id = #{teacherId,jdbcType=INTEGER}
     </select>
 
     <select id="getTeacherByCompanyId" parameterType="java.lang.Integer"

@@ -1,4 +1,38 @@
 /******************************************
+customize
+******************************************/
+.customizeDiv {
+    width: 800px;
+    height: 270px;
+    float: left;
+}
+.customizeFeedbackDiv {
+    width: 700px;
+    height: 240px;
+    float: left;
+    margin: 20px auto auto -10px;
+}
+.customizeFont {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.customizeA {
+    color: #01bacf;
+    font-size: 22px;
+}
+
+.customizeDisable {
+    visibility: hidden;
+}
+
+.customizeImage {
+    height: 150px;
+    margin: 20px auto;
+
+}
+
+/******************************************
 IMPORT
 ******************************************/
 
@@ -1179,7 +1213,7 @@ COURSE MODULES
 }
 
 .course-details {
-    padding: 3rem 2rem;
+    padding: 2rem 2rem;
 }
 
 .course-details h4 {
@@ -2315,26 +2349,4 @@ RESPONSIVE
     }
 }
 
-/******************************************
-customize
-******************************************/
-.customizeDiv {
-    width: 805px;
-    height: 270px;
-    float: left;
-}
-
-.customizeFont {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.customizeA{
-    color: #01bacf;
-    font-size: 22px;
-}
-
-.customizeDisable {
-    visibility: hidden;
-}
 

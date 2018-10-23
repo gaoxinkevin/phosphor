@@ -102,6 +102,7 @@
             fatherDiv.innerText="";
             scrollTo(0,0);
             resultList().then((res) => {
+                console.log(res);
                 for (let i = 0; i < res.data.modelList.length; i++) {
                     // console.log(res.data.modelList);
                     let sonDiv = generateDiv(res.data.modelList[i]);
@@ -144,10 +145,12 @@
             divRightSpan3.innerText = "教师邮箱：" + teacherData.teacherMail;
             let divRightSpan4 = document.createElement("span");
             if (teacherData.teacherDesc == null || teacherData.teacherDesc == "") {
-                divRightSpan4.innerText = "教师简介：空";
+                divRightSpan4.innerText = "教师简介：";
             } else {
                 divRightSpan4.innerText = "教师简介：" + teacherData.teacherDesc.slice(0, 30) + "...";
             }
+            let divRightSpan5 =document.createElement("span");
+            divRightSpan5.innerText = "点赞数："+teacherData.teacherLikeCount;
             let divRightA = document.createElement("a");
             divRightA.setAttribute("href", "http://localhost:1250/teacherUi/getTeacherInformation/" + teacherData.teacherId);
             divRightA.innerText = "查看详情";
@@ -160,6 +163,8 @@
             divRight2.appendChild(divRightSpan3);
             divRight2.appendChild(document.createElement("br"));
             divRight2.appendChild(divRightSpan4);
+            divRight2.appendChild(document.createElement("br"));
+            divRight2.appendChild(divRightSpan5);
             divRight2.appendChild(document.createElement("br"));
             divRight2.appendChild(divRightA);
 

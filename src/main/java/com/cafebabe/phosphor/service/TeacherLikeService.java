@@ -19,4 +19,11 @@ public interface TeacherLikeService {
      * @return 受影响的行数
      */
     int updateTeacherLikeCountAdd(Integer teacherId);
+
+    /**
+     * 根据教师ID获取该教师点赞数
+     * @param teacherId 教师ID
+     * @return 点赞数
+     */
+    int getTeacherLikeCount(Integer teacherId);
 }

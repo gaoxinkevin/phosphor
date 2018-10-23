@@ -29,4 +29,9 @@ public class TeacherLikeServiceImpl implements TeacherLikeService {
     public int updateTeacherLikeCountAdd(Integer teacherId) {
         return teacherLikeDAO.updateTeacherLikeCountAdd(teacherId);
     }
+
+    @Override
+    public int getTeacherLikeCount(Integer teacherId) {
+        return teacherLikeDAO.getTeacherLikeCount(teacherId);
+    }
 }

@@ -109,11 +109,20 @@
     </update>
 
 
-    <select id="getFeedbackList" parameterType="java.lang.Integer" resultType="com.cafebabe.phosphor.model.entity.Feedback">
-        select
-        <include refid="Base_Column_List"/>
+    <select id="getFeedbackList" parameterType="com.cafebabe.phosphor.model.dto.FeedbackDTO"
+            resultType="com.cafebabe.phosphor.model.dto.FeedbackDTO">
+        select teacher_id, feedback_id, parent.parent_id, parent_name, parent_phone,feedback_content,feedback_status
         from feedback
-        where teacher_id=#{teacherId,jdbcType=INTEGER} and feedback_status = 1
+                 join parent on feedback.parent_id = parent.parent_id
+        where teacher_id = #{sf,jdbcType=INTEGER}
+          and feedback_status = 1
+        limit #{startRecord},#{pageSize}
+    </select>
+
+    <select id="getFeedbackCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*)
+        from feedback
+        where teacher_id =  #{teacherId,jdbcType=INTEGER}
     </select>
 
     <insert id="insertFeedback" parameterType="com.cafebabe.phosphor.model.entity.Feedback">
