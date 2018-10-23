@@ -32,10 +32,8 @@ public class GroupCourse implements Serializable {
     private Integer groupId;
 
     /**
-     * 冗余字段
+     * 订单课程的状态
      */
     private String groupCourseSf;
-
-    private static final long serialVersionUID = 1L;
 
 }

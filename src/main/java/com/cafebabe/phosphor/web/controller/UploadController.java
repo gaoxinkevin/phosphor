@@ -50,13 +50,13 @@ import java.util.Date;
 @RequestMapping("upload")
 public class UploadController {
 
-     private final HttpServletRequest httpServletRequest;
+     @Autowired(required = false)
+     private HttpServletRequest httpServletRequest;
      private final ParentServiceImpl parentService;
      private final static String HTTP_QINIU  = "http://pg8h1ukn9.bkt.clouddn.com/";
 
      @Autowired
-     public UploadController(HttpServletRequest httpServletRequest, ParentServiceImpl parentService) {
-         this.httpServletRequest = httpServletRequest;
+     public UploadController( ParentServiceImpl parentService) {
          this.parentService = parentService;
      }
 

@@ -1,6 +1,5 @@
 package com.cafebabe.phosphor.model.dto;
 
-import com.cafebabe.phosphor.util.OrderType;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -29,10 +28,6 @@ public class OrderDetail {
      */
     private Integer id;
     /**
-     * 商品的主页面
-     */
-    private String path;
-    /**
      * 商品名称
      */
     private String name;
@@ -52,9 +47,16 @@ public class OrderDetail {
      * 商品的价格
      */
     private BigDecimal price ;
-
     /**
-     * 商品类型：
+     * 公司名称
      */
-    private OrderType type;
+    private String companyName;
+    /**
+     * 公司编号
+     */
+    private Integer companyId;
+    /**
+     * 商品类型
+     */
+    private String type;
 }

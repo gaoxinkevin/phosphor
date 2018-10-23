@@ -37,14 +37,13 @@ public class ChildController {
     private final ChildServiceImpl childService;
 
     private final ParentServiceImpl parentService;
-
-    private final HttpServletRequest httpServletRequest;
+    @Autowired(required = false)
+    private  HttpServletRequest httpServletRequest;
 
 
     @Autowired
-    public ChildController(ChildServiceImpl childService, HttpServletRequest httpServletRequest, ParentServiceImpl parentService) {
+    public ChildController(ChildServiceImpl childService, ParentServiceImpl parentService) {
         this.childService = childService;
-        this.httpServletRequest = httpServletRequest;
         this.parentService = parentService;
     }
 

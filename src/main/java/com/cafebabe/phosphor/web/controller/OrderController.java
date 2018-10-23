@@ -1,6 +1,8 @@
 package com.cafebabe.phosphor.web.controller;
 
+import com.cafebabe.phosphor.model.dto.OrderDTO;
 import com.cafebabe.phosphor.model.dto.OrderDetail;
+import com.cafebabe.phosphor.model.entity.Parent;
 import com.cafebabe.phosphor.service.serviceimpl.CompanyServiceImpl;
 import com.cafebabe.phosphor.service.serviceimpl.OrderServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
@@ -30,23 +34,39 @@ import java.math.BigDecimal;
 @RequestMapping("/order")
 public class OrderController {
 
-    @Autowired
+
     private final OrderServiceImpl orderService;
+    @Autowired(required = false)
+    private HttpServletRequest httpServletRequest;
+
+    @Autowired
     public OrderController(OrderServiceImpl orderService) { this.orderService = orderService; }
 
     @RequestMapping("order")
     @ResponseBody
-    public JsonResponse getCompany( ){
-        OrderDetail order = new OrderDetail(1,
-                "/order",
-                "zhangliang",
-                "malatang",
-                "/mmp.jpg",
-                1,
-                new BigDecimal(100),
-                OrderType.Group);
-        System.out.println(order.getType().getTypeName());
+    public JsonResponse getOrder( ){
+        OrderDetail order = new OrderDetail();
         return new JsonResponse(20000,"success",order);
     }
+    @RequestMapping("validateOrder")
+    @ResponseBody
+    public JsonResponse getValidateOrder( ){
+        OrderDetail order = new OrderDetail();
+        return new JsonResponse(20000,"success",order);
+    }
+    @RequestMapping("orderList")
+    @ResponseBody
+    public JsonResponse getOrderList(){
+        Parent parent = (Parent)httpServletRequest.getSession().getAttribute("parent");
+        if (parent == null) {
+            return new JsonResponse(50000,"success","系统炸了,好生处理");
+        }
+        List<OrderDTO> orderDTOList = orderService.getOrderList(parent.getParentId());
+        if (orderDTOList == null) {
+            return new JsonResponse(40000,"error","找不到相关信息");
+        }
+        return new JsonResponse(20000,"success",orderDTOList);
+    }
+
 
 }

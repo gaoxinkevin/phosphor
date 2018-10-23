@@ -66,6 +66,4 @@ public class Company implements Serializable {
      */
     private String companySf;
 
-    private static final long serialVersionUID = 1L;
-
 }
