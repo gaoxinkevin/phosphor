@@ -1,6 +1,8 @@
 package com.cafebabe.phosphor.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -40,13 +42,12 @@ public class Child implements Serializable {
     /**
      * 孩子生日
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date childBirthday;
 
     /**
      * 冗余字段
      */
     private String childSf;
-
-    private static final long serialVersionUID = 1L;
-
 }

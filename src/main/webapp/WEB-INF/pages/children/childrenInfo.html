@@ -61,7 +61,9 @@
     }
 
     const clientUrl = 'http://localhost:1250/parent/parentAllInfo';
+
     const clientMethod = 'POST';
+
     const getParentImg = (url) => {
         return new Promise((resolve, reject) => {
             const client = new XMLHttpRequest();
@@ -79,20 +81,21 @@
             client.send();
         });
     };
+
     const JsonResponseList = () => getParentImg(clientUrl);
     JsonResponseList().then((res) => {
         const imgSrc = document.getElementById("avatarImg");
         const imgSrc1 = document.getElementById("avatarImg2");
-        const imgSrc3 = document.getElementById("defaultImg");
-        const parentName2 = document.getElementById("aName");
+        const parentName2 = document.getElementById("aName1");
         imgSrc.src = res.data.parentPhoto;
         imgSrc1.src = res.data.parentPhoto;
-        imgSrc3.src = res.data.parentPhoto;
+        console.log(res);
         parentName2.innerText = res.data.parentName;
 
     }).catch(error => {
         console.log(error);
     });
+
 
     const clientUrl1 = 'http://localhost:1250/child/childInfo';
     const getAllChildrenInfo = (url) => {
@@ -117,20 +120,83 @@
     childrenInfoList().then((res) => {
         if (res.data.length  > 0){
             const urlChild = document.getElementById("navUrl");
+            const mn       = document.getElementById("mn");
             for (let item in res.data) {
                 const li = document.createElement("li");
                 const ali = document.createElement("a");
                 const div = document.createElement("div");
+                const a   = document.createElement("a");
+                const divName = document.createElement("div");
+                const divSex = document.createElement("div");
+                const divBirthday = document.createElement("div");
+                const spanName = document.createElement("span");
+                const spanSex  = document.createElement("span");
+                const spanBirthday = document.createElement("span");
+                const inputName = document.createElement("input");
+                const inputSex = document.createElement("input");
+                const inputBirthday = document.createElement("input");
+
+                a.type = "button";
+                a.className = "btn-sm btn-primary";
+                a.style.padding="10px 10px";
+                a.style.lineHeight = "5.5";
+                a.innerText = "阅读更多";
+                a.setAttribute("href","http://localhost:1250/child/childDetail/"+res.data[item].childId);
+
+                spanName.innerText = "孩子姓名：";
+                spanSex.innerText = "孩子性别：";
+                spanBirthday.innerText = "孩子生日: ";
 
                 li.id = res.data[item].childId;
-                li.appendChild(ali);
-                ali.innerText = res.data[item].childName;
                 ali.id = "a"+res.data[item].childId;
+
+
+
+                div.className = "divDisplay";
+                li.className  = "liDisplay";
+                div.style.marginTop="20px";
+                div.style.width = "100px";
+
+                div.id = "div" +res.data[item].childId;
+                div.style.display = "none";
+                divName.id = "divName"+res.data[item].childId;
+                divSex.id = "divSex" + res.data[item].childId;
+                divBirthday.id = "divBirthday" +res.data[item].childId;
+
+                mn.appendChild(div);
+                li.appendChild(ali);
+                urlChild.appendChild(li);
+
+                ali.innerText = res.data[item].childName;
+
                 ali.cursor = "pointer";
                 ali.setAttribute("href","javascript:void(0);");
                 ali.onclick=addA;
-                urlChild.appendChild(li);
-                console.log(res.data[item])
+
+
+                div.appendChild(divName);
+                div.appendChild(divSex);
+                div.appendChild(divBirthday);
+                div.appendChild(a);
+
+                divName.appendChild(spanName);
+                divName.appendChild(inputName);
+
+                divSex.style.marginTop = "20px";
+                divSex.appendChild(spanSex);
+                divSex.appendChild(inputSex);
+
+                divBirthday.style.marginTop = "20px";
+                divBirthday.appendChild(spanBirthday);
+                divBirthday.appendChild(inputBirthday);
+
+                inputBirthday.value = res.data[item].childBirthday;
+                if (1 === res.data[item].childGender){
+                    inputSex.value = "男"
+                }else {
+                    inputSex.value = "女"
+                }
+                inputName.value = res.data[item].childName;
             }
         } else {
             const addChild = document.getElementById("addChild");
@@ -143,12 +209,24 @@
     });
 
     function addA(){
-        this.className = "active";
         const  a = document.getElementById(this.id);
-        a.className = "active";
-        a.style.color = "red";
-        console.log(this.id);
-        console.log(this.innerHTML);
+        const id = "div"+this.id.substring(1);
+        const li = document.getElementById(this.id.substring(1));
+        const aDisplay =  document.getElementById(id);
+
+        const  divDisplay = document.getElementsByClassName("divDisplay");
+        const  activeDisplay = document.getElementsByClassName("active");
+        for (let a =0 ;a<divDisplay.length;a++){
+            divDisplay[a].style.display="none";
+        }
+
+        for (let a =0 ;a<activeDisplay.length;a++){
+            activeDisplay[a].className = "";
+        }
+
+        li.className = "active";
+        aDisplay.style.display='';
+        a.style.color = "#01bacf";
     }
 
 
@@ -210,7 +288,7 @@
 <div id="wrapper">
 
     <div id="preloader">
-        <img class="preloader" src="/images/loader.gif" alt="">
+        <img class="preloader" src="/images/loader.gif" alt="" >
     </div>
 
     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
@@ -298,7 +376,7 @@
         <div id="dgtle_body_bg" style="margin-top: 110px">
             <div id="wp" class="wp">
                 <div id="ct" class="ct2 wp cl dgtle_wpct2">
-                    <div class="mn">
+                    <div class="mn" id="mn">
 
                         <!--有孩子的可以添加孩子-->
                         <ul class="nav nav-tabs" id="navUrl">
@@ -326,7 +404,7 @@
                                 </div>
                                 <div class="mporf cl">
                                     <p class="homeusername">
-                                        <a id="aName" style="margin-left: 80px;margin-top: 20px"></a>
+                                        <a id="aName1" style="margin-left: 80px;margin-top: 20px"></a>
                                     </p>
 
                                 </div>
