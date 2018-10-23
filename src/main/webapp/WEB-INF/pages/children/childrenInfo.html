@@ -29,6 +29,15 @@
 
     <!--自己写的 -->
     <link rel="stylesheet" href="/css/alreadyLogin.css">
+    <style>
+
+        .nav-tabs > li > a:hover{
+            border-color: white;
+        }
+        .nav > li > a:focus, .nav > li > a:hover{
+            background-color: white;
+        }
+    </style>
 
     <style>
         .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
@@ -150,8 +159,6 @@
                 li.id = res.data[item].childId;
                 ali.id = "a"+res.data[item].childId;
 
-
-
                 div.className = "divDisplay";
                 li.className  = "liDisplay";
                 div.style.marginTop="20px";
@@ -159,6 +166,10 @@
 
                 div.id = "div" +res.data[item].childId;
                 div.style.display = "none";
+                if (item == 0){
+                    div.style.display  = "";
+                    li.className = "active"
+                }
                 divName.id = "divName"+res.data[item].childId;
                 divSex.id = "divSex" + res.data[item].childId;
                 divBirthday.id = "divBirthday" +res.data[item].childId;
@@ -198,11 +209,28 @@
                 }
                 inputName.value = res.data[item].childName;
             }
+            const li = document.createElement("li");
+            const a  = document.createElement("a");
+            const aImg = document.createElement("a");
+            aImg.setAttribute("href","javascript:void(0);")
+            a.innerText = "添加孩子";
+            urlChild.appendChild(li);
+            aImg.style.display="inline";
+            a.style.display="inline";
+            aImg.style.zIndex = "9999";
+            li.style.margin="8px";
+            li.appendChild(aImg);
+            li.appendChild(a);
+            a.setAttribute("href","javascript:void(0);");
+            a.cursor = "pointer";
+            a.style.marginLeft = "-15%";
+            aImg.style.background="url('http://pg8h1ukn9.bkt.clouddn.com/plus.png') no-repeat center 50%";
+            // a.style.backgroundRepeat = "no-repeat";
+
         } else {
             const addChild = document.getElementById("addChild");
             addChild.style.display="";
         }
-
         console.log(res)
     }).catch(error => {
         console.log(error);
@@ -385,7 +413,7 @@
 
                         <!--没有孩子可添加孩子-->
                         <div class="addChild" id="addChild" style="width: 200px;display: none;height: 200px;background: #3caf36;margin: 0 auto">
-                            <img src="/images/加号2.png" alt="">
+                            <img src="/images/plus.png" alt="">
                         </div>
                     </div>
                     <!--右侧边栏-->
