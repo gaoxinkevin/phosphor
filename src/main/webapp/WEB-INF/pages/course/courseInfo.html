@@ -55,10 +55,11 @@
             const courseType = document.getElementById("courseType");
             const courseContent = document.getElementById("courseContent");
             const courseStartDay = document.getElementById("courseStartDay");
+            const courseContinuedTime = document.getElementById("courseContinuedTime");
             const courseStartTime = document.getElementById("courseStartTime");
             const courseEndTime = document.getElementById("courseEndTime");
             const courseAddress = document.getElementById("courseAddress");
-            const courseTeacher = document.getElementById("courseTeacher")
+            const courseTeacher = document.getElementById("courseTeacher");
 
             courseName.innerText = data.courseName;
             coursePrice.innerText = data.coursePrice;
@@ -67,6 +68,7 @@
             courseType.innerText = data.typeName;
             courseContent.innerText = data.courseContent;
             courseStartDay.innerText = data.courseStartDay;
+            courseContinuedTime.innerText = data.courseContinuedTime;
             courseStartTime.innerText = data.courseStartTime;
             courseEndTime.innerText = data.courseEndTime;
             courseAddress.innerText = data.courseAddress;
@@ -147,10 +149,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="tagline-message page-title">
-                        <br/>
-                        <h3>课程详情</h3>
-                    </div>
+                    <div class="tagline-message page-title"></div>
                 </div><!-- end col -->
                 <div class="col-md-6 text-right">
                     <!--<ul class="breadcrumb">-->
@@ -261,6 +260,13 @@
                                             <td><strong>开课日期</strong></td>
                                             <td>
                                                 <span id="courseStartDay"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>课程周期</strong></td>
+                                            <td>
+                                                <span id="courseContinuedTime"></span>
+                                                <span>周</span>
                                             </td>
                                         </tr>
                                         <tr>

@@ -61,7 +61,11 @@
         <property name="hostName" value="47.100.247.29"/>
         <property name="port" value="6379"/>
         <property name="password" value="123"/>
+<<<<<<< HEAD
         <property name="database" value="5"/>
+=======
+        <property name="database" value="1"/>
+>>>>>>> devWJC
         <property name="poolConfig" ref="poolConfig"/>
     </bean>
 

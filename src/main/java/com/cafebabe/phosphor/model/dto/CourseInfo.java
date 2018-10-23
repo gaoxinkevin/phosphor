@@ -1,7 +1,11 @@
 package com.cafebabe.phosphor.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
 
@@ -26,6 +30,10 @@ import java.util.Date;
 @NoArgsConstructor
 public class CourseInfo implements Serializable {
     /**
+     * 课程ID
+     */
+    private Integer courseId;
+    /**
      * 课程名称
      */
     private String courseName;
@@ -43,7 +51,7 @@ public class CourseInfo implements Serializable {
     /**
      * 课程价格
      */
-    private Long coursePrice;
+    private BigDecimal coursePrice;
 
     /**
      * 课程内容
@@ -74,7 +82,8 @@ public class CourseInfo implements Serializable {
     /**
      * 开课日期
      */
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date courseStartDay;
 
     /**

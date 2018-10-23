@@ -13,8 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Site Icons -->
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="/images/favicon.ico">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
@@ -23,12 +22,18 @@
     <link rel="stylesheet" href="/css/carousel.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleLogin.css">
+    <link rel="stylesheet" href="/css/styleCourse.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="/js/login.js"></script>
 
+    <script src="/js/vendor/respond.min.js"></script>
+
+    <script src="/js/course.js"></script>
 </head>
-<body>  
-
+<body>
+<script type="text/javascript">
+    getCourseListByPage(0, 12);
+</script>
     <!-- LOADER -->
     <div id="preloader">
         <img class="preloader" src="/images/loader.gif" alt="">
@@ -97,10 +102,6 @@
                     <div class="col-md-12">
                         <div class="tagline-message page-title text-center">
                             <h3>课程</h3>
-                            <ul class="breadcrumb">
-                                <li><a href="javascript:void(0)">启明星</a></li>
-                                <li class="active">课程</li>
-                            </ul>
                         </div>
                     </div><!-- end col -->
                 </div><!-- end row -->
@@ -126,20 +127,25 @@
                         </div>
                     </div>
 
-                    <div class="row blog-grid shop-grid">
+                    <div class="row blog-grid shop-grid" id="courseGrid">
+                        <script type="text/javascript">
+                            getCourseListByPage(0, 12);
+                        </script>
+                        <input type="hidden" id="hidCurrentPageIndex">
+                        <!--课程单元-->
+
+
                         <div class="col-md-3">
+                            <div class="row courseGrid">
                             <div class="course-box shop-wrapper">
                                 <div class="image-wrap entry">
-                                    <img src="/upload/shop_01.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>
-                                    </div>
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+
                                 </div>
                                 <!-- end image-wrap -->
                                 <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="courseSingle.html" title="">Brown leather bag</a>
-                                        <small>Bags</small>
+                                    <h4><span class="couName">课程名</span></a>
+                                        <small><span class="courseType">类别</span></small>
                                     </h4>
                                 </div>
                                 <!-- end details -->
@@ -152,377 +158,404 @@
 
                                     <div class="pull-right">
                                         <ul class="list-inline">
-                                            <li><a href="#">$441.00</a></li>
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
                                         </ul>
                                     </div><!-- end left -->
                                 </div><!-- end footer -->
                             </div><!-- end box -->
                         </div><!-- end col -->
+                        </div>
 
                         <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_02.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>
+                            <div class="row courseGrid">
+                                <div class="course-box shop-wrapper">
+                                    <div class="image-wrap entry">
+                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                        <div class="magnifier">
+                                            <a href="courseInfo.html" title=""><i class="flaticon-add"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="courseSingle.html" title="">Long coat jacket</a>
-                                        <small>Jackets</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                                    <!-- end image-wrap -->
+                                    <div class="course-details shop-box text-center">
+                                        <h4>
+                                            <a href="courseInfo.html"><span class="couName">课程名</span></a>
+                                            <small><span class="courseType">类别</span></small>
+                                        </h4>
+                                    </div>
+                                    <!-- end details -->
+                                    <div class="course-footer clearfix">
+                                        <div class="pull-left">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
+                                            </ul>
+                                        </div><!-- end left -->
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$122.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
+                                        <div class="pull-right">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><span class="couPrice">价格</span></a></li>
+                                            </ul>
+                                        </div><!-- end left -->
+                                    </div><!-- end footer -->
+                                </div><!-- end box -->
+                            </div><!-- end col -->
+                        </div>
 
                         <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_03.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>
+                            <div class="row courseGrid">
+                                <div class="course-box shop-wrapper">
+                                    <div class="image-wrap entry">
+                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                        <div class="magnifier">
+                                            <a href="courseInfo.html" title=""><i class="flaticon-add"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="courseSingle.html" title="">Style own glasses</a>
-                                        <small>Glasses</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                                    <!-- end image-wrap -->
+                                    <div class="course-details shop-box text-center">
+                                        <h4>
+                                            <a href="courseInfo.html"><span class="couName">课程名</span></a>
+                                            <small><span class="courseType">类别</span></small>
+                                        </h4>
+                                    </div>
+                                    <!-- end details -->
+                                    <div class="course-footer clearfix">
+                                        <div class="pull-left">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
+                                            </ul>
+                                        </div><!-- end left -->
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$52.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
+                                        <div class="pull-right">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><span class="couPrice">价格</span></a></li>
+                                            </ul>
+                                        </div><!-- end left -->
+                                    </div><!-- end footer -->
+                                </div><!-- end box -->
+                            </div><!-- end col -->
+                        </div>
 
                         <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_04.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>
+                            <div class="row courseGrid">
+                                <div class="course-box shop-wrapper">
+                                    <div class="image-wrap entry">
+                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                        <div class="magnifier">
+                                            <a href="courseInfo.html" title=""><i class="flaticon-add"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="courseSingle.html" title="">Printed white t-shirt</a>
-                                        <small>T-Shirts</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                                    <!-- end image-wrap -->
+                                    <div class="course-details shop-box text-center">
+                                        <h4>
+                                            <a href="courseInfo.html"><span class="couName">课程名</span></a>
+                                            <small><span class="courseType">类别</span></small>
+                                        </h4>
+                                    </div>
+                                    <!-- end details -->
+                                    <div class="course-footer clearfix">
+                                        <div class="pull-left">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
+                                            </ul>
+                                        </div><!-- end left -->
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$22.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
+                                        <div class="pull-right">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><span class="couPrice">价格</span></a></li>
+                                            </ul>
+                                        </div><!-- end left -->
+                                    </div><!-- end footer -->
+                                </div><!-- end box -->
+                            </div><!-- end col -->
+                        </div>
 
                         <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_05.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>
+                            <div class="row courseGrid">
+                                <div class="course-box shop-wrapper">
+                                    <div class="image-wrap entry">
+                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                        <div class="magnifier">
+                                            <a href="courseInfo.html" title=""><i class="flaticon-add"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="courseSingle.html" title="">Long white sweater</a>
-                                        <small>Sweater</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                                    <!-- end image-wrap -->
+                                    <div class="course-details shop-box text-center">
+                                        <h4>
+                                            <a href="courseInfo.html"><span class="couName">课程名</span></a>
+                                            <small><span class="courseType">类别</span></small>
+                                        </h4>
+                                    </div>
+                                    <!-- end details -->
+                                    <div class="course-footer clearfix">
+                                        <div class="pull-left">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
+                                            </ul>
+                                        </div><!-- end left -->
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$66.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
+                                        <div class="pull-right">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><span class="couPrice">价格</span></a></li>
+                                            </ul>
+                                        </div><!-- end left -->
+                                    </div><!-- end footer -->
+                                </div><!-- end box -->
+                            </div><!-- end col -->
+                        </div>
 
                         <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_06.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>
+                            <div class="row courseGrid">
+                                <div class="course-box shop-wrapper">
+                                    <div class="image-wrap entry">
+                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                        <div class="magnifier">
+                                            <a href="courseInfo.html" title=""><i class="flaticon-add"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="courseSingle.html" title="">Black men's shoes</a>
-                                        <small>Shoes</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                                    <!-- end image-wrap -->
+                                    <div class="course-details shop-box text-center">
+                                        <h4>
+                                            <a href="courseInfo.html"><span class="couName">课程名</span></a>
+                                            <small><span class="courseType">类别</span></small>
+                                        </h4>
+                                    </div>
+                                    <!-- end details -->
+                                    <div class="course-footer clearfix">
+                                        <div class="pull-left">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
+                                            </ul>
+                                        </div><!-- end left -->
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$578.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
+                                        <div class="pull-right">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><span class="couPrice">价格</span></a></li>
+                                            </ul>
+                                        </div><!-- end left -->
+                                    </div><!-- end footer -->
+                                </div><!-- end box -->
+                            </div><!-- end col -->
+                        </div>
 
                         <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_07.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>
+                            <div class="row courseGrid">
+                                <div class="course-box shop-wrapper">
+                                    <div class="image-wrap entry">
+                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                        <div class="magnifier">
+                                            <a href="courseInfo.html" title=""><i class="flaticon-add"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="courseSingle.html" title="">Night blue sapphire</a>
-                                        <small>Coat</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                                    <!-- end image-wrap -->
+                                    <div class="course-details shop-box text-center">
+                                        <h4>
+                                            <a href="courseInfo.html"><span class="couName">课程名</span></a>
+                                            <small><span class="courseType">类别</span></small>
+                                        </h4>
+                                    </div>
+                                    <!-- end details -->
+                                    <div class="course-footer clearfix">
+                                        <div class="pull-left">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
+                                            </ul>
+                                        </div><!-- end left -->
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$90.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
+                                        <div class="pull-right">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><span class="couPrice">价格</span></a></li>
+                                            </ul>
+                                        </div><!-- end left -->
+                                    </div><!-- end footer -->
+                                </div><!-- end box -->
+                            </div><!-- end col -->
+                        </div>
 
                         <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_08.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>
+                            <div class="row courseGrid">
+                                <div class="course-box shop-wrapper">
+                                    <div class="image-wrap entry">
+                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                        <div class="magnifier">
+                                            <a href="courseInfo.html" title=""><i class="flaticon-add"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="courseSingle.html" title="">Long leather jacket</a>
-                                        <small>Shorts</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                                    <!-- end image-wrap -->
+                                    <div class="course-details shop-box text-center">
+                                        <h4>
+                                            <a href="courseInfo.html"><span class="couName">课程名</span></a>
+                                            <small><span class="courseType">类别</span></small>
+                                        </h4>
+                                    </div>
+                                    <!-- end details -->
+                                    <div class="course-footer clearfix">
+                                        <div class="pull-left">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
+                                            </ul>
+                                        </div><!-- end left -->
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$22.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
+                                        <div class="pull-right">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><span class="couPrice">价格</span></a></li>
+                                            </ul>
+                                        </div><!-- end left -->
+                                    </div><!-- end footer -->
+                                </div><!-- end box -->
+                            </div><!-- end col -->
+                        </div>
 
                         <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_09.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>
+                            <div class="row courseGrid">
+                                <div class="course-box shop-wrapper">
+                                    <div class="image-wrap entry">
+                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                        <div class="magnifier">
+                                            <a href="courseInfo.html" title=""><i class="flaticon-add"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="courseSingle.html" title="">Stylish black bag</a>
-                                        <small>Bags</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                                    <!-- end image-wrap -->
+                                    <div class="course-details shop-box text-center">
+                                        <h4>
+                                            <a href="courseInfo.html"><span class="couName">课程名</span></a>
+                                            <small><span class="courseType">类别</span></small>
+                                        </h4>
+                                    </div>
+                                    <!-- end details -->
+                                    <div class="course-footer clearfix">
+                                        <div class="pull-left">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
+                                            </ul>
+                                        </div><!-- end left -->
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$412.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
+                                        <div class="pull-right">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><span class="couPrice">价格</span></a></li>
+                                            </ul>
+                                        </div><!-- end left -->
+                                    </div><!-- end footer -->
+                                </div><!-- end box -->
+                            </div><!-- end col -->
+                        </div>
 
                         <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_10.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>
+                            <div class="row courseGrid">
+                                <div class="course-box shop-wrapper">
+                                    <div class="image-wrap entry">
+                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                        <div class="magnifier">
+                                            <a href="courseInfo.html" title=""><i class="flaticon-add"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="courseSingle.html" title="">Skirt and blouse</a>
-                                        <small>Skirt</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                                    <!-- end image-wrap -->
+                                    <div class="course-details shop-box text-center">
+                                        <h4>
+                                            <a href="courseInfo.html"><span class="couName">课程名</span></a>
+                                            <small><span class="courseType">类别</span></small>
+                                        </h4>
+                                    </div>
+                                    <!-- end details -->
+                                    <div class="course-footer clearfix">
+                                        <div class="pull-left">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
+                                            </ul>
+                                        </div><!-- end left -->
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$331.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
+                                        <div class="pull-right">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><span class="couPrice">价格</span></a></li>
+                                            </ul>
+                                        </div><!-- end left -->
+                                    </div><!-- end footer -->
+                                </div><!-- end box -->
+                            </div><!-- end col -->
+                        </div>
 
                         <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_11.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>
+                            <div class="row courseGrid">
+                                <div class="course-box shop-wrapper">
+                                    <div class="image-wrap entry">
+                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                        <div class="magnifier">
+                                            <a href="courseInfo.html" title=""><i class="flaticon-add"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="courseSingle.html" title="">Motif Skirt and Blouse</a>
-                                        <small>Blouse</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                                    <!-- end image-wrap -->
+                                    <div class="course-details shop-box text-center">
+                                        <h4>
+                                            <a href="courseInfo.html"><span class="couName">课程名</span></a>
+                                            <small><span class="courseType">类别</span></small>
+                                        </h4>
+                                    </div>
+                                    <!-- end details -->
+                                    <div class="course-footer clearfix">
+                                        <div class="pull-left">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
+                                            </ul>
+                                        </div><!-- end left -->
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$44.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
+                                        <div class="pull-right">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><span class="couPrice">价格</span></a></li>
+                                            </ul>
+                                        </div><!-- end left -->
+                                    </div><!-- end footer -->
+                                </div><!-- end box -->
+                            </div><!-- end col -->
+                        </div>
 
                         <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_12.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>
+                            <div class="row courseGrid">
+                                <div class="course-box shop-wrapper">
+                                    <div class="image-wrap entry">
+                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                        <div class="magnifier">
+                                            <a href="courseInfo.html" title=""><i class="flaticon-add"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="courseSingle.html" title="">Feather collar coat</a>
-                                        <small>Coats</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                                    <!-- end image-wrap -->
+                                    <div class="course-details shop-box text-center">
+                                        <h4>
+                                            <a href="courseInfo.html"><span class="couName">课程名</span></a>
+                                            <small><span class="courseType">类别</span></small>
+                                        </h4>
+                                    </div>
+                                    <!-- end details -->
+                                    <div class="course-footer clearfix">
+                                        <div class="pull-left">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
+                                            </ul>
+                                        </div><!-- end left -->
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$441.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
+                                        <div class="pull-right">
+                                            <ul class="list-inline">
+                                                <li><a href="#"><span class="couPrice">价格</span></a></li>
+                                            </ul>
+                                        </div><!-- end left -->
+                                    </div><!-- end footer -->
+                                </div><!-- end box -->
+                            </div><!-- end col -->
+                        </div>
                     </div><!-- end row -->
 
                     <hr class="invis">
 
                     <div class="row text-center">
                         <div class="col-md-12">
-                            <ul class="pagination">
-                                <li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>
-                                <li class="active"><a href="javascript:void(0)">1</a></li>
-                                <li><a href="javascript:void(0)">2</a></li>
-                                <li><a href="javascript:void(0)">3</a></li>
-                                <li><a href="javascript:void(0)">...</a></li>
-                                <li><a href="javascript:void(0)">&raquo;</a></li>
+                            <input type="hidden" id="currentPageCode">
+                            <input type="hidden" id="totalPages">
+                            <ul class="pagination" id="uPagination">
+                                <!--上一页-->
+                                <li class="disabled" id="perPage">
+                                    <a href="javascript:void(0)" onclick="perPage()">«</a>
+                                </li>
+                                <!--下一页-->
+                                <li id="nextPage">
+                                    <a href="javascript:void(0)" onclick="nextPage()">»</a>
+                                </li>
                             </ul>
                         </div><!-- end col -->
                     </div><!-- end row -->
@@ -544,7 +577,7 @@
                                         <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
                                     </div>
                                 </form>
-                                <img src="/images/payments.png" alt="" class="img-responsive">
+                                <img src="" alt="" class="img-responsive">
                             </div><!-- end newsletter -->
                         </div><!-- end widget -->
                     </div><!-- end col -->
@@ -608,7 +641,7 @@
                                         <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
                                     </div>
                                 </form>
-                                <img src="images/payments.png" alt="" class="img-responsive">
+                                <img src="" alt="" class="img-responsive">
                             </div><!-- end newsletter -->
                         </div><!-- end widget -->
                     </div><!-- end col -->
