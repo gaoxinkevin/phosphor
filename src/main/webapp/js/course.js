@@ -40,7 +40,7 @@ function generateDiv(courseInfo) {
     imgResponsive.classList.add("img-responsive", "img-circle");
 
     let aTitle = document.createElement("a");
-    aTitle.setAttribute("href", "/activity/activityDetail?activityID="+activityInfo.activityID);
+    aTitle.setAttribute("href", "/course/activityDetail?activityID="+courseInfo.courseName);
 
     let h4 = document.createElement("h4");
 
@@ -49,13 +49,13 @@ function generateDiv(courseInfo) {
     h4.appendChild(small);
 
     let span = document.createElement("span");
-    span.innerText = activityInfo.activityTitle;
+    span.innerText = courseInfo.typeName;
 
     h4.appendChild(span);
     aTitle.appendChild(h4);
 
     let pDesc = document.createElement("p");
-    pDesc.innerText = activityInfo.activityDesc;
+    pDesc.innerText = courseInfo.activityDesc;
 
     let bSubmit = document.createElement("button");
     bSubmit.setAttribute("type", "submit");

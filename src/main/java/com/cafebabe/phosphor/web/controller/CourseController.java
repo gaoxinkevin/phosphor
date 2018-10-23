@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  *
@@ -37,7 +39,14 @@ public class CourseController {
     @ResponseBody
     @GetMapping("/findCourseInfo")
     public JsonResponse findCourseInfo(){
-        CourseInfo courseInfo = courseService.getCourseInfoService(10000);
+        CourseInfo courseInfo = courseService.getCourseInfoService(10017);
         return new JsonResponse(20000,"成功",courseInfo);
+    }
+
+    @ResponseBody
+    @GetMapping("/getCourseList")
+    public JsonResponse getCourseList(){
+        List<Course> courseList = courseService.getAllCourseService();
+        return new JsonResponse(20000,"成功",courseList);
     }
 }

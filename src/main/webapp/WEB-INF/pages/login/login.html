@@ -24,6 +24,20 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleLogin.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
+            background-color:#82B43F;
+            border-color: #82B43F;
+        }
+        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+            background: #82B43F;
+            color: #ffffff !important;
+        }
+        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+            background: #82B43F none repeat scroll 0 0 !important;
+
+        }
+    </style>
 </head>
 
 <body>
@@ -186,6 +200,21 @@
                         <li><a href="">课程</a></li>
                         <li><a href="">活动</a></li>
                         <li><a href="">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">官方套餐</a></li>
+                                    <li><a href="#">自定义套餐</a></li>
+                                </ul>
+                            </div>
+                        </li>
                         <li><a href="">联系我们</a></li>
                         <li><a href="/loginUi/loginUi">登录|注册</a></li>
                         <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i

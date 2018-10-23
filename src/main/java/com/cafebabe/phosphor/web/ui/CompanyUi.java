@@ -26,12 +26,10 @@ import java.io.IOException;
 @RequestMapping("/companyUi")
 public class CompanyUi {
 
-    @RequestMapping("CompanyListUi")
-    public void allCompanyUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/company/allCompany.html").forward(httpServletRequest,httpServletResponse);
-    }
     @RequestMapping("companyUi")
-    public void companyUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/company/company.html").forward(httpServletRequest,httpServletResponse);
+    public void companyUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+            throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/company/company.html")
+                .forward(httpServletRequest,httpServletResponse);
     }
 }

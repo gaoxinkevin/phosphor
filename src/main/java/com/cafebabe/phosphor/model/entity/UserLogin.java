@@ -16,7 +16,7 @@ import java.util.Date;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserLogin implements Serializable {
+public class UserLogin implements Serializable{
     /**
      * 登录ID
      */
@@ -43,7 +43,5 @@ public class UserLogin implements Serializable {
     private Date userLoginTime;
 
     private String userLoginSf;
-
-    private static final long serialVersionUID = 1L;
 
 }

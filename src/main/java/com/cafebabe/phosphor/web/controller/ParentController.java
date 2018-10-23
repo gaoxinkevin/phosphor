@@ -4,19 +4,20 @@ package com.cafebabe.phosphor.web.controller;
 import com.cafebabe.phosphor.model.dto.InsertParent;
 import com.cafebabe.phosphor.model.dto.MobileAndRandomCode;
 import com.cafebabe.phosphor.model.entity.Parent;
+
 import com.cafebabe.phosphor.service.serviceimpl.InsertParentServiceImpl;
 import com.cafebabe.phosphor.service.serviceimpl.ParentServiceImpl;
+
 import com.cafebabe.phosphor.util.GsonUtil;
 import com.cafebabe.phosphor.util.JsonResponse;
-
 import com.cafebabe.phosphor.util.SMSUtil;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 
@@ -40,7 +41,6 @@ import java.util.Map;
 public class ParentController {
 
     private final ParentServiceImpl parentService;
-
     @Autowired(required = false)
     private HttpServletRequest httpServletRequest;
     private final InsertParentServiceImpl insertParentService;
@@ -72,7 +72,7 @@ public class ParentController {
 
     @SuppressWarnings("all")
     @ResponseBody
-    @PostMapping("/verificationCode")
+    @PostMapping("verificationCode")
     public JsonResponse getVerCode(@RequestBody MobileAndRandomCode mobile){
         String result = SMSUtil.sendVerCode(mobile.getMobile(),mobile.getRandomCode());
         Map map=GsonUtil.GsonToMaps(result);
@@ -102,7 +102,7 @@ public class ParentController {
     @ResponseBody
     @PostMapping("insertParent")
     public JsonResponse insertParent(@RequestBody InsertParent insertParent){
-        boolean result = insertParentService.insertIntoParent(insertParent);
+        boolean result = parentService.insertIntoParent(insertParent);
         if (result){
             httpServletRequest.getSession().setAttribute("userLoginPhone",insertParent.getInsertParentPhone());
             httpServletRequest.getSession().getAttribute("userLoginPhone");
@@ -122,9 +122,16 @@ public class ParentController {
     @ResponseBody
     @PostMapping("updateParent")
     public JsonResponse updateParent(@RequestBody Parent parent){
-        String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
-        System.out.println(parent);
         parentService.updateByParentPhoneService(parent);
         return new JsonResponse(22222,"",parent);
     }
+
+//    @ResponseBody
+//    @RequestMapping("updateParent")
+//    public JsonResponse getUpdateParent(@RequestBody Parent parent){
+//        System.out.println(parent);
+//        parentService.updateByParentPhoneService(parent);
+//        return new JsonResponse(22222,"",parent);
+//    }
+
 }

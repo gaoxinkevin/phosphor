@@ -1,7 +1,9 @@
 package com.cafebabe.phosphor.model.dto;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
@@ -75,12 +77,14 @@ public class CourseInfo implements Serializable {
     /**
      * 开课日期
      */
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date courseStartDay;
 
     /**
      * 上课时间
      */
+
     private Time courseStartTime;
 
     /**

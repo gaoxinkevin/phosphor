@@ -42,25 +42,4 @@ public class InsertParentServiceImpl implements InsertParentService {
         this.userLoginDAO = userLoginDAO;
     }
 
-    /**
-     *
-     * @param insertParent
-     * @return
-     */
-    @Override
-    @Transactional(rollbackFor=Exception.class)
-    public boolean insertIntoParent(InsertParent insertParent) {
-
-        Parent parent = new Parent();
-        UserLogin userLogin = new UserLogin();
-
-        parent.setParentCreateTime(new Date());
-        parent.setParentName(insertParent.getInsertParentName());
-        parent.setParentPhone(insertParent.getInsertParentPhone());
-
-        userLogin.setUserLoginPhone(insertParent.getInsertParentPhone());
-        userLogin.setUserLoginPwd(insertParent.getInsetParentPassword());
-
-        return parentDAO.insertParentDao(parent) && userLoginDAO.insertUserLogin(userLogin);
-    }
 }
