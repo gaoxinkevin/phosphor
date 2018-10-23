@@ -1,6 +1,7 @@
 package com.cafebabe.phosphor.web.controller;
 
 import com.cafebabe.phosphor.model.dto.ChildrenInfoDto;
+import com.cafebabe.phosphor.model.entity.Child;
 import com.cafebabe.phosphor.service.serviceimpl.ChildServiceImpl;
 import com.cafebabe.phosphor.service.serviceimpl.ParentServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
@@ -9,6 +10,7 @@ import com.cafebabe.phosphor.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -62,5 +64,18 @@ public class ChildController {
             RedisUtil.setList("childAllINfo"+parentPhone,list);
             return new JsonResponse(20000,"成功",list);
         }
+    }
+
+    @RequestMapping("insertChild")
+    @ResponseBody
+    public JsonResponse saveChild(@RequestBody Child child){
+        boolean result = childService.insertChildService(child);
+        System.out.println(child.getChildBirthday());
+        if (result){
+            return new JsonResponse(20000,"添加成功",true);
+        }else {
+            return new JsonResponse(30000,"添加失败",false);
+        }
+
     }
 }

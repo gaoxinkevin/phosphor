@@ -25,4 +25,11 @@ public interface ChildService {
      * @return 孩子信息
      */
     List<ChildrenInfoDto> getChildInfo(Integer parentId);
+
+    /**
+     * 添加孩子
+     * @param child 孩子信息
+     * @return 受影响的行数
+     */
+    boolean insertChildService(Child child);
 }

@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Site Icons -->
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
@@ -31,15 +31,19 @@
     <link rel="stylesheet" href="/css/alreadyLogin.css">
     <style>
 
+        #addChild{
+            display: none;
+            margin: 20px auto;
+        }
+
         .nav-tabs > li > a:hover{
             border-color: white;
         }
+
         .nav > li > a:focus, .nav > li > a:hover{
             background-color: white;
         }
-    </style>
 
-    <style>
         .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
             background-color: #82B43F;
             border-color: #82B43F;
@@ -54,7 +58,6 @@
             background: #82B43F none repeat scroll 0 0 !important;
 
         }
-
     </style>
 </head>
 
@@ -105,7 +108,6 @@
         console.log(error);
     });
 
-
     const clientUrl1 = 'http://localhost:1250/child/childInfo';
     const getAllChildrenInfo = (url) => {
         return new Promise((resolve, reject) => {
@@ -127,19 +129,19 @@
 
     const childrenInfoList = () => getAllChildrenInfo(clientUrl1);
     childrenInfoList().then((res) => {
-        if (res.data.length  > 0){
+        if (res.data.length > 0) {
             const urlChild = document.getElementById("navUrl");
-            const mn       = document.getElementById("mn");
+            const mn = document.getElementById("mn");
             for (let item in res.data) {
                 const li = document.createElement("li");
                 const ali = document.createElement("a");
                 const div = document.createElement("div");
-                const a   = document.createElement("a");
+                const a = document.createElement("a");
                 const divName = document.createElement("div");
                 const divSex = document.createElement("div");
                 const divBirthday = document.createElement("div");
                 const spanName = document.createElement("span");
-                const spanSex  = document.createElement("span");
+                const spanSex = document.createElement("span");
                 const spanBirthday = document.createElement("span");
                 const inputName = document.createElement("input");
                 const inputSex = document.createElement("input");
@@ -147,32 +149,32 @@
 
                 a.type = "button";
                 a.className = "btn-sm btn-primary";
-                a.style.padding="10px 10px";
+                a.style.padding = "10px 10px";
                 a.style.lineHeight = "5.5";
                 a.innerText = "阅读更多";
-                a.setAttribute("href","http://localhost:1250/child/childDetail/"+res.data[item].childId);
+                a.setAttribute("href", "http://localhost:1250/child/childDetail/" + res.data[item].childId);
 
                 spanName.innerText = "孩子姓名：";
                 spanSex.innerText = "孩子性别：";
                 spanBirthday.innerText = "孩子生日: ";
 
                 li.id = res.data[item].childId;
-                ali.id = "a"+res.data[item].childId;
+                ali.id = "a" + res.data[item].childId;
 
                 div.className = "divDisplay";
-                li.className  = "liDisplay";
-                div.style.marginTop="20px";
+                li.className = "liDisplay";
+                div.style.marginTop = "20px";
                 div.style.width = "100px";
 
-                div.id = "div" +res.data[item].childId;
+                div.id = "div" + res.data[item].childId;
                 div.style.display = "none";
-                if (item == 0){
-                    div.style.display  = "";
+                if (item == 0) {
+                    div.style.display = "";
                     li.className = "active"
                 }
-                divName.id = "divName"+res.data[item].childId;
+                divName.id = "divName" + res.data[item].childId;
                 divSex.id = "divSex" + res.data[item].childId;
-                divBirthday.id = "divBirthday" +res.data[item].childId;
+                divBirthday.id = "divBirthday" + res.data[item].childId;
 
                 mn.appendChild(div);
                 li.appendChild(ali);
@@ -181,8 +183,8 @@
                 ali.innerText = res.data[item].childName;
 
                 ali.cursor = "pointer";
-                ali.setAttribute("href","javascript:void(0);");
-                ali.onclick=addA;
+                ali.setAttribute("href", "javascript:void(0);");
+                ali.onclick = changeTab;
 
 
                 div.appendChild(divName);
@@ -202,62 +204,99 @@
                 divBirthday.appendChild(inputBirthday);
 
                 inputBirthday.value = res.data[item].childBirthday;
-                if (1 === res.data[item].childGender){
+                if (1 === res.data[item].childGender) {
                     inputSex.value = "男"
-                }else {
+                } else {
                     inputSex.value = "女"
                 }
                 inputName.value = res.data[item].childName;
             }
+
+            //添加tab  添加孩子
             const li = document.createElement("li");
-            const a  = document.createElement("a");
+            const a = document.createElement("a");
             const aImg = document.createElement("a");
-            aImg.setAttribute("href","javascript:void(0);")
+
+            a.id = "aAddChild";
+            aImg.id = "aImgAddChild";
+
+            a.setAttribute("href", "javascript:void(0);");
+            aImg.setAttribute("href", "javascript:void(0);");
+
+            li.style.margin = "8px";
+            a.cursor = "pointer";
+            a.onclick = addChild;
+            aImg.onclick = addChild;
             a.innerText = "添加孩子";
-            urlChild.appendChild(li);
-            aImg.style.display="inline";
-            a.style.display="inline";
+            a.style.display = "inline";
+            aImg.style.display = "inline";
             aImg.style.zIndex = "9999";
-            li.style.margin="8px";
+            a.style.marginLeft = "-15%";
+
             li.appendChild(aImg);
             li.appendChild(a);
-            a.setAttribute("href","javascript:void(0);");
-            a.cursor = "pointer";
-            a.style.marginLeft = "-15%";
-            aImg.style.background="url('http://pg8h1ukn9.bkt.clouddn.com/plus.png') no-repeat center 50%";
-            // a.style.backgroundRepeat = "no-repeat";
+            urlChild.appendChild(li);
+
+            aImg.style.background = "url('http://pg8h1ukn9.bkt.clouddn.com/plus.png') no-repeat center 50%";
 
         } else {
+            const urlChild = document.getElementById("navUrl");
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.innerText = "添加孩子";
+            a.cursor = "pointer";
+            urlChild.appendChild(li);
+            li.appendChild(a);
             const addChild = document.getElementById("addChild");
-            addChild.style.display="";
+            addChild.style.display = "block";
         }
-        console.log(res)
     }).catch(error => {
         console.log(error);
     });
 
-    function addA(){
-        const  a = document.getElementById(this.id);
-        const id = "div"+this.id.substring(1);
-        const li = document.getElementById(this.id.substring(1));
-        const aDisplay =  document.getElementById(id);
+    function changeTab() {
 
-        const  divDisplay = document.getElementsByClassName("divDisplay");
-        const  activeDisplay = document.getElementsByClassName("active");
-        for (let a =0 ;a<divDisplay.length;a++){
-            divDisplay[a].style.display="none";
+        const id = "div" + this.id.substring(1);
+        const a = document.getElementById(this.id);
+        const aDisplay = document.getElementById(id);
+        const addChildTab = document.getElementById("addChild");
+        const li = document.getElementById(this.id.substring(1));
+        const divDisplay = document.getElementsByClassName("divDisplay");
+        const activeDisplay = document.getElementsByClassName("active");
+
+        addChildTab.style.display = "none";
+
+
+        for (let a = 0; a < divDisplay.length; a++) {
+            divDisplay[a].style.display = "none";
         }
 
-        for (let a =0 ;a<activeDisplay.length;a++){
+        for (let a = 0; a < activeDisplay.length; a++) {
             activeDisplay[a].className = "";
         }
 
         li.className = "active";
-        aDisplay.style.display='';
+        aDisplay.style.display = '';
         a.style.color = "#01bacf";
     }
 
-
+    addChild = () => {
+        const addChildTab = document.getElementById("addChild");
+        const aAddChild = document.getElementById("aAddChild");
+        const aImgAddChild = document.getElementById("aImgAddChild");
+        const displayList = document.getElementsByClassName("divDisplay");
+        const activeDisplay = document.getElementsByClassName("active");
+        aAddChild.borderLeft = "none";
+        aImgAddChild.borderRight = "none";
+        for (let i = 0; i < displayList.length; i++) {
+            displayList[i].style.display = "none";
+        }
+        for (let a = 0; a < activeDisplay.length; a++) {
+            activeDisplay[a].className = "";
+        }
+        addChildTab.style.display = "block";
+        addChildTab.style.marginTop = "20px";
+    };
 
     uploadAvatar = () => {
 
@@ -269,7 +308,7 @@
         //AjaxBegin
         const clientMethod = 'POST';
         const clientUrl = 'http://localhost:1250/parent/updateParent';
-        const updateParent = ({url, method, data}) => {
+        const updateParent = ({ url, method, data }) => {
             return new Promise((resolve, reject) => {
                 const client = new XMLHttpRequest();
                 client.open(clientMethod, url);
@@ -316,7 +355,7 @@
 <div id="wrapper">
 
     <div id="preloader">
-        <img class="preloader" src="/images/loader.gif" alt="" >
+        <img class="preloader" src="/images/loader.gif" alt="">
     </div>
 
     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
@@ -363,9 +402,8 @@
                         <li><a href="">指导师</a></li>
                         <li>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-primary dropdown-toggle"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                        style="padding: 6px 12px;margin-top: 7px">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" style="padding: 6px 12px;margin-top: 7px">
                                     课程套餐
                                     <span class="caret"></span>
                                 </button>
@@ -377,8 +415,7 @@
                             </div>
                         </li>
                         <li><a href="">联系我们</a></li>
-                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
-                                class="fa fa-search"></i></a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
                         <li>
                             <div class="dropdown">
                                 <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
@@ -412,8 +449,133 @@
                         </ul>
 
                         <!--没有孩子可添加孩子-->
-                        <div class="addChild" id="addChild" style="width: 200px;display: none;height: 200px;background: #3caf36;margin: 0 auto">
-                            <img src="/images/plus.png" alt="">
+                        <div class="addChild" id="addChild">
+                            <table cellspacing="0" cellpadding="0" class="tfm" id="profilelist" style="margin-left: 16px">
+                                <tbody>
+                                <tr id="tr_site1">
+                                    <th id="th_site1">孩子姓名</th>
+                                    <td id="td_site5">
+                                        <label for="site4"></label>
+                                        <input type="text" name="site" id="site1" class="px" value="" tabindex="1" style="height: auto">
+                                        <div class="rq mtn" id="showerror_site1"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+                                <tr id="tr_site" style="display: none">
+                                    <th id="th_site">所在地区</th>
+                                    <td id="td_site1">
+                                        <div class="docs-methods">
+                                            <label for="province"></label>
+                                            <select id="province" onchange="chooseProvince(this)">
+                                                <option value="" selected="" disabled="">请选择省份</option>
+                                                <option value="0">北京</option>
+                                                <option value="1">上海</option>
+                                                <option value="2">天津</option>
+                                                <option value="3">重庆</option>
+                                                <option value="4">四川</option>
+                                                <option value="5">贵州</option>
+                                                <option value="6">云南</option>
+                                                <option value="7">西藏</option>
+                                                <option value="8">河南</option>
+                                                <option value="9">湖北</option>
+                                                <option value="10">湖南</option>
+                                                <option value="11">广东</option>
+                                                <option value="12">广西</option>
+                                                <option value="13">陕西</option>
+                                                <option value="14">甘肃</option>
+                                                <option value="15">青海</option>
+                                                <option value="16">宁夏</option>
+                                                <option value="17">新疆</option>
+                                                <option value="18">河北</option>
+                                                <option value="19">山西</option>
+                                                <option value="20">内蒙古</option>
+                                                <option value="21">江苏</option>
+                                                <option value="22">浙江</option>
+                                                <option value="23">安徽</option>
+                                                <option value="24">福建</option>
+                                                <option value="25">江西</option>
+                                                <option value="26">山东</option>
+                                                <option value="27">辽宁</option>
+                                                <option value="28">吉林</option>
+                                                <option value="29">黑龙江</option>
+                                                <option value="30">海南</option>
+                                                <option value="31">台湾</option>
+                                                <option value="32">香港</option>
+                                                <option value="33">澳门</option>
+                                            </select>
+
+                                            <label for="city"></label>
+                                            <select id="city" onchange="chooseCity(this)">
+                                                <option value="" selected="" disabled="">请选择城市</option>
+                                            </select>
+
+                                            <label for="area"></label>
+                                            <select id="area">
+                                                <option value="" selected="" disabled="">请选择城镇</option>
+                                            </select>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+                                <tr id="tr_site2" style="display: none;">
+                                    <th id="th_site2">详细地址</th>
+                                    <td id="td_site2">
+                                        <input type="text" name="site" id="site2" class="px" value="" tabindex="1" style="height: auto;margin-left: 3px"
+                                               placeholder="详细地址：如街道，门牌号，小区，楼栋好，单元号，室等">
+                                        <button class="btn-danger  btn-sm" style="padding: 3px  16px" onclick="cancelChangeAddress()"
+                                                id="cancelAddressBtn">
+                                            取消
+                                        </button>
+                                        <div class="rq mtn" id="showerror_site2"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+
+                                <tr id="tr_site4">
+                                    <th id="th_site4">孩子性别</th>
+                                    <td id="td_site4">
+                                        <label for="site4"></label>
+                                        <input type="text" name="site" id="site4" class="px" value="" tabindex="1" style="height: auto"
+                                               readonly="">
+                                        <div class="rq mtn" id="showerror_site4"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+
+                                <tr id="tr_site3">
+                                    <th id="th_site3">孩子生日</th>
+                                    <td id="td_site3">
+                                        <input type="date" value="2015-09-24" id="data" style="width: 333px" />
+                                        <div class="rq mtn" id="showerror_site3"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+
+
+                                <tr id="tr_bio">
+                                    <th id="th_bio">孩子简介</th>
+                                    <td id="td_bio">
+                                        <label for="bio"></label>
+                                        <textarea name="bio" id="bio" class="pt" rows="3" cols="40" tabindex="1" placeholder="添加孩子签名"></textarea>
+                                        <div class="rq mtn" id="showerror_bio"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <td colspan="2">
+                                        <input type="hidden" name="profilesubmit" value="true">
+                                        <button id="profilesubmitbtn" class="pn pnc" onclick="updateParent()">
+                                            <strong>保存</strong>
+                                        </button>
+                                        <span id="submit_result" class="rq"></span>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <!--右侧边栏-->
@@ -421,11 +583,9 @@
 
                         <div class="sd_box">
                             <div class="group_sd_mymembers cr_grs">
-                                <div class="avat"
-                                     style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
+                                <div class="avat" style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
                                     <a target="_blank" sl-processed="1">
-                                        <img id="avatarImg2"
-                                             src="http://www.dgtle.com/uc_server/images/noavatar_big.gif" style="max-width: 100%;min-height: 100px;
+                                        <img id="avatarImg2" src="http://www.dgtle.com/uc_server/images/noavatar_big.gif" style="max-width: 100%;min-height: 100px;
                                                       min-width: 100px;max-height: 100%;
                                                       margin: 0">
                                     </a>

@@ -30,4 +30,11 @@ public interface ChildDAO extends MyBatisBaseDao<Child, Integer> {
      * @return 当前用户的所有孩子信息
      */
     List<ChildrenInfoDto> getChildInfoDao(@Param("parentId")Integer parentId);
+
+    /**
+     * 向数据库插入
+     * @param child 孩子信息
+     * @return 受影响的行数
+     */
+    Integer insertChild(Child child);
 }

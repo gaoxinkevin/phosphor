@@ -31,15 +31,7 @@
     delete from child
     where child_id = #{childId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Child">
-    insert into child (child_id, parent_id, child_name, 
-      child_gender, child_birthday, child_sf
-      )
-    values (#{childId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{childName,jdbcType=VARCHAR}, 
-      #{childGender,jdbcType=INTEGER}, #{childBirthday,jdbcType=DATE}, #{childSf,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Child">
+  <insert id="insertChild" parameterType="com.cafebabe.phosphor.model.entity.Child">
     insert into child
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="childId != null">
@@ -82,7 +74,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Child">
+    <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Child">
     update child
     <set>
       <if test="parentId != null">
