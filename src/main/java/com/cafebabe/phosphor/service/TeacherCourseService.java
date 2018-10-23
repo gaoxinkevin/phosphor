@@ -1,5 +1,9 @@
 package com.cafebabe.phosphor.service;
 
+import com.cafebabe.phosphor.model.entity.Course;
+
+import java.util.List;
+
 /**
  * @author kevingx2016@gmail.com
  *
@@ -20,4 +24,8 @@ public interface TeacherCourseService {
      */
     Integer getTeacherId(Integer courseId);
 
+    /**
+     *
+     */
+    List<Course> getCoursesByTeacherId(Integer teacherId);
 }

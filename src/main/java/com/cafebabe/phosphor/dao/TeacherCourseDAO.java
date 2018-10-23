@@ -1,6 +1,9 @@
 package com.cafebabe.phosphor.dao;
 
+import com.cafebabe.phosphor.model.entity.Course;
 import com.cafebabe.phosphor.model.entity.TeacherCourse;
+
+import java.util.List;
 
 /**
  * @author kevingx2016@gmail.com
@@ -21,5 +24,12 @@ public interface TeacherCourseDAO extends MyBatisBaseDao<TeacherCourse, Integer>
      * @return 教师ID
      */
     Integer getTeacherId(Integer courseId);
+
+    /**
+     * 根据教师id获取其教授的课程
+     * @param teacherId 教师Id
+     * @return  教师教授课程的集合
+     */
+    List<Course> getCoursesByTeacheerId(Integer teacherId);
 
 }

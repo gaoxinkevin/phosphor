@@ -1,9 +1,12 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
 import com.cafebabe.phosphor.dao.TeacherCourseDAO;
+import com.cafebabe.phosphor.model.entity.Course;
 import com.cafebabe.phosphor.service.TeacherCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author kevingx2016@gmail.com
@@ -28,5 +31,10 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
     @Override
     public Integer getTeacherId(Integer courseId) {
         return teacherCourseDAO.getTeacherId(courseId);
+    }
+
+    @Override
+    public List<Course> getCoursesByTeacherId(Integer teacherId) {
+        return teacherCourseDAO.getCoursesByTeacheerId(teacherId);
     }
 }

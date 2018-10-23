@@ -4,7 +4,7 @@
 function getActivityAll() {
     let request = getXhr();
     request.open("GET", "/activity/getActivityInfoAll", true);
-    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     request.send(null);
     
     request.onreadystatechange = function () {
@@ -33,6 +33,7 @@ function getActivityByPage(pageIndex, pageSize) {
             }
         }
     }
+    location.href = "#activityListTop";
 }
 
 /**
@@ -75,7 +76,11 @@ function loadActivityListByPage(pageJson) {
     refreshUlPagination(currentPageCode, totalPages);
 }
 
-
+/**
+ * 刷新活动
+ * @param activityInfoList
+ * @param pageSize
+ */
 function refreshGrid(activityInfoList, pageSize) {
     let div = document.getElementById("activityGrid");
     let length = activityInfoList.length;
@@ -87,16 +92,22 @@ function refreshGrid(activityInfoList, pageSize) {
 
         let activityId = activityInfo.activityId;
         let aSign = document.getElementsByClassName("aDetail")[i];
-        aSign.setAttribute("href", "/activity/activityDetail?activityId="+activityId);
+        aSign.setAttribute("href", "/activityUi/returnActivityDetail?activityId="+activityId);
 
         let activityDesc = activityInfo.activityDesc;
         let spDesc = document.getElementsByClassName("spDesc")[i];
         spDesc.innerText = activityDesc;
 
     }
-    for(let i = 0; i < (pageSize - length); i ++){
-        let gridUseless = div.getElementsByClassName("activityGrid")[(pageSize - 1) - i];
-        gridUseless.style.visibility = "hidden";
+    for(let i = 0; i < pageSize; i ++){
+        if(i < (pageSize - length)){
+            let gridUseless = div.getElementsByClassName("activityGrid")[(pageSize - 1) - i];
+            gridUseless.style.visibility = "hidden";
+        }
+        else{
+            let gridUseless = div.getElementsByClassName("activityGrid")[(pageSize - 1) - i];
+            gridUseless.style.visibility = "visible";
+        }
     }
 }
 /**
@@ -205,7 +216,7 @@ function generateDiv(activityInfo) {
     imgResponsive.classList.add("img-responsive", "img-circle");
 
     let aTitle = document.createElement("a");
-    aTitle.setAttribute("href", "/activity/activityDetail?activityID="+activityInfo.activityID);
+    aTitle.setAttribute("href", "/activityUi/returnActivityDetail?activityId="+activityInfo.activityID);
 
     let h4 = document.createElement("h4");
 
@@ -242,6 +253,9 @@ function generateDiv(activityInfo) {
     return divGrid;
 }
 
+/**
+ * 跳转到指定页面
+ */
 function newPage() {
     let pageIndex = parseInt(this.innerText) - 1;
     getActivityByPage(pageIndex, 4);

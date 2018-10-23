@@ -71,11 +71,14 @@ public class ActivityServiceImpl implements ActivityService {
         page.setEndRecord(pageSize * (pageIndex + 1) - 1);
         List<Activity> activityList = activityDAO.getActivityByPage(page);
         page.setModelList(activityList);
-        System.out.println(page.toString());
         return page;
     }
 
     @Override
+    public Integer getActivityCount() {
+       return activityDAO.getActivityCount();
+    }
+
     public List<ActivityInfo> merge(List<Activity> activityList) {
         List<ActivityInfo> activityInfoList = new ArrayList<>();
         for(int i = 0; i < activityList.size(); i++){
@@ -86,6 +89,7 @@ public class ActivityServiceImpl implements ActivityService {
             activityInfo.setTeacherId(activity.getTeacherId());
             activityInfo.setTeacherName(teacher.getTeacherName());
             activityInfo.setCompanyName(activity.getCompanyName());
+            activityInfo.setCompanyId(activity.getCompanyId());
             activityInfo.setActivityTitle(activity.getActivityTitle());
             activityInfo.setActivityDesc(activity.getActivityDesc());
             activityInfo.setActivityStartTime(activity.getActivityStartTime());
@@ -99,10 +103,5 @@ public class ActivityServiceImpl implements ActivityService {
             activityInfoList.add(activityInfo);
         }
         return activityInfoList;
-    }
-
-    @Override
-    public Integer getActivityCount() {
-       return activityDAO.getActivityCount();
     }
 }
