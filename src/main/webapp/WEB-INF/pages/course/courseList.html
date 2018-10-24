@@ -31,9 +31,6 @@
     <script src="/js/course.js"></script>
 </head>
 <body>
-<script type="text/javascript">
-    getCourseListByPage(0, 12);
-</script>
     <!-- LOADER -->
     <div id="preloader">
         <img class="preloader" src="/images/loader.gif" alt="">
@@ -127,25 +124,22 @@
                         </div>
                     </div>
 
-                    <div class="row blog-grid shop-grid" id="courseGrid">
+                    <div class="row blog-grid shop-grid" id="courseGrid" >
                         <script type="text/javascript">
                             getCourseListByPage(0, 12);
                         </script>
                         <input type="hidden" id="hidCurrentPageIndex">
                         <!--课程单元-->
-
-
                         <div class="col-md-3">
                             <div class="row courseGrid">
                             <div class="course-box shop-wrapper">
                                 <div class="image-wrap entry">
                                     <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-
                                 </div>
                                 <!-- end image-wrap -->
                                 <div class="course-details shop-box text-center">
                                     <h4><span class="couName">课程名</span></a>
-                                        <small><span class="courseType">类别</span></small>
+                                        <small><span class="courseType">公司</span></small>
                                     </h4>
                                 </div>
                                 <!-- end details -->
@@ -549,7 +543,7 @@
                             <input type="hidden" id="totalPages">
                             <ul class="pagination" id="uPagination">
                                 <!--上一页-->
-                                <li class="disabled" id="perPage">
+                                <li id="perPage">
                                     <a href="javascript:void(0)" onclick="perPage()">«</a>
                                 </li>
                                 <!--下一页-->

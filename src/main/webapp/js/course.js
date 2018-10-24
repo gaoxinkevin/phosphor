@@ -12,7 +12,7 @@ function getAllCouse() {
     request.onreadystatechange = function () {
         if(request.readyState == 4){
             if(request.status >= 200 && request.status<300 || request.status == 304)
-                loadActivityList(request.responseText);
+                loadCourseList(request.responseText);
         }
     }
 }
@@ -198,39 +198,64 @@ function loadCourseList(courseInfoListJson) {
 
 function generateDiv(courseInfo) {
     let divGrid = document.createElement("div");
-    divGrid.classList.add("authorbox");
+    divGrid.classList.add("col-md-3");
+    let divBox = document.createElement("div");
+    divBox.classList.add("course-box", "shop-wrapper");
+    let divImage = document.createElement("div");
+    divImage.classList.add("image-wrap", "entry");
 
-    let divSitePublisher = document.createElement("div");
-    divSitePublisher.classList.add("site-publisher", "clearfix");
-    let imgResponsive = document.createElement("img");
-    imgResponsive.setAttribute("src", "/upload/people_10.jpeg");
-    imgResponsive.setAttribute("alt", "");
-    imgResponsive.classList.add("img-responsive", "img-circle");
+    let imageGroup = document.createElement("img");
+    imageGroup.setAttribute("src", "/upload/kidcoding.jpeg");
+    imageGroup.setAttribute("alt", "");
+    imageGroup.classList.add("img-responsive");
 
-    let aTitle = document.createElement("a");
-    aTitle.setAttribute("href", "/course/findCourseInfo?courseId="+courseInfo.courseId);
+    divImage.appendChild(imageGroup);
+    divBox.appendChild(divImage);
 
-    let h4 = document.createElement("h4");
+    let divDetails = document.createElement("div");
+    divDetails.classList.add("course-details", "shop-box", "text-center");
+    let hFour = document.createElement("h4");
+    let aMid = document.createElement("a");
+    aMid.setAttribute("href","javascript:getCourseInfo("+courseInfo.courseId+")");
+    aMid.innerText = courseInfo.courseName;
+    let company = document.createElement("small");
+    company.innerText=courseInfo.companyName;
+    hFour.appendChild(aMid);
+    hFour.appendChild(company);
+    divDetails.appendChild(hFour);
+    divBox.appendChild(divDetails);
+    let divFooter = document.createElement("div");
+    divFooter.classList.add("course-footer", "clearfix");
 
-    let small = document.createElement("small");
-    small.innerText = "about";
-    h4.appendChild(small);
+    let divLeft = document.createElement("div");
+    divLeft.classList.add("pull-left");
+    let ulLeft = document.createElement("ul");
+    ulLeft.classList.add("list-inline");
+    let liLeft = document.createElement("li");
+    let aLeft = document.createElement("a");
+    aLeft.setAttribute("href","#");
+    aLeft.innerText = "立即购买";
 
-    let span = document.createElement("span");
-    span.innerText = courseInfo.courseName;
+    liLeft.appendChild(aLeft);
+    ulLeft.appendChild(liLeft);
+    divLeft.appendChild(ulLeft);
 
-    h4.appendChild(span);
-    aTitle.appendChild(h4);
+    let divRight = document.createElement("div");
+    divRight.classList.add("pull-right");
+    let ulRight = document.createElement("ul");
+    ulRight.classList.add("list-inline");
+    let liRight = document.createElement("li");
+    let aRight = document.createElement("a");
+    aRight.setAttribute("href","#");
+    aRight.innerText = "￥"+courseInfo.coursePrice;
+    liRight.appendChild(aRight);
+    ulRight.appendChild(liRight);
+    divRight.appendChild(ulRight);
 
-    let tName = document.createElement("p");
-    tName.innerText = courseInfo.typeName;
-
-
-    divSitePublisher.appendChild(imgResponsive);
-    divSitePublisher.appendChild(aTitle);
-    divSitePublisher.appendChild(tName);
-
-    divGrid.appendChild(divSitePublisher);
+    divFooter.appendChild(divLeft);
+    divFooter.appendChild(divRight);
+    divBox.appendChild(divFooter);
+    divGrid.appendChild(divBox);
     return divGrid;
 }
 

@@ -33,7 +33,13 @@ public class TestCourseService {
 
     @Test
     public void TestGetCourseByPage(){
+<<<<<<< HEAD
         /*Page page = new Page(2,2,2,2,2,2,List<>)
         List<CourseInfo> courseInfoList = courseDAO.getCourseByPage()*/
+=======
+        Page<CourseInfo> courseInfoPage = new Page<>();
+        List<CourseInfo> courseInfoList = courseDAO.getCourseByPage(courseInfoPage);
+        courseInfoList.forEach(System.out::println);
+>>>>>>> devWJC
     }
 }

@@ -66,10 +66,9 @@
     </select>
     <select id="getCourseByPage" resultType="com.cafebabe.phosphor.model.dto.CourseInfo"
             parameterType="com.cafebabe.phosphor.model.dto.Page">
-        select course _id,course_name,course_price,type_name,
+        select
+        <include refid="Base_Column_List"/>
         from course
-        join course_type on course.course_id=course_type.course_id
-        join type on course_type.type_id=type.type_id
         limit #{startRecord}, #{pageSize}
   </select>
     <select id="getCourseCount" resultType="java.lang.Integer">
