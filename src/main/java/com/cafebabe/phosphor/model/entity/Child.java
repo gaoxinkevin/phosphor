@@ -1,6 +1,9 @@
 package com.cafebabe.phosphor.model.entity;
 
+import com.cafebabe.phosphor.util.ChildJsonDateDeserializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -42,7 +45,7 @@ public class Child implements Serializable {
     /**
      * 孩子生日
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonDeserialize(using = ChildJsonDateDeserializer.class)
     private Date childBirthday;
 
     /**

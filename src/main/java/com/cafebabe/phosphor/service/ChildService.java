@@ -32,4 +32,11 @@ public interface ChildService {
      * @return 受影响的行数
      */
     boolean insertChildService(Child child);
+
+    /**
+     * 删除孩子信息
+     * @param child 孩子
+     * @return true false 是否成功
+     */
+    boolean deleteChild(Child child);
 }
