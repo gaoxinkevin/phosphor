@@ -55,7 +55,7 @@ public class Activity implements Serializable {
     private String companyName;
 
     /**
-     * 冗余字段
+     * 冗余字段，目前用于存储图片路径
      */
     private String activitySf;
 
