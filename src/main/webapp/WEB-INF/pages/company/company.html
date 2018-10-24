@@ -32,7 +32,7 @@
     const clientUrl = 'http://localhost:1250/company/company?companyId=10001';
     const clientMethod = 'GET';
     const getJsonCompany = (url) => {
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
             const client = new XMLHttpRequest();
             client.open(clientMethod, url);
             client.responseType = 'json';
@@ -49,8 +49,9 @@
         });
     };
 
-    const company = () => getJsonCompany(clientUrl) ;
+    const company = () => getJsonCompany(clientUrl);
 
+    let companyId = 0;
     company().then(({data}) => {
         const companyName = document.getElementById("companyName");
         const companyDesc = document.getElementById("companyDesc");
@@ -60,14 +61,14 @@
         const companyPhoto = document.getElementById("companyPhoto");
         const companyAddress = document.getElementById("companyAddress");
 
-
-        companyName.innerText=data.companyName;
+        companyName.innerText = data.companyName;
         companyDesc.innerHTML += data.companyDesc;
-        companyPhoto.src=data.companyPhoto;
+        companyPhoto.src = data.companyPhoto;
         companyCreateTime.innerText += data.companyCreateTime;
         companyPhone.innerText += data.companyPhone;
         companyAddress.innerText += data.companyAddress;
         companyNum.innerText += data.companyRegistrationId;
+        companyId = data.companyId;
 
     }).catch(error => {
         console.log(error);
@@ -75,8 +76,8 @@
 
     /*动态加载js和css*/
     const dynamicLoading = {
-        css: function(path){
-            if(!path || path.length === 0){
+        css: function (path) {
+            if (!path || path.length === 0) {
                 throw new Error('argument "path" is required !');
             }
             var head = document.getElementsByTagName('head')[0];
@@ -86,8 +87,8 @@
             link.type = 'text/css';
             head.appendChild(link);
         },
-        js: function(path){
-            if(!path || path.length === 0){
+        js: function (path) {
+            if (!path || path.length === 0) {
                 throw new Error('argument "path" is required !');
             }
             var head = document.getElementsByTagName('head')[0];
@@ -96,6 +97,58 @@
             script.type = 'text/javascript';
             head.appendChild(script);
         }
+    }
+
+    addCompanyCollection = () => {
+        let a = localStorage.getItem("userLoginPhone");
+        if (a === null) {
+            confirm("请登录后收藏！");
+        } else {
+            let companyCollection = {
+                companyId: companyId,
+                companyCollectionSf: JSON.parse(localStorage.getItem("userLoginPhone")).val,
+            }
+
+            const clientUrl = 'http://localhost:1250/companyCollection/insertCompanyCollection';
+            const clientMethod = 'POST';
+            const getResult = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const result = (data) => getResult(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+
+            result(JSON.stringify(companyCollection)).then((res) => {
+                if (res.data == -1 ){
+                    alert("您已收藏该公司，请勿重复收藏！");
+                }else if (res.data==1) {
+                    alert("收藏成功！");
+                }else {
+                    alert("收藏失败！");
+                }
+            });
+        }
+
     }
 </script>
 
@@ -187,8 +240,16 @@
                                         <li id="companyCreateTime"></li>
                                     </ul>
                                     <ul class="list-inline">
-                                        <li><a href="#">联系方式:</a></li>
-                                        <li id="companyPhone"><mark>Tel</mark></li>
+                                        <li style="display: block;float: left;"><a href="#">联系方式:</a></li>
+                                        <li id="companyPhone" style="display: block;float: left;">
+                                            <mark>Tel</mark>
+                                        </li>
+                                        <li style="display:block;float: right;margin-right: 15px;margin-bottom: 20px;">
+                                            <a href="javascript:addCompanyCollection()"
+                                               style="font-size: 16px;color: #01bacf">
+                                                添加收藏
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div><!-- end blog-meta -->
 
@@ -224,12 +285,19 @@
 
                         <div class="authorbox">
                             <div class="site-publisher clearfix">
-                                <img src="/upload/people.jpg" alt="" class="img-responsive img-circle" >
-                                <a href="" title=""><h4><small>about</small> <span>2018AIIA人工智能开发者大会</span></h4></a>
+                                <img src="/upload/people.jpg" alt="" class="img-responsive img-circle">
+                                <a href="" title="">
+                                    <h4>
+                                        <small>about</small>
+                                        <span>2018AIIA人工智能开发者大会</span></h4>
+                                </a>
                                 <p>
                                     2018AIIA人工智能开发者大会将于2018年10月15日到16日在苏州国际博览中心举办。
-                                    报名详情:<button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o">立即报名</i>
-                                </button></p>
+                                    报名详情:
+                                    <button type="submit" class="btn btn-primary"><i
+                                            class="fa fa-paper-plane-o">立即报名</i>
+                                    </button>
+                                </p>
                             </div><!-- end publisher -->
                         </div><!-- end details -->
                     </div>

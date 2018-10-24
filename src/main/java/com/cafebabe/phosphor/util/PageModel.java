@@ -26,7 +26,7 @@ public class PageModel<T> {
     /**
      * 每页显示记录数
      */
-    private final Integer pageSize = 2;
+    private Integer pageSize ;
 
     /**
      * 总记录数

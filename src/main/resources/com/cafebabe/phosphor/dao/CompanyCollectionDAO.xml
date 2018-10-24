@@ -114,9 +114,21 @@
 
     <select id="getCompanyCollectionList"
             resultType="com.cafebabe.phosphor.model.dto.CompanyCollectionDTO">
-        select company_collection_id, company.company_id,parent_id,company_collection_sf,company_collection_status,
-               company_collection_create_time,company_name,company_registration_id,company_desc,company_create_time,
-               company_phone,company_photo,company_sf,company_address,company_spare_phone
+        select company_collection_id,
+               company.company_id,
+               parent_id,
+               company_collection_sf,
+               company_collection_status,
+               company_collection_create_time,
+               company_name,
+               company_registration_id,
+               company_desc,
+               company_create_time,
+               company_phone,
+               company_photo,
+               company_sf,
+               company_address,
+               company_spare_phone
         from company_collection
                  join company on company.company_id = company_collection.company_id
         where parent_id = #{sf,jdbcType=INTEGER}
@@ -132,12 +144,11 @@
     </select>
 
     <select id="getCompanyCollection"
-            resultType="java.lang.Integer">
-        select company_collection_id
+            resultType="com.cafebabe.phosphor.model.entity.CompanyCollection">
+        select company_collection_id,company_collection_status
         from company_collection
         where parent_id = #{parentId,jdbcType=INTEGER}
           and company_id = #{companyId,jdbcType=INTEGER}
-          and company_collection_status = 0
     </select>
 
 

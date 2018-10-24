@@ -7,10 +7,7 @@ import com.cafebabe.phosphor.util.JsonResponse;
 import com.cafebabe.phosphor.util.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author kevingx2016@gmail.com
@@ -36,7 +33,20 @@ public class CompanyCollectionController {
 
     @RequestMapping("getCompanyCollectionList")
     @ResponseBody
-    public JsonResponse getFeedbackList(@RequestBody PageModel<CompanyCollectionDTO> pageModel){
-        return new JsonResponse(200,"success",companyCollectionService.getCompanyCollectionList(pageModel));
+    public JsonResponse getFeedbackList(@RequestBody PageModel<CompanyCollectionDTO> pageModel) {
+        return new JsonResponse(200, "success", companyCollectionService.getCompanyCollectionList(pageModel));
     }
+
+    @RequestMapping("removeCompanyCollection/{companyCollectionId}")
+    @ResponseBody
+    public JsonResponse removeCompanyCollection(@PathVariable Integer companyCollectionId) {
+        return new JsonResponse(200, "success", companyCollectionService.removeCompanyCollection(companyCollectionId));
+    }
+
+    @RequestMapping("insertCompanyCollection")
+    @ResponseBody
+    public JsonResponse insertCompanyCollection(@RequestBody CompanyCollection companyCollection) {
+        return new JsonResponse(200, "success", companyCollectionService.insertCompanyCollection(companyCollection));
+    }
+
 }

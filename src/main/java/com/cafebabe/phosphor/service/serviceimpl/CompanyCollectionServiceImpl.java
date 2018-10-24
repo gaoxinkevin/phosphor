@@ -10,6 +10,8 @@ import com.cafebabe.phosphor.util.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * @author kevingx2016@gmail.com
  * <p>
@@ -36,23 +38,42 @@ public class CompanyCollectionServiceImpl implements CompanyCollectionService {
 
     @Override
     public PageModel<CompanyCollectionDTO> getCompanyCollectionList(PageModel<CompanyCollectionDTO> pageModel) {
-        System.out.println(pageModel);
+        pageModel.setPageSize(3);
         pageModel.setStartRecord((pageModel.getCurrentPageCode() - 1) * pageModel.getPageSize());
-        Parent parent =parentDAO.getAllInfoAboutParentDao(pageModel.getSfString());
+        Parent parent = parentDAO.getAllInfoAboutParentDao(pageModel.getSfString());
         pageModel.setTotalRecord(companyCollectionDAO.getCompanyCollectionCount(parent.getParentId()));
+        pageModel.setTotalPages(pageModel.getTotalRecord() % pageModel.getPageSize() == 0 ?
+                pageModel.getTotalRecord() / pageModel.getPageSize() :
+                pageModel.getTotalRecord() / pageModel.getPageSize() + 1);
         pageModel.setSf(parent.getParentId());
         pageModel.setModelList(companyCollectionDAO.getCompanyCollectionList(pageModel));
-        System.out.println(pageModel);
         return pageModel;
     }
 
     @Override
     public Integer insertCompanyCollection(CompanyCollection companyCollection) {
-        return null;
+        Parent parent = parentDAO.getAllInfoAboutParentDao(companyCollection.getCompanyCollectionSf());
+        companyCollection.setParentId(parent.getParentId());
+        int flag = 0;
+        CompanyCollection collection = companyCollectionDAO.getCompanyCollection(
+                companyCollection.getParentId(), companyCollection.getCompanyId());
+        if (collection == null) {
+            flag = 1;
+        }
+        if (flag == 1) {
+            companyCollection.setCompanyCollectionCreateTime(new Date());
+            companyCollection.setCompanyCollectionStatus(1);
+            return companyCollectionDAO.insertCompanyCollection(companyCollection);
+        }
+        if (collection.getCompanyCollectionStatus() == 1) {
+            return -1;
+        } else {
+            return companyCollectionDAO.updateCompanyCollection(collection.getCompanyCollectionId());
+        }
     }
 
     @Override
     public Integer removeCompanyCollection(Integer companyCollectionId) {
-        return null;
+        return companyCollectionDAO.removeCompanyCollection(companyCollectionId);
     }
 }
