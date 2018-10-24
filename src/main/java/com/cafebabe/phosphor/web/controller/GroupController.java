@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.web.controller;
 
+import com.cafebabe.phosphor.model.dto.GroupDTO;
 import com.cafebabe.phosphor.model.entity.Group;
 import com.cafebabe.phosphor.service.serviceimpl.GroupServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
@@ -36,14 +37,14 @@ public class GroupController {
     @GetMapping("groupList")
     @ResponseBody
     public JsonResponse getGroupList(){
-        List<Group> groupList =groupService.getGroupListAll();
+        List<GroupDTO> groupList =groupService.getGroupListAlive();
         return new JsonResponse(200,"success",groupList);
     }
 
     @GetMapping("group")
     @ResponseBody
     public JsonResponse getGroup(Integer groupId){
-        Group group =groupService.getGroupById(groupId);
+        GroupDTO group =groupService.getGroupDTOById(groupId);
         return new JsonResponse(200,"success",group);
     }
 }

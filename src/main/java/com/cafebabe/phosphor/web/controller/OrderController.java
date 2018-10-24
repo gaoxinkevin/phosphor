@@ -44,9 +44,9 @@ public class OrderController {
 
     @RequestMapping("order")
     @ResponseBody
-    public JsonResponse getOrder( ){
-        OrderDetail order = new OrderDetail();
-        return new JsonResponse(20000,"success",order);
+    public JsonResponse getOrder(Integer orderId){
+        OrderDTO orderDTO = orderService.getOrderById(orderId);
+        return new JsonResponse(20000,"success",orderDTO);
     }
     @RequestMapping("validateOrder")
     @ResponseBody
@@ -58,6 +58,7 @@ public class OrderController {
     @ResponseBody
     public JsonResponse getOrderList(){
         Parent parent = (Parent)httpServletRequest.getSession().getAttribute("parent");
+        parent.setParentId(10001);
         if (parent == null) {
             return new JsonResponse(50000,"success","系统炸了,好生处理");
         }

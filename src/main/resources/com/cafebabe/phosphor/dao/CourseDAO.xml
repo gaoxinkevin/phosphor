@@ -23,7 +23,7 @@
   </sql>
 
     <select id="getCourseInfo" resultType="com.cafebabe.phosphor.model.dto.CourseInfo">
-    select course_id,course_name, company_name, course_address, course_price, course_content,
+    select course.course_id,course_name, company_name, course_address, course_price, course_content,
     course_create_time, course_desc, teacher_name,type_name, course_start_day,
     course_start_time,course_start_time,course_end_time,course_continued_time, course_time_status
     from course

@@ -173,9 +173,8 @@ public class OrderServiceImpl implements OrderService {
             } else if (order.getActivityId()!=null){
                 orderDTO.setDetails(orderDetailService.getListByActivityId(order.getActivityId(),order.getOrderState()));
             }
+            return orderDTO;
         }
-
-        return null;
     }
 
 }

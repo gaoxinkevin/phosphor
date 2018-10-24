@@ -1,4 +1,4 @@
-package com.cafebabe.phosphor.util.PriceImpl;
+package com.cafebabe.phosphor.util.priceimpl;
 
 import com.cafebabe.phosphor.model.entity.Course;
 import com.cafebabe.phosphor.util.Price;

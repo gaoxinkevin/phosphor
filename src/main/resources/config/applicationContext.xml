@@ -82,8 +82,7 @@
                     class="org.springframework.data.redis.serializer.StringRedisSerializer" />
         </property>
         <property name="hashValueSerializer">
-            <bean
-                    class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
         </property>
         <!-- 开启REIDS事务支持 -->
         <property name="enableTransactionSupport" value="false" />
