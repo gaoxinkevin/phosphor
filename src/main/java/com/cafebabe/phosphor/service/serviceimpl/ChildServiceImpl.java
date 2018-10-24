@@ -46,7 +46,12 @@ public class ChildServiceImpl implements ChildService {
     @Override
     public boolean deleteChild(Child child) {
         Integer  childId = child.getChildId();
-        System.out.println(child);
         return 1 == childDAO.deleteByPrimaryKey(childId);
+    }
+
+    @Override
+    public boolean updateChild(Child child) {
+        int row = childDAO.updateByPrimaryKey(child);
+        return row == 1;
     }
 }

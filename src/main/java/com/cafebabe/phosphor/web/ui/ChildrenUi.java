@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.web.ui;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletException;
@@ -30,5 +31,10 @@ public class ChildrenUi {
     @RequestMapping("infoUi")
     public void childrenInfo(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/children/childrenInfo.html").forward(httpServletRequest,httpServletResponse);
+    }
+
+    @RequestMapping("singleChildInfo/{childId}")
+    public void singleChildInfo(@PathVariable Integer childId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/children/childDetail.html?childId=" + childId).forward(httpServletRequest,httpServletResponse);
     }
 }

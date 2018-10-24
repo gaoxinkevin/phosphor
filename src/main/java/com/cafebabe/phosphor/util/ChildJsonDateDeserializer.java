@@ -37,4 +37,13 @@ public class ChildJsonDateDeserializer extends JsonDeserializer {
             throw new RuntimeException(e);
         }
     }
+
+    public static String stampToDate(String s){
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long lt = new Long(s);
+        Date date = new Date(lt);
+        res = simpleDateFormat.format(date);
+        return res;
+    }
 }

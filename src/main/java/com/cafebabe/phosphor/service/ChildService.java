@@ -39,4 +39,11 @@ public interface ChildService {
      * @return true false 是否成功
      */
     boolean deleteChild(Child child);
+
+    /**
+     * 更新孩子信息
+     * @param child 孩子信息
+     * @return 是否成功
+     */
+    boolean updateChild(Child child);
 }
