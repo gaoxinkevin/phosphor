@@ -10,10 +10,7 @@ import com.cafebabe.phosphor.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -68,13 +65,47 @@ public class ChildController {
     @RequestMapping("insertChild")
     @ResponseBody
     public JsonResponse saveChild(@RequestBody Child child){
+        String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
         boolean result = childService.insertChildService(child);
-        System.out.println(child.getChildBirthday());
+        RedisUtil.del("childAllINfo"+parentPhone);
         if (result){
             return new JsonResponse(20000,"添加成功",true);
         }else {
             return new JsonResponse(30000,"添加失败",false);
         }
 
+    }
+
+    @RequestMapping("deleteChild")
+    @ResponseBody
+    public JsonResponse removeChild(@RequestBody Child child){
+        String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
+        boolean result = childService.deleteChild(child);
+        if (result){
+            RedisUtil.del("childAllINfo"+parentPhone);
+            return new JsonResponse(20000,"删除成功",true);
+        }else {
+            return new JsonResponse(30000,"删除失败",false);
+        }
+    }
+
+    @RequestMapping("modifyChild")
+    @ResponseBody
+    public JsonResponse modifyChild(@RequestBody Child child){
+        boolean result = childService.updateChild(child);
+        String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
+        if (result){
+            RedisUtil.del("childAllINfo"+parentPhone);
+            return new JsonResponse(20000,"删除成功",true);
+        }else {
+            return new JsonResponse(30000,"删除失败",false);
+        }
+    }
+
+    @RequestMapping("singleChildInfo/{childId}")
+    @ResponseBody
+    public JsonResponse singleChildInfo(@PathVariable String childId){
+        System.out.println(childId);
+        return new JsonResponse(2000,"成功",true);
     }
 }

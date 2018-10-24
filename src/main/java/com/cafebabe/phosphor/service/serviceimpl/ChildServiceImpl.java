@@ -42,4 +42,16 @@ public class ChildServiceImpl implements ChildService {
     public boolean insertChildService(Child child) {
         return 0 != childDAO.insertChild(child);
     }
+
+    @Override
+    public boolean deleteChild(Child child) {
+        Integer  childId = child.getChildId();
+        return 1 == childDAO.deleteByPrimaryKey(childId);
+    }
+
+    @Override
+    public boolean updateChild(Child child) {
+        int row = childDAO.updateByPrimaryKey(child);
+        return row == 1;
+    }
 }

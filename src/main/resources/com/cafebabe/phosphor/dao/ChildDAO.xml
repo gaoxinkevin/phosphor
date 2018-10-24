@@ -20,10 +20,8 @@
   </select>
 
   <select id="getChildInfoDao" resultType="com.cafebabe.phosphor.model.dto.ChildrenInfoDto">
-    select ch.child_id,child_name,child_gender,
-          child_birthday,grade_id,grade_score,course_name
-    from child ch join grade g on ch.child_id = g.child_id
-    join course cou on g.course_id = cou.course_id
+    select child_id,child_name,child_gender,child_birthday,child_sf
+    from child
     where parent_id = #{parentId}
   </select>
 
