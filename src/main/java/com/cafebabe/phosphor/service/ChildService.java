@@ -46,4 +46,19 @@ public interface ChildService {
      * @return 是否成功
      */
     boolean updateChild(Child child);
+
+
+    /**
+     * 单个孩子的信息（有成绩的）
+     * @param childId 孩子id
+     * @return 单个孩子的信息（有成绩的）
+     */
+    List<ChildrenInfoDto> getSingleChildInfo(Integer childId);
+
+    /**
+     * 单个孩子的信息（有成绩的）
+     * @param childId 孩子id
+     * @return 单个孩子的信息（有成绩的）
+     */
+    Child getSingleChildInfoNoCourseService(Integer childId);
 }

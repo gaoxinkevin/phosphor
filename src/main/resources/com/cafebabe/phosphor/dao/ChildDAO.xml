@@ -24,6 +24,17 @@
     from child
     where parent_id = #{parentId}
   </select>
+  <select id="getSingleChildInfo" resultType="com.cafebabe.phosphor.model.dto.ChildrenInfoDto" >
+    select ch.child_id,ch.child_name,ch.child_gender,ch.child_birthday,course_name,g.grade_score
+from child ch join grade g on ch.child_id=g.child_id
+join course c on c.course_id =g.course_id
+where ch.child_id = #{childId,jdbcType=INTEGER};
+  </select>
+  <select id="getSingleChildInfoNoCourseDao" resultType="com.cafebabe.phosphor.model.entity.Child">
+    select child_id,child_name,child_gender,child_birthday,child_sf
+    from child
+    where child_id = #{childId,jdbcType=INTEGER};
+  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from child
