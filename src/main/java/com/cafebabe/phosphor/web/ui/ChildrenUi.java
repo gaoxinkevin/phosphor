@@ -24,7 +24,7 @@ import java.io.IOException;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/children")
+@RequestMapping("/childrenUi")
 public class ChildrenUi {
 
     @RequestMapping("infoUi")

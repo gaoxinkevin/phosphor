@@ -33,4 +33,5 @@ public class ChildrenInfoDto implements Serializable {
     private Date childBirthday;
     private String  gradeScore;
     private String  courseName;
+    private String  childSf;
 }

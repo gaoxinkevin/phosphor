@@ -20,7 +20,7 @@
   </select>
 
   <select id="getChildInfoDao" resultType="com.cafebabe.phosphor.model.dto.ChildrenInfoDto">
-    select child_id,child_name,child_gender,child_birthday
+    select child_id,child_name,child_gender,child_birthday,child_sf
     from child
     where parent_id = #{parentId}
   </select>
