@@ -4,6 +4,7 @@ import com.cafebabe.phosphor.model.dto.Page;
 import com.cafebabe.phosphor.model.entity.Activity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -43,12 +44,27 @@ public interface ActivityDAO extends MyBatisBaseDao<Activity, Integer> {
     Integer getActivityCount();
 
     /**
+     * 根据公司ID获取该公司的活动
+     * 按照活动开始事件排序，取前五个
+     * @param idMap
+     * @return
+     */
+    List<Activity> getActivityByCompanyId(Map idMap);
+
+    /**
      * @description 分页获取Activity
      * @param   page 封装有分页所需的数据
      * @return
      * @date        2018/10/19 14:09
     */
     List<Activity> getActivityByPage(Page page);
+
+    /**
+     * 获取还未结束报名的活动
+     * 按照活动开始时间排序，只取前3个
+     * @return
+     */
+    List<Activity> getRecentActivity();
 
     /**
      * 添加一个活动

@@ -102,7 +102,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <div class="logo-normal">
-                        <a class="navbar-brand" href="index.html"><img src="/images/logo-dark.png" alt=""></a>
+                        <a class="navbar-brand" href="index.html"><img src="/images/logo.png" alt=""></a>
                     </div>
                 </div>
 
@@ -178,11 +178,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tagline-message page-title text-center">
-                        <h3 class="hActivityTitle">活动名</h3>
-                        <ul class="breadcrumb">
-                            <li><a href="javascript:void(0)">Edulogy</a></li>
-                            <li class="active">Blog</li>
-                        </ul>
+                        <h3 class="hActivityTitle" >活动标题</h3>
                     </div>
                 </div><!-- end col -->
             </div><!-- end row -->
@@ -202,12 +198,12 @@
                                     <h3 class="hActivityTitle"></h3>
                                     <ul class="list-inline">
                                         <li id="beginTime">开始时间&nbsp; </li>
-                                        <li><span>举办方&nbsp;</span><small><a id="aCompany"></a></small></li>
+                                        <li><span>举办方&nbsp;</span><small><a id="aCompany" style="font-family: 'Microsoft JhengHei UI Light'; font-size: medium"></a></small></li>
                                     </ul>
                                 </div><!-- end blog-meta -->
 
                                 <div class="blog-media">
-                                    <img src="/upload/blog_01.jpg" alt="" class="img-responsive img-rounded">
+                                    <img src="/upload/blog_01.jpg" id="activityImg" alt="" class="img-responsive img-rounded">
                                 </div><!-- end media -->
 
                                 <div class="blog-desc-big">
@@ -258,83 +254,81 @@
                     <div class="sidebar col-md-4">
                         <div class="widget clearfix">
                             <div class="banner-widget">
-                                <img src="/upload/banner.jpeg" alt="" class="img-responsive img-rounded">
+                                <img src="/upload/banner.jpeg" id="companyImg" alt="" class="img-responsive img-rounded">
                             </div>
                         </div>
 
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Popular Posts</h3>
-                            <div class="post-widget">
-                                <div class="media">
+                        <!--放置推荐的活动,最多放置五个-->
+                        <script type="text/javascript">
+                        </script>
+                        <div class="widget clearfix" id="divOtherActivity">
+                            <h3 class="widget-title" id="comTitleOtherActivity"></h3>
+                            <div class="post-widget" id="comOtherActivity">
+                                <div class="media" style="display: none">
                                     <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
                                     <div class="media-body">
                                         <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
                                         <div class="blog-meta">
                                             <ul class="list-inline">
                                                 <li>4 days ago</li>
-                                                <li><span>by</span> <a href="#">Edulogy Team</a></li>
+                                                <li>price</li>
                                             </ul>
                                         </div><!-- end blog-meta -->
                                     </div>
                                 </div>
 
-                                <div class="media">
-                                    <img src="/upload/blog_small_02.jpg" alt="" class="img-responsive alignleft img-rounded">
+                                <div class="media" style="display: none">
+                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
                                     <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">How to create a beautiful website with Bootstrap</a></h5>
+                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
                                         <div class="blog-meta">
                                             <ul class="list-inline">
-                                                <li>5 days ago</li>
-                                                <li><span>by</span> <a href="#">Boby DOE</a></li>
+                                                <li>4 days ago</li>
+                                                <li>price</li>
                                             </ul>
                                         </div><!-- end blog-meta -->
                                     </div>
                                 </div>
 
-                                <div class="media">
-                                    <img src="/upload/blog_small_03.jpg" alt="" class="img-responsive alignleft img-rounded">
+                                <div class="media" style="display: none">
+                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
                                     <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">Don't forget to update your Google web master tools</a></h5>
+                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
                                         <div class="blog-meta">
                                             <ul class="list-inline">
-                                                <li>6 days ago</li>
-                                                <li><span>by</span> <a href="#">Martin</a></li>
+                                                <li>4 days ago</li>
+                                                <li>price</li>
+                                            </ul>
+                                        </div><!-- end blog-meta -->
+                                    </div>
+                                </div>
+
+                                <div class="media" style="display: none">
+                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
+                                    <div class="media-body">
+                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
+                                        <div class="blog-meta">
+                                            <ul class="list-inline">
+                                                <li>4 days ago</li>
+                                                <li>price</li>
+                                            </ul>
+                                        </div><!-- end blog-meta -->
+                                    </div>
+                                </div>
+
+                                <div class="media" style="display: none">
+                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
+                                    <div class="media-body">
+                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
+                                        <div class="blog-meta">
+                                            <ul class="list-inline">
+                                                <li>4 days ago</li>
+                                                <li>price</li>
                                             </ul>
                                         </div><!-- end blog-meta -->
                                     </div>
                                 </div>
                             </div><!-- end post-widget -->
-                        </div><!-- end widget -->
-
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Subscribe Our Newsletter</h3>
-                            <div class="newsletter-widget">
-                                <p>You can opt out of our newsletters at any time. See our <a href="#">privacy policy</a>.</p>
-                                <form class="form-inline" role="search">
-                                    <div class="form-1">
-                                        <input type="text" class="form-control" placeholder="Enter email here..">
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
-                                    </div>
-                                </form>
-                            </div><!-- end newsletter -->
-                        </div><!-- end widget -->
-
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Popular Tags</h3>
-                            <div class="tags-widget">
-                                <ul class="list-inline">
-                                    <li><a href="#">course</a></li>
-                                    <li><a href="#">web design</a></li>
-                                    <li><a href="#">development</a></li>
-                                    <li><a href="#">language</a></li>
-                                    <li><a href="#">teacher</a></li>
-                                    <li><a href="#">speaking</a></li>
-                                    <li><a href="#">material</a></li>
-                                    <li><a href="#">css3</a></li>
-                                    <li><a href="#">html</a></li>
-                                    <li><a href="#">learning</a></li>
-                                </ul>
-                            </div><!-- end list-widget -->
                         </div><!-- end widget -->
                     </div><!-- end sidebar -->
                 </div><!-- end row -->
@@ -346,27 +340,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-4">
-                    <div class="widget clearfix">
-                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
-                        <div class="newsletter-widget">
-                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.</p>
-                            <form class="form-inline" role="search">
-                                <div class="form-1">
-                                    <input type="text" class="form-control" placeholder="Enter email here..">
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
-                                </div>
-                            </form>
-                            <img src="/images/payments.png" alt="" class="img-responsive">
-                        </div><!-- end newsletter -->
-                    </div><!-- end widget -->
                 </div><!-- end col -->
 
                 <div class="col-lg-3 col-md-3">
-                    <div class="widget clearfix">
-                        <h3 class="widget-title">Join us today</h3>
-                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
-                        <a href="#" class="readmore">Became a Teacher</a>
-                    </div><!-- end widget -->
                 </div><!-- end col -->
 
                 <div class="col-lg-3 col-md-3">

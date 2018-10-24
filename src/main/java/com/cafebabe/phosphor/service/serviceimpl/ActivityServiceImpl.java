@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:    活动Service层实现类
@@ -77,6 +79,19 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public Integer getActivityCount() {
        return activityDAO.getActivityCount();
+    }
+
+    @Override
+    public List<Activity> getActivityByCompanyId(Integer companyId, Integer activityId) {
+        Map<String, Integer> idMap = new HashMap<>();
+        idMap.put("companyId", companyId);
+        idMap.put("activityId", activityId);
+        return activityDAO.getActivityByCompanyId(idMap);
+    }
+
+    @Override
+    public List<Activity> getRecentActivity() {
+        return activityDAO.getRecentActivity();
     }
 
     public List<ActivityInfo> merge(List<Activity> activityList) {

@@ -1,5 +1,9 @@
+document.write("<script type='text/javascript' language='JavaScript' src='/js/activity/util.js'></script>");
+
+
 /**
  * 查询所有Activity数据，并且返回DOM
+ * 暂时未使用
  */
 function getActivityAll() {
     let request = getXhr();
@@ -33,7 +37,6 @@ function getActivityByPage(pageIndex, pageSize) {
             }
         }
     }
-    location.href = "#activityListTop";
 }
 
 /**
@@ -74,6 +77,7 @@ function loadActivityListByPage(pageJson) {
         refreshGrid(activityInfoList, pageSize);
     }
     refreshUlPagination(currentPageCode, totalPages);
+    getRecentActivity();
 }
 
 /**
@@ -98,6 +102,17 @@ function refreshGrid(activityInfoList, pageSize) {
         let spDesc = document.getElementsByClassName("spDesc")[i];
         spDesc.innerText = activityDesc;
 
+        let activityImg = activityInfo.activitySf;
+        let imgActivity = document.getElementsByClassName("img-activity")[i];
+        imgActivity.setAttribute("src", activityImg);
+
+        imgActivity.onclick = showBigActivityImg;
+
+        imgActivity.addEventListener('error', function (event) {
+            imgActivity.setAttribute("src", '/images/loader.gif');
+            imgActivity.setAttribute("alt", "活动图片暂缺");
+        });
+
     }
     for(let i = 0; i < pageSize; i ++){
         if(i < (pageSize - length)){
@@ -110,6 +125,21 @@ function refreshGrid(activityInfoList, pageSize) {
         }
     }
 }
+
+
+/**
+ * 点击活动时，显示大图
+ */
+function showBigActivityImg() {
+    let bigActivityImg = document.getElementById("bigActivityImg");
+    let imgPath = this.src;
+    if(imgPath != bigActivityImg.src)
+        bigActivityImg.setAttribute("src", imgPath);
+    else
+        return void(0);
+}
+
+
 /**
  * 生成页码列表
  * @param totalPages
@@ -165,21 +195,6 @@ function clearPageIndex(pageUl) {
         pageUl.removeChild(pageIndexList[i]);
 }
 
-
-
-/**
- * 获取Xhr对象
- * @returns {any}
- */
-function getXhr() {
-    let request = null;
-    if(window.XMLHttpRequest)
-        request = new XMLHttpRequest();
-    else
-        request = new ActiveXObject("Microsoft.XMLHTTP");
-
-    return request;
-}
 
 
 
@@ -253,6 +268,68 @@ function generateDiv(activityInfo) {
     return divGrid;
 }
 
+
+/**
+ *刷新左侧最近热门活动
+ */
+function getRecentActivity() {
+    let url = "/activity/getRecentActivity";
+    let method = "GET";
+    let postData = null;
+    let request = getXhr();
+    request.open("GET", "/activity/getRecentActivity", true);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.send(null);
+    request.onreadystatechange = function () {
+        if(request.readyState == 4){
+            if(request.status >= 200 && request.status < 300 || request.status == 304){
+                loadRecentActivityToView(request.responseText);
+            }
+        }
+    };
+}
+
+/**
+ * 将获取到的
+ * @param recentActivity
+ */
+function loadRecentActivityToView(recentActivity) {
+    let recentActivityList = JSON.parse(recentActivity).data;
+    let length = recentActivityList.length;
+    let divRecentActivity = document.getElementById("divRecentActivity");
+    let containerList  = divRecentActivity.getElementsByClassName("media");
+    for(let i = 0; i < length; i++){
+        let container = containerList[i];
+        let recentActivity = recentActivityList[i];
+        container.style.display = "block";
+
+        //加载图片
+        let activityImg = container.getElementsByTagName("img")[0];
+        activityImg.setAttribute("src", recentActivity.activitySf);
+        activityImg.addEventListener("error", function (event) {
+            activityImg.setAttribute("src", "/images/loader.gif");
+            activityImg.setAttribute("alt", "暂无图片");
+        });
+
+        let aToActivity = container.getElementsByTagName("a")[0];
+        aToActivity.setAttribute("href", "/activityUi/returnActivityDetail?activityId="+recentActivity.activityId);
+        aToActivity.innerText = recentActivity.activityTitle;
+
+        let liStartTime = container.getElementsByTagName("li")[0];
+        let startTimeFull = timestampToDate(recentActivity.activityStartTime);
+        let timeShow = startTimeFull.substring(startTimeFull.indexOf("年") + 1, startTimeFull.lastIndexOf(":"));
+        liStartTime.innerText = timeShow;
+
+        let liActivityPrice = container.getElementsByTagName("li")[1];
+        liActivityPrice.innerText = "￥ "+recentActivity.activityPrice;
+
+    }
+
+}
+
+
+
+
 /**
  * 跳转到指定页面
  */
@@ -260,6 +337,8 @@ function newPage() {
     let pageIndex = parseInt(this.innerText) - 1;
     getActivityByPage(pageIndex, 4);
 }
+
+
 
 /**
  * 加载上一页数据，并刷新页面

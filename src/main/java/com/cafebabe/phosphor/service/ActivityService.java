@@ -17,6 +17,10 @@ public interface ActivityService {
 
     List<ActivityInfo> getActivityInfoAll();
 
+    List<Activity> getActivityByCompanyId(Integer companyId, Integer activityId);
+
+    List<Activity> getRecentActivity();
+
     Page getActivityInfoByPage(Integer pageIndex, Integer pageSize);
 
     Integer getActivityCount();

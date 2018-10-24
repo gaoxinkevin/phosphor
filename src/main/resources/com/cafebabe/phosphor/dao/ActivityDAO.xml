@@ -41,6 +41,27 @@
     from activity limit #{startRecord}, #{pageSize}
   </select>
 
+  <!--根据公司ID获取该公司按活动开始排序的前四个活动信息-->
+  <select id="getActivityByCompanyId" resultType="com.cafebabe.phosphor.model.entity.Activity" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List"/>
+    from activity
+    where ((activity_start_time > now() and activity_apply_end_time > now()) and
+      (activity_id  != #{activityId, jdbcType=INTEGER} and company_id = #{companyId, jdbcType=INTEGER}))
+    order by activity_start_time asc
+    limit 3
+  </select>
+
+    <select id="getRecentActivity" resultType="com.cafebabe.phosphor.model.entity.Activity">
+        select
+        <include refid="Base_Column_List"/>
+        from activity
+        where (activity_start_time > now() and activity_apply_end_time > now())
+        order by activity_start_time asc
+        limit 3
+    </select>
+
+    <!--获取活动总数-->
   <select id="getActivityCount" resultType="java.lang.Integer">
         select count(*) from activity
     </select>

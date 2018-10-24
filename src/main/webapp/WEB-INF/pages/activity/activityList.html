@@ -109,7 +109,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <div class="logo-normal">
-                        <a class="navbar-brand" href="../index.html"><img src="/images/logo-dark.png" alt=""></a>
+                        <a class="navbar-brand" href="../index.html"><img src="/images/logo.png" alt=""></a>
                     </div>
                 </div>
 
@@ -192,10 +192,6 @@
                 <div class="col-md-12">
                     <div class="tagline-message page-title text-center">
                         <h3>Blog & News</h3>
-                        <ul class="breadcrumb">
-                            <li><a href="javascript:void(0)">Edulogy</a></li>
-                            <li class="active">Blog</li>
-                        </ul>
                     </div>
                 </div><!-- end col -->
             </div><!-- end row -->
@@ -210,14 +206,17 @@
                     <div class="sidebar col-md-4">
                         <div class="widget clearfix">
                             <div class="banner-widget">
-                                <img src="/upload/banner.jpeg" alt="" class="img-responsive img-rounded">
+                                <img src="" alt="" id="bigActivityImg" class="img-responsive img-rounded">
                             </div>
                         </div>
 
                         <div class="widget clearfix">
-                            <h3 class="widget-title">Popular Posts</h3>
-                            <div class="post-widget">
-                                <div class="media">
+                            <h3 class="widget-title">近期热门</h3>
+
+                            <!--显示近期热门活动-->
+                            <div class="post-widget" id="divRecentActivity">
+                                <!--单个活动-->
+                                <div class="media" style="display: none">
                                     <img src="/upload/blog_small_01.jpg" alt=""
                                          class="img-responsive alignleft img-rounded">
                                     <div class="media-body">
@@ -226,7 +225,7 @@
                                         <div class="blog-meta">
                                             <ul class="list-inline">
                                                 <li>4 days ago</li>
-                                                <li><span>by</span> <a href="#">Edulogy Team</a></li>
+                                                <li></li>
                                             </ul>
                                         </div><!-- end blog-meta -->
                                     </div>
@@ -264,38 +263,6 @@
                             </div><!-- end post-widget -->
                         </div><!-- end widget -->
 
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Subscribe Our Newsletter</h3>
-                            <div class="newsletter-widget">
-                                <p>You can opt out of our newsletters at any time. See our <a href="#">privacy
-                                    policy</a>.</p>
-                                <form class="form-inline" role="search">
-                                    <div class="form-1">
-                                        <input type="text" class="form-control" placeholder="Enter email here..">
-                                        <button type="submit" class="btn btn-primary"><i
-                                                class="fa fa-paper-plane-o"></i></button>
-                                    </div>
-                                </form>
-                            </div><!-- end newsletter -->
-                        </div><!-- end widget -->
-
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Popular Tags</h3>
-                            <div class="tags-widget">
-                                <ul class="list-inline">
-                                    <li><a href="#">course</a></li>
-                                    <li><a href="#">web design</a></li>
-                                    <li><a href="#">development</a></li>
-                                    <li><a href="#">language</a></li>
-                                    <li><a href="#">teacher</a></li>
-                                    <li><a href="#">speaking</a></li>
-                                    <li><a href="#">material</a></li>
-                                    <li><a href="#">css3</a></li>
-                                    <li><a href="#">html</a></li>
-                                    <li><a href="#">learning</a></li>
-                                </ul>
-                            </div><!-- end list-widget -->
-                        </div><!-- end widget -->
                     </div><!-- end sidebar -->
                     <div class="col-md-8" id="activityGrid">
                         <script type="text/javascript">
@@ -308,7 +275,7 @@
                             <div class="authorbox">
                                 <div class="site-publisher clearfix">
                                     <input type="hidden" class="hidID">
-                                    <img src="/upload/people_04.jpeg" alt="" class="img-responsive img-circle">
+                                    <img src="" alt="" class="img-responsive img-circle img-activity">
                                     <a href="" title="">
                                         <h4>
                                             <small>主题</small>
@@ -331,7 +298,7 @@
                             <div class="authorbox">
                                 <div class="site-publisher clearfix">
                                     <input type="hidden" class="hidID">
-                                    <img src="/upload/people_04.jpeg" alt="" class="img-responsive img-circle">
+                                    <img src="" alt="" class="img-responsive img-circle img-activity">
                                     <a href="" title="">
                                         <h4>
                                             <small>主题</small>
@@ -354,7 +321,7 @@
                             <div class="authorbox">
                                 <div class="site-publisher clearfix">
                                     <input type="hidden" class="hidID">
-                                    <img src="/upload/people_04.jpeg" alt="" class="img-responsive img-circle">
+                                    <img src="" alt="" class="img-responsive img-circle img-activity">
                                     <a href="" title="">
                                         <h4>
                                             <small>主题</small>
@@ -377,7 +344,7 @@
                             <div class="authorbox">
                                 <div class="site-publisher clearfix">
                                     <input type="hidden" class="hidID">
-                                    <img src="/upload/people_04.jpeg" alt="" class="img-responsive img-circle">
+                                    <img src="" alt="" class="img-responsive img-circle img-activity">
                                     <a href="" title="">
                                         <h4>
                                             <small>主题</small>
