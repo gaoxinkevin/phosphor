@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Site Meta -->
+    <title>个人中心-公司收藏</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+    <!--FontAwesome-->
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom & Default Styles  外部-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleDgtle.css">
+    <link rel="stylesheet" href="/css/styleCommon.css">
+
+    <!--自己写的 -->
+    <link rel="stylesheet" href="/css/alreadyLogin.css">
+    <style>
+        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
+            background-color: #82B43F;
+            border-color: #82B43F;
+        }
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
+            background: #82B43F;
+            color: #ffffff !important;
+        }
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
+            background: #82B43F none repeat scroll 0 0 !important;
+
+        }
+    </style>
+
+    <!--Ajax向后台输出数据-->
+    <script>
+
+        //
+        <!--判断用户登录-->
+        let a = localStorage.getItem("userLoginPhone");
+        if (a === null) {
+            localStorage.clear();
+            window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
+        }
+
+        getCompanyCollectionList = () => {
+            let phone = JSON.parse(localStorage.getItem("userLoginPhone")).val;
+            let page = 1;
+            let pageModel = {
+                sfString: phone,
+                currentPageCode: page,
+            };
+            const clientUrl = 'http://localhost:1250/companyCollection/getCompanyCollectionList';
+            const clientMethod = 'POST';
+            const getCompanyList = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const result = (data) => getCompanyList(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+            const grandfatherDiv = document.getElementById("ct");
+            const fatherDiv = document.createElement("div");
+            fatherDiv.setAttribute("style", "width:620px;height:600px;");
+            fatherDiv.setAttribute("id", "fatherDiv");
+            grandfatherDiv.appendChild(fatherDiv);
+            scrollTo(0, 0);
+            result(JSON.stringify(pageModel)).then((res) => {
+                console.log(res);
+                if (res.data.modelList.length != 0) {
+                    for (let i = 0; i < res.data.modelList.length; i++) {
+                        let sonDiv = generateCompanyList(res.data.modelList[i]);
+                        fatherDiv.appendChild(sonDiv);
+                    }
+                    let pageDiv = generatePageDiv(res.data.currentPageCode, res.data.totalPages);
+                    fatherDiv.appendChild(pageDiv);
+                } else {
+                    let div1 = document.createElement("div");
+                    div1.setAttribute("style", "text-align:center;font-size:20px;height:60px;" +
+                        "padding-top: 18px;margin-top: 210px;");
+                    div1.classList.add("mn");
+                    div1.innerText = "( ´•︵•` ) 您还没有收藏";
+                    fatherDiv.appendChild(div1);
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+
+        getPageList = (pageCode) => {
+            const clientUrl = 'http://localhost:1250/companyCollection/getCompanyCollectionList';
+            const clientMethod = 'POST';
+            const teacherList = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+            let phone = JSON.parse(localStorage.getItem("userLoginPhone")).val;
+            let pageModel = {
+                sfString: phone,
+                currentPageCode: pageCode,
+            };
+
+            const resultList = (data) => teacherList(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+
+            let grandfatherDiv = document.getElementById("ct");
+            const fatherDiv = document.getElementById("fatherDiv");
+            fatherDiv.innerText = "";
+            grandfatherDiv.appendChild(fatherDiv);
+            // scrollTo(0, 0);
+            resultList(JSON.stringify(pageModel)).then((res) => {
+                for (let i = 0; i < res.data.modelList.length; i++) {
+                    let sonDiv = generateCompanyList(res.data.modelList[i]);
+                    fatherDiv.appendChild(sonDiv);
+                }
+                let pageDiv = generatePageDiv(res.data.currentPageCode, res.data.totalPages);
+                fatherDiv.appendChild(pageDiv);
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+
+        generateCompanyList = (data) => {
+            let div = document.createElement("div");
+            div.classList.add("mn");
+            let photo = document.createElement("img");
+            photo.setAttribute("src", "/upload/shop_01.jpg");
+            photo.setAttribute("style", "width:20%;display:block;float:left;");
+            let companyDiv = document.createElement("div");
+            companyDiv.setAttribute("style", "float:left;margin-top:10px;margin-left:15px;");
+            let companyNameSpan = document.createElement("span");
+            companyNameSpan.setAttribute("style", "font-size: 16px;");
+            companyNameSpan.innerText = "公司名：" + data.companyName;
+            let companyPhone = document.createElement("span");
+            companyPhone.setAttribute("style", "font-size: 18px;");
+            companyPhone.innerText = "公司电话：" + data.companyPhone + "，" + data.companySparePhone;
+            let companyAddress1 = document.createElement("span");
+            companyAddress1.setAttribute("style", "font-size: 16px;");
+            let companyAddress2 = document.createElement("span");
+            companyAddress2.setAttribute("style", "font-size: 16px;white-space:pre;");
+            if (data.companyAddress.length > 16) {
+                const address1 = data.companyAddress.substr(0, 16);
+                companyAddress1.innerText = "公司地址：" + address1;
+                const address2 = data.companyAddress.substr(16);
+                companyAddress2.innerText = "                  " + address2;
+            } else {
+                companyAddress1.innerText = "公司地址：" + data.companyAddress;
+            }
+            let optionDiv = document.createElement("div");
+            optionDiv.setAttribute("style", "float:left;margin-top:20px;margin-left:40px;width:70px;");
+            let deleteCollectionA = document.createElement("a");
+            deleteCollectionA.setAttribute("href", "javascript:confirmDelete(" + data.companyCollectionId + ")");
+            deleteCollectionA.setAttribute("style", "cursor: pointer;");
+            deleteCollectionA.classList.add("btn-primary", "btn-sm");
+            deleteCollectionA.innerText = "取消收藏";
+            let companyDetailA = document.createElement("a");
+            companyDetailA.setAttribute("href", "javascript:");
+            companyDetailA.setAttribute("style", "cursor: pointer;");
+            companyDetailA.classList.add("btn-primary", "btn-sm");
+            companyDetailA.innerText = "查看详情";
+
+            div.appendChild(photo);
+            div.appendChild(companyDiv);
+            div.appendChild(optionDiv);
+            companyDiv.appendChild(companyNameSpan);
+            companyDiv.appendChild(document.createElement("br"));
+            companyDiv.appendChild(companyPhone);
+            companyDiv.appendChild(document.createElement("br"));
+            companyDiv.appendChild(companyAddress1);
+            companyDiv.appendChild(document.createElement("br"));
+            companyDiv.appendChild(companyAddress2);
+            optionDiv.appendChild(deleteCollectionA);
+            optionDiv.appendChild(document.createElement("br"));
+            optionDiv.appendChild(document.createElement("br"));
+            optionDiv.appendChild(companyDetailA);
+
+            return div;
+        }
+
+        generatePageDiv = (currentPageCode, totalPages) => {
+            let div = document.createElement("div");
+            let hr = document.createElement("hr");
+            hr.classList.add("invis");
+            let div1 = document.createElement("div");
+            div1.classList.add("row", "text-center");
+            let div2 = document.createElement("div");
+            div2.classList.add("col-md-12");
+            div2.setAttribute("style", "margin-top: -87px;");
+            let ul = document.createElement("ul");
+            ul.classList.add("pagination");
+            let liFirstPage = document.createElement("li");
+            let liLastPage = document.createElement("li");
+            let liEndPage = document.createElement("li");
+            let liNextPage = document.createElement("li");
+            let li = document.createElement("li");
+            li.classList.add("disabled");
+            if (currentPageCode == 1) {
+                liFirstPage.classList.add("customizeDisable");
+                liLastPage.classList.add("customizeDisable");
+            }
+            else {
+                liFirstPage.classList.add("active");
+                liLastPage.classList.add("active");
+            }
+
+            if (currentPageCode == totalPages) {
+                liEndPage.classList.add("customizeDisable");
+                liNextPage.classList.add("customizeDisable");
+            }
+            else {
+                liEndPage.classList.add("active");
+                liNextPage.classList.add("active");
+            }
+            let aFirstPage = document.createElement("a");
+            aFirstPage.setAttribute("href", "javascript:getPageList(1)");
+            aFirstPage.setAttribute("style", "cursor: pointer;");
+            aFirstPage.innerText = "首页";
+            let aLastPage = document.createElement("a");
+            aLastPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode - 1) + ")");
+            aLastPage.setAttribute("style", "cursor: pointer;");
+            aLastPage.innerText = "上一页";
+            let aEndPage = document.createElement("a");
+            aEndPage.setAttribute("href", "javascript:getPageList(" + totalPages + ")");
+            aEndPage.setAttribute("style", "cursor: pointer;");
+            aEndPage.innerText = "尾页";
+            let aNextPage = document.createElement("a");
+            aNextPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode + 1) + ")");
+            aNextPage.setAttribute("style", "cursor: pointer;");
+            aNextPage.innerText = "下一页";
+            let a = document.createElement("a");
+            a.innerText = currentPageCode;
+
+            div.appendChild(hr);
+            div.appendChild(div1);
+            div1.appendChild(div2);
+            div2.appendChild(ul);
+            ul.appendChild(liFirstPage);
+            ul.appendChild(liLastPage);
+            ul.appendChild(li);
+            ul.appendChild(liNextPage);
+            ul.appendChild(liEndPage);
+            liFirstPage.appendChild(aFirstPage);
+            liLastPage.appendChild(aLastPage);
+            li.appendChild(a);
+            liNextPage.appendChild(aNextPage);
+            liEndPage.appendChild(aEndPage);
+
+            return div;
+        }
+
+        confirmDelete = (collectionId) => {
+            const confirmDelete = confirm("确认删除？");
+            if (confirmDelete == true) {
+                deleteCollection(collectionId);
+            }
+        }
+
+        deleteCollection = (collectionId) => {
+            const clientUrl = 'http://localhost:1250/companyCollection/removeCompanyCollection/' + collectionId;
+            const clientMethod = 'POST';
+            const getCompanyList = ({url}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send();
+                });
+            };
+
+            const result = () => getCompanyList(
+                {
+                    url: clientUrl,
+                }
+            );
+            result().then((res) => {
+                let div = document.getElementById("fatherDiv");
+                div.innerText = "";
+                div.setAttribute("style","width:0px;height:0px;");
+                getCompanyCollectionList();
+            });
+        }
+
+        loginOut = () => {
+            window.localStorage.clear();
+            window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
+        }
+    </script>
+
+
+</head>
+
+<body onload="getCompanyCollectionList()">
+
+<div id="wrapper">
+
+    <div id="preloader">
+        <img class="preloader" src="/images/loader.gif" alt="">
+    </div>
+
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <form id="login-form">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="flaticon-add" aria-hidden="true"></span>
+                        </button>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="What you are looking for?" required>
+                        </div>
+                    </form><!-- End # Login Form -->
+                </div><!-- End # DIV Form -->
+            </div>
+        </div>
+    </div>
+
+    <header class="header affix">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="">课程</a></li>
+                        <li><a href="">活动</a></li>
+                        <li><a href="">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">官方套餐</a></li>
+                                    <li><a href="#">自定义套餐</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="">联系我们</a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
+                                class="fa fa-search"></i></a></li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
+                                    <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
+                                    <li><a href="#">我的关注</a></li>
+                                    <li><a href="#">我的收藏</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+    <div id="dgtle_body" style="min-height: 670px">
+        <div id="dgtle_body_bg" style="margin-top: 110px">
+            <div id="wp" class="wp">
+                <div id="ct" class="ct2 wp cl dgtle_wpct2">
+
+                    <div style="width: 620px;height: 30px;float: left;font-size: 18px;border-bottom: 1px solid black;
+                                margin-bottom: 15px;margin-top: -35px">
+                        <a href="#" style="display: block;float: left;">课程收藏</a>
+                        <div style="border-left: 1px solid black;height: 20px;float: left;margin: 5px 10px auto;"></div>
+                        <a href="/parentUi/companyCollectionUi"
+                           style="color: #01bacf;display: block;float: left;">公司收藏</a>
+                    </div>
+
+                    <!--START-->
+                    <!--右侧边栏-->
+                    <div class="appl">
+
+                        <div class="sd_box">
+                            <div class="group_sd_mymembers cr_grs">
+                                <div class="avat"
+                                     style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
+                                    <a target="_blank" sl-processed="1">
+                                        <img id="avatarImg2"
+                                             src="http://www.dgtle.com/uc_server/images/noavatar_big.gif" style="max-width: 100%;min-height: 100px;
+                                                    min-width: 100px;max-height: 100%;
+                                                    margin: 0">
+                                    </a>
+                                </div>
+                                <div class="mporf cl">
+                                    <p class="homeusername">
+                                        <a id="aName" style="margin-left: 80px;margin-top: 20px"></a>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tbn">
+                            <h2 class="mt bbda">设置</h2>
+
+                            <ul>
+
+                                <li>
+                                    <a href="/parentUi/parentChangeAvatarUi" sl-processed="1">修改头像</a>
+                                </li>
+
+                                <li class="a">
+                                    <a href="#" sl-processed="1">个人资料</a>
+                                </li>
+
+                                <li>
+                                    <a href="/parentUi/parentChangePasswordUi" sl-processed="1">密码安全</a>
+                                </li>
+
+                                <li>
+                                    <a href="" sl-processed="1">订单查询</a>
+                                </li>
+
+                                <li>
+                                    <a href="/children/infoUi" sl-processed="1">孩子资料</a>
+                                </li>
+
+                                <li>
+                                    <a href="" sl-processed="1">帐号绑定</a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    <!--END-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="section footer noover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
+                                policy</a>.</p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags-widget">
+                            <ul class="list-inline">
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Support</h3>
+                        <div class="list-widget">
+                            <ul>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing & Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer>
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div>
+
+</div>
+
+
+<!--自己写的-->
+
+<script src="/js/city-picker.js"></script>
+<!--模版自带-->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/customLogin.js"></script>
+</body>
+
+</html>

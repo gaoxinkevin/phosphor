@@ -10,7 +10,7 @@
     <!-- Mobile Meta -->
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Site Meta -->
-    <title>教师</title>
+    <title>教师详情</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -63,7 +63,6 @@
             fatherDiv.innerText = "";
             scrollTo(0, 0);
             result().then((res) => {
-                console.log(res);
                 let sonDiv = generateDiv(res.data);
                 let descDiv = generateDescDiv(res.data.teacherDesc);
                 fatherDiv.appendChild(sonDiv);
@@ -113,9 +112,8 @@
 
             let grandfatherDiv = document.getElementById("feedbackDiv");
             grandfatherDiv.innerText = "";
-            // scrollTo(0, 0);
+            scrollTo(0, 0);
             result(JSON.stringify(pageModel)).then((res) => {
-                console.log(res);
                 if (res.data.modelList.length != 0) {
                     for (let i = 0; i < res.data.modelList.length; i++) {
                         // console.log(res.data.modelList);
@@ -199,13 +197,12 @@
             }
             divRightSpan5.innerText = "工作时间：" + year + "年" + month + "月" + day + "日";
             const divRightLikeSpan = document.createElement("span");
-            divRightLikeSpan.innerText = "点赞数："+teacherData.teacherLikeCount;
+            divRightLikeSpan.innerText = "点赞数：" + teacherData.teacherLikeCount;
             const divRightA = document.createElement("a");
-            divRightA.setAttribute("href", "javascript:");
-            const divImg = document.createElement("div");
-            divImg.setAttribute("style","weight:24px;height:24px;")
+            divRightA.setAttribute("href", "javascript:teacherLikeAdd()");
             const likeImg = document.createElement("img");
             likeImg.setAttribute("src", "/images/teacherLike1.png");
+            likeImg.setAttribute("style", "margin: auto auto 5px 6px;");
             let divRightSpan6 = document.createElement("span");
             if (teacherData.teacherDesc == null || teacherData.teacherDesc == "") {
                 divRightSpan6.innerText = "教师简介：空";
@@ -225,8 +222,7 @@
             divRight2.appendChild(document.createElement("br"));
             divRight2.appendChild(divRightLikeSpan);
             divRight2.appendChild(divRightA);
-            divRightA.appendChild(divImg);
-            divImg.appendChild(likeImg);
+            divRightA.appendChild(likeImg);
 
             div.appendChild(divRight1);
 
@@ -321,15 +317,19 @@
             }
             let aFirstPage = document.createElement("a");
             aFirstPage.setAttribute("href", "javascript:getPageList(1)");
+            aFirstPage.setAttribute("style","cursor: pointer;");
             aFirstPage.innerText = "首页";
             let aLastPage = document.createElement("a");
             aLastPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode - 1) + ")");
+            aLastPage.setAttribute("style","cursor: pointer;");
             aLastPage.innerText = "上一页";
             let aEndPage = document.createElement("a");
             aEndPage.setAttribute("href", "javascript:getPageList(" + totalPages + ")");
+            aEndPage.setAttribute("style","cursor: pointer;");
             aEndPage.innerText = "尾页";
             let aNextPage = document.createElement("a");
             aNextPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode + 1) + ")");
+            aNextPage.setAttribute("style","cursor: pointer;");
             aNextPage.innerText = "下一页";
             let a = document.createElement("a");
             a.innerText = currentPageCode;
@@ -393,7 +393,6 @@
             grandfatherDiv.innerText = "";
             // scrollTo(0, 0);
             resultList(JSON.stringify(pageModel)).then((res) => {
-                console.log(res);
                 for (let i = 0; i < res.data.modelList.length; i++) {
                     let sonDiv = generateFeedbackDiv(res.data.modelList[i]);
                     grandfatherDiv.appendChild(sonDiv);
@@ -454,13 +453,15 @@
 
         commitFeedback = () => {
             let feedbackContent = document.getElementById("textarea").value;
-            let a = JSON.parse(localStorage.getItem("userLoginPhone")).val;
-            if (a === null) {
+            if (localStorage.getItem("userLoginPhone") === null) {
                 alert("请登录后评论！");
             } else {
                 if (feedbackContent === "" || feedbackContent === null) {
                     alert("请填写内容！");
+                }else if(feedbackContent.length>200){
+                   alert("超出字数限制！最多200字！");
                 } else {
+                    let a = JSON.parse(localStorage.getItem("userLoginPhone")).val;
                     const teacherId = document.cookie.split(';')[0].trim();
                     const id = teacherId.split('=')[1].trim();
                     const clientUrl = 'http://localhost:1250/feedback/insertFeedback';
@@ -480,7 +481,6 @@
                                     }
                                 }
                             };
-                            console.log(data);
                             client.send(data);
                         });
                     };
@@ -498,10 +498,8 @@
                         feedbackContent: feedbackContent,
 
                     };
-
                     scrollTo(0, 0);
                     result(JSON.stringify(feedback)).then((res) => {
-                        console.log("ok");
                         clearFeedback();
                         getTeacher();
                     }).catch(error => {
@@ -511,47 +509,54 @@
             }
         }
 
-        // getTeacherLike = () => {
-        //     const teacherId = document.cookie.split(';')[0].trim();
-        //     const id = teacherId.split('=')[1].trim();
-        //
-        //     const clientUrl = 'http://localhost:1250/feedback/getFeedbackList/'+id;
-        //     const clientMethod = 'POST';
-        //     const feedback = ({url}) => {
-        //         return new Promise((resolve, reject) => {
-        //             const client = new XMLHttpRequest();
-        //             client.open(clientMethod, url);
-        //             client.responseType = 'json';
-        //             // client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-        //             client.onreadystatechange = () => {
-        //                 if (client.readyState === 4) {
-        //                     if (client.status === 200) {
-        //                         resolve(client.response);
-        //                     } else {
-        //                         reject(client.status);
-        //                     }
-        //                 }
-        //             };
-        //             client.send();
-        //         });
-        //     };
-        //
-        //     const result = () => feedback(
-        //         {
-        //             url: clientUrl,
-        //         }
-        //     );
-        //     scrollTo(0, 0);
-        //     result().then((res) => {
-        //         console.log(res);
-        //         if (res.data.modelList.length != 0) {
-        //             console.log(res.data);
-        //         } else {
-        //             console.log(res.data);
-        //             console.log("false");
-        //         }
-        //     });
-        // }
+        teacherLikeAdd = () => {
+            if (localStorage.getItem("userLoginPhone") === null) {
+                alert("请登录后点赞！");
+            } else {
+                const teacherId = document.cookie.split(';')[0].trim();
+                const id = teacherId.split('=')[1].trim();
+                const clientUrl = 'http://localhost:1250/teacherLike/teacherLikeAdd';
+                const clientMethod = 'POST';
+                const commitFeedback = ({url, method, data}) => {
+                    return new Promise((resolve, reject) => {
+                        const client = new XMLHttpRequest();
+                        client.open(clientMethod, url);
+                        client.responseType = 'json';
+                        client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                        client.onreadystatechange = () => {
+                            if (client.readyState === 4) {
+                                if (client.status === 200) {
+                                    resolve(client.response);
+                                } else {
+                                    reject(client.status);
+                                }
+                            }
+                        };
+                        client.send(data);
+                    });
+                };
+
+                const result = (data) => commitFeedback(
+                    {
+                        url: clientUrl,
+                        method: clientMethod,
+                        data
+                    }
+                );
+                let teacher = {
+                    teacherId: id,
+                };
+
+                scrollTo(0, 0);
+                result(JSON.stringify(teacher)).then((res) => {
+                    getTeacher();
+                }).catch(error => {
+                    console.log(error);
+                });
+
+            }
+        }
+
     </script>
 
 </head>

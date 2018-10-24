@@ -39,6 +39,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public PageModel<FeedbackDTO> getFeedbackList(PageModel<FeedbackDTO> pageModel) {
         pageModel.setTotalRecord(feedbackDAO.getFeedbackCount(pageModel.getSf()));
+        pageModel.setPageSize(5);
         pageModel.setStartRecord((pageModel.getCurrentPageCode() - 1) * pageModel.getPageSize());
         pageModel.setTotalPages(pageModel.getTotalRecord() % pageModel.getPageSize() == 0 ?
                 pageModel.getTotalRecord() / pageModel.getPageSize() :

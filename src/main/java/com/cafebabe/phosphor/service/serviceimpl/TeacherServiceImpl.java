@@ -35,6 +35,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public PageModel<TeacherInformation> getTeacherList(Integer currentPageCode) {
         PageModel<TeacherInformation> pageModel = new PageModel<>();
+        pageModel.setPageSize(5);
         pageModel.setCurrentPageCode(currentPageCode);
         pageModel.setStartRecord((currentPageCode - 1) * pageModel.getPageSize());
         pageModel.setTotalRecord(teacherDAO.getTeacherCount());
