@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.model.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Date;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyCollectionDTO {
+public class CompanyCollectionDTO implements Serializable {
     private Integer companyCollectionId;
 
     private Integer companyId;

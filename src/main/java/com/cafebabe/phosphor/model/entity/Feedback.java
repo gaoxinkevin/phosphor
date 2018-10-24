@@ -46,6 +46,5 @@ public class Feedback implements Serializable {
      */
     private String feedbackSf;
 
-    private static final long serialVersionUID = 1L;
 
 }

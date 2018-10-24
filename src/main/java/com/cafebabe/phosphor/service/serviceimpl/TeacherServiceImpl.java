@@ -5,6 +5,7 @@ import com.cafebabe.phosphor.model.dto.TeacherInformation;
 import com.cafebabe.phosphor.model.entity.Teacher;
 import com.cafebabe.phosphor.service.TeacherService;
 import com.cafebabe.phosphor.util.PageModel;
+import com.cafebabe.phosphor.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,12 @@ public class TeacherServiceImpl implements TeacherService {
         pageModel.setStartRecord((currentPageCode - 1) * pageModel.getPageSize());
         pageModel.setTotalRecord(teacherDAO.getTeacherCount());
         pageModel.setTotalPages(pageModel.getTotalRecord() % pageModel.getPageSize() == 0 ? pageModel.getTotalRecord() / pageModel.getPageSize() : pageModel.getTotalRecord() / pageModel.getPageSize() + 1);
-        pageModel.setModelList(teacherDAO.getTeacherList(pageModel));
+        if (0!=RedisUtil.getList("getTeacherList"+currentPageCode).size()) {
+            pageModel.setModelList(RedisUtil.getList("getTeacherList"+currentPageCode));
+        }else {
+            RedisUtil.setList("getTeacherList"+currentPageCode,teacherDAO.getTeacherList(pageModel));
+            pageModel.setModelList(RedisUtil.getList("getTeacherList"+currentPageCode));
+        }
         return pageModel;
     }
 

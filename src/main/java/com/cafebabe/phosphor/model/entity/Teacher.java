@@ -67,6 +67,5 @@ public class Teacher implements Serializable {
      */
     private String teacherSf;
 
-    private static final long serialVersionUID = 1L;
 
 }

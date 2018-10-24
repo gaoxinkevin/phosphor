@@ -7,6 +7,7 @@ import com.cafebabe.phosphor.model.entity.Feedback;
 import com.cafebabe.phosphor.model.entity.Parent;
 import com.cafebabe.phosphor.service.FeedbackService;
 import com.cafebabe.phosphor.util.PageModel;
+import com.cafebabe.phosphor.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,19 @@ public class FeedbackServiceImpl implements FeedbackService {
         pageModel.setTotalPages(pageModel.getTotalRecord() % pageModel.getPageSize() == 0 ?
                 pageModel.getTotalRecord() / pageModel.getPageSize() :
                 pageModel.getTotalRecord() / pageModel.getPageSize() + 1);
-        List<FeedbackDTO> feedbackDTOList = feedbackDAO.getFeedbackList(pageModel);
+        List<FeedbackDTO> feedbackDTOList;
+        int currentPageCode = pageModel.getCurrentPageCode();
+        int teacherId = pageModel.getSf();
+        if (currentPageCode != pageModel.getTotalPages()) {
+            if (0 != RedisUtil.getList("getFeedbackList" + teacherId + (currentPageCode)).size()) {
+                feedbackDTOList = RedisUtil.getList("getFeedbackList" + teacherId + currentPageCode);
+            } else {
+                RedisUtil.setList("getFeedbackList" + teacherId + currentPageCode, feedbackDAO.getFeedbackList(pageModel));
+                feedbackDTOList = RedisUtil.getList("getFeedbackList" + teacherId + currentPageCode);
+            }
+        } else {
+            feedbackDTOList = feedbackDAO.getFeedbackList(pageModel);
+        }
         for (FeedbackDTO feedbackDTO : feedbackDTOList) {
             int nameLength = feedbackDTO.getParentName().substring(1).length();
             String name = "";
@@ -61,7 +74,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public int insertFeedback(Feedback feedback) {
-        Parent parent =parentDAO.getAllInfoAboutParentDao(feedback.getFeedbackSf());
+        Parent parent = parentDAO.getAllInfoAboutParentDao(feedback.getFeedbackSf());
         feedback.setFeedbackStatus(1);
         feedback.setParentId(parent.getParentId());
         return feedbackDAO.insertFeedback(feedback);

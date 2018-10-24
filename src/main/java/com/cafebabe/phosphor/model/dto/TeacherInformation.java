@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.model.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Date;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherInformation {
+public class TeacherInformation implements Serializable {
     /**
      * 教师ID
      */
@@ -82,5 +83,4 @@ public class TeacherInformation {
      */
     private String teacherSf;
 
-    private static final long serialVersionUID = 1L;
 }

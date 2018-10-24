@@ -20,7 +20,7 @@ import java.io.IOException;
  *
  * create_time: 14:31
  *
- * description:
+ * description:教师信息跳转界面
  **/
 @Controller
 @CrossOrigin

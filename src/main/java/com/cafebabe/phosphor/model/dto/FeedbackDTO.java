@@ -2,6 +2,8 @@ package com.cafebabe.phosphor.model.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
+
 /**
  * @author kevingx2016@gmail.com
  * <p>
@@ -19,7 +21,7 @@ import lombok.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class FeedbackDTO {
+public class FeedbackDTO implements Serializable {
 
     /**
      * 投诉ID

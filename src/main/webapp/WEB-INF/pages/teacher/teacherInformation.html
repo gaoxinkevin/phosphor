@@ -69,7 +69,6 @@
                 fatherDiv.appendChild(descDiv);
             });
             getFeedback();
-            // getTeacherLike();
         }
 
         getFeedback = () => {
@@ -317,19 +316,19 @@
             }
             let aFirstPage = document.createElement("a");
             aFirstPage.setAttribute("href", "javascript:getPageList(1)");
-            aFirstPage.setAttribute("style","cursor: pointer;");
+            aFirstPage.setAttribute("style", "cursor: pointer;");
             aFirstPage.innerText = "首页";
             let aLastPage = document.createElement("a");
             aLastPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode - 1) + ")");
-            aLastPage.setAttribute("style","cursor: pointer;");
+            aLastPage.setAttribute("style", "cursor: pointer;");
             aLastPage.innerText = "上一页";
             let aEndPage = document.createElement("a");
             aEndPage.setAttribute("href", "javascript:getPageList(" + totalPages + ")");
-            aEndPage.setAttribute("style","cursor: pointer;");
+            aEndPage.setAttribute("style", "cursor: pointer;");
             aEndPage.innerText = "尾页";
             let aNextPage = document.createElement("a");
             aNextPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode + 1) + ")");
-            aNextPage.setAttribute("style","cursor: pointer;");
+            aNextPage.setAttribute("style", "cursor: pointer;");
             aNextPage.innerText = "下一页";
             let a = document.createElement("a");
             a.innerText = currentPageCode;
@@ -391,7 +390,7 @@
 
             let grandfatherDiv = document.getElementById("feedbackDiv");
             grandfatherDiv.innerText = "";
-            // scrollTo(0, 0);
+            scrollTo(0, 0);
             resultList(JSON.stringify(pageModel)).then((res) => {
                 for (let i = 0; i < res.data.modelList.length; i++) {
                     let sonDiv = generateFeedbackDiv(res.data.modelList[i]);
@@ -458,8 +457,8 @@
             } else {
                 if (feedbackContent === "" || feedbackContent === null) {
                     alert("请填写内容！");
-                }else if(feedbackContent.length>200){
-                   alert("超出字数限制！最多200字！");
+                } else if (feedbackContent.length > 200) {
+                    alert("超出字数限制！最多200字！");
                 } else {
                     let a = JSON.parse(localStorage.getItem("userLoginPhone")).val;
                     const teacherId = document.cookie.split(';')[0].trim();
@@ -502,8 +501,9 @@
                     result(JSON.stringify(feedback)).then((res) => {
                         clearFeedback();
                         getTeacher();
+                        alert("提交成功");
                     }).catch(error => {
-                        console.log(error);
+                        alert("提交失败，请勿提交特殊字符！");
                     });
                 }
             }
