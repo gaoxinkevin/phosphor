@@ -58,6 +58,7 @@
             background: #82B43F none repeat scroll 0 0 !important;
 
         }
+
     </style>
 </head>
 
@@ -76,7 +77,11 @@
 
     const clientUrl1 = 'http://localhost:1250/child/childInfo';
 
+
     const clientMethod = 'POST';
+
+
+    //页面获取用户头像
 
     const getParentImg = (url) => {
         return new Promise((resolve, reject) => {
@@ -111,7 +116,11 @@
         console.log(error);
     });
 
+    //页面获取头像结束
 
+
+
+    //页面渲染开始
 
     const getAllChildrenInfo = (url) => {
         return new Promise((resolve, reject) => {
@@ -144,6 +153,7 @@
                 const div = document.createElement("div");
                 const a = document.createElement("a");
                 const aDelete = document.createElement("a");
+                const aUpdate = document.createElement("a");
                 const divName = document.createElement("div");
                 const divSex = document.createElement("div");
                 const divBio = document.createElement("div");
@@ -152,8 +162,11 @@
                 const spanSex = document.createElement("span");
                 const spanBio = document.createElement("span");
                 const spanBirthday = document.createElement("span");
+                const spanMeale = document.createElement("span");
+                const spanFemale = document.createElement("span");
                 const inputName = document.createElement("input");
-                const inputSex = document.createElement("input");
+                const inputMale = document.createElement("input");
+                const inputFemale = document.createElement("input");
                 const textareaBio = document.createElement("textarea");
                 const inputBirthday = document.createElement("input");
 
@@ -162,15 +175,24 @@
                 a.innerText = "阅读更多";
                 a.style.lineHeight = "5.5";
                 a.style.marginRight = "20px";
-                a.style.padding = "10px 10px";
+                a.style.padding = "10px";
                 a.className = "btn-sm btn-primary";
                 a.setAttribute("href", "javascript:void(0);");
 
+                aUpdate.type = "button";
+                aUpdate.id  = "aUpdate"+res.data[item].childId;
+                aUpdate.innerText =  "更改孩子信息";
+                aUpdate.style.lineHeight = "5.5";
+                aUpdate.style.padding = "10px";
+                aUpdate.className = "btn-sm btn-warning ";
+                aUpdate.setAttribute("href", "javascript:void(0);");
+
                 aDelete.type = "button";
                 aDelete.id = "aBtn"+ res.data[item].childId;
-                aDelete.style.lineHeight = "5.5";
                 aDelete.innerText = "删除当前孩子信息";
-                aDelete.style.padding = "10px 10px";
+                aDelete.style.padding = "7px";
+                aDelete.style.cssFloat = "right";
+                aDelete.style.marginTop = "3%";
                 aDelete.style.cursor = "pointer";
                 aDelete.className = "btn-sm btn-danger";
                 aDelete.setAttribute("href", "javascript:void(0);");
@@ -186,6 +208,23 @@
                 li.className = "liDisplay";
 
                 ali.id = "a" + res.data[item].childId;
+
+                spanMeale.style.marginRight = "20px";
+                inputMale.style.marginRight  = "5px";
+                inputFemale.style.marginRight = "5px";
+
+                inputMale.type =  "radio";
+                inputFemale.type ="radio";
+
+                spanMeale.innerText = "男";
+                spanFemale.innerText="女";
+
+                inputMale.name = "gender"+res.data[item].childId;
+                inputFemale.name = "gender"+res.data[item].childId;
+
+                inputMale.id = "radioId"+res.data[item].childId;
+                inputFemale.id = "radioFeMale"+res.data[item].childId;
+
 
                 div.style.display = "none";
                 div.className = "divDisplay";
@@ -213,6 +252,7 @@
                 ali.setAttribute("href", "javascript:void(0);");
 
                 ali.onclick = changeTab;
+                aUpdate.onclick = updateChild;
                 aDelete.onclick = deleteChild;
 
 
@@ -221,6 +261,7 @@
                 div.appendChild(divBirthday);
                 div.appendChild(divBio);
                 div.appendChild(a);
+                div.appendChild(aUpdate);
                 div.appendChild(aDelete);
 
                 divName.appendChild(spanName);
@@ -228,7 +269,10 @@
 
                 divSex.style.marginTop = "25px";
                 divSex.appendChild(spanSex);
-                divSex.appendChild(inputSex);
+                divSex.appendChild(inputMale);
+                divSex.appendChild(spanMeale);
+                divSex.appendChild(inputFemale);
+                divSex.appendChild(spanFemale);
 
                 divBirthday.style.marginTop = "25px";
                 divBirthday.appendChild(spanBirthday);
@@ -243,9 +287,13 @@
                 inputBirthday.value = res.data[item].childBirthday;
 
                 if (1 === res.data[item].childGender) {
-                    inputSex.value = "男"
-                } else {
-                    inputSex.value = "女"
+
+                    document.getElementById("radioId"+res.data[item].childId).checked  = true;
+
+                    console.log(1);
+                } else if(2 === res.data[item].childGender) {
+                    console.log(2);
+                    document.getElementById("radioFeMale"+res.data[item].childId).checked  = true;
                 }
                 textareaBio.innerText =  res.data[item].childSf;
             }
@@ -292,6 +340,75 @@
         console.log(error);
     });
 
+    //页面渲染结束
+
+
+    function updateChild(){
+        const id = this.id;
+        updateThisChild(id)
+    }
+
+    updateThisChild = (id) =>{
+        let sex = 1;
+        const male = document.getElementById("radioId"+id);
+        const female = document.getElementById("radioFeMale"+id);
+        if (male.checked){
+            sex = 1;
+        }
+        if (female.checked){
+            sex = 2;
+        }
+        let child={
+            childId : id,
+            childGender : sex,
+            childName : document.getElementById("site1").value,
+            childBirthday  : document.getElementById("data").value,
+            childSf : document.getElementById("bio").value,
+        };
+
+        const clientMethod = 'POST';
+        const clientUrl = 'http://localhost:1250/child/modifyChild';
+        const modifyChild = ({url, method, data}) => {
+            return new Promise((resolve, reject) => {
+                const client = new XMLHttpRequest();
+                client.open(clientMethod, url);
+                client.responseType = 'json';
+                client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                client.onreadystatechange = () => {
+                    if (client.readyState === 4) {
+                        if (client.status === 200) {
+                            resolve(client.response);
+                        } else {
+                            reject(client.status);
+                        }
+                    }
+                };
+                client.send(data);
+            });
+        };
+
+        const resultList = (data) => modifyChild(
+            {
+                url: clientUrl,
+                method: clientMethod,
+                data
+            }
+        );
+
+
+        resultList(JSON.stringify(child)).then((res) => {
+            console.log(res);
+            window.location.href = "http://localhost:1250/childrenUi/infoUi"
+        }).catch(error => {
+            console.log(error);
+        });
+        //AjaxEnd
+
+
+    }).catch(error => {
+        console.log(error);
+    });
+    };
 
     insertChild = () => {
 
@@ -316,16 +433,17 @@
         const JsonResponseList = () => parentId(clientUrl);
 
         JsonResponseList().then((res) => {
-            console.log(res);
             let sex = 1;
             const male = document.getElementById("site4");
             const female = document.getElementById("site6");
+
             if (male.checked){
                 sex = 1;
             }
             if (female.checked){
                 sex = 2;
             }
+
             let child = {
                 parentId: res.data.parentId,
                 childName : document.getElementById("site1").value,
@@ -378,7 +496,6 @@
         });
     };
 
-
     function changeTab() {
 
         const id = "div" + this.id.substring(1);
@@ -403,6 +520,11 @@
         li.className = "active";
         aDisplay.style.display = '';
         a.style.color = "#01bacf";
+    }
+
+    function deleteChild(){
+        const id = this.id;
+        deleteThisChild(id.substring(4));
     }
 
     deleteThisChild=(id)=>{
@@ -450,11 +572,6 @@
             console.log(error);
         });
     };
-
-    function deleteChild(){
-        const id = this.id;
-        deleteThisChild(id.substring(4));
-    }
 
     addChild = () => {
         const addChildTab = document.getElementById("addChild");
