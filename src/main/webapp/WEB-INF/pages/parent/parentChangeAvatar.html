@@ -142,12 +142,6 @@
                 pic.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';//设置img的src为base64编码的透明图片，要不会显示红xx
             }
         }
-        else if (file.files) {//firefox6-
-            if (file.files.item(0)) {
-                url = file.files.item(0).getAsDataURL();
-                pic.src = url;
-            }
-        }
     };
 
     uploadAvatar = () => {
