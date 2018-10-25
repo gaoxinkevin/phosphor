@@ -192,11 +192,13 @@
         </dependency>
 
 
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.46</version>
+            <version>8.0.13</version>
         </dependency>
+
 
         <dependency>
             <groupId>org.jetbrains</groupId>
@@ -331,6 +333,14 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>3.11.0</version>
+        </dependency>
+
+        <!--HikariCP-->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>2.7.8</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>
