@@ -97,8 +97,8 @@ public class ParentServiceImpl implements ParentService {
     }
 
     @Override
-    public boolean updateParentImg(String parentPhoto, String parentPhone) {
+    public void updateParentImg(String parentPhoto, String parentPhone) {
         RedisUtil.del(parentPhone,parentPhone+"getAllINfo");
-        return parentDAO.updateParentImg(parentPhoto,parentPhone);
+        parentDAO.updateParentImg(parentPhoto, parentPhone);
     }
 }

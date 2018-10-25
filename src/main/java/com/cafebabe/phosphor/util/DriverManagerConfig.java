@@ -11,8 +11,18 @@ import javax.sql.DataSource;
 
 
 /**
- * @author 孙堂奥
- */
+ *
+ * @author supersuntangao@gmail.com
+ *
+ * class_name: DriverManagerConfig
+ *
+ * create_date: 2018/10/25
+ *
+ * create_time: 09:21
+ *
+ * description: Mysql数据库连接配置
+ **/
+
 
 @Component
 @Configuration
@@ -33,11 +43,11 @@ public class DriverManagerConfig{
 
     @Bean
     public DataSource  driverManagerUtil(){
-        DataSource dataSource=new  DriverManagerDataSource();
-        ((DriverManagerDataSource) dataSource).setDriverClassName(driver);
-        ((DriverManagerDataSource) dataSource).setUrl(url);
-        ((DriverManagerDataSource) dataSource).setUsername(user);
-        ((DriverManagerDataSource) dataSource).setPassword(password);
+        DriverManagerDataSource dataSource=new  DriverManagerDataSource();
+        dataSource.setDriverClassName(driver);
+        dataSource.setUrl(url);
+        dataSource.setUsername(user);
+        dataSource.setPassword(password);
         return  dataSource;
     }
 }

@@ -1,7 +1,6 @@
 package com.cafebabe.phosphor.web.controller;
 
 import com.cafebabe.phosphor.service.serviceimpl.ParentServiceImpl;
-import com.cafebabe.phosphor.util.JsonResponse;
 
 import com.google.gson.Gson;
 
@@ -13,18 +12,12 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 
-
-import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -60,25 +53,17 @@ public class UploadController {
          this.parentService = parentService;
      }
 
-
-    @RequestMapping("uploadAvatar")
-    @ResponseBody
-    public String uploadAvatar(String fileName){
-
+    private String uploadAvatar(String fileName){
         Configuration cfg = new Configuration(Zone.zone0());
-
         UploadManager uploadManager = new UploadManager(cfg);
-
         String accessKey = "1_ejbRfHFAIVg0Mj-SpiB8NQTJHbkTdTg3L-KmAY";
         String secretKey = "oAjG6AtZFnozMS0Cy6Hg8MD7Uk9D7A54LCe8LrZW";
         String bucket = "phosphor";
         System.out.println("fileName"+fileName);
-
-        String key = null;
         Auth auth = Auth.create(accessKey, secretKey);
         String upToken = auth.uploadToken(bucket);
         try {
-            Response response = uploadManager.put(fileName, key, upToken);
+            Response response = uploadManager.put(fileName, null, upToken);
             //解析上传成功的结果
             DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
             System.out.println(putRet.key);
@@ -95,7 +80,6 @@ public class UploadController {
         }
         return "error";
     }
-
 
 
     @RequestMapping("fileupload.do")
@@ -120,6 +104,7 @@ public class UploadController {
 
         if( !newFile.getParentFile().exists()) {
             // 如果目标文件所在的目录不存在，则创建父目录
+            //noinspection ResultOfMethodCallIgnored
             newFile.getParentFile().mkdirs();
         }
         file.transferTo(newFile);

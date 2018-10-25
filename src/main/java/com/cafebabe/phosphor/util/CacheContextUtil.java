@@ -30,11 +30,12 @@ public class CacheContextUtil implements ApplicationContextAware {
         commonApplicationContext = applicationContext;
     }
 
+    @SuppressWarnings("unused")
     public static Object getBean(String beanId) {
         return commonApplicationContext.getBean(beanId);
     }
 
-    public static <T> T getBean(String beanId, Class<T> clazz) {
+    static <T> T getBean(String beanId, Class<T> clazz) {
         return commonApplicationContext.getBean(beanId, clazz);
     }
 
