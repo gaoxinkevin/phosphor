@@ -29,7 +29,7 @@ public interface CourseService {
 
     Integer getCourseCount();
 
-    List<CourseInfo> getAllCourseInfo ();
+    List<Course> getAllCourseInfo ();
 
 
     /**
@@ -44,4 +44,11 @@ public interface CourseService {
      * @return 课程信息
      */
     CourseInfo getCourseInfoService(Integer courseId);
+
+    /**
+     * 获得某课程时间信息
+     * @param courseId 课程id
+     * @return 课程时间
+     */
+    CourseInfo getCourseTime(Integer courseId);
 }

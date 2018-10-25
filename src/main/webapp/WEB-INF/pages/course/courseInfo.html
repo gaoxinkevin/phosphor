@@ -25,9 +25,11 @@
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <script>
-        const clientUrl = 'http://localhost:1250/course/findCourseInfo';
-        const clientMethod = 'GET';
-        const getJsonCourse = (url) => {
+        const courseId = document.cookie.split(';')[0].trim();
+        const id = courseId.split('=')[1].trim();
+        const clientUrl = 'http://localhost:1250/course/findCourseInfo/' + id;
+        const clientMethod = 'POST';
+        const getJsonCourse = ({url}) => {
             return new Promise((resolve, reject) => {
                 const client = new XMLHttpRequest();
                 client.open(clientMethod, url);
@@ -45,7 +47,11 @@
             });
         };
 
-        const courseInfo = () => getJsonCourse(clientUrl);
+        const courseInfo = () => getJsonCourse(
+            {
+                url:clientUrl
+            }
+            );
 
         courseInfo().then(({data}) => {
             const courseName = document.getElementById("courseName");
@@ -53,6 +59,7 @@
             const courseDesc = document.getElementById("courseDesc");
             const companyName = document.getElementById("companyName");
             const courseType = document.getElementById("courseType");
+            const courseCount = document.getElementById("courseCount");
             const courseContent = document.getElementById("courseContent");
             const courseStartDay = document.getElementById("courseStartDay");
             const courseContinuedTime = document.getElementById("courseContinuedTime");
@@ -66,6 +73,7 @@
             courseDesc.innerText = data.courseDesc;
             companyName.innerText = data.companyName;
             courseType.innerText = data.typeName;
+            courseCount.innerText = data.courseCount;
             courseContent.innerText = data.courseContent;
             courseStartDay.innerText = data.courseStartDay;
             courseContinuedTime.innerText = data.courseContinuedTime;
@@ -226,6 +234,9 @@
                                         <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">
                                             <span id="courseType">Bags</span></a>
                                     </li>
+                                </ul>
+                                <ul class="list-inline">
+                                    <li>销量：<span id="courseCount">被购次数</span></li>
                                 </ul>
                             </div><!-- end shop meta -->
                         </div><!-- end desc -->

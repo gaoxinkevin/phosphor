@@ -23,7 +23,7 @@ public interface CourseDAO extends MyBatisBaseDao<Course, Integer> {
      * 查询所有课程
      * @return 课程列表
      */
-    List<CourseInfo> getAllCourse();
+    List<Course> getAllCourse();
 
     /**
      * 根据课程名查询课程
@@ -51,11 +51,17 @@ public interface CourseDAO extends MyBatisBaseDao<Course, Integer> {
      * @param page 页码信息
      * @return 课程列表
      */
-    List<CourseInfo> getCourseByPage(Page page);
+    List<Course> getCourseByPage(Page page);
 
     /**
      * 获得课程总记录数
      * @return 课程总数
      */
     Integer getCourseCount();
+
+    /**
+     * 获得课程时间信息
+     * @retur信息n 时间
+     */
+    CourseInfo getCourseTime(Integer courseId);
 }

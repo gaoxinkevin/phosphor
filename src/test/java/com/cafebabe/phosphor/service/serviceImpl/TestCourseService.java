@@ -27,14 +27,9 @@ public class TestCourseService {
 
     @Test
     public void TestGetCourseInfo(){
-        CourseInfo courseInfo = courseDAO.getCourseInfo(10000);
+        CourseInfo courseInfo = courseDAO.getCourseInfo(10016);
         System.out.println(courseInfo);
     }
 
-    @Test
-    public void TestGetCourseByPage(){
-        Page<CourseInfo> courseInfoPage = new Page<>();
-        List<CourseInfo> courseInfoList = courseDAO.getCourseByPage(courseInfoPage);
-        courseInfoList.forEach(System.out::println);
-    }
+
 }

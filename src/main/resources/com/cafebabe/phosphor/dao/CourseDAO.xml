@@ -19,18 +19,19 @@
     <!---->
     <sql id="Base_Column_List">
     course_id, course_name, company_name, course_address, course_price, course_content, 
-    course_create_time, course_desc, course_status, course_time, course_discount,
+    course_create_time, course_desc, course_status, course_time, course_discount,course_sf
   </sql>
 
     <select id="getCourseInfo" resultType="com.cafebabe.phosphor.model.dto.CourseInfo">
-    select course_id,course_name, company_name, course_address, course_price, course_content,
-    course_create_time, course_desc, teacher_name,type_name, course_start_day,
+    select course.course_id,course_name, company_name, course_address, course_price, course_content,
+    course_create_time, course_desc, course_sf, course_count,teacher_name,type_name, course_start_day,
     course_start_time,course_start_time,course_end_time,course_continued_time, course_time_status
     from course
     join teacher_course on course.course_id=teacher_course.course_id
     join teacher on teacher_course.teacher_id=teacher.teacher_id
     join course_type on course.course_id=course_type.course_id
     join type on course_type.type_id=type.type_id
+    join course_rank on course.course_id=course_rank.course_id
     join course_time on course.course_id=course_time.course_id
     where course.course_id=#{courseId,jdbcType=INTEGER}
   </select>
@@ -43,7 +44,7 @@
     </select>
 
     <!--select all course-->
-    <select id="getAllCourse" resultType="com.cafebabe.phosphor.model.dto.CourseInfo">
+    <select id="getAllCourse" resultType="com.cafebabe.phosphor.model.entity.Course">
         select
         <include refid="Base_Column_List"/>
         from course
@@ -62,17 +63,23 @@
         select
         <include refid="Base_Column_List"/>
         from course
-        where company_name = #{companyName,jdbcType=INTEGER}
+        where company_name = #{companyName}
     </select>
-    <select id="getCourseByPage" resultType="com.cafebabe.phosphor.model.dto.CourseInfo"
-            parameterType="com.cafebabe.phosphor.model.dto.Page">
+    <select id="getCourseByPage" resultType="com.cafebabe.phosphor.model.entity.Course" parameterType="com.cafebabe.phosphor.model.dto.Page">
         select
-        <include refid="Base_Column_List"/>
+        course_id,course_name,course_price,company_name
         from course
-        limit #{startRecord}, #{pageSize}
-  </select>
+        limit #{startRecord},#{pageSize}
+    </select>
     <select id="getCourseCount" resultType="java.lang.Integer">
         select count(*) from course
+    </select>
+
+    <select id="getCourseTime" resultType="com.cafebabe.phosphor.model.dto.CourseInfo">
+        select course.course_id,course_name,course_start_day,course_start_time,course_end_time,course_continued_time,course_time_status
+        from course
+        join course_time on course.course_id=course_time.course_id
+        where course.course_id=#{courseId}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

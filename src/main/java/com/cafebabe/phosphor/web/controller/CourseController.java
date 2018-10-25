@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.web.controller;
 
 import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.dto.Page;
+import com.cafebabe.phosphor.model.entity.Course;
 import com.cafebabe.phosphor.service.serviceimpl.CourseServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class CourseController {
     }
 
     @ResponseBody
-    @GetMapping("/findCourseInfo")
-    public JsonResponse findCourseInfo(Integer courseId){
+    @RequestMapping("/findCourseInfo/{courseId}")
+    public JsonResponse findCourseInfo(@PathVariable Integer courseId){
         CourseInfo courseInfo = courseService.getCourseInfoService(courseId);
         return new JsonResponse(20000,"成功",courseInfo);
     }
@@ -46,7 +47,7 @@ public class CourseController {
     @ResponseBody
     @GetMapping("/getCourseList")
     public JsonResponse getCourseList(){
-        List<CourseInfo> courseList = courseService.getAllCourseInfo();
+        List<Course> courseList = courseService.getAllCourseInfo();
         return new JsonResponse(20000,"成功",courseList);
     }
 

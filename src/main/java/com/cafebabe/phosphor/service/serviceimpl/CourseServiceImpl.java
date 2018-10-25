@@ -30,12 +30,9 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private final CourseDAO courseDAO;
 
-    @Autowired
-    private final TypeDAO typeDAO;
 
-    public CourseServiceImpl(CourseDAO courseDAO,TypeDAO typeDAO){
+    public CourseServiceImpl(CourseDAO courseDAO){
         this.courseDAO = courseDAO;
-        this.typeDAO = typeDAO;
     }
 
 
@@ -48,9 +45,9 @@ public class CourseServiceImpl implements CourseService {
         page.setCurrentPageCode(pageIndex);
         page.setStartRecord(pageIndex * pageSize);
         page.setEndRecord(pageSize * (pageIndex + 1) - 1);
-        List<CourseInfo> courseList = courseDAO.getCourseByPage(page);
+        List<Course> courseList = courseDAO.getCourseByPage(page);
         page.setModelList(courseList);
-        System.out.println(page.toString());
+        //System.out.println(page.toString());
         return page;
     }
 
@@ -60,7 +57,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseInfo> getAllCourseInfo() {
+    public List<Course> getAllCourseInfo() {
         return courseDAO.getAllCourse();
     }
 
@@ -73,5 +70,20 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseInfo getCourseInfoService(Integer courseId) {
         return courseDAO.getCourseInfo(courseId);
+    }
+
+    @Override
+    public CourseInfo getCourseTime(Integer courseId) {
+        return courseDAO.getCourseTime(courseId);
+    }
+
+    public boolean contrastCourseTime(CourseInfo courseFirst, CourseInfo courseSecond){
+        if (courseFirst.getCourseTimeStatus()!= courseSecond.getCourseTimeStatus()){
+            return true;
+        }else if ( Integer.parseInt(courseFirst.getCourseEndTime().toString())-Integer.parseInt(courseSecond.getCourseStartTime().toString())>0){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

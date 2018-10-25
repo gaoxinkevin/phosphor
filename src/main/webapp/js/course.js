@@ -17,17 +17,6 @@ function getAllCouse() {
     }
 }
 
-function loadCourseList(CourseInfoListJson) {
-    let courseInfoList = JSON.parse(CourseInfoListJson);
-    let div = document.getElementById("activityGrid");
-    let courseInfoListData = courseInfoList.data;
-    for(let i = 0; i < courseInfoListData.length ; i++){
-
-        let divGrid = generateDiv(courseInfoListData[i]);
-        div.appendChild(divGrid);
-    }
-}
-
 /**
  * 分页查询
  * @param pageIndex 页码
@@ -62,7 +51,7 @@ function loadCourseListByPage(pageJson) {
     let pageSize = courseInfoListData.pageSize;
 
     if(currentPageCode > (totalPages - 1)){
-        getActivityByPage(0, pageSize);
+        getCourseListByPage(0, pageSize);
         return void(0);
     }
     let currentPage = document.getElementById("currentPageCode");
@@ -75,7 +64,7 @@ function loadCourseListByPage(pageJson) {
     }
     else if(courseInfoList.length <= 0 && currentPageCode != 0)
     {
-        getActivityByPage(0, pageSize);
+        getCourseListByPage(0, pageSize);
     }
     else{
         refreshGrid(courseInfoList, pageSize);
@@ -89,16 +78,16 @@ function refreshGrid(courseInfoList, pageSize) {
     for(let i = 0; i < length; i ++){
         let courseInfo = courseInfoList[i];
         let courseName = courseInfo.courseName;
-        let couName = document.getElementsByClassName("courseName")[i];
+        let couName = document.getElementsByClassName("couName")[i];
         couName.innerText = courseName;
 
         let courseId = courseInfo.courseId;
         let courseSign = document.getElementsByClassName("courseDetail")[i];
-        courseSign.setAttribute("href", "/course/findCourseInfo?courseId="+courseId);
+        courseSign.setAttribute("href","http://localhost:1250/courseUi/courseInfoUi/" + courseInfo.courseId);
 
-        let courseType = courseInfo.typeName;
-        let couType = document.getElementsByClassName("courseType")[i];
-        couType.innerText = courseType;
+        let courseCompany = courseInfo.companyName;
+        let couCompany = document.getElementsByClassName("couCompany")[i];
+        couCompany.innerText = courseCompany;
 
         let coursePrice = courseInfo.coursePrice;
         let couPrice = document.getElementsByClassName("couPrice")[i];
@@ -216,7 +205,7 @@ function generateDiv(courseInfo) {
     divDetails.classList.add("course-details", "shop-box", "text-center");
     let hFour = document.createElement("h4");
     let aMid = document.createElement("a");
-    aMid.setAttribute("href","javascript:getCourseInfo("+courseInfo.courseId+")");
+    aMid.setAttribute("href","http://localhost:1250/courseUi/courseInfoUi/" + courseInfo.courseId);
     aMid.innerText = courseInfo.courseName;
     let company = document.createElement("small");
     company.innerText=courseInfo.companyName;
@@ -275,6 +264,7 @@ function perPage() {
     else{
         getCourseListByPage(currentPageCode - 1, 12);
     }
+    window.location.reload();
 }
 
 /**
