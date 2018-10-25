@@ -8,13 +8,13 @@ import java.util.Date;
 /**
  * @author kevingx2016@gmail.com
  * <p>
- * class_name: TeacherInformation
+ * class_name: TeacherInformationDTO
  * <p>
  * create_date: 2018/10/22
  * <p>
  * create_time: 16:58
  * <p>
- * description:
+ * description: 教师信息封装
  **/
 @Getter
 @Setter
@@ -22,7 +22,7 @@ import java.util.Date;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherInformation implements Serializable {
+public class TeacherInformationDTO implements Serializable {
     /**
      * 教师ID
      */

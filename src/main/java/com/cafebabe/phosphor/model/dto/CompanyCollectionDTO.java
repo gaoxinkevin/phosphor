@@ -14,7 +14,7 @@ import java.util.Date;
  * <p>
  * create_time: 19:23
  * <p>
- * description:
+ * description: 公司收藏封装
  **/
 @Getter
 @Setter
@@ -23,15 +23,31 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompanyCollectionDTO implements Serializable {
+
+    /**
+     * 公司收藏ID
+     */
     private Integer companyCollectionId;
 
+    /**
+     * 公司ID
+     */
     private Integer companyId;
 
+    /**
+     * 家长ID
+     */
     private Integer parentId;
 
-    private String companyCollectionSf;
-
+    /**
+     * 公司收藏状态
+     */
     private Integer companyCollectionStatus;
+
+    /**
+     * 公司收藏冗余字段
+     */
+    private String companyCollectionSf;
 
     /**
      * 公司收藏时间

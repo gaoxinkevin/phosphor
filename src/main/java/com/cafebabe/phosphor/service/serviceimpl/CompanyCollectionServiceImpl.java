@@ -7,6 +7,7 @@ import com.cafebabe.phosphor.model.entity.CompanyCollection;
 import com.cafebabe.phosphor.model.entity.Parent;
 import com.cafebabe.phosphor.service.CompanyCollectionService;
 import com.cafebabe.phosphor.util.PageModel;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ import java.util.Date;
  * <p>
  * create_time: 19:20
  * <p>
- * description:
+ * description: 公司收藏Service层的实现类
  **/
 @Service
 public class CompanyCollectionServiceImpl implements CompanyCollectionService {

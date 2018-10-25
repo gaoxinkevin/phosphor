@@ -145,7 +145,7 @@
 
     <select id="getCompanyCollection"
             resultType="com.cafebabe.phosphor.model.entity.CompanyCollection">
-        select company_collection_id,company_collection_status
+        select company_collection_id, company_collection_status
         from company_collection
         where parent_id = #{parentId,jdbcType=INTEGER}
           and company_id = #{companyId,jdbcType=INTEGER}

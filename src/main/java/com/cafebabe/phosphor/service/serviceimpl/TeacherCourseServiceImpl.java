@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.service.serviceimpl;
 
 import com.cafebabe.phosphor.dao.TeacherCourseDAO;
 import com.cafebabe.phosphor.service.TeacherCourseService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class TeacherCourseServiceImpl implements TeacherCourseService {
 
     private final TeacherCourseDAO teacherCourseDAO;
+
     @Autowired
     public TeacherCourseServiceImpl(TeacherCourseDAO teacherCourseDAO) {
         this.teacherCourseDAO = teacherCourseDAO;

@@ -164,7 +164,7 @@
         where teacher_id = #{teacherId,jdbcType=INTEGER}
     </update>
 
-    <select id="getTeacherList" resultType="com.cafebabe.phosphor.model.dto.TeacherInformation">
+    <select id="getTeacherList" resultType="com.cafebabe.phosphor.model.dto.TeacherInformationDTO">
         select teacher.teacher_id,
                teacher_name,
                teache_phone,
@@ -188,7 +188,7 @@
     </select>
 
     <select id="getTeacherById" parameterType="java.lang.Integer"
-            resultType="com.cafebabe.phosphor.model.dto.TeacherInformation">
+            resultType="com.cafebabe.phosphor.model.dto.TeacherInformationDTO">
         select teacher.teacher_id,
                teacher_name,
                teache_phone,

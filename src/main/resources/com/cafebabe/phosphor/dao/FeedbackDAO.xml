@@ -111,7 +111,7 @@
 
     <select id="getFeedbackList" parameterType="com.cafebabe.phosphor.model.dto.FeedbackDTO"
             resultType="com.cafebabe.phosphor.model.dto.FeedbackDTO">
-        select teacher_id, feedback_id, parent.parent_id, parent_name, parent_phone,feedback_content,feedback_status
+        select teacher_id, feedback_id, parent.parent_id, parent_name,parent_photo, parent_phone,feedback_content,feedback_status
         from feedback
                  join parent on feedback.parent_id = parent.parent_id
         where teacher_id = #{sf,jdbcType=INTEGER}

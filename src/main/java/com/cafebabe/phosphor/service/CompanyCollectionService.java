@@ -4,8 +4,6 @@ import com.cafebabe.phosphor.model.dto.CompanyCollectionDTO;
 import com.cafebabe.phosphor.model.entity.CompanyCollection;
 import com.cafebabe.phosphor.util.PageModel;
 
-import java.util.List;
-
 /**
  * @author kevingx2016@gmail.com
  * <p>
@@ -15,12 +13,13 @@ import java.util.List;
  * <p>
  * create_time: 19:20
  * <p>
- * description:  公司收藏Service层的实现类
+ * description:  公司收藏 Service
  **/
 public interface CompanyCollectionService {
 
     /**
      * 根据用户ID获取收藏公司信息
+     *
      * @param pageModel 含有用户ID的分页信息
      * @return 收藏的公司信息
      */
@@ -28,6 +27,7 @@ public interface CompanyCollectionService {
 
     /**
      * 添加新的公司收藏
+     *
      * @param companyCollection 公司收藏信息
      * @return 受影响行数
      */
@@ -35,6 +35,7 @@ public interface CompanyCollectionService {
 
     /**
      * 删除公司收藏
+     *
      * @param companyCollectionId 公司收藏ID
      * @return 受影响行数
      */
