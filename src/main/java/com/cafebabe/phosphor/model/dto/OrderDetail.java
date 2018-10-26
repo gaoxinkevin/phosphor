@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.model.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -22,7 +23,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDetail {
+public class OrderDetail implements Serializable {
     /**
      * 单个商品的id
      */
@@ -46,7 +47,7 @@ public class OrderDetail {
     /**
      * 商品的价格
      */
-    private BigDecimal price ;
+    private BigDecimal price;
     /**
      * 公司名称
      */

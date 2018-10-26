@@ -13,18 +13,19 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Site Icons -->
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
     <!--FontAwesome-->
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Custom & Default Styles  外部-->
-    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../css/carousel.css">
-    <link rel="stylesheet" href="../../../css/animate.css">
-    <link rel="stylesheet" href="../../../css/style.css">
-    <link rel="stylesheet" href="../../../css/styleCommon.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleCommon.css">
+    <link rel="stylesheet" href="/css/bootstrap-select.min.css">
 
     <!--自己写的 -->
     <link rel="stylesheet" href="/css/alreadyLogin.css">
@@ -45,21 +46,18 @@
 
         }
 
+        .table tbody tr td {
+            vertical-align: middle;
+        }
+
     </style>
 </head>
 
 <body>
-    <!--Ajax向后台输出数据-->
-    <!-- <script>
+<!--Ajax向后台输出数据-->
+<script>
 
-    //判断用户登录
-    let a = localStorage.getItem("userLoginPhone");
-    if (a === null) {
-        localStorage.clear();
-        window.location.href = "http://localhost:1250/indexUi/returnIndexPage"
-    }
-
-    const clientUrl = 'http://localhost:1250/parent/parentAllInfo';
+    const clientUrl = 'http://localhost:1250/order/orderValidate';
     const clientMethod = 'POST';
     const getParentImg = (url) => {
         return new Promise((resolve, reject) => {
@@ -79,431 +77,313 @@
         });
     };
     const JsonResponseList = () => getParentImg(clientUrl);
-    JsonResponseList().then((res) => {
-        const imgSrc = document.getElementById("avatarImg");
-        const imgSrc1 = document.getElementById("avatarImg2");
-        const imgSrc3 = document.getElementById("defaultImg");
-        const parentName2 = document.getElementById("aName");
-        imgSrc.src = res.data.parentPhoto;
-        imgSrc1.src = res.data.parentPhoto;
-        imgSrc3.src = res.data.parentPhoto;
-        parentName2.innerText = res.data.parentName;
-
+    JsonResponseList().then((data) => {
+        console.log(data);
     }).catch(error => {
         console.log(error);
     });
 
-    const clientUrl1 = 'http://localhost:1250/child/childInfo';
-    const getAllChildrenInfo = (url) => {
-        return new Promise((resolve, reject) => {
-            const client = new XMLHttpRequest();
-            client.open(clientMethod, url);
-            client.responseType = 'json';
-            client.onreadystatechange = () => {
-                if (client.readyState === 4) {
-                    if (client.status === 200) {
-                        resolve(client.response);
-                    } else {
-                        reject(client.status);
-                    }
-                }
-            };
-            client.send();
-        });
-    };
+</script>
+<div id="wrapper">
 
-    const childrenInfoList = () => getAllChildrenInfo(clientUrl1);
-    childrenInfoList().then((res) => {
-        if (res.data.length  > 0){
-            const urlChild = document.getElementById("navUrl");
-            for (let item in res.data) {
-                const li = document.createElement("li");
-                const ali = document.createElement("a");
-                li.id = res.data[item].childId;
-                li.appendChild(ali);
-                ali.innerText = res.data[item].childName;
-                urlChild.appendChild(li);
-                console.log(res.data[item])
-            }
-        } else {
-            const addChild = document.getElementById("addChild");
-            addChild.style.display="";
-        }
+    <div id="preloader">
+        <img class="preloader" src="/images/loader.gif" alt="">
+    </div>
 
-        console.log(res)
-    }).catch(error => {
-        console.log(error);
-    });
-
-
-    uploadAvatar = () => {
-
-        let parent = {
-            parentPhoto: document.getElementById("defaultImg2").src,
-            parentPhone: JSON.parse(localStorage.getItem("userLoginPhone")).val,
-        };
-
-        //AjaxBegin
-        const clientMethod = 'POST';
-        const clientUrl = 'http://localhost:1250/parent/updateParent';
-        const updateParent = ({url, method, data}) => {
-            return new Promise((resolve, reject) => {
-                const client = new XMLHttpRequest();
-                client.open(clientMethod, url);
-                client.responseType = 'json';
-                client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-                client.onreadystatechange = () => {
-                    if (client.readyState === 4) {
-                        if (client.status === 200) {
-                            resolve(client.response);
-                        } else {
-                            reject(client.status);
-                        }
-                    }
-                };
-                client.send(data);
-            });
-        };
-
-        const resultList = (data) => updateParent(
-            {
-                url: clientUrl,
-                method: clientMethod,
-                data
-            }
-        );
-
-        console.log(JSON.stringify(parent));
-
-        resultList(JSON.stringify(parent)).then((res) => {
-            console.log(res);
-            window.location.href = '/loginUi/alreadyLoginUi';
-        }).catch(error => {
-            console.log(error);
-        });
-    };
-
-
-    loginOut = () => {
-        window.localStorage.clear();
-        window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
-    }
-
-</script> -->
-    <div id="wrapper">
-
-        <div id="preloader">
-            <img class="preloader" src="/images/loader.gif" alt="">
-        </div>
-
-        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- Begin # DIV Form -->
-                    <div id="div-forms">
-                        <form id="login-form">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span class="flaticon-add" aria-hidden="true"></span>
-                            </button>
-                            <div class="modal-body">
-                                <input class="form-control" type="text" placeholder="What you are looking for?"
-                                    required>
-                            </div>
-                        </form><!-- End # Login Form -->
-                    </div><!-- End # DIV Form -->
-                </div>
-            </div>
-        </div>
-
-        <header class="header affix">
-            <div class="container">
-                <nav class="navbar navbar-default yamm">
-                    <div class="navbar-header">
-
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                            aria-expanded="false" aria-controls="navbar">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <form id="login-form">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="flaticon-add" aria-hidden="true"></span>
                         </button>
-
-                        <div class="logo-normal">
-                            <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="What you are looking for?"
+                                   required>
                         </div>
-                    </div>
-
-                    <div id="navbar" class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="/indexUi/returnIndexPage">首页</a></li>
-                            <li><a href="">课程</a></li>
-                            <li><a href="">活动</a></li>
-                            <li><a href="">指导师</a></li>
-                            <li>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false" style="padding: 6px 12px;margin-top: 7px">
-                                        课程套餐
-                                        <span class="caret"></span>
-                                    </button>
-
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">官方套餐</a></li>
-                                        <li><a href="#">自定义套餐</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li><a href="">联系我们</a></li>
-                            <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
-                            <li>
-                                <div class="dropdown">
-                                    <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
-                                        <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
-                                        <li><a href="#">我的关注</a></li>
-                                        <li><a href="#">我的收藏</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-                </nav>
+                    </form><!-- End # Login Form -->
+                </div><!-- End # DIV Form -->
             </div>
-        </header>
+        </div>
+    </div>
 
-        <section class="section gb">
-            <div class="container" style="min-height: 670px">
-                <div class="boxed" style=" margin-top: 60px">
+    <header class="header affix">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
 
-                    <div class="blog-meta">
-                        <h3>核对订单信息</h3>
-                    </div><!-- end blog-meta -->
-                    <ul class="nav nav-tabs"></ul>
-                    <div class="breadcrumb" style=" margin: 15px 5px">
-                        <a href="//home.jd.com/">个人中心</a>
-                        <span>&nbsp;&gt;&nbsp;
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="">课程</a></li>
+                        <li><a href="">活动</a></li>
+                        <li><a href="">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false"
+                                        style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">官方套餐</a></li>
+                                    <li><a href="#">自定义套餐</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="">联系我们</a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
+                                class="fa fa-search"></i></a></li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
+                                    <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
+                                    <li><a href="#">我的关注</a></li>
+                                    <li><a href="#">我的收藏</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+    <section class="section gb">
+        <div class="container" style="min-height: 670px">
+            <div class="boxed" style=" margin-top: 60px">
+
+                <div class="blog-meta">
+                    <h3>核对订单信息</h3>
+                </div><!-- end blog-meta -->
+                <ul class="nav nav-tabs"></ul>
+                <div class="breadcrumb" style=" margin: 15px 5px">
+                    <a href="//home.jd.com/">个人中心</a>
+                    <span>&nbsp;&gt;&nbsp;
                             <a href="//order.jd.com/center/list.action">订单中心</a>
                         </span>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="shop-desc">
-                                    <h4 class="title">孩子信息</h4>
-                                <ul class="list-inline">
-                                    <li width="200">金额<span style="color:red; font-size:21px;min-width:112px;">$21123.00</span></li>
-                                    <li>想买几件</li>
-                                </ul>
-                                <p id="groupContent"></p>
-                                <div class="shop-meta">
-                                        <h4 class="title">支付方式</h4>
-                                    <a href="" class="btn btn-primary">立即购买</a>
-                                        <h6> Tip: 套餐购买是促销活动,购买<a href="#">课程</a>的所有权益均保留</h6>
-                                </div><!-- end shop meta -->
-                            
-                            </div><!-- end desc -->
-                        </div><!-- end col -->
-                    </div><!-- end row -->
-
-                    <hr class="invis">
-                    <div class="row">
-                        <div class="sidebar col-md-12">
-                            <div class="widget clearfix">
-                                <div class="banner-widget">
-                                    <img src="" alt="" class="img-responsive img-rounded">
-                                </div>
-                            </div>
-                            <div class="widget clearfix">
-                                <h3 class="widget-title">套餐课程</h3>
-                                <div class="post-widget">
-                                    <div class="media">
-                                        <div class="col-md-2">
-                                            <img src="../../../upload/01_team.png" alt="" class="img-responsive alignleft img-rounded">
-                                        </div>
-                                        <div class="col-md-10">
-                                            <div class="media-body">
-                                                <h5 class="mt-0"><a href="">Learning English Like a Pro..</a></h5>
-                                                <div class="blog-meta">
-                                                    <ul class="list-inline">
-                                                        <li>4 days ago</li>
-                                                        <li><span>by</span> <a href="#">Edulogy Team</a></li>
-                                                    </ul>
-                                                </div><!-- end blog-meta -->
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="media">
-                                        <div class="col-md-2">
-                                            <img src="../../../upload/01_team.png" alt="" class="img-responsive alignleft img-rounded">
-                                        </div>
-                                        <div class="col-md-10">
-                                            <div class="media-body">
-                                                <h5 class="mt-0"><a href="">Learning English Like a Pro..</a></h5>
-                                                <div class="blog-meta">
-                                                    <ul class="list-inline">
-                                                        <li>4 days ago</li>
-                                                        <li><span>by</span> <a href="#">Edulogy Team</a></li>
-                                                    </ul>
-                                                </div><!-- end blog-meta -->
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="media">
-                                        <div class="col-md-2">
-                                            <img src="../../../upload/01_team.png" alt="" class="img-responsive alignleft img-rounded">
-                                        </div>
-                                        <div class="col-md-10">
-                                            <div class="media-body">
-                                                <h5 class="mt-0"><a href="">Learning English Like a Pro..</a></h5>
-                                                <div class="blog-meta">
-                                                    <ul class="list-inline">
-                                                        <li>4 days ago</li>
-                                                        <li><span>by</span> <a href="#">Edulogy Team</a></li>
-                                                    </ul>
-                                                </div><!-- end blog-meta -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div><!-- end post-widget -->
-                            </div><!-- end widget -->
-
-                            <div class="widget clearfix">
-                                <h3 class="widget-title">套餐须知:</h3>
-                                <div class="newsletter-widget">
-                                    <p>You can opt out of our newsletters at any time. See our <a href="#">privacy
-                                            policy</a>.</p>
-                                    <form class="form-inline" role="search">
-                                        <div class="form-1">
-                                            <input type="text" class="form-control" placeholder="Enter email here..">
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
-                                        </div>
-                                    </form>
-                                </div><!-- end newsletter -->
-                            </div><!-- end widget -->
-
-                            <div class="widget clearfix">
-                                <h3 class="widget-title">Popular Tags</h3>
-                                <div class="tags-widget">
-                                    <ul class="list-inline">
-                                        <li><a href="#">course</a></li>
-                                        <li><a href="#">web design</a></li>
-                                        <li><a href="#">development</a></li>
-                                        <li><a href="#">language</a></li>
-                                        <li><a href="#">teacher</a></li>
-                                        <li><a href="#">speaking</a></li>
-                                        <li><a href="#">material</a></li>
-                                        <li><a href="#">css3</a></li>
-                                        <li><a href="#">html</a></li>
-                                        <li><a href="#">learning</a></li>
-                                    </ul>
-                                </div><!-- end list-widget -->
-                            </div><!-- end widget -->
-                        </div><!-- end sidebar -->
-                    </div><!-- end row -->
-                    <hr class="invis">
-
                 </div>
-            </div><!-- end container -->
-        </section>
-
-        <footer class="section footer noover">
-            <div class="container">
                 <div class="row">
-                    <div class="col-lg-4 col-md-4">
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Subscribe Our Newsletter</h3>
-                            <div class="newsletter-widget">
-                                <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
-                                        policy</a>.</p>
-                                <form class="form-inline" role="search">
-                                    <div class="form-1">
-                                        <input type="text" class="form-control" placeholder="Enter email here..">
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
-                                        </button>
-                                    </div>
-                                </form>
-                                <img src="/images/payments.png" alt="" class="img-responsive">
-                            </div><!-- end newsletter -->
-                        </div><!-- end widget -->
-                    </div><!-- end col -->
+                    <div class="col-md-12">
+                        <div class="shop-desc">
+                            <h4 class="title">购买信息</h4>
+                            <ul class="media-list">
+                                <li width="200">家长:牛大春</li>
+                                <li>电话:13913514578</li>
+                            </ul>
+                            <div class="shop-meta">
+                                <h4 class="title">选择孩子</h4>
+                                <select class="selectpicker">
+                                    <option>价格升序</option>
+                                    <option>价格降序</option>
+                                    <option>课程创建时间</option>
+                                    <option>课程销量</option>
+                                </select>
+                            </div><!-- end shop meta -->
 
-                    <div class="col-lg-3 col-md-3">
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Join us today</h3>
-                            <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
-                        </div><!-- end widget -->
+                        </div><!-- end desc -->
                     </div><!-- end col -->
+                </div>
 
-                    <div class="col-lg-3 col-md-3">
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Popular Tags</h3>
-                            <div class="tags-widget">
-                                <ul class="list-inline">
-                                    <li><a href="#">course</a></li>
-                                    <li><a href="#">web design</a></li>
-                                    <li><a href="#">development</a></li>
-                                    <li><a href="#">language</a></li>
-                                    <li><a href="#">teacher</a></li>
-                                    <li><a href="#">speaking</a></li>
-                                    <li><a href="#">material</a></li>
-                                    <li><a href="#">css3</a></li>
-                                    <li><a href="#">html</a></li>
-                                    <li><a href="#">learning</a></li>
+
+                <div class="row">
+                        <div class=" col-md-12">
+                            <h3 class="widget-title">订单详情:</h3>
+                            <table class="table table-hover table-condensed" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+                                    <th width="100"></th>
+                                    <th>订单编号:x284318973</th>
+                                    <th width="150"></th>
+                                    <th width="150"></th>
+                                    <th width="100"></th>
+                                </tr>
+                                <tr>
+                                    <td><a href="/courseUi/courseInfoUi"><img src="/upload/people.jpg" width="100"
+                                                                              height="100"></a></td>
+                                    <td><a href="/courseUi/courseInfoUi">
+                                        <ul class="list-inline" text-align>
+                                            <li>
+                                                <mark>课程</mark>
+                                            </li>
+                                            <li>围棋</li>
+                                        </ul>
+                                    </a></td>
+                                    <td width="150">
+                                        苏州驰星教育
+                                    </td>
+                                    <td width="150">￥10000</td>
+                                    <td width="100">
+                                        <mark>正在进行</mark>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="/courseUi/courseInfoUi"><img src="/upload/people.jpg" width="100"
+                                                                              height="100"></a></td>
+                                    <td><a href="/courseUi/courseInfoUi">
+                                        <ul class="list-inline">
+                                            <li>
+                                                <mark>课程</mark>
+                                            </li>
+                                            <li>围棋</li>
+                                        </ul>
+                                    </a></td>
+                                    <td width="150">
+                                        苏州驰星教育
+                                    </td>
+                                    <td width="150">￥1000</td>
+                                    <td width="100">
+                                        <mark>正在进行</mark>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <div class="clearfix col-md-11">
+                            <div class="pull-left">
+                                <p>订单价格:</p>
+                            </div>
+                            <div class="pull-right">
+                                <ul class="media-list">
+                                    <li>价格:<span style="min-width: 210px; text-align: right; display: inline-block;">$123.00</span></li>
+                                    <li>折扣:<span style="min-width: 210px; text-align: right;  display: inline-block;">0.96</span></li>
+                                    <li>总计:<span style="min-width: 210px; text-align: right;  display: inline-block; color: red; font-size: large">$121.49</span></li>
                                 </ul>
-                            </div><!-- end list-widget -->
-                        </div><!-- end widget -->
-                    </div><!-- end col -->
 
-                    <div class="col-lg-2 col-md-2">
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Support</h3>
-                            <div class="list-widget">
-                                <ul>
-                                    <li><a href="#">Terms of Use</a></li>
-                                    <li><a href="#">Copyrights</a></li>
-                                    <li><a href="#">Create a Ticket</a></li>
-                                    <li><a href="#">Pricing & Plans</a></li>
-                                    <li><a href="#">Carrier</a></li>
-                                    <li><a href="#">Trademark</a></li>
-                                </ul>
-                            </div><!-- end list-widget -->
-                        </div><!-- end widget -->
-                    </div><!-- end col -->
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </footer>
-
-        <div class="copyrights">
-            <div class="container">
-                <div class="clearfix">
-                    <div class="pull-left">
-                        <div class="cop-logo">
-                            <a href="#"><img src="/images/logo.png" alt=""></a>
+                            </div>
+                        </div>
+                    <div class="clearfix col-md-11">
+                        <div class="pull-right">
+                            <a href="javascript:groupOrder(groupId);" class="btn btn-primary">确认订单</a>
                         </div>
                     </div>
 
-                    <div class="pull-right">
-                        <div class="footer-links">
+
+                </div><!-- end row -->
+                <hr class="invis">
+
+            </div>
+        </div><!-- end container -->
+    </section>
+
+    <footer class="section footer noover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
+                                policy</a>.</p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags-widget">
                             <ul class="list-inline">
-                                <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
                             </ul>
-                        </div>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Support</h3>
+                        <div class="list-widget">
+                            <ul>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing & Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer>
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
                     </div>
                 </div>
-            </div><!-- end container -->
-        </div>
 
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
     </div>
-    <!--模版自带-->
-    <script src="../../../js/jquery.min.js"></script>
-    <script src="../../../js/bootstrap.min.js"></script>
-    <script src="../../../js/customLogin.js"></script>
+
+</div>
+<!--模版自带-->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/customLogin.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
 </body>
 
 </html>

@@ -58,15 +58,15 @@ public class OrderController {
     @ResponseBody
     public JsonResponse getOrderList(){
         Parent parent = (Parent)httpServletRequest.getSession().getAttribute("parent");
-        parent.setParentId(10001);
-        if (parent == null) {
+
+        /*if (parent == null) {
             return new JsonResponse(50000,"success","系统炸了,好生处理");
-        }
-        List<OrderDTO> orderDTOList = orderService.getOrderList(parent.getParentId());
-        if (orderDTOList == null) {
+        }*/
+        List<OrderDTO> orderDTOS = orderService.getOrderList(10001);
+        if (orderDTOS == null||orderDTOS.size()==0) {
             return new JsonResponse(40000,"error","找不到相关信息");
         }
-        return new JsonResponse(20000,"success",orderDTOList);
+        return new JsonResponse(20000,"success",orderDTOS);
     }
 
 

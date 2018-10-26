@@ -53,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO getOrderById(Integer id) {
+
         OrderDTO cache = RedisUtil.getObj("getOrderById"+id,OrderDTO.class);
         if (cache != null){
             return cache;
@@ -82,9 +83,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDTO> getOrderList(Integer id) {
-
         List<OrderDTO> cache = RedisUtil.getList("getOrderList"+id);
-        if (cache != null){
+        if (cache != null&&cache.size()>0){
             return cache;
         }else {
             List<OrderDTO> orderDTOList = new ArrayList<>() ;
@@ -173,6 +173,15 @@ public class OrderServiceImpl implements OrderService {
             } else if (order.getActivityId()!=null){
                 orderDTO.setDetails(orderDetailService.getListByActivityId(order.getActivityId(),order.getOrderState()));
             }
+            orderDTO.setOrderId(order.getOrderId());
+            orderDTO.setOrderCreateTime(order.getOrderCreateTime());
+            orderDTO.setChildId(order.getChildId());
+            orderDTO.setOrderEndTime(order.getOrderEndTime());
+            orderDTO.setOrderNumber(order.getOrderNumber());
+            orderDTO.setOrderPrice(order.getOrderPrice());
+            orderDTO.setOrderSf(order.getOrderSf());
+            orderDTO.setOrderState(order.getOrderState());
+            orderDTO.setParentId(order.getParentId());
             return orderDTO;
         }
     }

@@ -45,5 +45,23 @@ public class OrderUi {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/order/orderValidate.html")
                 .forward(httpServletRequest,httpServletResponse);
     }
+    @RequestMapping("orderGroupUi")
+    public void orderGroupUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+            throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/order/orderValidate.html")
+                .forward(httpServletRequest,httpServletResponse);
+    }
+    @RequestMapping("orderCourseUi")
+    public void orderCourseUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+            throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/order/orderValidate.html")
+                .forward(httpServletRequest,httpServletResponse);
+    }
+    @RequestMapping("orderActivityUi")
+    public void orderActivityUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+            throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/order/orderValidate.html")
+                .forward(httpServletRequest,httpServletResponse);
+    }
 
 }
