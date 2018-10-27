@@ -21,7 +21,17 @@
     from grade
     where grade_id = #{gradeId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+
+    <select id="getGradeByChild" resultType="com.cafebabe.phosphor.model.dto.GradeInfo">
+      select child_name,course_name,course_status,teacher_name,grade_score,grade_desc,grade_suggest,grade_time
+      from grade
+      join course on grade.course_id=course.course_id
+      join child on grade.child_id=child.child_id
+      join teacher_course on teacher_course.course_id=grade.course_id
+      join teacher on teacher_course.teacher_id=teacher.teacher_id
+      where child.child_id = #{childId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from grade
     where grade_id = #{gradeId,jdbcType=INTEGER}
   </delete>

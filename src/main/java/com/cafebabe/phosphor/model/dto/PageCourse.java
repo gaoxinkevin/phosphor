@@ -2,26 +2,16 @@ package com.cafebabe.phosphor.model.dto;
 
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
-/**
- *
- * @author thethingyk@gmail.com
- *
- * class_name: Page
- *
- * create_date: 18-10-17
- *
- * create_time: 下午6:21
- *
- * description:数据分页模型
- **/
+
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Page<T> {
+public class PageCourse<T> {
 
     /**
      * 每页显示记录数
@@ -30,7 +20,7 @@ public class Page<T> {
     /**
      * 总记录数
      */
-    private Integer totalRecord ;
+    private Integer totalRecord;
     /**
      * 总页数
      */
@@ -51,4 +41,14 @@ public class Page<T> {
      * 当前页显示记录对象集合
      */
     private List<T> modelList;
+
+    /**
+     *
+     */
+    private String orderField;
+
+    /**
+     * 类别Id
+     */
+    private Integer typeId;
 }

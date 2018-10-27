@@ -2,9 +2,11 @@ package com.cafebabe.phosphor.dao;
 
 import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.dto.Page;
+import com.cafebabe.phosphor.model.dto.PageCourse;
 import com.cafebabe.phosphor.model.entity.Course;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -23,7 +25,7 @@ public interface CourseDAO extends MyBatisBaseDao<Course, Integer> {
      * 查询所有课程
      * @return 课程列表
      */
-    List<Course> getAllCourse();
+    List<Course> getCourseByNewTime();
 
     /**
      * 根据课程名查询课程
@@ -40,7 +42,7 @@ public interface CourseDAO extends MyBatisBaseDao<Course, Integer> {
     List<CourseInfo> getCourseByCompanyName(String companyName);
 
     /**
-     * g根据主键查询某课程所有信息
+     * 根据主键查询某课程所有信息
      * @param courseId 课程id
      * @return 课程信息
      */
@@ -61,7 +63,17 @@ public interface CourseDAO extends MyBatisBaseDao<Course, Integer> {
 
     /**
      * 获得课程时间信息
-     * @retur信息n 时间
+     * @return 时间信息
      */
     CourseInfo getCourseTime(Integer courseId);
+
+    /**
+     * 根据类别查询课程并排序并分页
+     * @param pageCourse  课程条件
+     * @return 课程信息
+     */
+    List<Course> getCourseByType(PageCourse pageCourse);
+
+    List<Course> getAllCourse();
+
 }

@@ -57,4 +57,18 @@ public class CourseController {
         Page page = courseService.getAllCourseByPage(pageIndex,pageSize);
         return new JsonResponse(200, "success", page);
     }
+
+    @ResponseBody
+    @RequestMapping("/getCommendCourseList")
+    public JsonResponse getCommendCourseList(){
+        List<Course> courseList = courseService.getAllCourseInfo();
+        return new JsonResponse(200, "success", courseList);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getAllCourse")
+    public JsonResponse getAllCourse(){
+        List<Course> courseList = courseService.getAllCourse();
+        return new JsonResponse(200, "success", courseList);
+    }
 }
