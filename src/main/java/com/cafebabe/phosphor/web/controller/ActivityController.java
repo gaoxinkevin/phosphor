@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -44,10 +45,12 @@ public class ActivityController {
         return new JsonResponse(200, "success", activityInfoList);
     }
 
-    @RequestMapping("getActivityInfoByPage")
+    @RequestMapping(value = "getActivityInfoByPage", method = RequestMethod.POST)
     @ResponseBody
-    public  JsonResponse getActivityInfoByPage(Integer pageIndex, Integer pageSize){
-        Page page = activityService.getActivityInfoByPage(pageIndex, pageSize);
+    public  JsonResponse getActivityInfoByPage(Integer pageIndex, Integer pageSize, String key, String ascOrDesc, String title){
+        System.out.println(pageIndex +"=="+ pageSize +"=="+key +"=="+ ascOrDesc +"==" + title);
+        Page page = activityService.getActivityInfoByPage(pageIndex, pageSize, key, ascOrDesc, title);
+        System.out.println("=======:"+page);
         return new JsonResponse(200, "success", page);
     }
 

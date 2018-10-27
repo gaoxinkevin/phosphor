@@ -40,9 +40,7 @@
 
 </head>
 <body>
-<script type="text/javascript">
-    getActivityByPage(0, 4);
-</script>
+
 <!-- LOADER -->
 <div id="preloader">
     <img class="preloader" src="/images/loader.gif" alt="">
@@ -204,12 +202,17 @@
                 <div class="row">
 
                     <div class="sidebar col-md-4">
-                        <div class="widget clearfix">
-                            <div class="banner-widget">
-                                <img src="" alt="" id="bigActivityImg" class="img-responsive img-rounded">
+                        <div class="widget clearfix" >
+                            <!--搜索框-->
+                            <div class="banner-widget form-inline">
+                                    <input id="activity-title" type="text" class="form-control" value="" placeholder="活动主题" style="margin-bottom: 0px">
+                                    <button type="submit" class="btn btn-primary" style="line-height: 18px; margin-left: 5px" onclick="searchByActivityTitle()">搜索</button>
                             </div>
                         </div>
+                        <script type="text/javascript">
 
+
+                        </script>
                         <div class="widget clearfix">
                             <h3 class="widget-title">近期热门</h3>
 
@@ -225,37 +228,37 @@
                                         <div class="blog-meta">
                                             <ul class="list-inline">
                                                 <li>4 days ago</li>
-                                                <li></li>
+                                                <li style="color: #01bacf;"></li>
                                             </ul>
                                         </div><!-- end blog-meta -->
                                     </div>
                                 </div>
 
-                                <div class="media">
-                                    <img src="/upload/blog_small_02.jpg" alt=""
+                                <div class="media" style="display: none">
+                                    <img src="/upload/blog_small_01.jpg" alt=""
                                          class="img-responsive alignleft img-rounded">
                                     <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">How to create a beautiful website
-                                            with Bootstrap</a></h5>
+                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a>
+                                        </h5>
                                         <div class="blog-meta">
                                             <ul class="list-inline">
-                                                <li>5 days ago</li>
-                                                <li><span>by</span> <a href="#">Boby DOE</a></li>
+                                                <li>4 days ago</li>
+                                                <li style="color: #01bacf;"></li>
                                             </ul>
                                         </div><!-- end blog-meta -->
                                     </div>
                                 </div>
 
-                                <div class="media">
-                                    <img src="/upload/blog_small_03.jpg" alt=""
+                                <div class="media" style="display: none">
+                                    <img src="/upload/blog_small_01.jpg" alt=""
                                          class="img-responsive alignleft img-rounded">
                                     <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">Don't forget to update your Google
-                                            web master tools</a></h5>
+                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a>
+                                        </h5>
                                         <div class="blog-meta">
                                             <ul class="list-inline">
-                                                <li>6 days ago</li>
-                                                <li><span>by</span> <a href="#">Martin</a></li>
+                                                <li>4 days ago</li>
+                                                <li style="color: #01bacf;"></li>
                                             </ul>
                                         </div><!-- end blog-meta -->
                                     </div>
@@ -265,10 +268,25 @@
 
                     </div><!-- end sidebar -->
                     <div class="col-md-8" id="activityGrid">
+                        <div class="tags-widget" style="margin-left:15px; border-bottom: 1px solid #eaeaea;border-bottom-width: 1px;border-bottom-style: solid; border-bottom-color: rgb(234, 234, 234); margin-bottom: 8px;">
+                            <ul class="list-inline">
+                                <li id="applyTimeOrder" style="margin-right: 20px; background-color: #01BACF"><a onclick="orderByApplyTime()">报名时间</a>
+                                    <img src="/images/arrowUp.png"><img src="/images/arrowDown.png">
+                                    <input type="hidden" value="null">
+                                </li>
+                                <li id="startTimeOrder" style="margin-right: 5px; background-color: #01BACF"><a onclick="orderByBeginTime()">开始时间</a>
+                                    <img src="/images/arrowUp.png"><img src="/images/arrowDown.png">
+                                    <input  type="hidden" value="null">
+                                </li>
+                            </ul>
+                        </div>
+
                         <script type="text/javascript">
-                            getActivityByPage(0, 4);
                         </script>
                         <input type="hidden" id="hidCurrentPageIndex">
+                        <script type="text/javascript">
+                            getActivityByPage(0, 4, null, null, null);
+                        </script>
                         <!--单个活动-->
                         <a href="#activityListTop" style="visibility: hidden"></a>
                         <div class="row activityGrid">

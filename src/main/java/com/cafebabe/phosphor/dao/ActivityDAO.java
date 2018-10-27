@@ -44,6 +44,13 @@ public interface ActivityDAO extends MyBatisBaseDao<Activity, Integer> {
     Integer getActivityCount();
 
     /**
+     * 根据条件查询记录条数
+     * @param title
+     * @return
+     */
+    Integer getActivityCountWithCondition(String title);
+
+    /**
      * 根据公司ID获取该公司的活动
      * 按照活动开始事件排序，取前五个
      * @param idMap

@@ -27,7 +27,7 @@ function getActivityDetail() {
  */
 function loadActivityDetail(responseText) {
     let responseData = JSON.parse(responseText);
-    let activityDetail = responseData.data;
+    activityDetail = responseData.data;
     loadView(activityDetail);
 }
 
@@ -67,16 +67,16 @@ function loadView(activityDetail) {
     let activityContent = document.getElementById("activityContent");
     activityContent.innerText = activityDetail.activityContent;
 
+    //刷新报名按钮
     btnSignIn = document.getElementById("btnSignIn");
-    btnSignIn.onclick = signInForActivity;
+    refreshBtnSignIn();
+
 
     let teacherId = activityDetail.teacherId;
     getTeacherInfo(teacherId);
 
     //刷新右侧推荐活动栏
     loadOtherActivity(companyName, companyId, activityId);
-
-    timestampStopApply = activityDetail.activityApplyEndTime;
 
 }
 
@@ -118,15 +118,22 @@ function loadCompanyToView(responseText) {
  * 定时刷新报名按钮
  */
 function refreshBtnSignIn() {
-    let retainTime = getRemainTime(timestampStopApply);
-    if(retainTime == "0"){
+    let retainTime = getRemainTime(parseInt(activityDetail.activityApplyEndTime));
+
+    if(parseInt(activityDetail.activityApplyEndTime) > (new Date()).valueOf()){
+        btnSignIn.innerText = "立即报名 (剩余时间 "+retainTime+")";
+        btnSignIn.onclick = signInForActivity;
+    }
+    else if(parseInt(activityDetail.activityEndTime) > (new Date()).valueOf() ){
         btnSignIn.innerText = "报名截止";
         btnSignIn.classList.add("disable");
         btnSignIn.onclick = stopApply;
     }
-    else{
-        btnSignIn.innerText = "立即报名 （剩余时间 "+retainTime+")";
+    else {
+        btnSignIn.innerText = "查看总结";
+        btnSignIn.onclick = toActivitySummary;                                                                                  ;
     }
+
 }
 /**
  * 请求获取teacher信息
@@ -337,4 +344,11 @@ function signInForActivity() {
 function stopApply() {
     window.alert("报名时间已过");
     return void(0);
+}
+
+/**
+ * 查看总结
+ */
+function toActivitySummary() {
+    window.location.href = "/activitySummaryUi/returnActivitySummaryUi?activityId="+activityDetail.activityId;
 }

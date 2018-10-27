@@ -21,7 +21,7 @@ public interface ActivityService {
 
     List<Activity> getRecentActivity();
 
-    Page getActivityInfoByPage(Integer pageIndex, Integer pageSize);
+    Page getActivityInfoByPage(Integer pageIndex, Integer pageSize, String key, String ascOrDesc, String title);
 
     Integer getActivityCount();
 

@@ -38,7 +38,18 @@
   <select id="getActivityByPage" resultType="com.cafebabe.phosphor.model.entity.Activity" parameterType="com.cafebabe.phosphor.model.dto.Page">
     select
     <include refid="Base_Column_List"/>
-    from activity limit #{startRecord}, #{pageSize}
+    from activity
+      <if test="title!= null and title != 'null' ">
+        where activity_title like concat(concat('%', #{title ,jdbcType=VARCHAR}), '%')
+      </if>
+    <if test="key != null and key != 'null' ">
+      order by
+      #{key,jdbcType=VARCHAR}
+    </if>
+    <if test="ascOrDesc!= null and ascOrDesc != 'null' ">
+      #{ascOrDesc, jdbcType=VARCHAR}
+    </if>
+    limit #{startRecord}, #{pageSize}
   </select>
 
   <!--根据公司ID获取该公司按活动开始排序的前四个活动信息-->
@@ -51,7 +62,6 @@
     order by activity_start_time asc
     limit 3
   </select>
-
     <select id="getRecentActivity" resultType="com.cafebabe.phosphor.model.entity.Activity">
         select
         <include refid="Base_Column_List"/>
@@ -64,6 +74,14 @@
     <!--获取活动总数-->
   <select id="getActivityCount" resultType="java.lang.Integer">
         select count(*) from activity
+    </select>
+
+    <select id="getActivityCountWithCondition" resultType="java.lang.Integer" parameterType="java.lang.String">
+      select count(*)
+      from activity
+      <if test="_parameter != null and _parameter != 'null' ">
+          where activity_title like concat(concat('%', #{title ,jdbcType=VARCHAR}), '%')
+      </if>
     </select>
 
     <select id="getActivityByID" resultType="com.cafebabe.phosphor.model.entity.Activity" parameterType="java.lang.Integer">

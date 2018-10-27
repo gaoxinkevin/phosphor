@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!--[if IE 9]> <html class="no-js ie9 fixed-layout" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js " lang="en"> <!--<![endif]-->
 <head>
 
     <!-- Basic -->
@@ -9,7 +11,7 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Site Meta -->
-    <title>phosphor</title>
+    <title>Edulogy</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -25,7 +27,7 @@
     <!-- Custom & Default Styles -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/prettyPhoto.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -33,15 +35,11 @@
     <!--[if lt IE 9]>
     <script src="/js/vendor/respond.min.js"></script>
     <![endif]-->
-    <!--载入js-->
-    <script src="/js/activity/activityDetail.js"></script>
-
+    <script src="/js/activitySummary/activitySummary.js"></script>
 
 </head>
 <body>
-    <script type="text/javascript">
-        getActivityDetail();
-    </script>
+
 <!-- LOADER -->
 <div id="preloader">
     <img class="preloader" src="/images/loader.gif" alt="">
@@ -49,6 +47,9 @@
 <!-- END LOADER -->
 
 <div id="wrapper">
+    <script type="text/javascript">
+        getActivitySummary();
+    </script>
     <!-- BEGIN # MODAL LOGIN -->
     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
@@ -102,7 +103,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <div class="logo-normal">
-                        <a class="navbar-brand" href="index.html"><img src="/images/logo.png" alt=""></a>
+                        <a class="navbar-brand" href="index.html"><img src="images/logo-dark.png" alt=""></a>
                     </div>
                 </div>
 
@@ -173,166 +174,106 @@
         </div><!-- end container -->
     </header>
 
-    <section class="section db p120">
+    <section class="section cb">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="tagline-message page-title text-center">
-                        <h3 class="hActivityTitle" >活动标题</h3>
+                <div class="col-md-6">
+                    <div class="tagline-message page-title">
+                        <h3><a onclick="returnToDetail()">返回详情</a></h3>
+                        <script type="text/javascript">
+                            function returnToDetail() {
+                                window.history.back(-1);
+                            }
+                        </script>
                     </div>
                 </div><!-- end col -->
+                <div class="col-md-6 text-right">
+                    <ul class="breadcrumb">
+                        <li><a href="javascript:void(0)">Edulogy</a></li>
+                        <li class="active">Shop</li>
+                    </ul>
+                </div>
             </div><!-- end row -->
         </div><!-- end container -->
     </section><!-- end section -->
 
-    <section class="section gb nopadtop">
+    <section class="section">
         <div class="container">
-            <div class="boxed">
+            <div class=" ">
                 <div class="row">
-                    <div class="col-md-8">
-                        <!--活动详情-->
-                        <div class="content blog-list">
-                            <div class="blog-wrapper clearfix">
-                                <div class="blog-meta">
-                                    <small><a href="/activityUi/returnActivityUi">所有活动</a></small>
-                                    <h3 class="hActivityTitle"></h3>
-                                    <ul class="list-inline">
-                                        <li id="beginTime">开始时间&nbsp; </li>
-                                        <li><span>举办方&nbsp;</span><small><a id="aCompany" style="font-family: 'Microsoft JhengHei UI Light'; font-size: medium"></a></small></li>
-                                    </ul>
-                                </div><!-- end blog-meta -->
-
-                                <div class="blog-media">
-                                    <img src="/upload/blog_01.jpg" id="activityImg" alt="" class="img-responsive img-rounded">
-                                </div><!-- end media -->
-
-                                <div class="blog-desc-big">
-                                    <p class="lead">Desc</p>
-
-                                    <blockquote class="text-center" id="activityContent">
-                                        活动内容
-                                    </blockquote>
-
-                                    <hr class="invis">
-
-
-                                </div><!-- end desc -->
-                            </div><!-- end blog -->
-                        </div><!-- end content -->
-
-
-                        <!--教师信息-->
-                        <div class="authorbox">
-                            <div class="site-publisher clearfix">
-                                <img src="/upload/people_10.jpeg" id="imgTeacher" alt="" class="img-responsive img-circle">
-                                <a href="" title="" id="aToTeacherDetail"><h4><small>about</small> <span id="spTeacherName"></span></h4></a>
-                                <p id="pTeacherDesc">
-                                </p>
-
-                                <div class="authorbox-social">
-                                    <ul class="list-inline" id="teacher-info">
-                                        <li><a href="#"><i class="fa fa-phone" id="iTeacherPhone"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-envelope-o" id="iTeacherMail"></i></a></li>
-                                        <li><a href="#"><i class="fa" id="iWorkTime"></i></a></li>
-                                        <li><a href="#"><i class="fa" id="iTeacherStatus"></i></a></li>
-                                    </ul>
-                                    <div class="tags-widget">
-                                        <ul class="list-inline" id="teacher-courses">
-                                        </ul>
+                    <div class="col-md-6 shop-media">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="image-wrap entry">
+                                    <img src="" id="activity-img" alt="" class="img-responsive">
+                                    <div class="magnifier">
+                                        <a rel="prettyPhoto[inline]" href="/upload/single_shop_01.jpg" title=""><i class="flaticon-add"></i></a>
                                     </div>
-                                    <!-- end list -->
-                                </div><!-- end share -->
-                            </div><!-- end publisher -->
-                        </div><!-- end details -->
-                        <!--报名-->
-                        <script type="text/javascript">
-                            window.setInterval("refreshBtnSignIn()",60000);
-                        </script>
-                        <button class="btn btn-primary" type="submit" id="btnSignIn" onclick=""></button>
+                                </div><!-- end image-wrap -->
+                            </div>
+                        </div><!-- end row -->
+
+                        <hr class="invis">
 
                     </div><!-- end col -->
 
-                    <div class="sidebar col-md-4">
-                        <div class="widget clearfix">
-                            <div class="banner-widget">
-                                <img src="/upload/banner.jpeg" id="companyImg" alt="" class="img-responsive img-rounded">
-                            </div>
-                        </div>
-
-                        <!--放置推荐的活动,最多放置五个-->
-                        <script type="text/javascript">
-                        </script>
-                        <div class="widget clearfix" id="divOtherActivity">
-                            <h3 class="widget-title" id="comTitleOtherActivity"></h3>
-                            <div class="post-widget" id="comOtherActivity">
-                                <div class="media" style="display: none">
-                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>4 days ago</li>
-                                                <li>price</li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
-                                    </div>
-                                </div>
-
-                                <div class="media" style="display: none">
-                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>4 days ago</li>
-                                                <li>price</li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
-                                    </div>
-                                </div>
-
-                                <div class="media" style="display: none">
-                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>4 days ago</li>
-                                                <li>price</li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
-                                    </div>
-                                </div>
-
-                                <div class="media" style="display: none">
-                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>4 days ago</li>
-                                                <li>price</li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
-                                    </div>
-                                </div>
-
-                                <div class="media" style="display: none">
-                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>4 days ago</li>
-                                                <li>price</li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
-                                    </div>
-                                </div>
-                            </div><!-- end post-widget -->
-                        </div><!-- end widget -->
-                    </div><!-- end sidebar -->
+                    <div class="col-md-6">
+                        <div class="shop-desc">
+                            <!--活动标题-->
+                            <h3 id="activity-title"></h3>
+                            <small id="activity-price">$20.00</small>
+                            <p id="activity-desc"></p>
+                            <div class="shop-meta">
+                                <ul class="list-inline">
+                                    <li> SKU: product-111</li>
+                                    <li>Categories: <a href="#">Bags</a>
+                                </ul>
+                            </div><!-- end shop meta -->
+                        </div><!-- end desc -->
+                    </div><!-- end col -->
                 </div><!-- end row -->
+
+                <hr class="invis">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="shop-extra">
+                            <ul class="nav nav-tabs">
+                                <li class="active menu" style="visibility: hidden"><a data-toggle="tab" href="#sum1"></a></li>
+                                <li class="menu" style="visibility: hidden"><a data-toggle="tab" href="#sum2"></a></li>
+                                <li class="menu" style="visibility: hidden"><a data-toggle="tab" href="#sum3"></a></li>
+                                <li class="menu" style="visibility: hidden"><a data-toggle="tab" href="#sum4"></a></li>
+                                <li class="menu" style="visibility: hidden"><a data-toggle="tab" href="#sum5"></a></li>
+                            </ul>
+
+                            <div class="tab-content" id="div-container">
+                                <!--分页显示总结，最多只显示五条-->
+                                <div id="sum1" class="tab-pane fade in active activity-summary-content">
+                                    <p></p>
+                                </div>
+
+                                <div id="sum2" class="tab-pane fade in active activity-summary-content">
+                                    <p></p>
+                                </div>
+
+                                <div id="sum3" class="tab-pane fade in active activity-summary-content">
+                                    <p></p>
+                                </div>
+
+                                <div id="sum4" class="tab-pane fade in active activity-summary-content">
+                                    <p></p>
+                                </div>
+
+                                <div id="sum5" class="tab-pane fade in active activity-summary-content">
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div><!-- end shop-extra -->
+                    </div><!-- end col -->
+                </div><!-- end row -->
+
+                <hr class="invis">
+
             </div><!-- end boxed -->
         </div><!-- end container -->
     </section>
@@ -341,9 +282,27 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.</p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
+                                </div>
+                            </form>
+                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
                 </div><!-- end col -->
 
                 <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                        <a href="#" class="readmore">Became a Teacher</a>
+                    </div><!-- end widget -->
                 </div><!-- end col -->
 
                 <div class="col-lg-3 col-md-3">
@@ -411,6 +370,7 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/animate.js"></script>
+<script src="/js/jquery.prettyPhoto.js"></script>
 <script src="/js/custom.js"></script>
 
 </body>
