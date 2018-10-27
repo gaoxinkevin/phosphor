@@ -11,15 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- *
  * @author supersuntangao@gmail.com
- *
+ * <p>
  * class_name: ParentUi
- *
+ * <p>
  * create_date: 2018/9/27
- *
+ * <p>
  * create_time: 15:33
- *
+ * <p>
  * description: 家长信息跳转界面
  **/
 
@@ -28,28 +27,28 @@ import java.io.IOException;
 @RequestMapping("/parentUi")
 public class ParentUi {
     @RequestMapping("forgetPasswordUi")
-    public void forgetPassword(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/login/forgetPassword.html").forward(httpServletRequest,httpServletResponse);
+    public void forgetPassword(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/login/forgetPassword.html").forward(httpServletRequest, httpServletResponse);
     }
 
     @RequestMapping("parentSettingsUi")
-    public void parentSettings(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentSettings.html").forward(httpServletRequest,httpServletResponse);
+    public void parentSettings(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentSettings.html").forward(httpServletRequest, httpServletResponse);
     }
 
     @RequestMapping("parentChangePasswordUi")
-    public void parentChangePassword(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentChangePassword.html").forward(httpServletRequest,httpServletResponse);
+    public void parentChangePassword(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentChangePassword.html").forward(httpServletRequest, httpServletResponse);
     }
 
     @RequestMapping("parentChangeAvatarUi")
-    public void parentChangeAvatarUi(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentChangeAvatar.html").forward(httpServletRequest,httpServletResponse);
+    public void parentChangeAvatarUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/parentChangeAvatar.html").forward(httpServletRequest, httpServletResponse);
     }
 
     @RequestMapping("companyCollectionUi")
-    public void companyCollectionUi(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/companyCollection.html").forward(httpServletRequest,httpServletResponse);
+    public void companyCollectionUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/parent/companyCollection.html").forward(httpServletRequest, httpServletResponse);
     }
 
 }

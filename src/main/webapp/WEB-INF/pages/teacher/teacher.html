@@ -58,7 +58,7 @@
             );
 
             let fatherDiv = document.getElementById("fatherDiv");
-            scrollTo(0,0);
+            scrollTo(0, 0);
             resultList().then((res) => {
                 for (let i = 0; i < res.data.modelList.length; i++) {
                     // console.log(res.data.modelList);
@@ -99,8 +99,8 @@
             );
 
             let fatherDiv = document.getElementById("fatherDiv");
-            fatherDiv.innerText="";
-            scrollTo(0,0);
+            fatherDiv.innerText = "";
+            scrollTo(0, 0);
             resultList().then((res) => {
                 console.log(res);
                 for (let i = 0; i < res.data.modelList.length; i++) {
@@ -121,11 +121,12 @@
             let divLeft2 = document.createElement("div");
             divLeft2.classList.add("course-box", "shop-wrapper");
             let divLeft3 = document.createElement("div");
-            divLeft3.classList.add("image-wrap", "entry");
+            // divLeft3.classList.add("image-wrap", "entry");
             let img = document.createElement("img");
             img.classList.add("img-responsive");
-            // img.setAttribute("src", teacherData.teacherPhoto);
-            img.setAttribute("src", "/upload/shop_01.jpg");
+            img.setAttribute("src", teacherData.teacherPhoto);
+            // img.setAttribute("src", "/upload/shop_01.jpg");
+            img.setAttribute("style","width:188.5px;height:188.5px;margin-top:28px;")
             img.setAttribute("alt", "");
             div.appendChild(divLeft1);
             divLeft1.appendChild(divLeft2);
@@ -149,8 +150,8 @@
             } else {
                 divRightSpan4.innerText = "教师简介：" + teacherData.teacherDesc.slice(0, 30) + "...";
             }
-            let divRightSpan5 =document.createElement("span");
-            divRightSpan5.innerText = "点赞数："+teacherData.teacherLikeCount;
+            let divRightSpan5 = document.createElement("span");
+            divRightSpan5.innerText = "点赞数：" + teacherData.teacherLikeCount;
             let divRightA = document.createElement("a");
             divRightA.setAttribute("href", "http://localhost:1250/teacherUi/getTeacherInformation/" + teacherData.teacherId);
             divRightA.innerText = "查看详情";
@@ -172,6 +173,7 @@
 
             return div;
         }
+
         generatePageDiv = (currentPageCode, totalPages) => {
             let div = document.createElement("div");
             let hr = document.createElement("hr");
@@ -207,19 +209,19 @@
             }
             let aFirstPage = document.createElement("a");
             aFirstPage.setAttribute("href", "javascript:getPageList(1)");
-            aFirstPage.setAttribute("style","cursor: pointer;");
+            aFirstPage.setAttribute("style", "cursor: pointer;");
             aFirstPage.innerText = "首页";
             let aLastPage = document.createElement("a");
             aLastPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode - 1) + ")");
-            aLastPage.setAttribute("style","cursor: pointer;");
+            aLastPage.setAttribute("style", "cursor: pointer;");
             aLastPage.innerText = "上一页";
             let aEndPage = document.createElement("a");
             aEndPage.setAttribute("href", "javascript:getPageList(" + totalPages + ")");
-            aEndPage.setAttribute("style","cursor: pointer;");
+            aEndPage.setAttribute("style", "cursor: pointer;");
             aEndPage.innerText = "尾页";
             let aNextPage = document.createElement("a");
             aNextPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode + 1) + ")");
-            aNextPage.setAttribute("style","cursor: pointer;");
+            aNextPage.setAttribute("style", "cursor: pointer;");
             aNextPage.innerText = "下一页";
             let a = document.createElement("a");
             a.innerText = currentPageCode;
@@ -380,16 +382,16 @@
                 <!--</div>-->
                 <!--<hr class="invis">-->
                 <!--<div class="row text-center">-->
-                    <!--<div class="col-md-12">-->
-                        <!--<ul class="pagination">-->
-                            <!--<li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>-->
-                            <!--<li class="active"><a href="javascript:void(0)">1</a></li>-->
-                            <!--<li><a href="javascript:void(0)">2</a></li>-->
-                            <!--<li><a href="javascript:void(0)">3</a></li>-->
-                            <!--<li><a href="javascript:void(0)">...</a></li>-->
-                            <!--<li><a href="javascript:void(0)">&raquo;</a></li>-->
-                        <!--</ul>-->
-                    <!--</div>&lt;!&ndash; end col &ndash;&gt;-->
+                <!--<div class="col-md-12">-->
+                <!--<ul class="pagination">-->
+                <!--<li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>-->
+                <!--<li class="active"><a href="javascript:void(0)">1</a></li>-->
+                <!--<li><a href="javascript:void(0)">2</a></li>-->
+                <!--<li><a href="javascript:void(0)">3</a></li>-->
+                <!--<li><a href="javascript:void(0)">...</a></li>-->
+                <!--<li><a href="javascript:void(0)">&raquo;</a></li>-->
+                <!--</ul>-->
+                <!--</div>&lt;!&ndash; end col &ndash;&gt;-->
                 <!--</div>&lt;!&ndash; end row &ndash;&gt;-->
             </div>
         </div><!-- end container -->

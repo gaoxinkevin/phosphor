@@ -5,6 +5,7 @@ import com.cafebabe.phosphor.model.entity.CompanyCollection;
 import com.cafebabe.phosphor.service.serviceimpl.CompanyCollectionServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
 import com.cafebabe.phosphor.util.PageModel;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * <p>
  * create_time: 19:36
  * <p>
- * description:
+ * description: 公司收藏的业务控制层
  **/
 @Controller
 @CrossOrigin

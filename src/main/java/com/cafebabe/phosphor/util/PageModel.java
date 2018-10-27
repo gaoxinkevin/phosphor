@@ -26,7 +26,7 @@ public class PageModel<T> {
     /**
      * 每页显示记录数
      */
-    private Integer pageSize ;
+    private Integer pageSize;
 
     /**
      * 总记录数
@@ -62,7 +62,6 @@ public class PageModel<T> {
      * 冗余字段
      */
     private Integer sf;
-
 
     /**
      * 冗余字段

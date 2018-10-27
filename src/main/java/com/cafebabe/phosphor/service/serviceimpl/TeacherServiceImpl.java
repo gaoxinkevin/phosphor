@@ -1,10 +1,12 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
 import com.cafebabe.phosphor.dao.TeacherDAO;
-import com.cafebabe.phosphor.model.dto.TeacherInformation;
+import com.cafebabe.phosphor.model.dto.TeacherInformationDTO;
 import com.cafebabe.phosphor.model.entity.Teacher;
 import com.cafebabe.phosphor.service.TeacherService;
 import com.cafebabe.phosphor.util.PageModel;
+import com.cafebabe.phosphor.util.RedisUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,19 +35,31 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public PageModel<TeacherInformation> getTeacherList(Integer currentPageCode) {
-        PageModel<TeacherInformation> pageModel = new PageModel<>();
+    public PageModel<TeacherInformationDTO> getTeacherList(Integer currentPageCode) {
+        PageModel<TeacherInformationDTO> pageModel = new PageModel<>();
         pageModel.setPageSize(5);
         pageModel.setCurrentPageCode(currentPageCode);
         pageModel.setStartRecord((currentPageCode - 1) * pageModel.getPageSize());
         pageModel.setTotalRecord(teacherDAO.getTeacherCount());
-        pageModel.setTotalPages(pageModel.getTotalRecord() % pageModel.getPageSize() == 0 ? pageModel.getTotalRecord() / pageModel.getPageSize() : pageModel.getTotalRecord() / pageModel.getPageSize() + 1);
-        pageModel.setModelList(teacherDAO.getTeacherList(pageModel));
+        pageModel.setTotalPages(pageModel.getTotalRecord() % pageModel.getPageSize() == 0 ?
+                pageModel.getTotalRecord() / pageModel.getPageSize() :
+                pageModel.getTotalRecord() / pageModel.getPageSize() + 1);
+        if(!currentPageCode.equals(pageModel.getTotalPages())){
+            if (0 != RedisUtil.getList("getTeacherList" + currentPageCode).size()) {
+                pageModel.setModelList(RedisUtil.getList("getTeacherList" + currentPageCode));
+            } else {
+                RedisUtil.setList("getTeacherList" + currentPageCode, teacherDAO.getTeacherList(pageModel));
+                pageModel.setModelList(RedisUtil.getList("getTeacherList" + currentPageCode));
+            }
+        }else {
+            pageModel.setModelList(teacherDAO.getTeacherList(pageModel));
+        }
+
         return pageModel;
     }
 
     @Override
-    public TeacherInformation getTeacherById(Integer teacherId) {
+    public TeacherInformationDTO getTeacherById(Integer teacherId) {
         return teacherDAO.getTeacherById(teacherId);
     }
 

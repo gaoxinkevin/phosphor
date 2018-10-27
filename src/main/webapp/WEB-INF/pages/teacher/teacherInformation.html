@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/css/carousel.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleLogin.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="/js/login.js"></script>
 
@@ -69,7 +70,6 @@
                 fatherDiv.appendChild(descDiv);
             });
             getFeedback();
-            // getTeacherLike();
         }
 
         getFeedback = () => {
@@ -116,7 +116,6 @@
             result(JSON.stringify(pageModel)).then((res) => {
                 if (res.data.modelList.length != 0) {
                     for (let i = 0; i < res.data.modelList.length; i++) {
-                        // console.log(res.data.modelList);
                         let sonDiv = generateFeedbackDiv(res.data.modelList[i]);
                         grandfatherDiv.appendChild(sonDiv);
                     }
@@ -154,12 +153,13 @@
             let divLeft2 = document.createElement("div");
             divLeft2.classList.add("course-box", "shop-wrapper");
             let divLeft3 = document.createElement("div");
-            divLeft3.classList.add("image-wrap", "entry");
+            // divLeft3.classList.add("image-wrap", "entry");
             let img = document.createElement("img");
             img.classList.add("img-responsive");
-            // img.setAttribute("src", teacherData.teacherPhoto);
-            img.setAttribute("src", "/upload/shop_01.jpg");
+            img.setAttribute("src", teacherData.teacherPhoto);
+            // img.setAttribute("src", "/upload/shop_01.jpg");
             img.setAttribute("alt", "");
+            img.setAttribute("style", "width:238.5px;height:238.5px;")
             div.appendChild(divLeft1);
             divLeft1.appendChild(divLeft2);
             divLeft2.appendChild(divLeft3);
@@ -192,17 +192,34 @@
                     day = workTime.substr(7, 2);
                 }
             } else {
-                month = workTime.substr(5, 2);
-                day = workTime.substr(8, 2);
+                if (workTime.substr(9, 1) == " ") {
+                    month = workTime.substr(5, 2);
+                    day = workTime.substr(8, 1);
+                } else {
+                    month = workTime.substr(5, 2);
+                    day = workTime.substr(8, 2);
+                }
             }
             divRightSpan5.innerText = "工作时间：" + year + "年" + month + "月" + day + "日";
-            const divRightLikeSpan = document.createElement("span");
-            divRightLikeSpan.innerText = "点赞数：" + teacherData.teacherLikeCount;
+
             const divRightA = document.createElement("a");
             divRightA.setAttribute("href", "javascript:teacherLikeAdd()");
-            const likeImg = document.createElement("img");
-            likeImg.setAttribute("src", "/images/teacherLike1.png");
-            likeImg.setAttribute("style", "margin: auto auto 5px 6px;");
+            const divRightImg = document.createElement("img");
+            divRightImg.setAttribute("src", "http://ph4vwyi7h.bkt.clouddn.com/%E7%82%B9%E8%B5%9E%20%282%29.png");
+            divRightImg.setAttribute("style", "margin: auto auto 5px -6px;width:32px;height:32px;");
+            const divRightAddLikeSpan = document.createElement("span");
+            divRightAddLikeSpan.innerText = "点赞 ";
+            const divRightLikeSpan = document.createElement("span");
+            divRightLikeSpan.innerText = teacherData.teacherLikeCount;
+
+            // const divRightLikeSpan = document.createElement("span");
+            // divRightLikeSpan.innerText = "点赞数：" + teacherData.teacherLikeCount;
+            // const divRightA = document.createElement("a");
+            // divRightA.setAttribute("href", "javascript:teacherLikeAdd()");
+            // const likeImg = document.createElement("img");
+            // likeImg.setAttribute("src", "/images/teacherLike.png");
+            // likeImg.setAttribute("style", "margin: auto auto 5px 6px;width:18px;height:18px;");
+            //
             let divRightSpan6 = document.createElement("span");
             if (teacherData.teacherDesc == null || teacherData.teacherDesc == "") {
                 divRightSpan6.innerText = "教师简介：空";
@@ -220,9 +237,14 @@
             divRight2.appendChild(document.createElement("br"));
             divRight2.appendChild(divRightSpan5);
             divRight2.appendChild(document.createElement("br"));
-            divRight2.appendChild(divRightLikeSpan);
             divRight2.appendChild(divRightA);
-            divRightA.appendChild(likeImg);
+            divRightA.appendChild(divRightImg);
+            divRightA.appendChild(divRightAddLikeSpan);
+            divRight2.appendChild(divRightLikeSpan);
+
+            // divRight2.appendChild(divRightLikeSpan);
+            // divRight2.appendChild(divRightA);
+            // divRightA.appendChild(likeImg);
 
             div.appendChild(divRight1);
 
@@ -253,8 +275,9 @@
             divParent.setAttribute("style", "text-align: center;margin-left: -30px;");
             let img = document.createElement("img");
             img.classList.add("customizeImage");
-            img.setAttribute("style", "width: 150px;");
-            img.setAttribute("src", "/upload/shop_01.jpg");
+            img.setAttribute("style", "width: 150px;height:150px;");
+            img.setAttribute("src", modelList.parentPhoto);
+            // img.setAttribute("src", "/upload/shop_01.jpg");
             let parentNameSpan = document.createElement("span");
             parentNameSpan.innerText = modelList.parentName;
             let parentPhoneSpan = document.createElement("span");
@@ -317,19 +340,19 @@
             }
             let aFirstPage = document.createElement("a");
             aFirstPage.setAttribute("href", "javascript:getPageList(1)");
-            aFirstPage.setAttribute("style","cursor: pointer;");
+            aFirstPage.setAttribute("style", "cursor: pointer;");
             aFirstPage.innerText = "首页";
             let aLastPage = document.createElement("a");
             aLastPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode - 1) + ")");
-            aLastPage.setAttribute("style","cursor: pointer;");
+            aLastPage.setAttribute("style", "cursor: pointer;");
             aLastPage.innerText = "上一页";
             let aEndPage = document.createElement("a");
             aEndPage.setAttribute("href", "javascript:getPageList(" + totalPages + ")");
-            aEndPage.setAttribute("style","cursor: pointer;");
+            aEndPage.setAttribute("style", "cursor: pointer;");
             aEndPage.innerText = "尾页";
             let aNextPage = document.createElement("a");
             aNextPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode + 1) + ")");
-            aNextPage.setAttribute("style","cursor: pointer;");
+            aNextPage.setAttribute("style", "cursor: pointer;");
             aNextPage.innerText = "下一页";
             let a = document.createElement("a");
             a.innerText = currentPageCode;
@@ -391,7 +414,7 @@
 
             let grandfatherDiv = document.getElementById("feedbackDiv");
             grandfatherDiv.innerText = "";
-            // scrollTo(0, 0);
+            scrollTo(0, 0);
             resultList(JSON.stringify(pageModel)).then((res) => {
                 for (let i = 0; i < res.data.modelList.length; i++) {
                     let sonDiv = generateFeedbackDiv(res.data.modelList[i]);
@@ -454,12 +477,12 @@
         commitFeedback = () => {
             let feedbackContent = document.getElementById("textarea").value;
             if (localStorage.getItem("userLoginPhone") === null) {
-                alert("请登录后评论！");
+                loginPrompt(1);
             } else {
                 if (feedbackContent === "" || feedbackContent === null) {
                     alert("请填写内容！");
-                }else if(feedbackContent.length>200){
-                   alert("超出字数限制！最多200字！");
+                } else if (feedbackContent.length > 200) {
+                    alert("超出字数限制！最多200字！");
                 } else {
                     let a = JSON.parse(localStorage.getItem("userLoginPhone")).val;
                     const teacherId = document.cookie.split(';')[0].trim();
@@ -502,8 +525,9 @@
                     result(JSON.stringify(feedback)).then((res) => {
                         clearFeedback();
                         getTeacher();
+                        alert("提交成功");
                     }).catch(error => {
-                        console.log(error);
+                        alert("提交失败，请勿提交特殊字符！");
                     });
                 }
             }
@@ -511,7 +535,7 @@
 
         teacherLikeAdd = () => {
             if (localStorage.getItem("userLoginPhone") === null) {
-                alert("请登录后点赞！");
+                loginPrompt(0);
             } else {
                 const teacherId = document.cookie.split(';')[0].trim();
                 const id = teacherId.split('=')[1].trim();
@@ -557,11 +581,60 @@
             }
         }
 
+        loginPrompt = (type) => {
+            console.log("登录");
+            document.body.style.overflowX = "hidden";
+            document.body.style.overflowY = "hidden";
+            let div1 = document.getElementById("dialog");
+            let div2 = document.getElementById("v-modal");
+            let p = document.getElementById("information");
+            p.innerText="";
+            div1.style.display = "block";
+            div2.style.display = "block";
+            if (type === 0) {
+                p.innerText = "您还未登录，请登录后点赞。";
+            } else {
+                p.innerText = "您还未登录，请登录后评论。";
+            }
+        }
+
+        cancelLogin = () => {
+            document.body.style.overflowX = "auto";
+            document.body.style.overflowY = "auto";
+            let div1 = document.getElementById("dialog");
+            let div2 = document.getElementById("v-modal");
+            let p = document.getElementById("information");
+            div1.style.display = "none";
+            div2.style.display = "none";
+            p.innerText ="";
+        }
+
     </script>
 
 </head>
 <body onload="getTeacher()">
+<div id="dialog">
+    <div class="el-message-box" style="width: 450px;">
+        <div class="el-message-box__content">
+            <div class="el-message-box__status"></div>
+            <div class="el-message-box__message">
+                <p id="information" style="font-size: 20px;"></p>
+            </div>
+            <div class="el-message-box__input" style="display: none;">
+                <div class="el-input">
+                    <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                </div>
+                <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+            </div>
+        </div>
+        <div class="el-message-box__btns">
+            <a href="/loginUi/loginUi" id="el-button" class="btn-primary btn-sm" style="margin-right: 30px;font-size: 20px;">登录</a>
+            <a href="javascript:void(0);onclick=cancelLogin()" class="btn-primary btn-sm"style="font-size: 20px;">取消</a>
+        </div>
 
+    </div>
+</div>
+<div id="v-modal" style="z-index: 9998;"></div>
 <!-- LOADER -->
 <div id="preloader">
     <img class="preloader" src="/images/loader.gif" alt="">
@@ -641,9 +714,12 @@
     </section><!-- end section -->
 
     <section class="section gb nopadtop">
+        <div style="width: 400px;height: 247px;background-color: snow;display: none;">ceshi</div>
         <div class="container" id="grandfatherDiv">
             <div class="boxed boxedp4" id="fatherDiv"></div>
             <div class="boxed boxedp4" id="feedbackDiv"></div>
+
+
         </div><!-- end container -->
     </section>
 

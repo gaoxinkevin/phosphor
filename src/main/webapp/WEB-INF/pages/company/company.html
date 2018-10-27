@@ -102,7 +102,7 @@
     addCompanyCollection = () => {
         let a = localStorage.getItem("userLoginPhone");
         if (a === null) {
-            confirm("请登录后收藏！");
+            prompt(0);
         } else {
             let companyCollection = {
                 companyId: companyId,
@@ -139,19 +139,74 @@
             );
 
             result(JSON.stringify(companyCollection)).then((res) => {
-                if (res.data == -1 ){
-                    alert("您已收藏该公司，请勿重复收藏！");
-                }else if (res.data==1) {
-                    alert("收藏成功！");
-                }else {
-                    alert("收藏失败！");
-                }
+                // if (res.data == -1) {
+                //     alert("您已收藏该公司，请勿重复收藏！");
+                // } else if (res.data == 1) {
+                //     alert("收藏成功！");
+                // } else {
+                //     alert("收藏失败！");
+                // }
+                prompt(res.data);
             });
         }
 
     }
-</script>
 
+    prompt = (type) => {
+        document.body.style.overflowX = "hidden";
+        document.body.style.overflowY = "hidden";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        div1.style.display = "block";
+        div2.style.display = "block";
+        let p = document.getElementById("information");
+        p.innerText = "";
+        if (type == 0) {
+            p.innerText = "您还未登录，请登录后收藏。";
+        } else if (type == 1) {
+            p.innerText = "收藏成功";
+        } else if (type == -1) {
+            p.innerText = "您已收藏，请勿重复收藏。";
+        } else {
+            p.innerText ="收藏失败";
+        }
+    }
+
+    determine = () => {
+        document.body.style.overflowX = "auto";
+        document.body.style.overflowY = "auto";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        let p = document.getElementById("information");
+        div1.style.display = "none";
+        div2.style.display = "none";
+        p.innerText ="";
+    }
+
+</script>
+<div id="dialog">
+    <div class="el-message-box" style="width: 330px;height: 165px;">
+        <div class="el-message-box__content">
+            <div class="el-message-box__status"></div>
+            <div class="el-message-box__message">
+                <p id="information" style="font-size: 18px;"></p>
+            </div>
+            <div class="el-message-box__input" style="display: none;">
+                <div class="el-input">
+                    <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                </div>
+                <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+            </div>
+        </div>
+        <div class="el-message-box__btns">
+            <span style="display: none;" id="collectionId"></span>
+            <a href="javascript:void(0);onclick=determine()" id="el-button" class="btn-primary btn-sm"
+               style="font-size: 18px;">确定</a>
+        </div>
+
+    </div>
+</div>
+<div id="v-modal" style="z-index: 9998;"></div>
 <div id="wrapper">
 
     <div id="preloader">
@@ -393,28 +448,28 @@
         </div><!-- end container -->
     </div>
 
-    <div id="dialog">
-        <div class="el-message-box">
-            <div class="el-message-box__content">
-                <div class="el-message-box__status"></div>
-                <div class="el-message-box__message">
-                    <p id="dialogPInnerHtml"></p>
-                </div>
-                <div class="el-message-box__input" style="display: none;">
-                    <div class="el-input">
-                        <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
-                    </div>
-                    <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
-                </div>
-            </div>
-            <div class="el-message-box__btns">
-                <a href="/loginUi/loginUi" id="el-button" class="el-button"></a>
-            </div>
+    <!--<div id="dialog">-->
+    <!--<div class="el-message-box">-->
+    <!--<div class="el-message-box__content">-->
+    <!--<div class="el-message-box__status"></div>-->
+    <!--<div class="el-message-box__message">-->
+    <!--<p id="dialogPInnerHtml"></p>-->
+    <!--</div>-->
+    <!--<div class="el-message-box__input" style="display: none;">-->
+    <!--<div class="el-input">-->
+    <!--<input type="text" placeholder="" autocomplete="off" class="el-input__inner">-->
+    <!--</div>-->
+    <!--<div class="el-message-box__errormsg" style="visibility: hidden;"></div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="el-message-box__btns">-->
+    <!--<a href="/loginUi/loginUi" id="el-button" class="el-button"></a>-->
+    <!--</div>-->
 
-        </div>
-    </div>
+    <!--</div>-->
+    <!--</div>-->
 
-    <div id="v-modal" style="z-index: 9998"></div>
+    <!--<div id="v-modal" style="z-index: 9998"></div>-->
 
 </div>
 <script src="/js/jquery.min.js"></script>

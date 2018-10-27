@@ -8,7 +8,6 @@ import com.cafebabe.phosphor.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 /**
  * @author supersuntangao@gmail.com
  * <p>

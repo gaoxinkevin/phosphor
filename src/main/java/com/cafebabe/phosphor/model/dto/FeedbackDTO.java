@@ -2,6 +2,8 @@ package com.cafebabe.phosphor.model.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
+
 /**
  * @author kevingx2016@gmail.com
  * <p>
@@ -11,7 +13,7 @@ import lombok.*;
  * <p>
  * create_time: 20:43
  * <p>
- * description:
+ * description: 教师评价封装
  **/
 @Getter
 @Setter
@@ -19,10 +21,10 @@ import lombok.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class FeedbackDTO {
+public class FeedbackDTO implements Serializable {
 
     /**
-     * 投诉ID
+     * 评价ID
      */
     private Integer feedbackId;
 
@@ -37,12 +39,12 @@ public class FeedbackDTO {
     private Integer parentId;
 
     /**
-     * 投诉内容
+     * 评价内容
      */
     private String feedbackContent;
 
     /**
-     * 投诉状态
+     * 评价状态
      */
     private Integer feedbackStatus;
 

@@ -1,11 +1,10 @@
 package com.cafebabe.phosphor.dao;
 
 import com.cafebabe.phosphor.model.dto.CompanyCollectionDTO;
-import com.cafebabe.phosphor.model.entity.Company;
 import com.cafebabe.phosphor.model.entity.CompanyCollection;
 import com.cafebabe.phosphor.util.PageModel;
+
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
