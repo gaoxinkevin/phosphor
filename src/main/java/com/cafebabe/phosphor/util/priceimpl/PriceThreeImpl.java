@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.util.priceimpl;
 
+import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.entity.Course;
 import com.cafebabe.phosphor.util.Price;
 
@@ -26,5 +27,10 @@ public class PriceThreeImpl implements Price {
             price.add(cours.getCoursePrice());
         }
         return price;
+    }
+
+    @Override
+    public BigDecimal getPriceCountInfo(List<CourseInfo> courses) {
+        return null;
     }
 }

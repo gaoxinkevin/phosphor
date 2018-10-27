@@ -56,6 +56,15 @@ public class OrderDTO implements Serializable {
      * 孩子ID
      */
     private Integer childId;
+    /**
+     * 家长名称
+     */
+    private String parent;
+
+    /**
+     * 孩子名称
+     */
+    private String child;
 
     /**
      * 订单详情

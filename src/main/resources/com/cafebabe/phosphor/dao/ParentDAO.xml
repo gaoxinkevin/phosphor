@@ -199,6 +199,12 @@
     from parent
     where parent_phone = #{parentPhone}
   </select>
+  <select id="getParentById" parameterType="java.lang.Integer"  resultType="java.lang.String">
+    select
+    parent_name
+    from parent
+    where parent_id = #{parentId,jdbcType=INTEGER}
+  </select>
 
 
 </mapper>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -29,9 +30,14 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/group")
 public class GroupController {
-    @Autowired
-    private final  GroupServiceImpl groupService;
 
+    private final  GroupServiceImpl groupService;
+    @Autowired
+    private HttpServletRequest httpServletRequest;
+
+
+
+    @Autowired
     public GroupController(GroupServiceImpl groupService) { this.groupService = groupService; }
 
     @GetMapping("groupList")
@@ -47,4 +53,31 @@ public class GroupController {
         GroupDTO group =groupService.getGroupDTOById(groupId);
         return new JsonResponse(200,"success",group);
     }
+
+    @GetMapping("addCourse")
+    @ResponseBody
+    public JsonResponse getAddCourse(Integer courseId){
+        if (httpServletRequest.getSession().getAttribute("diyGroupDTO") == null) {
+
+        }else{
+
+        }
+        return new JsonResponse(200,"success","");
+    }
+    @GetMapping("delCourse")
+    @ResponseBody
+    public JsonResponse getDelCourse(Integer courseId){
+        GroupDTO group =groupService.getGroupDTOById(courseId);
+        return new JsonResponse(200,"success",group);
+    }
+
+    @GetMapping("addGroup")
+    @ResponseBody
+    public JsonResponse getAddGroup(Integer groupId){
+        GroupDTO group =groupService.getGroupDTOById(groupId);
+        return new JsonResponse(200,"success",group);
+    }
+
+
+
 }

@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.util;
 
+import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.entity.Course;
 
 import java.math.BigDecimal;
@@ -24,4 +25,11 @@ public interface Price {
      * @return 套餐价格
      */
     BigDecimal getPriceCount(List<Course> courses);
+
+    /**
+     * 获取套餐价格
+     * @param courses 套餐包含的课程
+     * @return 套餐价格
+     */
+    BigDecimal getPriceCountInfo(List<CourseInfo> courses);
 }
