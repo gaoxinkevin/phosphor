@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.web.controller;
 
 import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.dto.Page;
+import com.cafebabe.phosphor.model.entity.Course;
 import com.cafebabe.phosphor.service.serviceimpl.CourseServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class CourseController {
     }
 
     @ResponseBody
-    @GetMapping("/findCourseInfo")
-    public JsonResponse findCourseInfo(Integer courseId){
+    @RequestMapping("/findCourseInfo/{courseId}")
+    public JsonResponse findCourseInfo(@PathVariable Integer courseId){
         CourseInfo courseInfo = courseService.getCourseInfoService(courseId);
         return new JsonResponse(20000,"成功",courseInfo);
     }
@@ -46,7 +47,7 @@ public class CourseController {
     @ResponseBody
     @GetMapping("/getCourseList")
     public JsonResponse getCourseList(){
-        List<CourseInfo> courseList = courseService.getAllCourseInfo();
+        List<Course> courseList = courseService.getAllCourseInfo();
         return new JsonResponse(20000,"成功",courseList);
     }
 
@@ -55,5 +56,19 @@ public class CourseController {
     public JsonResponse getCourseListByPage(Integer pageIndex, Integer pageSize){
         Page page = courseService.getAllCourseByPage(pageIndex,pageSize);
         return new JsonResponse(200, "success", page);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getCommendCourseList")
+    public JsonResponse getCommendCourseList(){
+        List<Course> courseList = courseService.getAllCourseInfo();
+        return new JsonResponse(200, "success", courseList);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getAllCourse")
+    public JsonResponse getAllCourse(){
+        List<Course> courseList = courseService.getAllCourse();
+        return new JsonResponse(200, "success", courseList);
     }
 }

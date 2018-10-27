@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.service;
 
 import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.dto.Page;
+import com.cafebabe.phosphor.model.dto.PageCourse;
 import com.cafebabe.phosphor.model.entity.Course;
 
 import java.util.List;
@@ -21,15 +22,24 @@ import java.util.List;
 public interface CourseService {
 
     /**
-     * 查询所有课程
-     * @return 课程列表
+     * 分页查询
+     * @param pageIndex 页码
+     * @param pageSize 每页显示数量
+     * @return 分页后的课程信息
      */
-
     Page getAllCourseByPage(Integer pageIndex, Integer pageSize);
 
+    /**
+     * 得到课程总数
+     * @return 课程总数
+     */
     Integer getCourseCount();
 
-    List<CourseInfo> getAllCourseInfo ();
+    /**
+     * 得到某课程所有信息
+     * @return 课程所有信息
+     */
+    List<Course> getAllCourseInfo ();
 
 
     /**
@@ -44,4 +54,25 @@ public interface CourseService {
      * @return 课程信息
      */
     CourseInfo getCourseInfoService(Integer courseId);
+
+    /**
+     * 获得某课程时间信息
+     * @param courseId 课程id
+     * @return 课程时间
+     */
+    CourseInfo getCourseTime(Integer courseId);
+
+    /**
+     * 得到所有课程
+     * @return 课程列表
+     */
+    List<Course> getAllCourse();
+
+    /**
+     *
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    List<Course> getCourseByType(Integer pageIndex, Integer pageSize);
 }

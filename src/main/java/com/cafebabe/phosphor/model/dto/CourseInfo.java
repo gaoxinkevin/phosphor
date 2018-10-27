@@ -108,4 +108,13 @@ public class CourseInfo implements Serializable {
      */
     private Integer courseTimeStatus;
 
+    /**
+     * 课程图片
+     */
+    private String courseSf;
+
+    /**
+     * 课程销量
+     */
+    private Integer courseCount;
 }
