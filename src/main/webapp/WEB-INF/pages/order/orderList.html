@@ -51,8 +51,7 @@
 
 <body>
 <!--Ajax向后台输出数据-->
-
-<!--<script>
+<script>
     //region 个人中心的信息填充
     const clientUrl = 'http://localhost:1250/parent/parentAllInfo';
     const clientMethod = 'POST';
@@ -135,7 +134,7 @@
         }
         let otr = document.createElement("tr");
         let td1 = document.createElement("td");
-        let adetail1 = document.createElement("a");
+        let adetail1 = document.createElement("a"); 
         adetail1.setAttribute("href",detailUrl);
         let imageGroup = document.createElement("img");
         imageGroup.setAttribute("src", detail.photo);
@@ -145,7 +144,7 @@
         td1.appendChild(adetail1);
 
         let td2 = document.createElement("td");
-        let adetail2 = document.createElement("a");
+        let adetail2 = document.createElement("a"); 
         adetail2.setAttribute("href",detailUrl);
         let smalltype = document.createElement("mark");
         smalltype.innerText=detail.type;
@@ -237,7 +236,7 @@
     }
     //endregion
 
-</script>-->
+</script>
 <div id="wrapper">
 
     <div id="preloader">
@@ -335,61 +334,90 @@
 
                         <!-- <div class="bm bw0"> </div> -->
                         <ul class="tb cl">
-                            <li class="a"><a href="" sl-processed="1">返回订单列表</a></li>
+                            <li class="a"><a href=""
+                                             sl-processed="1">我的订单</a></li>
+                            <li class="y">
+                                <select onchange="">
+                                    <option value="">全局规则</option>
+                                    <option value="2">尾巴主版</option>
+                                    <option value="46">甩甩尾巴</option>
+                                    <option value="77">尾巴认证</option>
+                                </select>
+                            </li>
                         </ul>
                         <div id="ordersPanel">
-                             <div class="mn row">
-                                 <div class=" col-md-12">
-                                     <table summary="我的订单" cellspacing="0" cellpadding="0" class="dt mtm">
-                                         <caption>
-                                             <h2 class="mbm xs2">
-                                                 <a href="" class="xi2 xs1 xw0 y">交易成功</a>订单详情
-                                             </h2>
-                                             <ul class="media-list">
-                                                 <li><span style="display: inline-block; min-width: 100px;">订单编号:</span>X328498383</li>
-                                                 <li><span style="display: inline-block; min-width: 100px;">创建时间:</span>2018-07-04</li>
-                                                 <li><span style="display: inline-block; min-width: 100px;">完成时间:</span>2018-07-04</li>
-                                                 <li><span style="display: inline-block; min-width: 100px;">家长:</span>牛大春</li>
-                                                 <li><span style="display: inline-block; min-width: 100px;">孩子:</span>曹思雨</li>
-                                                 <li><span style="display: inline-block; min-width: 100px;">价格:</span><span style="color: red;">$100.00</span></li>
-                                             </ul>
-                                         </caption>
-                                         <tbody>
-                                         <!--<tr>
-                                             <th width="80">孩子:曹思雨</th>
-                                             <th>订单金额:$788.00</th>
-                                             <th width="120"></th>
-                                             <th width="80"><a href="" class="xi2 xs1 xw0 y">查看更多»</a></th>
-                                         </tr>-->
-                                         <tr>
-                                             <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                             <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                             <td width="120">$799.00</td>
-                                             <td width="80">
-                                                 <mark>正在进行</mark>
-                                             </td>
-                                         </tr>
-                                         <tr>
-                                             <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                             <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                             <td width="120">$799.00</td>
-                                             <td width="80">
-                                                 <mark>正在进行</mark>
-                                             </td>
-                                         </tr>
-                                         <tr>
-                                             <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                             <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                             <td width="120">$799.00</td>
-                                             <td width="80">
-                                                 <mark>正在进行</mark>
-                                             </td>
-                                         </tr>
-                                         </tbody>
-                                     </table>
-                                 </div>
+                           <!-- <div class="mn row">
+                                <div class="col-md-12">
+                                    <table summary="我的订单" cellspacing="0" cellpadding="0" class="dt mtm">
+                                        <caption>
+                                            <h2 class="mbm xs2">
+                                                <a href="" class="xi2 xs1 xw0 y">交易成功</a>2018-10-29 订单号:7974738
+                                            </h2>
+                                        </caption>
+                                        <tbody>
+                                        <tr>
+                                            <th width="80">孩子:曹思雨</th>
+                                            <th>订单金额:$788.00</th>
+                                            <th width="120"></th>
+                                            <th width="80"><a href="" class="xi2 xs1 xw0 y">查看更多»</a></th>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="/upload/people.jpg" width="80" height="80"></td>
+                                            <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
+                                            <td width="120">$799.00</td>
+                                            <td width="80">
+                                                <mark>正在进行</mark>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
-                             </div>
+                            <div class="mn row">
+                                <div class=" col-md-12">
+                                    <table summary="我的订单" cellspacing="0" cellpadding="0" class="dt mtm">
+                                        <caption>
+                                            <h2 class="mbm xs2">
+                                                <a href="" class="xi2 xs1 xw0 y">交易成功</a>2018-10-29 订单号:7974738
+                                            </h2>
+                                        </caption>
+                                        <tbody>
+                                        <tr>
+                                            <th width="80">孩子:曹思雨</th>
+                                            <th>订单金额:$788.00</th>
+                                            <th width="120"></th>
+                                            <th width="80"><a href="" class="xi2 xs1 xw0 y">查看更多»</a></th>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="/upload/people.jpg" width="80" height="80"></td>
+                                            <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
+                                            <td width="120">$799.00</td>
+                                            <td width="80">
+                                                <mark>正在进行</mark>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="/upload/people.jpg" width="80" height="80"></td>
+                                            <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
+                                            <td width="120">$799.00</td>
+                                            <td width="80">
+                                                <mark>正在进行</mark>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="/upload/people.jpg" width="80" height="80"></td>
+                                            <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
+                                            <td width="120">$799.00</td>
+                                            <td width="80">
+                                                <mark>正在进行</mark>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>-->
                         </div>
                         <div class="bm bw0">
                             <h1 class="mt">积分

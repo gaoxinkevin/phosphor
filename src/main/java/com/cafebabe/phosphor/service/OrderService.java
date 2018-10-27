@@ -72,4 +72,12 @@ public interface OrderService {
      * @return order的列表
      */
     List<OrderDTO> getActivityOrderList(Integer parentId);
+
+    /**
+     * 根据订单类型和详情id创建订单
+     * @param type 订单类型
+     * @param detailId 详情编号
+     * @return 订单
+     */
+    OrderDTO createOrder(String type, Integer detailId);
 }

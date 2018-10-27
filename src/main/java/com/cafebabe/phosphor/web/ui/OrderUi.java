@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.web.ui;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletException;
@@ -42,6 +43,30 @@ public class OrderUi {
     @RequestMapping("orderValidateUi")
     public void orderValidateUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
             throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/order/orderValidate.html")
+                .forward(httpServletRequest,httpServletResponse);
+    }
+    @RequestMapping("orderGroupUi/{groupId}")
+    public void orderGroupUi(@PathVariable Integer groupId, HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getSession().setAttribute("orderValidateType","group");
+        httpServletRequest.getSession().setAttribute("orderValidateId",groupId);
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/order/orderValidate.html")
+                .forward(httpServletRequest,httpServletResponse);
+    }
+    @RequestMapping("orderCourseUi/{courseId}")
+    public void orderCourseUi(@PathVariable Integer courseId,HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getSession().setAttribute("orderValidateType","course");
+        httpServletRequest.getSession().setAttribute("orderValidateId",courseId);
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/order/orderValidate.html")
+                .forward(httpServletRequest,httpServletResponse);
+    }
+    @RequestMapping("orderActivityUi/{activityId}")
+    public void orderActivityUi(@PathVariable Integer activityId,HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getSession().setAttribute("orderValidateType","activity");
+        httpServletRequest.getSession().setAttribute("orderValidateId",activityId);
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/order/orderValidate.html")
                 .forward(httpServletRequest,httpServletResponse);
     }

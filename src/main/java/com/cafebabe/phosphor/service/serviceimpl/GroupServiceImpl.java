@@ -8,6 +8,9 @@ import com.cafebabe.phosphor.model.dto.GroupDTO;
 import com.cafebabe.phosphor.model.entity.Group;
 import com.cafebabe.phosphor.model.entity.GroupCourse;
 import com.cafebabe.phosphor.service.GroupService;
+import com.cafebabe.phosphor.util.Price;
+import com.cafebabe.phosphor.util.priceimpl.PriceThreeImpl;
+import com.cafebabe.phosphor.util.priceimpl.PriceTwoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -126,6 +129,36 @@ public class GroupServiceImpl implements GroupService {
             groupDTOS.add(toGroupDTO(group));
         }
         return groupDTOS;
+    }
+
+    public GroupDTO createGroup(Integer courseId){
+        GroupDTO groupDTO = new GroupDTO();
+        CourseInfo courseInfo = courseDAO.getCourseInfo(courseId);
+        List<CourseInfo> courseInfos = new ArrayList<>();
+        courseInfos.add(courseInfo);
+        groupDTO.setCourseInfos(courseInfos);
+        groupDTO.setGroupName("自定义套餐");
+        groupDTO.setGroupPrice(courseInfo.getCoursePrice());
+        groupDTO.setGroupDiscount(new BigDecimal(1.00));
+        groupDTO.setGroupCourseNumber(1);
+        groupDTO.setGroupStatus(0);
+        return groupDTO;
+
+    }
+
+    public GroupDTO addCourseToGroup(GroupDTO groupDTO,Integer courseId){
+        CourseInfo courseInfo = courseDAO.getCourseInfo(courseId);
+        Price price;
+        if (groupDTO.getCourseInfos().size() == 2) {
+            price= new PriceTwoImpl();
+        }else if(groupDTO.getCourseInfos().size() == 3){
+            price = new PriceTwoImpl();
+        }else{
+            price = new PriceTwoImpl();
+        }
+        groupDTO.setGroupPrice(price.getPriceCountInfo(groupDTO.getCourseInfos()));
+        groupDTO.setGroupCourseNumber(groupDTO.getGroupCourseNumber()+1);
+        return groupDTO;
     }
 
     private Group toGroup(GroupDTO groupDTO){
