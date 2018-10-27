@@ -45,6 +45,7 @@ public interface ChildDAO extends MyBatisBaseDao<Child, Integer> {
      * @return 孩子姓名
      */
     String getChildNameById(Integer childId);
+    /**
      * 单个孩子的信息(有成绩信息的)
      * @param childId 孩子id
      * @return 单个孩子的信息

@@ -78,9 +78,6 @@
         select count(*) from course
     </select>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
     <select id="getCourseTime" resultType="com.cafebabe.phosphor.model.dto.CourseInfo">
         select course.course_id,course_name,course_start_day,course_start_time,course_end_time,course_continued_time,course_time_status
         from course
@@ -122,11 +119,6 @@
         <include refid="Base_Column_List"/>
         from course
     </select>
-
-
->>>>>>> devWJC
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-=======
   <!--根据公司ID查询课程-->
   <select id="getCourseByCompanyId" resultType="com.cafebabe.phosphor.model.entity.Course" parameterType="java.lang.Integer">
     select

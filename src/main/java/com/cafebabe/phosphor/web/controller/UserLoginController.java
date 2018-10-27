@@ -32,13 +32,15 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/userLogin")
 public class UserLoginController {
 
-    private final UserLoginServiceImpl userLoginService;factory
-    @Autowired
+    private final UserLoginServiceImpl userLoginService;
+    private final ParentServiceImpl parentService;
+    @Autowired(required = false)
     private HttpServletRequest httpServletRequest;
 
     @Autowired
-    public UserLoginController(UserLoginServiceImpl userLoginService) {
+    public UserLoginController(UserLoginServiceImpl userLoginService,ParentServiceImpl parentService) {
         this.userLoginService = userLoginService;
+        this.parentService = parentService;
     }
 
     @RequestMapping("userLogin")
