@@ -134,5 +134,10 @@ public class OrderController {
         return new JsonResponse(20000,"success",orderDTOS);
     }
 
-
+    @RequestMapping("childInfo")
+    @ResponseBody
+    public JsonResponse getChildInfo(Integer childId){
+        System.out.println(childId);
+        return new JsonResponse(20000,"success","成功");
+    }
 }

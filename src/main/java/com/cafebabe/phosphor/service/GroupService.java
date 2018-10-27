@@ -28,6 +28,13 @@ public interface GroupService {
     Integer insertGroup(Group group,List<Integer> courses);
 
     /**
+     * 添加套餐
+     * @param groupDTO 套餐传输对象
+     * @return 套餐id
+     */
+    Integer insertGroupDTO(GroupDTO groupDTO);
+
+    /**
      * 修改套餐
      * @param group 套餐
      * @return 0=>false | 1=>true
@@ -101,4 +108,19 @@ public interface GroupService {
      */
     List<GroupDTO> getGroupListByDiscountScope( BigDecimal minDiscount, BigDecimal maxDiscount);
 
+    /**
+     * 在已有自定义套餐中添加课程
+     * @param groupDTO 套餐传输对象
+     * @param courseId 课程编号
+     * @return 套餐
+     */
+    GroupDTO addCourseToGroup(GroupDTO groupDTO,Integer courseId);
+
+    /**
+     * 在已有自定义套餐中删除课程
+     * @param groupDTO 套餐传输对象
+     * @param courseId 课程编号
+     * @return 套餐
+     */
+    GroupDTO delCourseFromCourse(GroupDTO groupDTO,Integer courseId);
 }

@@ -9,6 +9,7 @@ import com.cafebabe.phosphor.model.entity.Group;
 import com.cafebabe.phosphor.model.entity.GroupCourse;
 import com.cafebabe.phosphor.service.GroupService;
 import com.cafebabe.phosphor.util.Price;
+import com.cafebabe.phosphor.util.priceimpl.PriceOneImpl;
 import com.cafebabe.phosphor.util.priceimpl.PriceThreeImpl;
 import com.cafebabe.phosphor.util.priceimpl.PriceTwoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -57,6 +60,18 @@ public class GroupServiceImpl implements GroupService {
                     group.getGroupId(),cours,"1"));
         }
         return groupDAO.insertGroup(group);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer insertGroupDTO(GroupDTO groupDTO) {
+        groupDAO.insertGroup(toGroup(groupDTO));
+        Integer groupId = groupDAO.getGroupId();
+        for (CourseInfo cours : groupDTO.getCourseInfos()) {
+            groupCourseDAO.insertGroupCourse(new GroupCourse(null,
+                    groupId,cours.getCourseId(),"1"));
+        }
+        return groupId;
     }
 
     @Override
@@ -145,22 +160,61 @@ public class GroupServiceImpl implements GroupService {
         return groupDTO;
 
     }
-
+    @Override
     public GroupDTO addCourseToGroup(GroupDTO groupDTO,Integer courseId){
         CourseInfo courseInfo = courseDAO.getCourseInfo(courseId);
+        if (!groupDTO.getCourseInfos().contains(courseInfo)){
+            groupDTO.getCourseInfos().add(courseInfo);
+        }
+        groupDTO.setGroupPrice(getPrice(groupDTO.getCourseInfos()));
+        groupDTO.setGroupCourseNumber(groupDTO.getGroupCourseNumber()+1);
+        System.out.println(groupDTO);
+        groupDTO.setGroupCourseNumber(groupDTO.getCourseInfos().size());
+        return groupDTO;
+    }
+
+    @Override
+    public GroupDTO delCourseFromCourse(GroupDTO groupDTO, Integer courseId) {
+        for (int i = groupDTO.getCourseInfos().size()-1; i >=0 ; i--) {
+            if (groupDTO.getCourseInfos().get(i).getCourseId().equals(courseId)
+                    ||groupDTO.getCourseInfos().get(i)==null) {
+                groupDTO.getCourseInfos().remove(i);
+                groupDTO.getCourseInfos().forEach(System.out::println);
+            }
+        }
+        if(groupDTO.getCourseInfos().size()==0){
+            groupDTO.setGroupPrice(new BigDecimal(0));
+        }else {
+            groupDTO.setGroupPrice(getPrice(groupDTO.getCourseInfos()));
+        }
+        groupDTO.setGroupCourseNumber(groupDTO.getCourseInfos().size());
+        return groupDTO;
+    }
+
+    /**
+     * 获取价格
+     * @param courseInfos 课程列表
+     * @return 价格
+     */
+    BigDecimal getPrice(List<CourseInfo> courseInfos){
         Price price;
-        if (groupDTO.getCourseInfos().size() == 2) {
+        if(courseInfos.size() == 1){
+            price= new PriceOneImpl();
+        }else if (courseInfos.size() == 2) {
             price= new PriceTwoImpl();
-        }else if(groupDTO.getCourseInfos().size() == 3){
+        }else if(courseInfos.size() == 3){
             price = new PriceTwoImpl();
         }else{
             price = new PriceTwoImpl();
         }
-        groupDTO.setGroupPrice(price.getPriceCountInfo(groupDTO.getCourseInfos()));
-        groupDTO.setGroupCourseNumber(groupDTO.getGroupCourseNumber()+1);
-        return groupDTO;
+        return price.getPriceCountInfo(courseInfos);
     }
 
+    /**
+     * 将DTO转为对象
+     * @param groupDTO 套餐传输
+     * @return 对象
+     */
     private Group toGroup(GroupDTO groupDTO){
         if (groupDTO == null) {
             return null;
@@ -179,6 +233,11 @@ public class GroupServiceImpl implements GroupService {
         );
     }
 
+    /**
+     * 将对象转为DTO
+     * @param group 对象
+     * @return 套餐传输
+     */
     private GroupDTO toGroupDTO(Group group){
         if (group == null) {
             return null;

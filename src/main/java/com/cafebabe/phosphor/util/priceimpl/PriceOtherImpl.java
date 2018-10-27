@@ -30,6 +30,12 @@ public class PriceOtherImpl implements Price {
 
     @Override
     public BigDecimal getPriceCountInfo(List<CourseInfo> courses) {
-        return null;
+        BigDecimal price = new BigDecimal(0);
+        for (CourseInfo cours : courses) {
+            price.add(cours.getCoursePrice());
+        }
+        BigDecimal count= price.multiply(new BigDecimal(0.70));
+        System.out.println(count);
+        return count;
     }
 }

@@ -46,6 +46,16 @@
 
         }
 
+        .sd_box{
+            background: #fff;
+            box-shadow: 0px 1px 1px #a2a2a2;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333333;
+            line-height: 24px;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
         .table tbody tr td {
             vertical-align: middle;
         }
@@ -57,13 +67,18 @@
 <!--Ajax向后台输出数据-->
 <script>
 
-    const clientUrl = 'http://localhost:1250/order/orderValidate';
-    const clientMethod = 'POST';
-    const getParentImg = (url) => {
+    const clientUrl = 'http://localhost:1250';
+    const orderValidateUrl = clientUrl +'/order/orderValidate/';
+    const courseUrl= clientUrl +'courseUi/courseInfoUi/';
+    const activityUrl= clientUrl + 'activityUi/activityInfo/';
+    const childUrl= clientUrl + 'child/childInfo';
+    const chooseChildUrl = clientUrl + '/order/childInfo?childId=';
+    const getJson = (url) => {
         return new Promise((resolve, reject) => {
             const client = new XMLHttpRequest();
-            client.open(clientMethod, url);
+            client.open("GET", url);
             client.responseType = 'json';
+            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
             client.onreadystatechange = () => {
                 if (client.readyState === 4) {
                     if (client.status === 200) {
@@ -76,13 +91,89 @@
             client.send();
         });
     };
-    const JsonResponseList = () => getParentImg(clientUrl);
-    JsonResponseList().then((data) => {
-        console.log(data);
+    const JsonResponseList = () => getJson(orderValidateUrl);
+
+    getChildInfo = (childId) => getJson(chooseChildUrl+childId);
+
+    getChildInfo().then(res => {
+        if(res.code<=30000){}
+        else{
+            console.log(res.data);
+        }
+    }).catch(res => {
+        console.log(res);
+    })
+
+    JsonResponseList().then((res) => {
+        const otbody = document.getElementById("ordersPanel");
+        console.log(res.data);
+        for(let i = 0; i < res.data.details.length; i++) {
+            let otr=getDetail(res.data.details[i])
+            otbody.appendChild(otr);
+        }
+
     }).catch(error => {
         console.log(error);
     });
+    getDetail = (detail) => {
 
+        let detailUrl="";
+        if (detail.type=="课程") {
+            detailUrl=courseUrl+detail.id;
+        } else {
+            detailUrl=activityUrl+detail.id;
+        }
+        let otr = document.createElement("tr");
+        otr.classList.add("sd_box");
+        let td1 = document.createElement("td");
+        let adetail1 = document.createElement("a");
+        adetail1.setAttribute("href",detailUrl);
+        let imageGroup = document.createElement("img");
+        imageGroup.setAttribute("src", detail.photo);
+        imageGroup.setAttribute("width","100");
+        imageGroup.setAttribute("height","100");
+        adetail1.appendChild(imageGroup);
+        td1.appendChild(adetail1);
+
+        let td2 = document.createElement("td");
+        let adetail2 = document.createElement("a");
+        adetail2.setAttribute("href",detailUrl);
+        let smalltype = document.createElement("mark");
+        smalltype.innerText=detail.type;
+        let pname =document.createElement("p");
+        pname.innerText= detail.name;
+        adetail2.appendChild(smalltype);
+        adetail2.appendChild(pname);
+        td2.appendChild(adetail2);
+        let td3 = document.createElement("td");
+        td3.setAttribute("width","150");
+        td3.innerText=detail.companyName;
+
+        let td4 = document.createElement("td");
+        td4.setAttribute("width","150");
+        td4.innerText="￥"+detail.price;
+
+        let td5 = document.createElement("td");
+        td5.setAttribute("width","100");
+        let marktype = document.createElement("mark");
+        marktype.innerText=detail.type;
+        if (0==detail.state) {
+            marktype.innerText="未开始";
+        } else if (1==detail.state) {
+            marktype.innerText="正在进行";
+        } else if (2==detail.state) {
+            marktype.innerText="去评价";
+        }else {
+            marktype.innerText="完成";
+        }
+        td5.appendChild(marktype);
+        otr.appendChild(td1);
+        otr.appendChild(td2);
+        otr.appendChild(td3);
+        otr.appendChild(td4);
+        otr.appendChild(td5);
+        return otr;
+    }
 </script>
 <div id="wrapper">
 
@@ -196,11 +287,11 @@
                             </ul>
                             <div class="shop-meta">
                                 <h4 class="title">选择孩子</h4>
-                                <select class="selectpicker">
-                                    <option>价格升序</option>
-                                    <option>价格降序</option>
-                                    <option>课程创建时间</option>
-                                    <option>课程销量</option>
+                                <select class="selectpicker" onchange="getChildInfo(this.value)">
+                                    <option value="1234">价格升序</option>
+                                    <option value="1345">价格降序</option>
+                                    <option value="1255">课程创建时间</option>
+                                    <option value="1250">课程销量</option>
                                 </select>
                             </div><!-- end shop meta -->
 
@@ -213,14 +304,8 @@
                         <div class=" col-md-12">
                             <h3 class="widget-title">订单详情:</h3>
                             <table class="table table-hover table-condensed" cellpadding="0" cellspacing="0">
-                                <tbody>
-                                <tr>
-                                    <th width="100"></th>
-                                    <th>订单编号:x284318973</th>
-                                    <th width="150"></th>
-                                    <th width="150"></th>
-                                    <th width="100"></th>
-                                </tr>
+                                <h3>订单编号:x284318973</h3>
+                                <tbody id="ordersPanel">
                                 <tr>
                                     <td><a href="/courseUi/courseInfoUi"><img src="/upload/people.jpg" width="100"
                                                                               height="100"></a></td>

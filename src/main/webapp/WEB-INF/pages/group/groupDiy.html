@@ -33,7 +33,6 @@
 
     <script src="/js/course.js"></script>
     <style>
-
         .sd_box{
             background: #fff;
             box-shadow: 0px 1px 1px #a2a2a2;
@@ -51,26 +50,165 @@
 </head>
 <body>
 <script>
-
-    const courseUrl ="/courseUi/courseInfoUi/";
-
-    cancelChoose = (courseId) => {
-        //todo ajax取消session数据
-        let divBody = document.getElementById(courseId);
-        divBody.parentNode.removeChild(divBody);
+    const clientUrl = "http://localhost:1250"
+    const courseUrl = clientUrl+ "/courseUi/courseInfoUi/";
+    const addCourseUrl = clientUrl+ "/group/addCourse";
+    const delCourseUrl= clientUrl+ "/group/delCourse";
+    const optionUrl =  clientUrl+ "/group/delSession";
+    const addGroupUrl = clientUrl+ "/group/addGroup";
+    const orderUrl =  clientUrl+"/orderUi/orderGroupUi/";
+    /**
+     * post 方法访问网站
+     * @Param url 访问地址
+     * @Param method 请求方法
+     * @param data 上传数据
+     */
+    const postJson = ({ url, method, data }) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open(method, url);
+            client.responseType = 'json';
+            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send(data);
+        });
+    };
+    /**
+     * get 方法访问网站
+     * @Param url 访问地址
+     */
+    const getJson = (url) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open("GET", url);
+            client.responseType = 'json';
+            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send();
+        });
     };
 
-    optionError = () => {
-        //TODO 清空session数据
-        let divBody = document.getElementById("divBody");
-        divBody.innerHTML="";
+    setGroupDiy = (group) => {
+        let divGroupPrice = document.getElementById("groupPrice");
+        let divNumber = document.getElementById("groupCourseNumber");
+        let divDiscount = document.getElementById("groupDiscount");
+        let price = 0;
+        divNumber.innerText =group.courseInfos.length;
+        divDiscount.innerText ="￥"+ group.groupPrice;
+        for (let i = 0; i <group.courseInfos.length; i++) {
+            console.log(group.courseInfos[i]);
+            price+=group.courseInfos[i].coursePrice;
+        }
+        divGroupPrice.innerText="￥"+price;
+
+    };
+    setGroupNull = () =>{
+        let divGroupPrice = document.getElementById("groupPrice");
+        let divNumber = document.getElementById("groupCourseNumber");
+        let divDiscount = document.getElementById("groupDiscount");
+        divNumber.innerText = 0;
+        divDiscount.innerText ="￥"+ 0;
+        divGroupPrice.innerText="￥"+0;
     }
+    /**
+     * 清空session和界面的选择课程
+     */
+    optionError = () => {
+        let delSession = () => getJson(optionUrl);
+        delSession().then(res => {
+            if(res.code<=30000){
+                let divBody = document.getElementById("divBody");
+                divBody.innerHTML="";
+                setGroupNull();
+            }else {
+                console.log("删除失败!")
+            }
+        }).catch(res => {
+            console.log(res);
+        });
 
-    addCourse=(courseId)=>{
-        let divBody = document.getElementById("divBody");
-        divBody.appendChild((data)=>getCourse());
     };
-    getDetail =(course)=>{
+    /**
+     * 取消选择
+     * @param courseId 课程编号
+     */
+    cancelChoose = (courseId) => {
+        let divBody = document.getElementById(courseId);
+        let course = {
+            courseId:courseId
+        }
+        let getCourseInfo = (data) => postJson(
+            {
+                url:delCourseUrl,
+                method: "POST",
+                data
+            });
+        getCourseInfo(JSON.stringify(course)).then((res) => {
+            if (res.code<=30000) {
+                divBody.parentNode.removeChild(divBody);
+                setGroupDiy(res.data);
+            }else {
+                console.log(res);
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+    /**
+     * 添加课程
+     * @param courseId 课程编号
+     */
+    addCourse=(courseId)=>{
+
+        let course = {
+            courseId:courseId
+        };
+        let getCourseInfo = (data) => postJson(
+            {
+                url:addCourseUrl,
+                method: "POST",
+                data
+            });
+        console.log(JSON.stringify(course));
+        getCourseInfo(JSON.stringify(course)).then((res) => {
+            if (res.code<=30000) {
+                console.log(res);
+                let divBody = document.getElementById("divBody");
+                divBody.innerHTML = "";
+                for (let i = 0; i < res.data.courseInfos.length; i++) {
+                    let divGrid = getCourse(res.data.courseInfos[i]);
+                    divBody.appendChild(divGrid);
+                }
+                setGroupDiy(res.data);
+            }else {
+                console.log(res);
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+    /**
+     * 绘制选择课程
+     * @param course 课程信息
+     * @returns {HTMLElement} 绘制的table row
+     */
+    getCourse = (course) => {
 
         let otr = document.createElement("tr");
         otr.setAttribute("id",course.courseId);
@@ -79,7 +217,7 @@
         let adetail1 = document.createElement("a");
         adetail1.setAttribute("href",courseUrl+course.courseId);
         let imageGroup = document.createElement("img");
-        imageGroup.setAttribute("src", course.photo);
+        imageGroup.setAttribute("src", "/upload/people.jpg");
         imageGroup.setAttribute("width","80");
         imageGroup.setAttribute("height","80");
         adetail1.appendChild(imageGroup);
@@ -102,6 +240,7 @@
 
         let marktype = document.createElement("a");
         marktype.setAttribute("href","javascript:cancelChoose("+course.courseId+")");
+        marktype.innerText="取消";
         td4.appendChild(marktype);
         otr.appendChild(td1);
         otr.appendChild(td2);
@@ -110,6 +249,18 @@
         return otr;
     }
 
+    addGroup = () => {
+        let delSession = () => getJson(addGroupUrl);
+        delSession().then(res => {
+            if(res.code<=30000){
+                window.onload=orderUrl+res.data;
+            }else {
+                console.log("创建套餐失败!")
+            }
+        }).catch(res => {
+            console.log(res);
+        });
+    }
 </script>
 <!-- LOADER -->
 <div id="preloader">
@@ -190,16 +341,19 @@
                 <div class="row">
                     <h4 class="mbm xs2">套餐选择</h4>
                     <div class="col-md-8">
+                        <a href="javascript:optionError();" class="xi2 xs1 xw0 y">清空</a>
                         <div class="mn row">
                             <div class="col-md-12">
                                 <table summary="我的订单" cellspacing="0" cellpadding="0" class="table table-hover">
-                                    <tbody id="divBody">
+
                                     <tr>
                                         <th>课程</th>
                                         <th></th>
                                         <th ></th>
                                         <th width="80"><a href="" class="xi2 xs1 xw0 y">操作</a></th>
                                     </tr>
+
+                                    <tbody id="divBody">
                                     <tr class="sd_box">
                                         <td><img src="/upload/people.jpg" width="80" height="80"></td>
                                         <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
@@ -225,6 +379,7 @@
                                         </td>
                                     </tr>
                                     </tbody>
+                                    <script>addCourse();</script>
                                 </table>
                             </div>
 
@@ -236,13 +391,13 @@
                             <div class="shop-desc sd_box">
                                 <h3 id="groupName">自定义套餐</h3>
                                 <ul class="media-list">
-                                    <li>原价:<span id="groupPrice" style="color:red;">$800</span></li>
-                                    <li>课程数:<span id="groupCourseNumber">4</span></li>
+                                    <li>原价:<span id="groupPrice" style="color:red;"></span></li>
+                                    <li>课程数:<span id="groupCourseNumber"></span></li>
                                 </ul>
-                                <small>折扣价:<span id="groupDiscount" style="color:red;">$568</span></small>
-                                <p id="groupContent">长江小沙河</p>
+                                <small>折扣价:<span id="groupDiscount" style="color:red;"></span></small>
+                                <p id="groupContent">两件九折,三件八折,四件七折,最多五件</p>
                                 <div class="shop-meta">
-                                    <a href="javascript:mmp();" class="btn btn-primary">立即购买</a>
+                                    <a href="javascript:addGroup();" class="btn btn-primary">立即购买</a>
                                     <ul class="list-inline">
                                         <li id="mmp"> Tip: 套餐购买是促销活动,购买<a href="#">课程</a>的所有权益均保留</li>
                                     </ul>
@@ -259,127 +414,10 @@
             <div class="boxed boxedp4">
                 <div class="row blog-grid shop-grid" id="courseGrid">
                     <script type="text/javascript">
+
+                        getAllCoureForGroup();
                     </script>
                     <!--课程单元-->
-                    <div class="col-md-3">
-                        <div class="row courseGrid">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                        <small><span class="couCompany">公司</span></small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="row courseGrid">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                        <small><span class="couCompany">公司</span></small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="row courseGrid">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                        <small><span class="couCompany">公司</span></small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="row courseGrid">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                        <small><span class="couCompany">公司</span></small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
-                    </div>
 
                 </div><!-- end row -->
 
