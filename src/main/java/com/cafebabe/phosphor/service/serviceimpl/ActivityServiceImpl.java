@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:    活动Service层实现类
@@ -61,22 +63,58 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Page getActivityInfoByPage(Integer pageIndex, Integer pageSize) {
+    public Page getActivityInfoByPage(Integer pageIndex, Integer pageSize, String key, String ascOrDesc, String title) {
+        String undefined = "undefined";
+        String _null = "null";
         Page page = new Page();
-        page.setTotalRecord(activityDAO.getActivityCount());
+        if(key != null && !key.equals(undefined) && !key.equals(_null) ){
+            page.setKey(key);
+        }
+        if(ascOrDesc != null && !ascOrDesc.equals(undefined) && !ascOrDesc.equals(_null)){
+            page.setAscOrDesc(ascOrDesc);
+        }
+        if(title != null && !title.equals(undefined) && !title.equals(_null)){
+            page.setTitle(title);
+        }
+
+        page.setTotalRecord(activityDAO.getActivityCountWithCondition(page.getTitle()));
         Integer totalPages = (page.getTotalRecord() % page.getPageSize() == 0) ? (page.getTotalRecord() / page.getPageSize()) : ((page.getTotalRecord() / page.getPageSize())+1);
         page.setTotalPages(totalPages);
         page.setCurrentPageCode(pageIndex);
         page.setStartRecord(pageIndex * pageSize);
         page.setEndRecord(pageSize * (pageIndex + 1) - 1);
+        page.setKey(key);
+        page.setAscOrDesc(ascOrDesc);
+        page.setTitle(title);
         List<Activity> activityList = activityDAO.getActivityByPage(page);
+        System.out.println("************************************************");
+        System.out.println("service page :"+page);
+        for(Activity a:activityDAO.getActivityByPage(page)){
+            System.out.println("service activity :"+a);
+        }
+        System.out.println("************************************************");
+
         page.setModelList(activityList);
+        System.out.println(page.toString()+"=====");
         return page;
     }
 
     @Override
     public Integer getActivityCount() {
        return activityDAO.getActivityCount();
+    }
+
+    @Override
+    public List<Activity> getActivityByCompanyId(Integer companyId, Integer activityId) {
+        Map<String, Integer> idMap = new HashMap<>();
+        idMap.put("companyId", companyId);
+        idMap.put("activityId", activityId);
+        return activityDAO.getActivityByCompanyId(idMap);
+    }
+
+    @Override
+    public List<Activity> getRecentActivity() {
+        return activityDAO.getRecentActivity();
     }
 
     public List<ActivityInfo> merge(List<Activity> activityList) {

@@ -1,5 +1,9 @@
+document.write("<script type='text/javascript' language='JavaScript' src='/js/activity/util.js'></script>");
+
+
 /**
  * 查询所有Activity数据，并且返回DOM
+ * 暂时未使用
  */
 function getActivityAll() {
     let request = getXhr();
@@ -10,6 +14,7 @@ function getActivityAll() {
     request.onreadystatechange = function () {
         if(request.readyState == 4){
             if(request.status >= 200 && request.status<300 || request.status == 304)
+                alert(request.responseText);
                 loadActivityList(request.responseText);
         }
     }
@@ -19,12 +24,22 @@ function getActivityAll() {
  *  分页查询Activity
  * @param pageIndex 页码
  * @param pageSize  每页长度
+ * @param key 排序字段
+ * @param ascOrDesc 升序或者降序
+ * @param title 模糊查询关键字
  */
-function getActivityByPage(pageIndex, pageSize) {
+function getActivityByPage(pageIndex, pageSize, key, ascOrDesc, title) {
     let request = getXhr();
-    request.open("GET", "/activity/getActivityInfoByPage?pageIndex="+pageIndex+"&pageSize="+pageSize, true);
+    if(typeof (key) == undefined)
+        key = null;
+    if(typeof (ascOrDesc) == undefined || ascOrDesc == "null")
+        key = null;
+    if(typeof (title) == undefined || title == "")
+        title = null;
+    let postData = "pageIndex="+pageIndex +"&pageSize="+ pageSize +"&key="+ key + "&ascOrDesc=" + ascOrDesc +"&title="+ title;
+    request.open("POST", "/activity/getActivityInfoByPage", true);
     request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.send(null);
+    request.send(postData);
     
     request.onreadystatechange = function () {
         if(request.readyState == 4){
@@ -33,7 +48,6 @@ function getActivityByPage(pageIndex, pageSize) {
             }
         }
     }
-    location.href = "#activityListTop";
 }
 
 /**
@@ -44,7 +58,7 @@ function getActivityByPage(pageIndex, pageSize) {
 function loadActivityListByPage(pageJson) {
     let page = JSON.parse(pageJson);
     let activityInfoListData = page.data;
-
+    alert(activityInfoListData);
     let totalPages =activityInfoListData.totalPages;
     let hidTotalPages = document.getElementById("totalPages");
     hidTotalPages.setAttribute("value", totalPages);
@@ -74,6 +88,7 @@ function loadActivityListByPage(pageJson) {
         refreshGrid(activityInfoList, pageSize);
     }
     refreshUlPagination(currentPageCode, totalPages);
+    getRecentActivity();
 }
 
 /**
@@ -98,6 +113,17 @@ function refreshGrid(activityInfoList, pageSize) {
         let spDesc = document.getElementsByClassName("spDesc")[i];
         spDesc.innerText = activityDesc;
 
+        let activityImg = activityInfo.activitySf;
+        let imgActivity = document.getElementsByClassName("img-activity")[i];
+        imgActivity.setAttribute("src", activityImg);
+
+        imgActivity.onclick = showBigActivityImg;
+
+        imgActivity.addEventListener('error', function (event) {
+            imgActivity.setAttribute("src", '/images/loader.gif');
+            imgActivity.setAttribute("alt", "活动图片暂缺");
+        });
+
     }
     for(let i = 0; i < pageSize; i ++){
         if(i < (pageSize - length)){
@@ -110,6 +136,21 @@ function refreshGrid(activityInfoList, pageSize) {
         }
     }
 }
+
+
+/**
+ * 点击活动时，显示大图
+ */
+function showBigActivityImg() {
+    let bigActivityImg = document.getElementById("bigActivityImg");
+    let imgPath = this.src;
+    if(imgPath != bigActivityImg.src)
+        bigActivityImg.setAttribute("src", imgPath);
+    else
+        return void(0);
+}
+
+
 /**
  * 生成页码列表
  * @param totalPages
@@ -165,21 +206,6 @@ function clearPageIndex(pageUl) {
         pageUl.removeChild(pageIndexList[i]);
 }
 
-
-
-/**
- * 获取Xhr对象
- * @returns {any}
- */
-function getXhr() {
-    let request = null;
-    if(window.XMLHttpRequest)
-        request = new XMLHttpRequest();
-    else
-        request = new ActiveXObject("Microsoft.XMLHTTP");
-
-    return request;
-}
 
 
 
@@ -253,24 +279,233 @@ function generateDiv(activityInfo) {
     return divGrid;
 }
 
+
+/**
+ *刷新左侧最近热门活动
+ */
+function getRecentActivity() {
+    let request = getXhr();
+    request.open("GET", "/activity/getRecentActivity", true);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.send(null);
+    request.onreadystatechange = function () {
+        if(request.readyState == 4){
+            if(request.status >= 200 && request.status < 300 || request.status == 304){
+                loadRecentActivityToView(request.responseText);
+            }
+        }
+    };
+}
+
+/**
+ * 将获取到的近期活动加载到页面
+ * @param recentActivity
+ */
+function loadRecentActivityToView(recentActivity) {
+    let recentActivityList = JSON.parse(recentActivity).data;
+    let length = recentActivityList.length;
+    let divRecentActivity = document.getElementById("divRecentActivity");
+    let containerList  = divRecentActivity.getElementsByClassName("media");
+    for(let i = 0; i < length; i++){
+        let container = containerList[i];
+        let recentActivity = recentActivityList[i];
+        container.style.display = "block";
+
+        //加载图片
+        let activityImg = container.getElementsByTagName("img")[0];
+        activityImg.setAttribute("src", recentActivity.activitySf);
+        activityImg.addEventListener("error", function (event) {
+            activityImg.setAttribute("src", "/images/loader.gif");
+            activityImg.setAttribute("alt", "暂无图片");
+        });
+
+        let aToActivity = container.getElementsByTagName("a")[0];
+        aToActivity.setAttribute("href", "/activityUi/returnActivityDetail?activityId="+recentActivity.activityId);
+        aToActivity.innerText = recentActivity.activityTitle;
+
+        let liStartTime = container.getElementsByTagName("li")[0];
+        let startTimeFull = timestampToDate(recentActivity.activityStartTime);
+        let timeShow = startTimeFull.substring(startTimeFull.indexOf("年") + 1, startTimeFull.lastIndexOf(":"));
+        liStartTime.innerText = timeShow;
+
+        let liActivityPrice = container.getElementsByTagName("li")[1];
+        liActivityPrice.innerText = "￥ "+recentActivity.activityPrice;
+
+    }
+
+}
+
+/**
+ * 按照标题查询
+ * @returns {*}
+ */
+function searchByActivityTitle(){
+    let activityTitle = document.getElementById("activity-title");
+    if(activityTitle.value != null && activityTitle.value != ""){
+        getActivityByPage(0, 4, null, null, activityTitle.value);
+    }
+    else
+        return void(0);
+}
+
+
+/**
+ * 按照报名开始时间排序
+ */
+function orderByApplyTime() {
+    let title = document.getElementById("activity-title").value;
+    let applyTimeOrder = document.getElementById("applyTimeOrder");
+    let iptApplyTimeOrder = applyTimeOrder.getElementsByTagName("input")[0];
+    if(iptApplyTimeOrder.value == "null"){
+        changeSortView("activity_apply_start_time", "asc");
+    }
+    else if(iptApplyTimeOrder.value == "asc"){
+        changeSortView("activity_apply_start_time", "desc");
+    }
+    else{
+        changeSortView("activity_apply_start_time", "null");
+    }
+
+    let ascOrDesc = iptApplyTimeOrder.value;
+
+    let key = "activity_apply_start_time";
+
+    getActivityByPage(0, 4, key, ascOrDesc, title);
+
+}
+
+/**
+ * 按照活动开始时间排序
+ */
+function orderByBeginTime() {
+    let title = document.getElementById("activity-title").value;
+    let startTimeOrder = document.getElementById("startTimeOrder");
+    let iptStartTimeOrder = startTimeOrder.getElementsByTagName("input")[0];
+    if(iptStartTimeOrder.value == "null"){
+        changeSortView("activity_start_time", "asc");
+    }
+    else if(iptStartTimeOrder.value == "asc"){
+        changeSortView("activity_start_time", "desc");
+    }
+    else {
+        changeSortView("activity_start_time", "null");
+    }
+
+    let ascOrDesc = iptStartTimeOrder.value;
+
+    let key = "activity_start_time";
+
+    getActivityByPage(0, 4, key, ascOrDesc, title);
+}
+
+/**
+ * 在切换排序方式时，更改页面中的状态
+ */
+function changeSortView(orderKey, ascOrDesc) {
+    let applyTimeOrder = document.getElementById("applyTimeOrder");
+    let startTimeOrder = document.getElementById("startTimeOrder");
+    if(orderKey == "activity_apply_start_time"){
+        let iptApplyTimeOrder = applyTimeOrder.getElementsByTagName("input")[0];
+        if(ascOrDesc == "asc"){
+            applyTimeOrder.getElementsByTagName("img")[0].style.visibility = "visible";
+            applyTimeOrder.getElementsByTagName("img")[1].style.visibility = "hidden";
+
+            startTimeOrder.getElementsByTagName("img")[0].style.visibility = "visible";
+            startTimeOrder.getElementsByTagName("img")[1].style.visibility = "visible";
+            startTimeOrder.getElementsByTagName("input")[0].value = "null";
+        }
+        else if(ascOrDesc == "desc"){
+            applyTimeOrder.getElementsByTagName("img")[0].style.visibility = "hidden";
+            applyTimeOrder.getElementsByTagName("img")[1].style.visibility = "visible";
+
+            startTimeOrder.getElementsByTagName("img")[0].style.visibility = "visible";
+            startTimeOrder.getElementsByTagName("img")[1].style.visibility = "visible";
+            startTimeOrder.getElementsByTagName("input")[0].value = "null";
+        }
+        else {
+            applyTimeOrder.getElementsByTagName("img")[0].style.visibility = "visible";
+            applyTimeOrder.getElementsByTagName("img")[1].style.visibility = "visible";
+
+            startTimeOrder.getElementsByTagName("img")[0].style.visibility = "visible";
+            startTimeOrder.getElementsByTagName("img")[1].style.visibility = "visible";
+            startTimeOrder.getElementsByTagName("input")[0].value = "null";
+        }
+        iptApplyTimeOrder.value = ascOrDesc;
+    }
+    else {
+        let iptStartTimeOrder = startTimeOrder.getElementsByTagName("input")[0];
+        if(ascOrDesc == "asc"){
+            startTimeOrder.getElementsByTagName("img")[0].style.visibility = "visible";
+            startTimeOrder.getElementsByTagName("img")[1].style.visibility = "hidden";
+
+            applyTimeOrder.getElementsByTagName("img")[0].style.visibility = "visible";
+            applyTimeOrder.getElementsByTagName("img")[1].style.visibility = "visible";
+            applyTimeOrder.getElementsByTagName("input")[0].value = "null";
+        }
+        else if(ascOrDesc == "desc"){
+            startTimeOrder.getElementsByTagName("img")[0].style.visibility = "hidden";
+            startTimeOrder.getElementsByTagName("img")[1].style.visibility = "visible";
+
+            applyTimeOrder.getElementsByTagName("img")[0].style.visibility = "visible";
+            applyTimeOrder.getElementsByTagName("img")[1].style.visibility = "visible";
+            applyTimeOrder.getElementsByTagName("input")[0].value = "null";
+        }
+        else {
+            startTimeOrder.getElementsByTagName("img")[0].style.visibility = "visible";
+            startTimeOrder.getElementsByTagName("img")[1].style.visibility = "visible";
+
+            applyTimeOrder.getElementsByTagName("img")[0].style.visibility = "visible";
+            applyTimeOrder.getElementsByTagName("img")[1].style.visibility = "visible";
+            applyTimeOrder.getElementsByTagName("input")[0].value = "null";
+        }
+        iptStartTimeOrder.value = ascOrDesc;
+    }
+}
+
+
 /**
  * 跳转到指定页面
  */
 function newPage() {
+    let title = document.getElementById("activity-title").value;
+    let applyTimeOrder = document.getElementById("applyTimeOrder");
+    let startTimeOrder = document.getElementById("startTimeOrder");
     let pageIndex = parseInt(this.innerText) - 1;
-    getActivityByPage(pageIndex, 4);
+
+    if((applyTimeOrder.getElementsByTagName("input")[0].value == "null") && (startTimeOrder.getElementsByTagName("input")[0].value == "null")){
+        getActivityByPage(pageIndex, 4, "activity_apply_start_time", "null", title);
+    }
+    else if(applyTimeOrder.getElementsByTagName("input")[0].value != "null"){
+        getActivityByPage(pageIndex, 4, "activity_apply_start_time", applyTimeOrder.getElementsByTagName("input")[0].value, title);
+    }
+    else {
+        getActivityByPage(pageIndex, 4, "activity_start_time", startTimeOrder.getElementsByTagName("input")[0].value, title);
+    }
 }
+
+
 
 /**
  * 加载上一页数据，并刷新页面
  */
 
 function perPage() {
+    let title = document.getElementById("activity-title").value;
+    let applyTimeOrder = document.getElementById("applyTimeOrder");
+    let startTimeOrder = document.getElementById("startTimeOrder");
     let currentPageCode = document.getElementById("currentPageCode").getAttribute("value");
     if(currentPageCode <= 0)
         return false;
     else{
-        getActivityByPage(currentPageCode - 1, 4);
+        if((applyTimeOrder.getElementsByTagName("input")[0].value == "null") && (startTimeOrder.getElementsByTagName("input")[0].value == "null")){
+            getActivityByPage(currentPageCode -1 , 4, "activity_apply_start_time", "null", title);
+        }
+        else if(applyTimeOrder.getElementsByTagName("input")[0].value != "null"){
+            getActivityByPage(currentPageCode -1, 4, "activity_apply_start_time", applyTimeOrder.getElementsByTagName("input")[0].value, title);
+        }
+        else {
+            getActivityByPage(currentPageCode -1, 4, "activity_start_time", startTimeOrder.getElementsByTagName("input")[0].value, title);
+        }
     }
 }
 
@@ -279,9 +514,22 @@ function perPage() {
  * @param currentPageCode
  */
 function nextPage() {
+    let title = document.getElementById("activity-title").value;
+    let applyTimeOrder = document.getElementById("applyTimeOrder");
+    let startTimeOrder = document.getElementById("startTimeOrder");
     let currentPageCode = parseInt(document.getElementById("currentPageCode").getAttribute("value"));
     let totalPages = parseInt(document.getElementById("totalPages").getAttribute("value"));
     if(currentPageCode >= (totalPages - 1))
         return void(0);
-    getActivityByPage((currentPageCode + 1), 4);
+    else {
+        if((applyTimeOrder.getElementsByTagName("input")[0].value == "null") && (startTimeOrder.getElementsByTagName("input")[0].value == "null")){
+            getActivityByPage(currentPageCode + 1 , 4, "activity_apply_start_time", "null", title);
+        }
+        else if(applyTimeOrder.getElementsByTagName("input")[0].value != "null"){
+            getActivityByPage(currentPageCode + 1, 4, "activity_apply_start_time", applyTimeOrder.getElementsByTagName("input")[0].value, title);
+        }
+        else {
+            getActivityByPage(currentPageCode + 1, 4, "activity_start_time", startTimeOrder.getElementsByTagName("input")[0].value, title);
+        }
+    }
 }

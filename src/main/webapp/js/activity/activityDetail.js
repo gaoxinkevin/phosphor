@@ -1,13 +1,14 @@
-document.write("<script type='text/javascript' language='JavaScript' src='/js/activity/activity.js'></script>");
+document.write("<script type='text/javascript' language='JavaScript' src='/js/activity/util.js'></script>");
 
 /**
  * 加载详情页面
+ * 页面的入口函数
  */
 function getActivityDetail() {
     let request = getXhr();
     let url = window.location.search;
     let activityId = url.substring(url.lastIndexOf("=")+1, url.length);
-    request.open("POST", "/activity/getActivityDetail");
+    request.open("POST", "/activity/getActivityDetail", true);
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     request.send("activityId="+activityId);
 
@@ -17,7 +18,7 @@ function getActivityDetail() {
                 loadActivityDetail(request.responseText);
             }
         }
-    }
+    };
 }
 
 /**
@@ -26,7 +27,7 @@ function getActivityDetail() {
  */
 function loadActivityDetail(responseText) {
     let responseData = JSON.parse(responseText);
-    let activityDetail = responseData.data;
+    activityDetail = responseData.data;
     loadView(activityDetail);
 }
 
@@ -35,56 +36,104 @@ function loadActivityDetail(responseText) {
  * @param activityDetail
  */
 function loadView(activityDetail) {
+
+
+    let activityId = activityDetail.activityId;
+
+
+    //显示标题和价格
     let hActivityTitle = document.getElementsByClassName("hActivityTitle");
     hActivityTitle[0].innerText = activityDetail.activityTitle;
-    hActivityTitle[1].innerText = activityDetail.activityTitle;
+    hActivityTitle[1].innerText = "￥"+activityDetail.activityPrice;
     document.title = "详情：" + activityDetail.activityTitle;
 
     let activityBeginTime = document.getElementById("beginTime");
 
-    //时间戳转换为时间
     let timestamp = activityDetail.activityStartTime;
-    let date = new Date(timestamp);
-    let Y = date.getFullYear() + '-';
-    let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + -'';
-    let D = date.getDate() + ' ';
-    let h = date.getHours() + ':';
-    let m = date.getMinutes() + ':';
-    let s = date.getSeconds();
-
-    let dateFull = Y+M+D+h+m+s;
+    let dateFull = timestampToDate(timestamp);
     activityBeginTime.innerText += dateFull;
 
     let company = document.getElementById("aCompany");
-    company.innerText = activityDetail.companyName;
-    company.setAttribute("href", "company/company?companyId="+activityDetail.companyId);
+    let companyId = activityDetail.companyId
+    let companyName = activityDetail.companyName;
+    company.innerText = companyName;
+    company.setAttribute("href", "/company/company?companyId="+companyId);
+    getCompanyInfo(companyId);
+
+    let activityImg = document.getElementById("activityImg");
+    activityImg.setAttribute("src", activityDetail.activitySf);
+    activityImg.setAttribute("alt", "活动现场");
 
     let activityContent = document.getElementById("activityContent");
     activityContent.innerText = activityDetail.activityContent;
 
+    //刷新报名按钮
     btnSignIn = document.getElementById("btnSignIn");
-    btnSignIn.onclick = signInForActivity;
+    refreshBtnSignIn();
+
 
     let teacherId = activityDetail.teacherId;
     getTeacherInfo(teacherId);
 
-    timestampStopApply = activityDetail.activityApplyEndTime;
+    //刷新右侧推荐活动栏
+    loadOtherActivity(companyName, companyId, activityId);
 
 }
+
+
+/**
+ * 请求companyController获取company信息
+ * @param companyId
+ */
+function getCompanyInfo(companyId){
+    let request = getXhr();
+    request.open("GET", "/company/company?companyId="+companyId);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.send(null);
+    request.onreadystatechange = function () {
+        if(request.readyState == 4){
+            if(request.status >= 200 && request.status < 300 || request.status == 304){
+                loadCompanyToView(request.responseText);
+            }
+        }
+    }
+}
+
+/**
+ * 将公司信息加载到页面
+ * @param responseText
+ */
+function loadCompanyToView(responseText) {
+    let companyInfo = JSON.parse(responseText).data;
+    let companyImg = document.getElementById("companyImg");
+    companyImg.setAttribute("src", companyInfo.companyPhoto);
+    companyImg.addEventListener('error',function (event) {
+        companyImg.src = "/upload/banner.jpeg";
+    });
+
+}
+
 
 /**
  * 定时刷新报名按钮
  */
 function refreshBtnSignIn() {
-    let retainTime = getRemainTime(timestampStopApply);
-    if(retainTime == "0"){
+    let retainTime = getRemainTime(parseInt(activityDetail.activityApplyEndTime));
+
+    if(parseInt(activityDetail.activityApplyEndTime) > (new Date()).valueOf()){
+        btnSignIn.innerText = "立即报名 (剩余时间 "+retainTime+")";
+        btnSignIn.onclick = signInForActivity;
+    }
+    else if(parseInt(activityDetail.activityEndTime) > (new Date()).valueOf() ){
         btnSignIn.innerText = "报名截止";
         btnSignIn.classList.add("disable");
         btnSignIn.onclick = stopApply;
     }
-    else{
-        btnSignIn.innerText = "立即报名 （剩余时间 "+retainTime+")";
+    else {
+        btnSignIn.innerText = "查看总结";
+        btnSignIn.onclick = toActivitySummary;                                                                                  ;
     }
+
 }
 /**
  * 请求获取teacher信息
@@ -192,6 +241,71 @@ function loadTeacherCourse2View(responseText) {
 }
 
 /**
+ * 加载机构其他活动
+ * 按照时间排序，取前五个
+ */
+function loadOtherActivity(companyName, companyId, activityId) {
+    let comTitleOtherActivity = document.getElementById("comTitleOtherActivity");
+    comTitleOtherActivity.innerText = companyName+"的热门活动";
+    let request = getXhr();
+    request.open("GET","/activity/getActivityByCompanyId?companyId="+companyId+"&activityId="+activityId);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.send(null);
+    
+    request.onreadystatechange = function () {
+        if (request.readyState == 4){
+            if(request.status >= 200 && request.status < 300 || request.status == 304){
+                loadOtherActivityToView(request.responseText);
+            }
+        }
+    }
+
+}
+
+/**
+ * 将获取到的其他活动加载到页面中
+ * @param responseText
+ */
+function loadOtherActivityToView(responseText) {
+    let otherActivityList = JSON.parse(responseText).data;
+    let divOtherActivity = document.getElementById("divOtherActivity");
+    let divContainerList = divOtherActivity.getElementsByClassName("media");
+    let length = otherActivityList.length;
+    for(let i = 0; i < length; i++){
+        let otherActivity = otherActivityList[i];
+        let divContainer = divContainerList[i];
+        divContainer.style.display = "block";
+        let imgActivity = divContainer.getElementsByTagName("img")[0];
+        imgActivity.setAttribute("src", otherActivity.activitySf);
+        imgActivity.addEventListener('error', function (event) {
+            imgActivity.setAttribute("src", "/images/loader.gif");
+            imgActivity.setAttribute("alt", "图片加载失败");
+        });
+
+        let aTitle = divContainer.getElementsByTagName("a")[0];
+        aTitle.innerText = otherActivity.activityTitle;
+        aTitle.setAttribute("href", "/activityUi/returnActivityDetail?activityId="+otherActivity.activityId);
+
+
+        let liBeginTime = divContainer.getElementsByTagName("li")[0];
+        let timeFull = timestampToDate(otherActivity.activityStartTime);
+        let timeShow = timeFull.substring(timeFull.indexOf("年") + 1, timeFull.lastIndexOf(":"));
+        liBeginTime.innerText = "开始时间 "+timeShow;
+
+
+        let liPrice = divContainer.getElementsByTagName("li")[1];
+        liPrice.innerText = "￥ "+otherActivity.activityPrice;
+
+    }
+
+    /*for(let i = 0; i < (divContainerList.length - length); i++){
+        let divUseless = divContainerList[divContainerList.length - i];
+        divUseless.style.visibility = "hidden";
+    }*/
+}
+
+
+/**
  * 获取报名剩余时间
  * @param stopApplyTime 截止报名时间
  * @returns {string}    处理后的剩余时间
@@ -230,4 +344,11 @@ function signInForActivity() {
 function stopApply() {
     window.alert("报名时间已过");
     return void(0);
+}
+
+/**
+ * 查看总结
+ */
+function toActivitySummary() {
+    window.location.href = "/activitySummaryUi/returnActivitySummaryUi?activityId="+activityDetail.activityId;
 }

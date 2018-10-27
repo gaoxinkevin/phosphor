@@ -2,6 +2,8 @@ package com.cafebabe.phosphor.dao;
 
 import com.cafebabe.phosphor.model.entity.ActivitySummary;
 
+import java.util.List;
+
 /**
  * ActivitySummaryDAO继承基类
  */
@@ -20,7 +22,7 @@ public interface ActivitySummaryDAO extends MyBatisBaseDao<ActivitySummary, Inte
      * @return  ActivitySummary
      * @date        2018/10/17 19:02
     */
-    ActivitySummary getActivitySummaryByActID(Integer actId);
+    List<ActivitySummary> getActivitySummaryByActID(Integer actId);
 
     /**
      * 添加ActivitySummary
