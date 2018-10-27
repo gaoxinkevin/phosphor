@@ -50,7 +50,6 @@ public class ActivityController {
     public  JsonResponse getActivityInfoByPage(Integer pageIndex, Integer pageSize, String key, String ascOrDesc, String title){
         System.out.println(pageIndex +"=="+ pageSize +"=="+key +"=="+ ascOrDesc +"==" + title);
         Page page = activityService.getActivityInfoByPage(pageIndex, pageSize, key, ascOrDesc, title);
-        System.out.println("=======:"+page);
         return new JsonResponse(200, "success", page);
     }
 

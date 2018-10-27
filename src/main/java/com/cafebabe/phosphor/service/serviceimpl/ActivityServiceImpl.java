@@ -87,12 +87,14 @@ public class ActivityServiceImpl implements ActivityService {
         page.setAscOrDesc(ascOrDesc);
         page.setTitle(title);
         List<Activity> activityList = activityDAO.getActivityByPage(page);
+
         System.out.println("************************************************");
-        System.out.println("service page :"+page);
         for(Activity a:activityDAO.getActivityByPage(page)){
             System.out.println("service activity :"+a);
+            System.out.println("===================================================");
         }
         System.out.println("************************************************");
+
 
         page.setModelList(activityList);
         System.out.println(page.toString()+"=====");
