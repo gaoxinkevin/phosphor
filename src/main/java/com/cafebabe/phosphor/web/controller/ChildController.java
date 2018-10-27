@@ -102,10 +102,18 @@ public class ChildController {
         }
     }
 
-    @RequestMapping("singleChildInfo/{childId}")
+    @RequestMapping("singleChildInfo")
     @ResponseBody
-    public JsonResponse singleChildInfo(@PathVariable String childId){
-        System.out.println(childId);
-        return new JsonResponse(2000,"成功",true);
+    public JsonResponse singleChildInfo(@RequestBody ChildrenInfoDto childrenInfoDto){
+        Integer id = childrenInfoDto.getChildId();
+        System.out.println(childrenInfoDto);
+        System.out.println(id);
+        return new JsonResponse(2000,"成功",childService.getSingleChildInfo(id));
+    }
+
+    @RequestMapping("singleChildInfoNoCourse")
+    @ResponseBody
+    public JsonResponse singleChildInfoNoCourse(@RequestBody Child child){
+        return new JsonResponse(20000,"成功",childService.getSingleChildInfoNoCourseService(child.getChildId()));
     }
 }

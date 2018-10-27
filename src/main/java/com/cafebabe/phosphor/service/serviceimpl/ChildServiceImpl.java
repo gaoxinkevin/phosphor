@@ -54,4 +54,14 @@ public class ChildServiceImpl implements ChildService {
         int row = childDAO.updateByPrimaryKey(child);
         return row == 1;
     }
+
+    @Override
+    public List<ChildrenInfoDto> getSingleChildInfo(Integer childId) {
+        return childDAO.getSingleChildInfo(childId);
+    }
+
+    @Override
+    public Child getSingleChildInfoNoCourseService(Integer childId) {
+        return childDAO.getSingleChildInfoNoCourseDao(childId);
+    }
 }

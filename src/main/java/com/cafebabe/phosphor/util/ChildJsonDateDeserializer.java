@@ -1,7 +1,6 @@
 package com.cafebabe.phosphor.util;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
@@ -27,7 +26,7 @@ import java.util.Date;
 public class ChildJsonDateDeserializer extends JsonDeserializer {
 
     @Override
-    public Date deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+    public Date deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String date = jsonParser.getText();
         System.out.println(date);
@@ -36,14 +35,5 @@ public class ChildJsonDateDeserializer extends JsonDeserializer {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static String stampToDate(String s){
-        String res;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long lt = new Long(s);
-        Date date = new Date(lt);
-        res = simpleDateFormat.format(date);
-        return res;
     }
 }

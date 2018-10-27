@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
 /**
@@ -26,12 +27,19 @@ import java.util.Date;
 @ToString
 @EqualsAndHashCode
 public class ChildrenInfoDto implements Serializable {
+
     private Integer childId;
+
     private String  childName;
+
     private Integer childGender;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date childBirthday;
+
     private String  gradeScore;
+
     private String  courseName;
+
     private String  childSf;
 }

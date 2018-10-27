@@ -4,7 +4,20 @@ package com.cafebabe.phosphor.util;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class SMSUtil {
+/**
+ *
+ * @author supersuntangao@gmail.com
+ *
+ * class_name: SMSUtil
+ *
+ * create_date: 2018/10/25
+ *
+ * create_time: 09:34
+ *
+ * description: 封装短信验证码
+ **/
+
+public final class SmsUtil {
 
     private static final String TPL_ID = "106234";
 
