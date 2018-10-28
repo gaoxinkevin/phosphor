@@ -44,15 +44,14 @@
       </if>
     <if test="key != null and key != 'null' ">
       order by
-      #{key,jdbcType=VARCHAR}
+      ${key}
     </if>
     <if test="ascOrDesc!= null and ascOrDesc != 'null' ">
-      #{ascOrDesc, jdbcType=VARCHAR}
+      ${ascOrDesc}
     </if>
     limit #{startRecord}, #{pageSize}
   </select>
 
-  <!--根据公司ID获取该公司按活动开始排序的前四个活动信息-->
   <select id="getActivityByCompanyId" resultType="com.cafebabe.phosphor.model.entity.Activity" parameterType="java.util.Map">
     select
     <include refid="Base_Column_List"/>
@@ -62,6 +61,7 @@
     order by activity_start_time asc
     limit 3
   </select>
+  <!--根据公司ID获取该公司按活动开始排序的前四个活动信息-->
     <select id="getRecentActivity" resultType="com.cafebabe.phosphor.model.entity.Activity">
         select
         <include refid="Base_Column_List"/>
@@ -75,7 +75,6 @@
   <select id="getActivityCount" resultType="java.lang.Integer">
         select count(*) from activity
     </select>
-
     <select id="getActivityCountWithCondition" resultType="java.lang.Integer" parameterType="java.lang.String">
       select count(*)
       from activity

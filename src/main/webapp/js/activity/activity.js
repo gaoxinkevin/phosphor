@@ -14,7 +14,6 @@ function getActivityAll() {
     request.onreadystatechange = function () {
         if(request.readyState == 4){
             if(request.status >= 200 && request.status<300 || request.status == 304)
-                alert(request.responseText);
                 loadActivityList(request.responseText);
         }
     }
@@ -58,7 +57,6 @@ function getActivityByPage(pageIndex, pageSize, key, ascOrDesc, title) {
 function loadActivityListByPage(pageJson) {
     let page = JSON.parse(pageJson);
     let activityInfoListData = page.data;
-    alert(activityInfoListData);
     let totalPages =activityInfoListData.totalPages;
     let hidTotalPages = document.getElementById("totalPages");
     hidTotalPages.setAttribute("value", totalPages);
@@ -357,9 +355,9 @@ function orderByApplyTime() {
     let applyTimeOrder = document.getElementById("applyTimeOrder");
     let iptApplyTimeOrder = applyTimeOrder.getElementsByTagName("input")[0];
     if(iptApplyTimeOrder.value == "null"){
-        changeSortView("activity_apply_start_time", "asc");
+        changeSortView("activity_apply_start_time", "ASC");
     }
-    else if(iptApplyTimeOrder.value == "asc"){
+    else if(iptApplyTimeOrder.value == "ASC"){
         changeSortView("activity_apply_start_time", "desc");
     }
     else{
@@ -382,9 +380,9 @@ function orderByBeginTime() {
     let startTimeOrder = document.getElementById("startTimeOrder");
     let iptStartTimeOrder = startTimeOrder.getElementsByTagName("input")[0];
     if(iptStartTimeOrder.value == "null"){
-        changeSortView("activity_start_time", "asc");
+        changeSortView("activity_start_time", "ASC");
     }
-    else if(iptStartTimeOrder.value == "asc"){
+    else if(iptStartTimeOrder.value == "ASC"){
         changeSortView("activity_start_time", "desc");
     }
     else {
@@ -406,7 +404,7 @@ function changeSortView(orderKey, ascOrDesc) {
     let startTimeOrder = document.getElementById("startTimeOrder");
     if(orderKey == "activity_apply_start_time"){
         let iptApplyTimeOrder = applyTimeOrder.getElementsByTagName("input")[0];
-        if(ascOrDesc == "asc"){
+        if(ascOrDesc == "ASC"){
             applyTimeOrder.getElementsByTagName("img")[0].style.visibility = "visible";
             applyTimeOrder.getElementsByTagName("img")[1].style.visibility = "hidden";
 
@@ -434,7 +432,7 @@ function changeSortView(orderKey, ascOrDesc) {
     }
     else {
         let iptStartTimeOrder = startTimeOrder.getElementsByTagName("input")[0];
-        if(ascOrDesc == "asc"){
+        if(ascOrDesc == "ASC"){
             startTimeOrder.getElementsByTagName("img")[0].style.visibility = "visible";
             startTimeOrder.getElementsByTagName("img")[1].style.visibility = "hidden";
 
