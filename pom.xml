@@ -342,11 +342,15 @@
             <version>2.7.8</version>
             <scope>compile</scope>
         </dependency>
+
+        <!--solr-->
+        <!-- https://mvnrepository.com/artifact/org.apache.solr/solr-solrj -->
         <dependency>
-            <groupId>com.huaban</groupId>
-            <artifactId>jieba-analysis</artifactId>
-            <version>1.0.2</version>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>7.2.1</version>
         </dependency>
+
     </dependencies>
 
     <build>
