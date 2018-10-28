@@ -108,6 +108,7 @@ public class GroupController {
                 return new JsonResponse(50000,"error","没有该套餐");
         }else{
             GroupDTO diyGroupDTO =(GroupDTO) httpServletRequest.getSession().getAttribute(diyGroupDTOStr);
+
             if (diyGroupDTO.getCourseInfos().size()>1&&diyGroupDTO.getCourseInfos().size()<5){
                 Integer groupId = groupService.insertGroupDTO(diyGroupDTO);
                 return new JsonResponse(30000,"success",groupId);

@@ -31,13 +31,11 @@ public class PriceTwoImpl implements Price {
 
     @Override
     public BigDecimal getPriceCountInfo(List<CourseInfo> courses) {
-        BigDecimal price = new BigDecimal(0);
+        BigDecimal price = new BigDecimal("0");
         for (CourseInfo cours : courses) {
-            price.add(cours.getCoursePrice());
+            price = price.add(cours.getCoursePrice());
         }
-        BigDecimal count= price.multiply(new BigDecimal(0.90));
-        System.out.println(count);
-        return count;
+        return price.multiply(new BigDecimal("0.90"));
 
     }
 }

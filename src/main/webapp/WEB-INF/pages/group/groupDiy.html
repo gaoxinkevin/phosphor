@@ -253,7 +253,7 @@
         let delSession = () => getJson(addGroupUrl);
         delSession().then(res => {
             if(res.code<=30000){
-                window.onload=orderUrl+res.data;
+                window.location.href = orderUrl+res.data;
             }else {
                 console.log("创建套餐失败!")
             }
@@ -354,30 +354,6 @@
                                     </tr>
 
                                     <tbody id="divBody">
-                                    <tr class="sd_box">
-                                        <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                        <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                        <td width="120">$799.00</td>
-                                        <td width="80">
-                                            <a href="" class="xi2 xs1 xw0 y">取消</a>
-                                        </td>
-                                    </tr>
-                                    <tr class="sd_box">
-                                        <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                        <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                        <td width="120">$799.00</td>
-                                        <td width="80">
-                                            <a href="" class="xi2 xs1 xw0 y">取消</a>
-                                        </td>
-                                    </tr>
-                                    <tr class="sd_box">
-                                        <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                        <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                        <td width="120">$799.00</td>
-                                        <td width="80">
-                                            <a href="" class="xi2 xs1 xw0 y">取消</a>
-                                        </td>
-                                    </tr>
                                     </tbody>
                                     <script>addCourse();</script>
                                 </table>

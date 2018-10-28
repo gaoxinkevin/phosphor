@@ -69,11 +69,10 @@ public class GroupServiceImpl implements GroupService {
         Integer groupId = groupDAO.getGroupId();
         for (CourseInfo cours : groupDTO.getCourseInfos()) {
             groupCourseDAO.insertGroupCourse(new GroupCourse(null,
-                    groupId,cours.getCourseId(),"1"));
+                    cours.getCourseId(),groupId,"1"));
         }
         return groupId;
     }
-
     @Override
     public Integer updateGroup(Group group) { return groupDAO.updateGroup(group); }
 
@@ -168,7 +167,6 @@ public class GroupServiceImpl implements GroupService {
         }
         groupDTO.setGroupPrice(getPrice(groupDTO.getCourseInfos()));
         groupDTO.setGroupCourseNumber(groupDTO.getGroupCourseNumber()+1);
-        System.out.println(groupDTO);
         groupDTO.setGroupCourseNumber(groupDTO.getCourseInfos().size());
         return groupDTO;
     }
@@ -179,7 +177,6 @@ public class GroupServiceImpl implements GroupService {
             if (groupDTO.getCourseInfos().get(i).getCourseId().equals(courseId)
                     ||groupDTO.getCourseInfos().get(i)==null) {
                 groupDTO.getCourseInfos().remove(i);
-                groupDTO.getCourseInfos().forEach(System.out::println);
             }
         }
         if(groupDTO.getCourseInfos().size()==0){
