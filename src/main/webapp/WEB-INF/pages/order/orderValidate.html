@@ -113,11 +113,16 @@
 
     JsonResponseList().then((res) => {
         const otbody = document.getElementById("ordersPanel");
-        console.log(res.data);
         for(let i = 0; i < res.data.details.length; i++) {
             let otr=getDetail(res.data.details[i])
             otbody.appendChild(otr);
         }
+        const price = document.getElementById("price");
+        const number = document.getElementById("number");
+
+        price.innerText = res.data.price;
+        number.innerText = res.data.number;
+
 
     }).catch(error => {
         console.log(error);
@@ -289,8 +294,8 @@
                         <div class="shop-desc">
                             <h4 class="title">购买信息</h4>
                             <ul class="media-list">
-                                <li width="200">家长:牛大春</li>
-                                <li>电话:13913514578</li>
+                                <li width="200">家长:<span id="parentName">牛大春</span></li>
+                                <li>电话:<span id="tel">13913514578</span></li>
                             </ul>
                             <div class="shop-meta">
                                 <h4 class="title">选择孩子</h4>
@@ -321,11 +326,9 @@
                             </div>
                             <div class="pull-right">
                                 <ul class="media-list">
-                                    <li>价格:<span style="min-width: 210px; text-align: right; display: inline-block;">$123.00</span></li>
-                                    <li>折扣:<span style="min-width: 210px; text-align: right;  display: inline-block;">0.96</span></li>
-                                    <li>总计:<span style="min-width: 210px; text-align: right;  display: inline-block; color: red; font-size: large">$121.49</span></li>
+                                    <li>个数:<span id="number" style="min-width: 210px; text-align: right; display: inline-block;"></span></li>
+                                    <li>价格:<span id="price" style="min-width: 210px; text-align: right;  display: inline-block; color: red; font-size: large">$121.49</span></li>
                                 </ul>
-
                             </div>
                         </div>
                     <div class="clearfix col-md-11">
