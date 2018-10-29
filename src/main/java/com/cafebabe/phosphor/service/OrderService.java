@@ -1,6 +1,7 @@
 package com.cafebabe.phosphor.service;
 
 import com.cafebabe.phosphor.dao.OrderDAO;
+import com.cafebabe.phosphor.model.dto.OrderDTO;
 import com.cafebabe.phosphor.model.entity.Order;
 
 import java.util.List;
@@ -31,47 +32,52 @@ public interface OrderService {
      * @param id 订单id
      * @return 订单信息
      */
-    Order getOrderById(Integer id);
+    OrderDTO getOrderById(Integer id);
 
     /**
      * 获取所有的订单信息
      * @return group的列表
      */
-    List<Order> getOrderListAll();
+    List<OrderDTO> getOrderListAll();
 
     /**
      * 获取所有单个用户的order
      * @return order的列表
      */
-    List<Order> getOrderList(Integer id);
+    List<OrderDTO> getOrderList(Integer id);
 
     /**
      * 获取所有单个孩子的所有order
      * @return order的列表
      */
-    List<Order> getOrderListByChildId(Integer id);
+    List<OrderDTO> getOrderListByChildId(Integer id);
 
     /**
      * 查询单个用户的所有的课程订单
      * @param parentId 用户编号
-     * @param courseId 课程编号
      * @return order的列表
      */
-    List<Order> getCourseOrderList( Integer parentId, Integer courseId);
+    List<OrderDTO> getCourseOrderList( Integer parentId);
 
     /**
      * 查询单个用户的所有的套餐订单
      * @param parentId 用户编号
-     * @param groupId 套餐编号
      * @return order的列表
      */
-    List<Order> getGroupOrderList(Integer parentId, Integer groupId);
+    List<OrderDTO> getGroupOrderList(Integer parentId);
 
     /**
      * 查询单个用户的所有的活动订单
      * @param parentId 用户编号
-     * @param activityId 活动编号
      * @return order的列表
      */
-    List<Order> getActivityOrderList(Integer parentId, Integer activityId);
+    List<OrderDTO> getActivityOrderList(Integer parentId);
+
+    /**
+     * 根据订单类型和详情id创建订单
+     * @param type 订单类型
+     * @param detailId 详情编号
+     * @return 订单
+     */
+    OrderDTO createOrder(String type, Integer detailId);
 }

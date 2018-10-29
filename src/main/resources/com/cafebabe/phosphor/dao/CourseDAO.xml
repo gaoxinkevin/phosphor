@@ -60,8 +60,8 @@
         where course_name = #{courseName,jdbcType=INTEGER}
     </select>
 
-    <!--select courses of a company-->
-    <select id="getCourseByCompanyName" resultType="com.cafebabe.phosphor.model.dto.CourseInfo">
+  <!--select courses of a company-->
+  <select id="getCourseByCompanyName" resultType="com.cafebabe.phosphor.model.entity.Course">
         select
         <include refid="Base_Column_List"/>
         from course
@@ -119,9 +119,17 @@
         <include refid="Base_Column_List"/>
         from course
     </select>
+  <!--根据公司ID查询课程-->
+  <select id="getCourseByCompanyId" resultType="com.cafebabe.phosphor.model.entity.Course" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"/>
+    from course
+    where company_id = #{companyId, jdbcType=INTEGER}
+    limit 5
+  </select>
 
-
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+>>>>>>> devlnt
     delete from course
     where course_id = #{courseId,jdbcType=INTEGER}
   </delete>

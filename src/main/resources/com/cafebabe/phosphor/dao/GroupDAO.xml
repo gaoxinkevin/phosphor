@@ -21,25 +21,88 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from group
+    from `group`
     where group_id = #{groupId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from group
+    delete from `group`
     where group_id = #{groupId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Group">
-    insert into group (group_id, group_status, group_end_time, 
-      group_name, group_discount, group_content, 
-      group_create_time, group_sf, group_price, 
-      group_course_number, group_photo)
-    values (#{groupId,jdbcType=INTEGER}, #{groupStatus,jdbcType=INTEGER}, #{groupEndTime,jdbcType=DATE}, 
-      #{groupName,jdbcType=VARCHAR}, #{groupDiscount,jdbcType=DECIMAL}, #{groupContent,jdbcType=VARCHAR}, 
-      #{groupCreateTime,jdbcType=DATE}, #{groupSf,jdbcType=VARCHAR}, #{groupPrice,jdbcType=DECIMAL}, 
-      #{groupCourseNumber,jdbcType=INTEGER}, #{groupPhoto,jdbcType=VARCHAR})
+    insert into `group`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="groupStatus != null">
+        group_status,
+      </if>
+      <if test="groupEndTime != null">
+        group_end_time,
+      </if>
+      <if test="groupName != null">
+        group_name,
+      </if>
+      <if test="groupDiscount != null">
+        group_discount,
+      </if>
+      <if test="groupContent != null">
+        group_content,
+      </if>
+      <if test="groupCreateTime != null">
+        group_create_time,
+      </if>
+      <if test="groupSf != null">
+        group_sf,
+      </if>
+      <if test="groupPrice != null">
+        group_price,
+      </if>
+      <if test="groupCourseNumber != null">
+        group_course_number,
+      </if>
+      <if test="groupPhoto != null">
+        group_photo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="groupStatus != null">
+        #{groupStatus,jdbcType=INTEGER},
+      </if>
+      <if test="groupEndTime != null">
+        #{groupEndTime,jdbcType=DATE},
+      </if>
+      <if test="groupName != null">
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupDiscount != null">
+        #{groupDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="groupContent != null">
+        #{groupContent,jdbcType=VARCHAR},
+      </if>
+      <if test="groupCreateTime != null">
+        #{groupCreateTime,jdbcType=DATE},
+      </if>
+      <if test="groupSf != null">
+        #{groupSf,jdbcType=VARCHAR},
+      </if>
+      <if test="groupPrice != null">
+        #{groupPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="groupCourseNumber != null">
+        #{groupCourseNumber,jdbcType=INTEGER},
+      </if>
+      <if test="groupPhoto != null">
+        #{groupPhoto,jdbcType=VARCHAR},
+      </if>
+    </trim>
   </insert>
   <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Group">
-    insert into group
+    insert into `group`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="groupId != null">
         group_id,
@@ -162,7 +225,7 @@
     where group_id = #{groupId,jdbcType=INTEGER}
   </update>
     <update id="updateGroup" parameterType="com.cafebabe.phosphor.model.entity.Group">
-    update group
+    update `group`
     set group_status = #{groupStatus,jdbcType=INTEGER},
       group_end_time = #{groupEndTime,jdbcType=DATE},
       group_name = #{groupName,jdbcType=VARCHAR},
@@ -176,25 +239,89 @@
     where group_id = #{groupId,jdbcType=INTEGER}
   </update>
     <insert id="insertGroup" parameterType="com.cafebabe.phosphor.model.entity.Group">
-    insert into group (group_id, group_status, group_end_time,
-      group_name, group_discount, group_content,
-      group_create_time, group_sf, group_price,
-      group_course_number, group_photo)
-    values (#{groupId,jdbcType=INTEGER}, #{groupStatus,jdbcType=INTEGER}, #{groupEndTime,jdbcType=DATE},
-      #{groupName,jdbcType=VARCHAR}, #{groupDiscount,jdbcType=DECIMAL}, #{groupContent,jdbcType=VARCHAR},
-      #{groupCreateTime,jdbcType=DATE}, #{groupSf,jdbcType=VARCHAR}, #{groupPrice,jdbcType=DECIMAL},
-      #{groupCourseNumber,jdbcType=INTEGER}, #{groupPhoto,jdbcType=VARCHAR})
+    insert into `group`
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="groupId != null">
+          group_id,
+        </if>
+        <if test="groupStatus != null">
+          group_status,
+        </if>
+        <if test="groupEndTime != null">
+          group_end_time,
+        </if>
+        <if test="groupName != null">
+          group_name,
+        </if>
+        <if test="groupDiscount != null">
+          group_discount,
+        </if>
+        <if test="groupContent != null">
+          group_content,
+        </if>
+        <if test="groupCreateTime != null">
+          group_create_time,
+        </if>
+        <if test="groupSf != null">
+          group_sf,
+        </if>
+        <if test="groupPrice != null">
+          group_price,
+        </if>
+        <if test="groupCourseNumber != null">
+          group_course_number,
+        </if>
+        <if test="groupPhoto != null">
+          group_photo,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="groupId != null">
+          #{groupId,jdbcType=INTEGER},
+        </if>
+        <if test="groupStatus != null">
+          #{groupStatus,jdbcType=INTEGER},
+        </if>
+        <if test="groupEndTime != null">
+          #{groupEndTime,jdbcType=DATE},
+        </if>
+        <if test="groupName != null">
+          #{groupName,jdbcType=VARCHAR},
+        </if>
+        <if test="groupDiscount != null">
+          #{groupDiscount,jdbcType=DECIMAL},
+        </if>
+        <if test="groupContent != null">
+          #{groupContent,jdbcType=VARCHAR},
+        </if>
+        <if test="groupCreateTime != null">
+          #{groupCreateTime,jdbcType=DATE},
+        </if>
+        <if test="groupSf != null">
+          #{groupSf,jdbcType=VARCHAR},
+        </if>
+        <if test="groupPrice != null">
+          #{groupPrice,jdbcType=DECIMAL},
+        </if>
+        <if test="groupCourseNumber != null">
+          #{groupCourseNumber,jdbcType=INTEGER},
+        </if>
+        <if test="groupPhoto != null">
+          #{groupPhoto,jdbcType=VARCHAR},
+        </if>
+      </trim>
   </insert>
     <select id="getGroupListAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from `group`
+      where group_status !=0
     </select>
     <select id="getGroupListAlive" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from `group`
-        where now() between group_create_time and group_end_time
+        where group_status !=0
     </select>
     <update id="updateGroupStatus" >
         update `group`
@@ -225,13 +352,17 @@
         <include refid="Base_Column_List" />
         from `group`
         where group_discount = #{groupDiscount,jdbcType=DECIMAL}
-        and now() between group_create_time and group_end_time
+        and now() between group_create_time and group_end_time and group_status !=0
     </select>
     <select id="getGroupListByDiscountScope"  resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from `group`
         where group_discount between #{minDiscount} and #{maxDiscount}
-        and now() between group_create_time and group_end_time
+        and now() between group_create_time and group_end_time and group_status !=0
     </select>
+  <select id="getGroupId"  resultType="java.lang.Integer">
+    SELECT LAST_INSERT_ID()
+  </select>
+
 </mapper>

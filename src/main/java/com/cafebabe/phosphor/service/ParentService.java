@@ -54,9 +54,8 @@ public interface ParentService {
 
     /**
      * 更改用户信息是否成功
-     * @param parentPhone 用户手机号
      * @param parentPhoto 用户头像信息
-     * @return 是否更新成功
+     * @param parentPhone 用户手机号
      */
-    boolean updateParentImg(String parentPhoto,String parentPhone);
+    void updateParentImg(String parentPhoto, String parentPhone);
 }

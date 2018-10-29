@@ -32,6 +32,5 @@ public class CompanyCollection implements Serializable {
      */
     private Date companyCollectionCreateTime;
 
-    private static final long serialVersionUID = 1L;
 
 }

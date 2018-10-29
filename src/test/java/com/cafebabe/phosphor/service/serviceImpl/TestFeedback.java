@@ -1,7 +1,9 @@
 package com.cafebabe.phosphor.service.serviceImpl;
 
 import com.cafebabe.phosphor.dao.FeedbackDAO;
+import com.cafebabe.phosphor.model.dto.FeedbackDTO;
 import com.cafebabe.phosphor.model.entity.Feedback;
+import com.cafebabe.phosphor.util.PageModel;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -12,7 +14,10 @@ public class TestFeedback {
 
     @Test
     public void testGetFeedbackList(){
-        System.out.println(feedbackDAO.getFeedbackList(10001));
+        PageModel<FeedbackDTO> pageModel = new PageModel<>();
+        pageModel.setStartRecord(0);
+        pageModel.setSf(10001);
+        System.out.println(feedbackDAO.getFeedbackList(pageModel));
     }
 
     @Test

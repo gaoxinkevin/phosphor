@@ -1,107 +1,181 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cafebabe.phosphor.dao.CompanyCollectionDAO">
-  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.CompanyCollection">
-    <id column="company_collection_id" jdbcType="INTEGER" property="companyCollectionId" />
-    <result column="company_id" jdbcType="INTEGER" property="companyId" />
-    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
-    <result column="company_collection_sf" jdbcType="VARCHAR" property="companyCollectionSf" />
-    <result column="company_collection_status" jdbcType="INTEGER" property="companyCollectionStatus" />
-    <result column="company_collection_create_time" jdbcType="TIMESTAMP" property="companyCollectionCreateTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    company_collection_id, company_id, parent_id, company_collection_sf, company_collection_status, 
-    company_collection_create_time
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from company_collection
-    where company_collection_id = #{companyCollectionId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from company_collection
-    where company_collection_id = #{companyCollectionId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.CompanyCollection">
-    insert into company_collection (company_collection_id, company_id, parent_id, 
-      company_collection_sf, company_collection_status, 
-      company_collection_create_time)
-    values (#{companyCollectionId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 
-      #{companyCollectionSf,jdbcType=VARCHAR}, #{companyCollectionStatus,jdbcType=INTEGER}, 
-      #{companyCollectionCreateTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.CompanyCollection">
-    insert into company_collection
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="companyCollectionId != null">
-        company_collection_id,
-      </if>
-      <if test="companyId != null">
-        company_id,
-      </if>
-      <if test="parentId != null">
-        parent_id,
-      </if>
-      <if test="companyCollectionSf != null">
-        company_collection_sf,
-      </if>
-      <if test="companyCollectionStatus != null">
-        company_collection_status,
-      </if>
-      <if test="companyCollectionCreateTime != null">
-        company_collection_create_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="companyCollectionId != null">
-        #{companyCollectionId,jdbcType=INTEGER},
-      </if>
-      <if test="companyId != null">
-        #{companyId,jdbcType=INTEGER},
-      </if>
-      <if test="parentId != null">
-        #{parentId,jdbcType=INTEGER},
-      </if>
-      <if test="companyCollectionSf != null">
-        #{companyCollectionSf,jdbcType=VARCHAR},
-      </if>
-      <if test="companyCollectionStatus != null">
-        #{companyCollectionStatus,jdbcType=INTEGER},
-      </if>
-      <if test="companyCollectionCreateTime != null">
-        #{companyCollectionCreateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.CompanyCollection">
-    update company_collection
-    <set>
-      <if test="companyId != null">
-        company_id = #{companyId,jdbcType=INTEGER},
-      </if>
-      <if test="parentId != null">
-        parent_id = #{parentId,jdbcType=INTEGER},
-      </if>
-      <if test="companyCollectionSf != null">
-        company_collection_sf = #{companyCollectionSf,jdbcType=VARCHAR},
-      </if>
-      <if test="companyCollectionStatus != null">
-        company_collection_status = #{companyCollectionStatus,jdbcType=INTEGER},
-      </if>
-      <if test="companyCollectionCreateTime != null">
-        company_collection_create_time = #{companyCollectionCreateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where company_collection_id = #{companyCollectionId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.CompanyCollection">
-    update company_collection
-    set company_id = #{companyId,jdbcType=INTEGER},
-      parent_id = #{parentId,jdbcType=INTEGER},
-      company_collection_sf = #{companyCollectionSf,jdbcType=VARCHAR},
-      company_collection_status = #{companyCollectionStatus,jdbcType=INTEGER},
-      company_collection_create_time = #{companyCollectionCreateTime,jdbcType=TIMESTAMP}
-    where company_collection_id = #{companyCollectionId,jdbcType=INTEGER}
-  </update>
+    <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.CompanyCollection">
+        <id column="company_collection_id" jdbcType="INTEGER" property="companyCollectionId"/>
+        <result column="company_id" jdbcType="INTEGER" property="companyId"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="company_collection_sf" jdbcType="VARCHAR" property="companyCollectionSf"/>
+        <result column="company_collection_status" jdbcType="INTEGER" property="companyCollectionStatus"/>
+        <result column="company_collection_create_time" jdbcType="TIMESTAMP" property="companyCollectionCreateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        company_collection_id, company_id, parent_id, company_collection_sf, company_collection_status,
+        company_collection_create_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from company_collection
+        where company_collection_id = #{companyCollectionId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from company_collection
+        where company_collection_id = #{companyCollectionId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.CompanyCollection">
+        insert into company_collection (company_collection_id,
+                                        company_id,
+                                        parent_id,
+                                        company_collection_sf,
+                                        company_collection_status,
+                                        company_collection_create_time)
+        values (#{companyCollectionId,jdbcType=INTEGER},
+                #{companyId,jdbcType=INTEGER},
+                #{parentId,jdbcType=INTEGER},
+                #{companyCollectionSf,jdbcType=VARCHAR},
+                #{companyCollectionStatus,jdbcType=INTEGER},
+                #{companyCollectionCreateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.CompanyCollection">
+        insert into company_collection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyCollectionId != null">
+                company_collection_id,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="companyCollectionSf != null">
+                company_collection_sf,
+            </if>
+            <if test="companyCollectionStatus != null">
+                company_collection_status,
+            </if>
+            <if test="companyCollectionCreateTime != null">
+                company_collection_create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyCollectionId != null">
+                #{companyCollectionId,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="companyCollectionSf != null">
+                #{companyCollectionSf,jdbcType=VARCHAR},
+            </if>
+            <if test="companyCollectionStatus != null">
+                #{companyCollectionStatus,jdbcType=INTEGER},
+            </if>
+            <if test="companyCollectionCreateTime != null">
+                #{companyCollectionCreateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.CompanyCollection">
+        update company_collection
+        <set>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="companyCollectionSf != null">
+                company_collection_sf = #{companyCollectionSf,jdbcType=VARCHAR},
+            </if>
+            <if test="companyCollectionStatus != null">
+                company_collection_status = #{companyCollectionStatus,jdbcType=INTEGER},
+            </if>
+            <if test="companyCollectionCreateTime != null">
+                company_collection_create_time = #{companyCollectionCreateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where company_collection_id = #{companyCollectionId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.CompanyCollection">
+        update company_collection
+        set company_id                     = #{companyId,jdbcType=INTEGER},
+            parent_id                      = #{parentId,jdbcType=INTEGER},
+            company_collection_sf          = #{companyCollectionSf,jdbcType=VARCHAR},
+            company_collection_status      = #{companyCollectionStatus,jdbcType=INTEGER},
+            company_collection_create_time = #{companyCollectionCreateTime,jdbcType=TIMESTAMP}
+        where company_collection_id = #{companyCollectionId,jdbcType=INTEGER}
+    </update>
+
+    <select id="getCompanyCollectionList"
+            resultType="com.cafebabe.phosphor.model.dto.CompanyCollectionDTO">
+        select company_collection_id,
+               company.company_id,
+               parent_id,
+               company_collection_sf,
+               company_collection_status,
+               company_collection_create_time,
+               company_name,
+               company_registration_id,
+               company_desc,
+               company_create_time,
+               company_phone,
+               company_photo,
+               company_sf,
+               company_address,
+               company_spare_phone
+        from company_collection
+                 join company on company.company_id = company_collection.company_id
+        where parent_id = #{sf,jdbcType=INTEGER}
+          and company_collection_status = 1
+        limit #{startRecord},#{pageSize}
+    </select>
+
+    <select id="getCompanyCollectionCount" resultType="java.lang.Integer">
+        select count(*)
+        from company_collection
+        where parent_id = #{sf,jdbcType=INTEGER}
+          and company_collection_status = 1
+    </select>
+
+    <select id="getCompanyCollection"
+            resultType="com.cafebabe.phosphor.model.entity.CompanyCollection">
+        select company_collection_id, company_collection_status
+        from company_collection
+        where parent_id = #{parentId,jdbcType=INTEGER}
+          and company_id = #{companyId,jdbcType=INTEGER}
+    </select>
+
+
+    <insert id="insertCompanyCollection" parameterType="com.cafebabe.phosphor.model.entity.CompanyCollection">
+        insert into company_collection (company_id,
+                                        parent_id,
+                                        company_collection_sf,
+                                        company_collection_status,
+                                        company_collection_create_time)
+        values (#{companyId,jdbcType=INTEGER},
+                #{parentId,jdbcType=INTEGER},
+                #{companyCollectionSf,jdbcType=VARCHAR},
+                #{companyCollectionStatus,jdbcType=INTEGER},
+                #{companyCollectionCreateTime,jdbcType=TIMESTAMP})
+
+    </insert>
+
+    <update id="removeCompanyCollection" parameterType="java.lang.Integer">
+        update company_collection
+        set company_collection_status = 0
+        where company_collection_id = #{companyCollectionId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateCompanyCollection" parameterType="java.lang.Integer">
+        update company_collection
+        set company_collection_status = 1
+        where company_collection_id = #{companyCollectionId,jdbcType=INTEGER}
+    </update>
+
 </mapper>

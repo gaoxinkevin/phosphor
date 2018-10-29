@@ -1,9 +1,9 @@
 package com.cafebabe.phosphor.web.controller;
 
 import com.cafebabe.phosphor.model.entity.Course;
-import com.cafebabe.phosphor.service.TeacherCourseService;
 import com.cafebabe.phosphor.service.serviceimpl.TeacherCourseServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,8 +36,13 @@ public class TeacherCourseController {
 
     @RequestMapping("getTeacherId")
     @ResponseBody
-    public JsonResponse getTeacherId(@RequestBody Course course){
-        return new JsonResponse(200,"success",teacherCourseService.getTeacherId(course.getCourseId()));
+    public JsonResponse getTeacherId(@RequestBody Course course) {
+        return new JsonResponse(200, "success", teacherCourseService.getTeacherId(course.getCourseId()));
     }
 
+    @RequestMapping("getCoursesByTeacherId")
+    @ResponseBody
+    public JsonResponse getCoursesByTeacherId(Integer teacherId){
+        return new JsonResponse(200, "success", teacherCourseService.getCoursesByTeacherId(teacherId));
+    }
 }

@@ -25,4 +25,40 @@ public interface ChildService {
      * @return 孩子信息
      */
     List<ChildrenInfoDto> getChildInfo(Integer parentId);
+
+    /**
+     * 添加孩子
+     * @param child 孩子信息
+     * @return 受影响的行数
+     */
+    boolean insertChildService(Child child);
+
+    /**
+     * 删除孩子信息
+     * @param child 孩子
+     * @return true false 是否成功
+     */
+    boolean deleteChild(Child child);
+
+    /**
+     * 更新孩子信息
+     * @param child 孩子信息
+     * @return 是否成功
+     */
+    boolean updateChild(Child child);
+
+
+    /**
+     * 单个孩子的信息（有成绩的）
+     * @param childId 孩子id
+     * @return 单个孩子的信息（有成绩的）
+     */
+    List<ChildrenInfoDto> getSingleChildInfo(Integer childId);
+
+    /**
+     * 单个孩子的信息（有成绩的）
+     * @param childId 孩子id
+     * @return 单个孩子的信息（有成绩的）
+     */
+    Child getSingleChildInfoNoCourseService(Integer childId);
 }

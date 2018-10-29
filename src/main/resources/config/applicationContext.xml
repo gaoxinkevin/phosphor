@@ -19,16 +19,48 @@
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-    <context:property-placeholder location="classpath:config/dbConfig.properties"/>
-
+    <context:property-placeholder location="classpath*:config/hikarConfig.properties"/>
 
 
     <!--配置数据库-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="driverManagerUtil"/>
+        <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:config/mybatis-config.xml"/>
         <property name="mapperLocations" value="classpath:com/cafebabe/phosphor/dao/*DAO.xml"/>
     </bean>
+
+
+
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <!--poolName属性自定义即可-->
+        <property name="poolName" value="springHikariCP" />
+        <property name="dataSourceClassName" value="${jdbc.driver}" />
+        <property name="maximumPoolSize" value="20"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="url">${jdbc.url}</prop>
+                <prop key="user">${jdbc.username}</prop>
+                <prop key="password">${jdbc.password}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- HikariCP dataSource配置 -->
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfig" />
+    </bean>
+
+    <!--solr配置-->
+
+    <!--<bean id="httpSolrClient" class="org.apache.solr.client.solrj.impl.HttpSolrClient">-->
+
+        <!--<constructor-arg index="0" value="http://47.100.247.29:8080/solr/index.html#/"/>-->
+
+        <!--<property name="parser">-->
+            <!--<bean class="org.apache.solr.client.solrj.impl.XMLResponseParser"/>-->
+        <!--</property>-->
+    <!--</bean>-->
+
 
     <!--配置Mybatis 包扫描 -->
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -47,7 +79,7 @@
 
     <!--配置事物-->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="driverManagerUtil"/>
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
     <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
@@ -82,8 +114,7 @@
                     class="org.springframework.data.redis.serializer.StringRedisSerializer" />
         </property>
         <property name="hashValueSerializer">
-            <bean
-                    class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
         </property>
         <!-- 开启REIDS事务支持 -->
         <property name="enableTransactionSupport" value="false" />

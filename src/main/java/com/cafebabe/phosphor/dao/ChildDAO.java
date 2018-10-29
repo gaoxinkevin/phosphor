@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.dao;
 
 import com.cafebabe.phosphor.model.dto.ChildrenInfoDto;
 import com.cafebabe.phosphor.model.entity.Child;
+
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -30,4 +31,33 @@ public interface ChildDAO extends MyBatisBaseDao<Child, Integer> {
      * @return 当前用户的所有孩子信息
      */
     List<ChildrenInfoDto> getChildInfoDao(@Param("parentId")Integer parentId);
+
+    /**
+     * 向数据库插入
+     * @param child 孩子信息
+     * @return 受影响的行数
+     */
+    Integer insertChild(Child child);
+
+    /**
+     * 根据编号获取孩子姓名
+     * @param childId 孩子编号
+     * @return 孩子姓名
+     */
+    String getChildNameById(Integer childId);
+    /**
+     * 单个孩子的信息(有成绩信息的)
+     * @param childId 孩子id
+     * @return 单个孩子的信息
+     */
+    List<ChildrenInfoDto> getSingleChildInfo(@Param("childId") Integer childId);
+
+
+    /**
+     * 单个孩子的信息(没有成绩的)
+     * @param childId 孩子ID
+     * @return 单个孩子的信息(没有成绩的)
+     */
+    Child getSingleChildInfoNoCourseDao(@Param("childId")Integer childId);
+
 }

@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.web.ui;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletException;
@@ -31,9 +32,9 @@ public class GroupUi {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/group/groupList.html").forward(httpServletRequest,httpServletResponse);
     }
 
-    @RequestMapping("groupUi")
-    public void Group(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse)throws IOException,ServletException {
-        System.out.println("进入");
+    @RequestMapping("groupUi/{groupId}")
+    public void Group(@PathVariable Integer groupId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)throws IOException,ServletException {
+        httpServletRequest.getSession().setAttribute("groupId",groupId);
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/group/group.html").forward(httpServletRequest,httpServletResponse);
     }
 

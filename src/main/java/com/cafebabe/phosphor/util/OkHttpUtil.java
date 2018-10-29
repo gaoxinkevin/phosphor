@@ -20,6 +20,7 @@ import java.util.Map;
  * description: 封装OkHttpUtil
  **/
 
+@SuppressWarnings("unused")
 public final class OkHttpUtil {
 
     private static OkHttpClient okHttpClient = new OkHttpClient();
@@ -51,7 +52,7 @@ public final class OkHttpUtil {
         // RequestBody
         RequestBody requestBody;
         if (params == null) {
-            params = new HashMap<>();
+            params = new HashMap<>(1);
         }
         OkHttpClient okHttpClient = new OkHttpClient();
         FormBody.Builder builder = new FormBody.Builder();

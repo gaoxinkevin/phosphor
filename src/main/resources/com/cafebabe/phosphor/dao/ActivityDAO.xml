@@ -38,11 +38,56 @@
   <select id="getActivityByPage" resultType="com.cafebabe.phosphor.model.entity.Activity" parameterType="com.cafebabe.phosphor.model.dto.Page">
     select
     <include refid="Base_Column_List"/>
-    from activity limit #{startRecord}, #{pageSize}
+    from activity
+      <if test="title!= null and title != 'null' ">
+        where activity_title like concat(concat('%', #{title ,jdbcType=VARCHAR}), '%')
+      </if>
+    <if test="key != null and key != 'null' ">
+      order by
+      ${key}
+    </if>
+    <if test="ascOrDesc!= null and ascOrDesc != 'null' ">
+      ${ascOrDesc}
+    </if>
+    limit #{startRecord}, #{pageSize}
   </select>
 
-    <select id="getActivityCount" resultType="java.lang.Integer">
+  <select id="getActivityByCompanyId" resultType="com.cafebabe.phosphor.model.entity.Activity" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List"/>
+    from activity
+    where ((activity_start_time > now() and activity_apply_end_time > now()) and
+      (activity_id  != #{activityId, jdbcType=INTEGER} and company_id = #{companyId, jdbcType=INTEGER}))
+    order by activity_start_time asc
+    limit 3
+  </select>
+  <!--根据公司ID获取该公司按活动开始排序的前四个活动信息-->
+    <select id="getRecentActivity" resultType="com.cafebabe.phosphor.model.entity.Activity">
+        select
+        <include refid="Base_Column_List"/>
+        from activity
+        where (activity_start_time > now() and activity_apply_end_time > now())
+        order by activity_start_time asc
+        limit 3
+    </select>
+
+    <!--获取活动总数-->
+  <select id="getActivityCount" resultType="java.lang.Integer">
         select count(*) from activity
+    </select>
+    <select id="getActivityCountWithCondition" resultType="java.lang.Integer" parameterType="java.lang.String">
+      select count(*)
+      from activity
+      <if test="_parameter != null and _parameter != 'null' ">
+          where activity_title like concat(concat('%', #{title ,jdbcType=VARCHAR}), '%')
+      </if>
+    </select>
+
+    <select id="getActivityByID" resultType="com.cafebabe.phosphor.model.entity.Activity" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from activity
+        where activity_id = #{activityId,jdbcType=INTEGER}
     </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from activity

@@ -31,6 +31,4 @@ public class TeacherLike implements Serializable {
      */
     private Integer teacherId;
 
-    private static final long serialVersionUID = 1L;
-
 }

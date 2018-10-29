@@ -75,4 +75,10 @@
         where teacher_id = #{teacherId,jdbcType=INTEGER}
     </update>
 
+    <select id="selectByTeacherId" parameterType="java.lang.Integer"
+            resultType="java.lang.Integer">
+        select teacher_like_count
+        from teacher_like
+        where teacherId = #{teacherId,jdbcType=INTEGER}
+    </select>
 </mapper>

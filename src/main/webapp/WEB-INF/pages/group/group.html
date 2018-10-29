@@ -29,13 +29,16 @@
 <body>
 <!--Ajax向后台输出数据-->
 <script>
-    const clientUrl = 'http://localhost:1250/group/group?groupId=10001';
-    const clientMethod = 'GET';
-    const getJsonGroup = (url) => {
-        return new Promise((resolve,reject) => {
+    const clientUrl = 'http://localhost:1250';
+    const orderUrl = clientUrl +'/orderUi/orderGroupUi/'
+    const courseUrl= clientUrl + '/courseUi/courseInfoUi/';
+    const groupUrl = clientUrl + '/group/group';
+    const getJson = (url) => {
+        return new Promise((resolve, reject) => {
             const client = new XMLHttpRequest();
-            client.open(clientMethod, url);
+            client.open("GET", url);
             client.responseType = 'json';
+            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
             client.onreadystatechange = () => {
                 if (client.readyState === 4) {
                     if (client.status === 200) {
@@ -49,7 +52,7 @@
         });
     };
 
-    const group = () => getJsonGroup(clientUrl) ;
+    const group = () => getJson(groupUrl);
 
     group().then(({data}) => {
 
@@ -60,20 +63,80 @@
         const groupCourseNumber = document.getElementById("groupCourseNumber");
         const groupPhoto = document.getElementById("groupPhoto");
         const groupPrettyPhoto = document.getElementById("groupPrettyPhoto");
+        const buy = document.getElementById("buy");
 
-        groupName.innerText = data.groupName;
-        groupContent.innerText = data.groupContent;
-        groupPrice.innerText = data.groupPrice ;
-        groupDiscount.innerText =data.groupPrice * data.groupDiscount;
-        groupCourseNumber.innerText = data.groupCourseNumber;
+        groupName.innerText += data.groupName;
+        groupContent.innerText += data.groupContent;
+        groupPrice.innerText += data.groupPrice;
+        groupDiscount.innerText += data.groupPrice * data.groupDiscount;
+        groupCourseNumber.innerText += data.groupCourseNumber;
         groupPhoto.src = data.groupPhoto;
         groupPrettyPhoto.href = data.groupPhoto;
-        groupPrettyPhoto.innerText =data.groupName;
+        groupPrettyPhoto.innerText += data.groupName;
+        buy.setAttribute("href",orderUrl+data.groupId);
 
-
+        const groupsPanel = document.getElementById("groupsPanel");
+        for (let i = 0; i < data.courseInfos.length; i++) {
+            let divGrid = generateCourseDiv(data.courseInfos[i]);
+            groupsPanel.appendChild(divGrid);
+        }
     }).catch(error => {
         console.log(error);
     });
+
+    function generateCourseDiv(course) {
+        let divMedia = document.createElement("div");
+        divMedia.classList.add("media");
+        let div2 = document.createElement("div");
+        div2.classList.add("col-md-2");
+        let ablock =document.createElement("a");
+        ablock.setAttribute("style","display:block;");
+        ablock.setAttribute("href",courseUrl+course.courseId);
+        let image =document.createElement("img");
+        image.setAttribute("src",course.coursePhoto);
+        image.classList.add("img-responsive", "alignleft", "img-rounded");
+        ablock.appendChild(image);
+        div2.appendChild(ablock);
+        let div10 = document.createElement("div");
+        div10.classList.add("col-md-10");
+        let htt =document.createElement("h4");
+        htt.classList.add("mt-0");
+        let att =document.createElement("a");
+        att.setAttribute("href",courseUrl+course.courseId);
+        att.innerText = course.courseName+"&nbsp;&nbsp;&nbsp;"+course.courseDesc;
+        htt.appendChild(att);
+        let divMeta = document.createElement("div");
+        divMeta.classList.add("blog-meta");
+        let ulcou = document.createElement("ul");
+        ulcou.classList.add("media-list")
+        let liStart =document.createElement("li");
+        liStart.innerText="开课时间:"+course.courseStartDay;
+        let licont =document.createElement("li");
+        licont.innerText="持续时间:"+course.courseContinuedTime+"周";
+        let liTime =document.createElement("li");
+        liTime.innerText= "上课时间:"+course.courseStartTime+"-"+course.courseEndTime;
+        let liPrice =document.createElement("li");
+        let spanDesc = document.createElement("span");
+        spanDesc.innerText="课程原价:"
+        let spanPrice = document.createElement("span");
+        spanPrice.setAttribute("style","color:red");
+        spanPrice.innerText="￥"+course.coursePrice;
+        liPrice.appendChild(spanDesc);
+        liPrice.appendChild(spanPrice);
+        let liAdrs =document.createElement("li");
+        liAdrs.innerText="上课地点:"+course.courseAddress;
+        ulcou.appendChild(liStart);
+        ulcou.appendChild(licont);
+        ulcou.appendChild(liTime);
+        ulcou.appendChild(liPrice);
+        ulcou.appendChild(liAdrs);
+        divMeta.appendChild(ulcou);
+        div10.appendChild(htt);
+        div10.appendChild(divMeta);
+        divMedia.appendChild(div2);
+        divMedia.appendChild(div10);
+        return divMedia;
+    }
 </script>
 
 <div id="wrapper">
@@ -159,9 +222,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="image-wrap entry">
-                                    <img  src="" alt="" class="img-responsive" id="groupPhoto">
+                                    <img src="" alt="" class="img-responsive" id="groupPhoto">
                                     <div class="magnifier">
-                                        <a  rel="prettyPhoto[inline]" href="" title="" id="groupPrettyPhoto"></a>
+                                        <a rel="prettyPhoto[inline]" href="" title="" id="groupPrettyPhoto"></a>
                                     </div>
                                 </div><!-- end image-wrap -->
                             </div>
@@ -171,14 +234,14 @@
                     <div class="col-md-6">
                         <div class="shop-desc">
                             <h3 id="groupName"></h3>
-                            <ul>
-                                <li id="groupPrice"></li>
-                                <li id="groupCourseNumber"></li>
+                            <ul class="media-list">
+                                <li>原价:<span id="groupPrice" style="color:red;">$</span></li>
+                                <li>课程数:<span id="groupCourseNumber"></span></li>
                             </ul>
-                            <small id="groupDiscount"></small>
+                            <small>折扣价:<span id="groupDiscount" style="color:red;">$</span></small>
                             <p id="groupContent"></p>
                             <div class="shop-meta">
-                                <a href="javascript:groupOrder(groupId);" class="btn btn-primary">立即购买</a>
+                                <a href="" class="btn btn-primary" id="buy">立即购买</a>
                                 <ul class="list-inline">
                                     <li> Tip: 套餐购买是促销活动,购买<a href="#">课程</a>的所有权益均保留</li>
                                 </ul>
@@ -197,48 +260,29 @@
                         </div>
                         <div class="widget clearfix">
                             <h3 class="widget-title">套餐课程</h3>
-                            <div class="post-widget">
+                            <div class="post-widget" id="groupsPanel">
+
+                                
                                 <div class="media">
-                                    <div class="col-md-3">
-                                        <img src="/upload/01_team.png" alt="" class="img-responsive alignleft img-rounded">
-                                    </div>
-                                    <div class="col-md-9">
-                                        <div class="media-body">
-                                        <h5 class="mt-0"><a href="">Learning English Like a Pro..</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>4 days ago</li>
-                                                <li><span>by</span> <a href="#">Edulogy Team</a></li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
+                                    <div class="col-md-2">
+                                        <a style="display: block" href="/courseUi/courseInfoUi"><img
+                                                src="/upload/01_team.png" alt=""
+                                                class="img-responsive alignleft img-rounded">
+                                        </a></div>
+                                    <div class="col-md-10">
+                                            <h5 class="mt-0"><a href="/courseUi/courseInfoUi">围棋 故国神游,多情应笑我,早生华发</a>
+                                            </h5>
+                                            <div class="blog-meta">
+                                                <ul class="media-list">
+                                                    <li>开课时间:2018-11-03</li>
+                                                    <li>持续时间:4周</li>
+                                                    <li>上课时间:09:00:00-11:00:00</li>
+                                                    <li><span>课程原价</span> <a href="" style="color:red;">$1200.00</a>
+                                                    </li>
+                                                    <li>上课地点:苏州工业园区创意产业园4幢B座2楼</li>
+                                                </ul>
+                                            </div><!-- end blog-meta -->
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="media">
-                                    <img src="/upload/01_team.png" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
-                                        <h5 class="mt-0"><a href="/">How to create a beautiful website with Bootstrap</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>5 days ago</li>
-                                                <li><span>by</span> <a href="#">Boby DOE</a></li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
-                                    </div>
-                                </div>
-
-                                <div class="media">
-                                    <img src="/upload/01_team.png" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
-                                        <h5 class="mt-0"><a href="/">Don't forget to update your Google web master tools</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>6 days ago</li>
-                                                <li><span>by</span> <a href="#">Martin</a></li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
-                                    </div>
                                 </div>
                             </div><!-- end post-widget -->
                         </div><!-- end widget -->
@@ -246,11 +290,13 @@
                         <div class="widget clearfix">
                             <h3 class="widget-title">套餐须知:</h3>
                             <div class="newsletter-widget">
-                                <p>You can opt out of our newsletters at any time. See our <a href="#">privacy policy</a>.</p>
+                                <p>You can opt out of our newsletters at any time. See our <a href="#">privacy
+                                    policy</a>.</p>
                                 <form class="form-inline" role="search">
                                     <div class="form-1">
                                         <input type="text" class="form-control" placeholder="Enter email here..">
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
+                                        <button type="submit" class="btn btn-primary"><i
+                                                class="fa fa-paper-plane-o"></i></button>
                                     </div>
                                 </form>
                             </div><!-- end newsletter -->

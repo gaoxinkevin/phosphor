@@ -142,12 +142,6 @@
                 pic.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';//设置img的src为base64编码的透明图片，要不会显示红xx
             }
         }
-        else if (file.files) {//firefox6-
-            if (file.files.item(0)) {
-                url = file.files.item(0).getAsDataURL();
-                pic.src = url;
-            }
-        }
     };
 
     uploadAvatar = () => {
@@ -360,7 +354,7 @@
                                             <form id="aForm" enctype="multipart/form-data">
                                                 <a href="javascript:void(0);" class="file" style="padding: 8px 10px;margin-right: 10px;"
                                                    name="a">更换头像
-                                                    <input type="file" name="file" id="file1" onchange="showAvatar('defaultImg2','file1')">
+                                                    <input type="file" name="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" id="file1" onchange="showAvatar('defaultImg2','file1')">
                                                 </a>
                                                 <!--<input class="btn-sm btn-primary"  name="btn" onclick="submitForm()" value="确认更改">-->
                                             </form>
@@ -420,17 +414,23 @@
                                 </li>
 
                                 <li>
-                                    <a href="" sl-processed="1">订单查询</a>
+                                    <a href="/childrenUi/infoUi">孩子资料</a>
                                 </li>
 
                                 <li>
-                                    <a href="/children/infoUi" sl-processed="1">孩子资料</a>
+                                    <a href="#">订单查询</a>
                                 </li>
 
-
+                                <li>
+                                    <a href="#">课程查询</a>
+                                </li>
 
                                 <li>
-                                    <a href="" sl-processed="1">帐号绑定</a>
+                                    <a href="#">活动查询</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">帐号绑定</a>
                                 </li>
                             </ul>
 

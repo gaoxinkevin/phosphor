@@ -78,6 +78,4 @@ public class Order implements Serializable {
      */
     private String orderSf;
 
-    private static final long serialVersionUID = 1L;
-
 }
