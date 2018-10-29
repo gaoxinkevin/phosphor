@@ -27,11 +27,28 @@ import java.io.IOException;
 @RequestMapping("/teacherUi")
 public class TeacherUi {
 
+    /**
+     * 跳转到教师列表页
+     *
+     * @param httpServletRequest  httpRequest
+     * @param httpServletResponse httpResponse
+     * @throws ServletException Servlet异常
+     * @throws IOException      IO异常
+     */
     @RequestMapping("getTeacherList")
     public void teacher(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/teacher/teacher.html").forward(httpServletRequest, httpServletResponse);
     }
 
+    /**
+     * 根据教师ID跳转到指定教师详情页
+     *
+     * @param teacherId           教师ID
+     * @param httpServletRequest  httpRequest
+     * @param httpServletResponse httpResponse
+     * @throws ServletException Servlet异常
+     * @throws IOException      IO异常
+     */
     @RequestMapping("getTeacherInformation/{teacherId}")
     public void teacherInformation(@PathVariable Integer teacherId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletResponse.addCookie(new Cookie("teacherId", teacherId.toString()));

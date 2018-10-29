@@ -472,9 +472,9 @@
                 loginPrompt(1);
             } else {
                 if (feedbackContent === "" || feedbackContent === null) {
-                    commit(0)
+                    commit(0);
                 } else if (feedbackContent.length > 200) {
-                    commit(1);
+                   commit(1);
                 } else {
                     let a = JSON.parse(localStorage.getItem("userLoginPhone")).val;
                     const teacherId = document.cookie.split(';')[0].trim();
@@ -519,7 +519,7 @@
                         getTeacher();
                         commit(2);
                     }).catch(error => {
-                        commit(3);
+                       commit(3);
                     });
                 }
             }
@@ -584,17 +584,16 @@
             div2.style.display = "block";
             if (type === 0) {
                 p.innerText = "请填写内容！";
-            } else if (type === 1) {
-                p.innerText = "超出字数限制，最多200字！";
-            } else if (type === 2) {
-                p.innerText = "提交成功";
-            } else if (type === 3) {
+            } else if (type === 1){
+                p.innerText ="超出字数限制，最多200字！";
+            }else if (type === 2){
+                p.innerText ="提交成功";
+            }else if (type === 3) {
                 p.innerText = "提交失败，请勿提交特殊字符！";
             }
         }
 
         loginPrompt = (type) => {
-            console.log("登录");
             document.body.style.overflowX = "hidden";
             document.body.style.overflowY = "hidden";
             let div1 = document.getElementById("dialog");

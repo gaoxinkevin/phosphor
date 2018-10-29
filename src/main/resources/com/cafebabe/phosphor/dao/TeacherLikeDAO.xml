@@ -69,12 +69,14 @@
         where teacher_like_id = #{teacherLikeId,jdbcType=INTEGER}
     </update>
 
+    <!--根据教师ID为点赞数加1-->
     <update id="updateTeacherLikeCountAdd" parameterType="com.cafebabe.phosphor.model.entity.TeacherLike">
         update teacher_like
         set teacher_like_count = teacher_like_count + 1
         where teacher_id = #{teacherId,jdbcType=INTEGER}
     </update>
 
+    <!--根据教师ID获得点赞数-->
     <select id="selectByTeacherId" parameterType="java.lang.Integer"
             resultType="java.lang.Integer">
         select teacher_like_count

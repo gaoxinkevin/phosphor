@@ -50,8 +50,7 @@
     <!--Ajax向后台输出数据-->
     <script>
 
-        //
-        <!--判断用户登录-->
+        // 判断用户登录
         let a = localStorage.getItem("userLoginPhone");
         if (a === null) {
             localStorage.clear();
@@ -97,7 +96,7 @@
             const fatherDiv = document.createElement("div");
             fatherDiv.setAttribute("style", "width:620px;height:600px;");
             fatherDiv.setAttribute("id", "fatherDiv");
-            fatherDiv.innerText=""
+            fatherDiv.innerText="";
             grandfatherDiv.appendChild(fatherDiv);
             scrollTo(0, 0);
             result(JSON.stringify(pageModel)).then((res) => {
@@ -160,7 +159,6 @@
             const fatherDiv = document.getElementById("fatherDiv");
             fatherDiv.innerText = "";
             grandfatherDiv.appendChild(fatherDiv);
-            // scrollTo(0, 0);
             resultList(JSON.stringify(pageModel)).then((res) => {
                 for (let i = 0; i < res.data.modelList.length; i++) {
                     let sonDiv = generateCompanyList(res.data.modelList[i]);
@@ -176,9 +174,9 @@
         generateCompanyList = (data) => {
             let div = document.createElement("div");
             div.classList.add("mn");
+            div.setAttribute("style","border-radius: 10px;");
             let photo = document.createElement("img");
             photo.setAttribute("src", data.companyPhoto);
-            // photo.setAttribute("src", "/upload/shop_01.jpg");
             photo.setAttribute("style", "width:20%;display:block;float:left;");
             let companyDiv = document.createElement("div");
             companyDiv.setAttribute("style", "float:left;margin-top:10px;margin-left:15px;");
@@ -344,11 +342,6 @@
                 }
             );
             result().then((res) => {
-                // cancelDelete();
-                // let div = document.getElementById("fatherDiv");
-                // div.innerText = "";
-                // div.setAttribute("style", "width:0px;height:0px;");
-                // getCompanyCollectionList();
                 window.location.href = "http://localhost:1250/parentUi/companyCollectionUi";
             });
         }
