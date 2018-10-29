@@ -48,7 +48,9 @@
 <!-- END LOADER -->
 
 <div id="wrapper">
+
     <!-- BEGIN # MODAL LOGIN -->
+
     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -66,122 +68,59 @@
             </div>
         </div>
     </div>
+
     <!-- END # MODAL LOGIN -->
 
-    <header class="header header-normal">
-        <div class="topbar clearfix">
-            <div class="container">
-                <div class="row-fluid">
-                    <div class="col-md-6 col-sm-6 text-left">
-                        <p>
-                            <strong><i class="fa fa-phone"></i></strong> +90 543 123 45 67 &nbsp;&nbsp;
-                            <strong><i class="fa fa-envelope"></i></strong> <a href="mailto:#">info@yoursite.com</a>
-                        </p>
-                    </div><!-- end left -->
-                    <div class="col-md-6 col-sm-6 hidden-xs text-right">
-                        <div class="social">
-                            <a class="facebook" href="#" data-tooltip="tooltip" data-placement="bottom"
-                               title="Facebook"><i class="fa fa-facebook"></i></a>
-                            <a class="twitter" href="#" data-tooltip="tooltip" data-placement="bottom"
-                               title="Twitter"><i class="fa fa-twitter"></i></a>
-                            <a class="google" href="#" data-tooltip="tooltip" data-placement="bottom"
-                               title="Google Plus"><i class="fa fa-google-plus"></i></a>
-                            <a class="linkedin" href="#" data-tooltip="tooltip" data-placement="bottom"
-                               title="Linkedin"><i class="fa fa-linkedin"></i></a>
-                            <a class="pinterest" href="#" data-tooltip="tooltip" data-placement="bottom"
-                               title="Pinterest"><i class="fa fa-pinterest"></i></a>
-                        </div><!-- end social -->
-                    </div><!-- end left -->
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </div><!-- end topbar -->
-
+    <header class="header">
         <div class="container">
             <nav class="navbar navbar-default yamm">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                            aria-expanded="false" aria-controls="navbar">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
+
                     <div class="logo-normal">
-                        <a class="navbar-brand" href="../index.html"><img src="/images/logo.png" alt=""></a>
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
                     </div>
                 </div>
 
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="../index.html">Home</a></li>
-                        <li class="dropdown yamm-fw yamm-half"><a href="#" data-toggle="dropdown"
-                                                                  class="dropdown-toggle active">Mega Menu <b
-                                class="fa fa-angle-down"></b></a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <div class="yamm-content clearfix">
-                                        <div class="row-fluid">
-                                            <div class="col-md-6 col-sm-6">
-                                                <h4>Course Pages</h4>
-                                                <ul>
-                                                    <li><a href="#">Courses Name 01</a></li>
-                                                    <li><a href="#">Courses Name 02</a></li>
-                                                    <li><a href="#">Courses Name 03</a></li>
-                                                    <li><a href="#">Courses Name 04</a></li>
-                                                    <li><a href="#">Courses Name 05</a></li>
-                                                    <li><a href="#">Courses Name 06</a></li>
-                                                    <li><a href="#">Courses Name 07</a></li>
-                                                    <li><a href="#">Courses Name 08</a></li>
-                                                    <li><a href="#">Courses Name 09</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="menu-widget text-center">
-                                                    <div class="image-wrap entry">
-                                                        <img src="/upload/course_01.jpg" alt="" class="img-responsive">
-                                                        <div class="magnifier">
-                                                            <a href="#" title=""><i class="flaticon-add"></i></a>
-                                                        </div>
-                                                    </div><!-- end image-wrap -->
-                                                    <h5><a href="#">Learning Bootstrap Framework</a></h5>
-                                                    <small>$22.00</small>
-                                                    <a href="#" class="menu-button">View Course</a>
-                                                </div><!-- end widget -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="/courseUi/courseInfoUi">课程</a></li>
+                        <li><a href="/activityUi/returnActivityUi">活动</a></li>
+                        <li><a href="/teacherUi/getTeacherList">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">官方套餐</a></li>
+                                    <li><a href="#">自定义套餐</a></li>
+                                </ul>
+                            </div>
                         </li>
-                        <li><a href="events.html">Events</a></li>
-                        <li class="dropdown hassubmenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-expanded="false">Shop <span class="fa fa-angle-down"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="shop.html">Shop Layout</a></li>
-                                <li><a href="shop-single.html">Shop Single</a></li>
-                            </ul>
+                        <li><a href="">联系我们</a></li>
+                        <li><a href="/loginUi/loginUi">登录|注册</a></li>
+                        <li class="iconitem">
+                            <a href="#" data-toggle="modal" data-target="#login-modal">
+                                <i class="fa fa-search"></i>
+                            </a>
                         </li>
-                        <li class="dropdown hassubmenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-expanded="false">Blog <span class="fa fa-angle-down"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="blog.html">Blog Right Sidebar</a></li>
-                                <li><a href="blog-1.html">Blog Left Sidebar</a></li>
-                                <li><a href="blog-2.html">Blog Grid Sidebar</a></li>
-                                <li><a href="blog-3.html">Blog Grid Fullwidth</a></li>
-                                <li><a href="blog-single.html">Blog Single</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="page-contact.html">Contact</a></li>
-                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
-                                class="fa fa-search"></i></a></li>
-                        <li class="iconitem"><a class="shopicon" href="shop-cart.html"><i
-                                class="fa fa-shopping-basket"></i> &nbsp;(0)</a></li>
                     </ul>
                 </div>
-            </nav><!-- end navbar -->
-        </div><!-- end container -->
+
+            </nav>
+        </div>
     </header>
 
     <section class="section db p120">
@@ -189,7 +128,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tagline-message page-title text-center">
-                        <h3>Blog & News</h3>
+                        <h3>所有活动</h3>
                     </div>
                 </div><!-- end col -->
             </div><!-- end row -->
@@ -412,13 +351,11 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">Subscribe Our Newsletter</h3>
                         <div class="newsletter-widget">
-                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
-                                policy</a>.</p>
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.</p>
                             <form class="form-inline" role="search">
                                 <div class="form-1">
                                     <input type="text" class="form-control" placeholder="Enter email here..">
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
-                                    </button>
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
                                 </div>
                             </form>
                             <img src="/images/payments.png" alt="" class="img-responsive">
@@ -485,10 +422,7 @@
                 <div class="pull-right">
                     <div class="footer-links">
                         <ul class="list-inline">
-                            <li>Design : <a href="#">HTML.Design</a></li>
-                            <li>Distributed by : More Templates <a href="http://www.cssmoban.com/" target="_blank"
-                                                                   title="模板之家">模板之家</a> - Collect from <a
-                                    href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></li>
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
                         </ul>
                     </div>
                 </div>
