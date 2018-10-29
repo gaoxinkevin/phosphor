@@ -1,25 +1,22 @@
 package com.cafebabe.phosphor.web.controller;
 
 import com.cafebabe.phosphor.model.entity.Teacher;
-import com.cafebabe.phosphor.service.TeacherLikeService;
 import com.cafebabe.phosphor.service.serviceimpl.TeacherLikeServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author kevingx2016@gmail.com
- *
+ * <p>
  * class_name: TeacherLikeController
- *
+ * <p>
  * create_date: 2018/10/17
- *
+ * <p>
  * create_time: 16:43
- *
+ * <p>
  * description: 教师点赞的业务控制层
  **/
 @Controller
@@ -36,7 +33,13 @@ public class TeacherLikeController {
 
     @RequestMapping("teacherLikeAdd")
     @ResponseBody
-    public JsonResponse teacherLikeAdd(@RequestBody Teacher teacher){
-        return new JsonResponse(200,"success",teacherLikeService.updateTeacherLikeCountAdd(teacher.getTeacherId()));
+    public JsonResponse teacherLikeAdd(@RequestBody Teacher teacher) {
+        return new JsonResponse(200, "success", teacherLikeService.updateTeacherLikeCountAdd(teacher.getTeacherId()));
+    }
+
+    @RequestMapping("getTeacherLikeCount/{teacherId}")
+    @ResponseBody
+    public JsonResponse getTeacherLikeCount(@PathVariable Integer teacherId) {
+        return new JsonResponse(200, "success", teacherLikeService.getTeacherLikeCount(teacherId));
     }
 }

@@ -30,13 +30,19 @@
 <body>
 <!--Ajax向后台输出数据-->
 <script>
-    const clientUrl = 'http://localhost:1250/group/groupList';
-    const clientMethod = 'GET';
-    const getJsonGroup = (url) => {
-        return new Promise((resolve,reject) => {
+    const clientUrl = 'http://localhost:1250';
+    const groupUrl = clientUrl + '/groupUi/groupUi/';
+    const groupListUrl= clientUrl + '/group/groupList';
+    /**
+     * get 方法访问网站
+     * @Param url 访问地址
+     */
+    const getJson = (url) => {
+        return new Promise((resolve, reject) => {
             const client = new XMLHttpRequest();
-            client.open(clientMethod, url);
+            client.open("GET", url);
             client.responseType = 'json';
+            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
             client.onreadystatechange = () => {
                 if (client.readyState === 4) {
                     if (client.status === 200) {
@@ -50,7 +56,7 @@
         });
     };
 
-    const groupList = () => getJsonGroup(clientUrl) ;
+    const groupList = () => getJson(groupListUrl) ;
 
     groupList().then(({data}) => {
         const groupsPanel = document.getElementById("groupsPanel");
@@ -62,7 +68,7 @@
         console.log(error);
     });
 
-    function generateGroupDiv(group) {
+    generateGroupDiv = (group) => {
         let divGrid = document.createElement("div");
         divGrid.classList.add("col-md-4");
         let divBox = document.createElement("div");
@@ -70,17 +76,15 @@
         let divImage = document.createElement("div");
         divImage.classList.add("image-wrap", "entry");
 
-
-
         let imageGroup = document.createElement("img");
-        imageGroup.setAttribute("src", "/upload/people_10.jpeg");
+        imageGroup.setAttribute("src", group.groupPhoto);
         imageGroup.setAttribute("alt", "");
         imageGroup.classList.add("img-responsive");
 
         let divMagnifier = document.createElement("div");
         divMagnifier.classList.add("magnifier");
         let aHead  = document.createElement("a");
-        aHead.setAttribute("href","javascript:getGroup("+group.groupId+")");
+        aHead.setAttribute("href",groupUrl+group.groupId);
         let icon = document.createElement("i");
         icon.classList.add("flaticon-add");
         aHead.appendChild(icon);
@@ -93,7 +97,7 @@
         divDetails.classList.add("course-details", "shop-box", "text-center");
         let hFour = document.createElement("h4");
         let aMid = document.createElement("a");
-        aMid.setAttribute("href","javascript:getGroup("+group.groupId+")");
+        aMid.setAttribute("href",groupUrl+group.groupId);
         aMid.innerText = group.groupName;
         let groupNum = document.createElement("small");
         groupNum.innerText="课程 x"+group.groupNumber;
@@ -220,48 +224,18 @@
                             <p> Showing 1–9 of 11 results</p>
                         </div>
                         <div class="pull-right">
-                            <select class="selectpicker">
-                                <option>Price - High to Low</option>
-                                <option>Price - Low to High</option>
-                                <option>Newest Items</option>
-                                <option>Older Items</option>
+                            <select class="selectpicker" id="select" onchange="">
+                                <option value="0">Price - High to Low</option>
+                                <option value="1">Price - Low to High</option>
+                                <option value="2">Newest Items</option>
+                                <option value="3">Older Items</option>
                             </select>
                         </div>
                     </div>
                 </div>
 
                 <div class="row blog-grid shop-grid" id="groupsPanel">
-                    <!-- <div class="col-md-4">
-                        <div class="course-box shop-wrapper">
-                            <div class="image-wrap entry">
-                                <img src="/upload/people.jpg" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                    <a href="/groupUi/groupDiyUi" title=""><i class="flaticon-add"></i></a>
-                                </div>
-                            </div>
-
-                            <div class="course-details shop-box text-center">
-                                <h4>
-                                    <a href="/groupUi/groupDiyUi" title="" id="groupName"></a>
-                                    <small>Bags</small>
-                                </h4>
-                            </div>
-
-                            <div class="course-footer clearfix">
-                                <div class="pull-left">
-                                    <ul class="list-inline">
-                                        <li><a href="#">￥</a></li>
-                                    </ul>
-                                </div>
-
-                                <div class="pull-right">
-                                    <ul class="list-inline">
-                                        <li id="groupDiscount"><a href="#"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
+                    
                 </div><!-- end row -->
 
                 <hr class="invis">

@@ -106,7 +106,12 @@
                 let vModal =document.getElementById("v-modal");
                 let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
                 let elButton = document.getElementById("el-button");
+                const cancelBtn = document.getElementById("cancel-button");
                 elButton.innerText="重新登录";
+                cancelBtn.innerText = "返回主页";
+                elButton.style.padding = "0.8em 2em";
+                cancelBtn.setAttribute("href","/indexUi/returnIndexPage");
+                elButton.setAttribute("href","/loginUi/loginUi")
                 vModal.style.display="block";
                 dialog.style.display="block";
                 dialogPInnerHtml.innerText=res.data;
@@ -116,7 +121,11 @@
                 let dialog = document.getElementById("dialog");
                 let vModal =document.getElementById("v-modal");
                 let elButton = document.getElementById("el-button");
+                const cancelBtn = document.getElementById("cancel-button");
                 elButton.innerText="前往注册界面";
+                cancelBtn.innerText="关闭标签";
+                cancelBtn.setAttribute("href","/loginUi/loginUi");
+                elButton.setAttribute("href","/loginUi/registrationUi");
                 let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
                 vModal.style.display="block";
                 dialog.style.display="block";
@@ -377,7 +386,8 @@
                 </div>
             </div>
             <div class="el-message-box__btns">
-                <a href="/loginUi/loginUi" id="el-button" class="el-button"></a>
+                <a id="el-button" class="el-button" style="padding: 0.8em 1em"></a>
+                <a id="cancel-button" class="el-button" style="padding: 0.8em 2em"></a>
             </div>
 
         </div>

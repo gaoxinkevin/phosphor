@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Site Meta -->
+    <title>个人中心-孩子信息</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+    <!--FontAwesome-->
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom & Default Styles  外部-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleCommon.css">
+    <link rel="stylesheet" href="/css/bootstrap-select.min.css">
+
+    <!--自己写的 -->
+    <link rel="stylesheet" href="/css/alreadyLogin.css">
+
+    <style>
+        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
+            background-color: #82B43F;
+            border-color: #82B43F;
+        }
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
+            background: #82B43F;
+            color: #ffffff !important;
+        }
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
+            background: #82B43F none repeat scroll 0 0 !important;
+
+        }
+
+        .sd_box{
+            background: #fff;
+            box-shadow: 0px 1px 1px #a2a2a2;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333333;
+            line-height: 24px;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+        .table tbody tr td {
+            vertical-align: middle;
+        }
+
+    </style>
+</head>
+
+<body>
+<!--Ajax向后台输出数据-->
+<script>
+
+    const clientUrl = 'http://localhost:1250';
+    const orderValidateUrl = clientUrl +'/order/orderValidate/';
+    const courseUrl= clientUrl +'courseUi/courseInfoUi/';
+    const activityUrl= clientUrl + 'activityUi/activityInfo/';
+    const childUrl= clientUrl + 'child/childInfo';
+    const chooseChildUrl = clientUrl + '/order/childInfo?childId=';
+    const getJson = (url) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open("GET", url);
+            client.responseType = 'json';
+            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send();
+        });
+    };
+    const JsonResponseList = () => getJson(orderValidateUrl);
+
+    getChildInfo = (childId) => getJson(chooseChildUrl+childId);
+
+    getChildInfo().then(res => {
+        if(res.code<=30000){
+            let picker = document.createElement('selectPicker');
+            for (let i = 0; i < res.data.length; i++) {
+                let option = document.createElement("option");
+                option.setAttribute("value",res.data[i].childId);
+                option.innerText = res.data[i].childName;
+                picker.appendChild(option);
+            }
+        }else{
+            console.log(res.data);
+        }
+    }).catch(res => {
+        console.log(res);
+    })
+
+    JsonResponseList().then((res) => {
+        const otbody = document.getElementById("ordersPanel");
+        console.log(res.data);
+        for(let i = 0; i < res.data.details.length; i++) {
+            let otr=getDetail(res.data.details[i])
+            otbody.appendChild(otr);
+        }
+
+    }).catch(error => {
+        console.log(error);
+    });
+    getDetail = (detail) => {
+
+        let detailUrl="";
+        if (detail.type=="课程") {
+            detailUrl=courseUrl+detail.id;
+        } else {
+            detailUrl=activityUrl+detail.id;
+        }
+        let otr = document.createElement("tr");
+        otr.classList.add("sd_box");
+        let td1 = document.createElement("td");
+        let adetail1 = document.createElement("a");
+        adetail1.setAttribute("href",detailUrl);
+        let imageGroup = document.createElement("img");
+        imageGroup.setAttribute("src", detail.photo);
+        imageGroup.setAttribute("width","100");
+        imageGroup.setAttribute("height","100");
+        adetail1.appendChild(imageGroup);
+        td1.appendChild(adetail1);
+
+        let td2 = document.createElement("td");
+        let adetail2 = document.createElement("a");
+        adetail2.setAttribute("href",detailUrl);
+        let smalltype = document.createElement("mark");
+        smalltype.innerText=detail.type;
+        let pname =document.createElement("p");
+        pname.innerText= detail.name;
+        adetail2.appendChild(smalltype);
+        adetail2.appendChild(pname);
+        td2.appendChild(adetail2);
+        let td3 = document.createElement("td");
+        td3.setAttribute("width","150");
+        td3.innerText=detail.companyName;
+
+        let td4 = document.createElement("td");
+        td4.setAttribute("width","150");
+        td4.innerText="￥"+detail.price;
+
+        let td5 = document.createElement("td");
+        td5.setAttribute("width","100");
+        let marktype = document.createElement("mark");
+        marktype.innerText=detail.type;
+        if (0==detail.state) {
+            marktype.innerText="未开始";
+        } else if (1==detail.state) {
+            marktype.innerText="正在进行";
+        } else if (2==detail.state) {
+            marktype.innerText="去评价";
+        }else {
+            marktype.innerText="完成";
+        }
+        td5.appendChild(marktype);
+        otr.appendChild(td1);
+        otr.appendChild(td2);
+        otr.appendChild(td3);
+        otr.appendChild(td4);
+        otr.appendChild(td5);
+        return otr;
+    }
+</script>
+<div id="wrapper">
+
+    <div id="preloader">
+        <img class="preloader" src="/images/loader.gif" alt="">
+    </div>
+
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <form id="login-form">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="flaticon-add" aria-hidden="true"></span>
+                        </button>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="What you are looking for?"
+                                   required>
+                        </div>
+                    </form><!-- End # Login Form -->
+                </div><!-- End # DIV Form -->
+            </div>
+        </div>
+    </div>
+
+    <header class="header affix">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="">课程</a></li>
+                        <li><a href="">活动</a></li>
+                        <li><a href="">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false"
+                                        style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">官方套餐</a></li>
+                                    <li><a href="#">自定义套餐</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="">联系我们</a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
+                                class="fa fa-search"></i></a></li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
+                                    <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
+                                    <li><a href="#">我的关注</a></li>
+                                    <li><a href="#">我的收藏</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+    <section class="section gb">
+        <div class="container" style="min-height: 670px">
+            <div class="boxed" style=" margin-top: 60px">
+
+                <div class="blog-meta">
+                    <h3>核对订单信息</h3>
+                </div><!-- end blog-meta -->
+                <ul class="nav nav-tabs"></ul>
+                <div class="breadcrumb" style=" margin: 15px 5px">
+                    <a href="//home.jd.com/">个人中心</a>
+                    <span>&nbsp;&gt;&nbsp;
+                            <a href="//order.jd.com/center/list.action">订单中心</a>
+                        </span>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="shop-desc">
+                            <h4 class="title">购买信息</h4>
+                            <ul class="media-list">
+                                <li width="200">家长:牛大春</li>
+                                <li>电话:13913514578</li>
+                            </ul>
+                            <div class="shop-meta">
+                                <h4 class="title">选择孩子</h4>
+                                <select class="selectpicker" onchange="getChildInfo(this.value)" id="selectPicker">
+                                    <option value="0">---选择孩子</option>
+                                </select>
+                            </div><!-- end shop meta -->
+
+                        </div><!-- end desc -->
+                    </div><!-- end col -->
+                </div>
+
+
+                <div class="row">
+                        <div class=" col-md-12">
+                            <h3 class="widget-title">订单详情:</h3>
+                            <table class="table table-hover table-condensed" cellpadding="0" cellspacing="0">
+                                <h3>订单编号:x284318973</h3>
+                                <tbody id="ordersPanel">
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <div class="clearfix col-md-11">
+                            <div class="pull-left">
+                                <p>订单价格:</p>
+                            </div>
+                            <div class="pull-right">
+                                <ul class="media-list">
+                                    <li>价格:<span style="min-width: 210px; text-align: right; display: inline-block;">$123.00</span></li>
+                                    <li>折扣:<span style="min-width: 210px; text-align: right;  display: inline-block;">0.96</span></li>
+                                    <li>总计:<span style="min-width: 210px; text-align: right;  display: inline-block; color: red; font-size: large">$121.49</span></li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    <div class="clearfix col-md-11">
+                        <div class="pull-right">
+                            <a href="javascript:groupOrder(groupId);" class="btn btn-primary">确认订单</a>
+                        </div>
+                    </div>
+
+
+                </div><!-- end row -->
+                <hr class="invis">
+
+            </div>
+        </div><!-- end container -->
+    </section>
+
+    <footer class="section footer noover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
+                                policy</a>.</p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags-widget">
+                            <ul class="list-inline">
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Support</h3>
+                        <div class="list-widget">
+                            <ul>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing & Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer>
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div>
+
+</div>
+<!--模版自带-->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/customLogin.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
+</body>
+
+</html>

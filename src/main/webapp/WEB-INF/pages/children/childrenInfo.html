@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Site Icons -->
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
@@ -29,8 +29,21 @@
 
     <!--自己写的 -->
     <link rel="stylesheet" href="/css/alreadyLogin.css">
-
     <style>
+
+        #addChild{
+            display: none;
+            margin: 20px auto;
+        }
+
+        .nav-tabs > li > a:hover{
+            border-color: white;
+        }
+
+        .nav > li > a:focus, .nav > li > a:hover{
+            background-color: white;
+        }
+
         .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
             background-color: #82B43F;
             border-color: #82B43F;
@@ -53,6 +66,15 @@
 <!--Ajax向后台输出数据-->
 <script>
 
+    function timestampToTime(timestamp) {
+        let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        let Y = date.getFullYear() + '-';
+        let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        let X = date.getDate() <10 ? '0'+date.getDate():date.getDate();
+        console.log(X);
+        return Y+M+X;
+    }
+
     //判断用户登录
     let a = localStorage.getItem("userLoginPhone");
     if (a === null) {
@@ -61,7 +83,15 @@
     }
 
     const clientUrl = 'http://localhost:1250/parent/parentAllInfo';
+
+    const clientUrl1 = 'http://localhost:1250/child/childInfo';
+
+
     const clientMethod = 'POST';
+
+
+    //页面获取用户头像
+
     const getParentImg = (url) => {
         return new Promise((resolve, reject) => {
             const client = new XMLHttpRequest();
@@ -79,22 +109,27 @@
             client.send();
         });
     };
+
     const JsonResponseList = () => getParentImg(clientUrl);
+
     JsonResponseList().then((res) => {
         const imgSrc = document.getElementById("avatarImg");
         const imgSrc1 = document.getElementById("avatarImg2");
-        const imgSrc3 = document.getElementById("defaultImg");
-        const parentName2 = document.getElementById("aName");
+        const parentName2 = document.getElementById("aName1");
         imgSrc.src = res.data.parentPhoto;
         imgSrc1.src = res.data.parentPhoto;
-        imgSrc3.src = res.data.parentPhoto;
         parentName2.innerText = res.data.parentName;
 
     }).catch(error => {
         console.log(error);
     });
 
-    const clientUrl1 = 'http://localhost:1250/child/childInfo';
+    //页面获取头像结束
+
+
+
+    //页面渲染开始
+
     const getAllChildrenInfo = (url) => {
         return new Promise((resolve, reject) => {
             const client = new XMLHttpRequest();
@@ -114,40 +149,431 @@
     };
 
     const childrenInfoList = () => getAllChildrenInfo(clientUrl1);
+
     childrenInfoList().then((res) => {
-        if (res.data.length  > 0){
+        if (res.data.length > 0) {
             const urlChild = document.getElementById("navUrl");
+            const mn = document.getElementById("mn");
             for (let item in res.data) {
                 const li = document.createElement("li");
                 const ali = document.createElement("a");
-                li.id = res.data[item].childId;
-                li.appendChild(ali);
-                ali.innerText = res.data[item].childName;
-                urlChild.appendChild(li);
-                console.log(res.data[item])
-            }
-        } else {
-            const addChild = document.getElementById("addChild");
-            addChild.style.display="";
-        }
+                const div = document.createElement("div");
+                const a = document.createElement("a");
+                const aDelete = document.createElement("a");
+                const aUpdate = document.createElement("a");
+                const divName = document.createElement("div");
+                const divSex = document.createElement("div");
+                const divBio = document.createElement("div");
+                const divBirthday = document.createElement("div");
+                const spanName = document.createElement("span");
+                const spanSex = document.createElement("span");
+                const spanBio = document.createElement("span");
+                const spanBirthday = document.createElement("span");
+                const spanMeale = document.createElement("span");
+                const spanFemale = document.createElement("span");
+                const inputName = document.createElement("input");
+                const inputMale = document.createElement("input");
+                const inputFemale = document.createElement("input");
+                const textareaBio = document.createElement("textarea");
+                const inputBirthday = document.createElement("input");
 
-        console.log(res)
+                a.type = "button";
+                a.id   = "a"+res.data[item].childId;
+                a.innerText = "阅读更多";
+                a.style.lineHeight = "5.5";
+                a.style.marginRight = "20px";
+                a.style.padding = "10px";
+                a.className = "btn-sm btn-primary";
+                a.setAttribute("href", "/childrenUi/singleChildInfo/"+res.data[item].childId);
+
+                aUpdate.type = "button";
+                aUpdate.id  = "aUpdate"+res.data[item].childId;
+                aUpdate.innerText =  "更改孩子信息";
+                aUpdate.style.lineHeight = "5.5";
+                aUpdate.style.padding = "10px";
+                aUpdate.className = "btn-sm btn-warning ";
+                aUpdate.setAttribute("href", "javascript:void(0);");
+
+                aDelete.type = "button";
+                aDelete.id = "aBtn"+ res.data[item].childId;
+                aDelete.innerText = "删除当前孩子信息";
+                aDelete.style.padding = "7px";
+                aDelete.style.cssFloat = "right";
+                aDelete.style.marginTop = "3%";
+                aDelete.style.cursor = "pointer";
+                aDelete.className = "btn-sm btn-danger";
+                aDelete.setAttribute("href", "javascript:void(0);");
+
+                spanName.innerText = "孩子姓名：";
+                spanSex.innerText = "孩子性别：";
+                spanBio.innerText = "孩子简介：";
+                spanBirthday.innerText = "孩子生日: ";
+
+                spanBio.style.cssFloat = "left";
+
+                li.id = res.data[item].childId;
+                li.className = "liDisplay";
+
+                ali.id = "a" + res.data[item].childId;
+
+                spanMeale.style.marginRight = "20px";
+                inputMale.style.marginRight  = "5px";
+                inputFemale.style.marginRight = "5px";
+
+                inputName.id = "inputName"+res.data[item].childId;
+
+                textareaBio.id = "textarea"+res.data[item].childId;
+
+                inputBirthday.id = "inputBirthday" + res.data[item].childId;
+
+                inputMale.type =  "radio";
+                inputFemale.type ="radio";
+                inputBirthday.type = "date";
+
+                spanMeale.innerText = "男";
+                spanFemale.innerText="女";
+
+                inputMale.name = "gender"+res.data[item].childId;
+                inputFemale.name = "gender"+res.data[item].childId;
+
+                inputMale.id = "radioId"+res.data[item].childId;
+                inputFemale.id = "radioFeMale"+res.data[item].childId;
+
+
+                div.style.display = "none";
+                div.className = "divDisplay";
+                div.style.marginTop = "20px";
+                div.style.marginLeft = "20px";
+                div.id = "div" + res.data[item].childId;
+
+                if (item == 0) {
+                    div.style.display = "";
+                    li.className = "active"
+                }
+
+                divName.id = "divName" + res.data[item].childId;
+                divSex.id = "divSex" + res.data[item].childId;
+                divBirthday.id = "divBirthday" + res.data[item].childId;
+                divBio.id = "divBio" +res.data[item].childId;
+
+                mn.appendChild(div);
+                li.appendChild(ali);
+                urlChild.appendChild(li);
+
+                ali.innerText = res.data[item].childName;
+
+                ali.cursor = "pointer";
+                ali.setAttribute("href", "javascript:void(0);");
+
+                ali.onclick = changeTab;
+                aUpdate.onclick = updateChild;
+                aDelete.onclick = deleteChild;
+
+
+                div.appendChild(divName);
+                div.appendChild(divSex);
+                div.appendChild(divBirthday);
+                div.appendChild(divBio);
+                div.appendChild(a);
+                div.appendChild(aUpdate);
+                div.appendChild(aDelete);
+
+                divName.appendChild(spanName);
+                divName.appendChild(inputName);
+
+                divSex.style.marginTop = "25px";
+                divSex.appendChild(spanSex);
+                divSex.appendChild(inputMale);
+                divSex.appendChild(spanMeale);
+                divSex.appendChild(inputFemale);
+                divSex.appendChild(spanFemale);
+
+                divBirthday.style.marginTop = "25px";
+                divBirthday.appendChild(spanBirthday);
+                divBirthday.appendChild(inputBirthday);
+
+                divBio.style.marginTop  = "25px";
+                divBio.appendChild(spanBio);
+                divBio.appendChild(textareaBio);
+
+                inputName.value = res.data[item].childName;
+                inputBirthday.style.marginLeft="6px";
+                let birthday = timestampToTime(res.data[item].childBirthday);
+                inputBirthday.value = birthday;
+
+                if (1 === res.data[item].childGender) {
+                    document.getElementById("radioId"+res.data[item].childId).checked  = true;
+                } else if(2 === res.data[item].childGender) {
+                    document.getElementById("radioFeMale"+res.data[item].childId).checked  = true;
+                }
+                textareaBio.innerText =  res.data[item].childSf;
+            }
+
+            //添加tab  添加孩子
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            const aImg = document.createElement("a");
+
+            a.id = "aAddChild";
+            aImg.id = "aImgAddChild";
+
+            a.setAttribute("href", "javascript:void(0);");
+            aImg.setAttribute("href", "javascript:void(0);");
+
+            li.style.margin = "8px";
+            a.cursor = "pointer";
+            a.onclick = addChild;
+            aImg.onclick = addChild;
+            a.innerText = "添加孩子";
+            a.style.display = "inline";
+            aImg.style.display = "inline";
+            aImg.style.zIndex = "9999";
+            a.style.marginLeft = "-15%";
+
+            li.appendChild(aImg);
+            li.appendChild(a);
+            urlChild.appendChild(li);
+
+            aImg.style.background = "url('http://pg8h1ukn9.bkt.clouddn.com/plus.png') no-repeat center 50%";
+
+        } else {
+            const urlChild = document.getElementById("navUrl");
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.innerText = "添加孩子";
+            a.cursor = "pointer";
+            urlChild.appendChild(li);
+            li.appendChild(a);
+            const addChild = document.getElementById("addChild");
+            addChild.style.display = "block";
+        }
     }).catch(error => {
         console.log(error);
     });
 
+    //页面渲染结束
 
-    uploadAvatar = () => {
 
-        let parent = {
-            parentPhoto: document.getElementById("defaultImg2").src,
-            parentPhone: JSON.parse(localStorage.getItem("userLoginPhone")).val,
+    function updateChild(){
+        const id = this.id;
+        updateThisChild(id.substring(7))
+    }
+
+    updateThisChild = (id) => {
+        const parentId = (url) => {
+            return new Promise((resolve, reject) => {
+                const client = new XMLHttpRequest();
+                client.open(clientMethod, url);
+                client.responseType = 'json';
+                client.onreadystatechange = () => {
+                    if (client.readyState === 4) {
+                        if (client.status === 200) {
+                            resolve(client.response);
+                        } else {
+                            reject(client.status);
+                        }
+                    }
+                };
+                client.send();
+            });
         };
 
-        //AjaxBegin
+        const JsonResponseList = () => parentId(clientUrl);
+
+        JsonResponseList().then((res) => {
+
+
+            let sex = 1;
+            const male = document.getElementById("radioId" + id);
+            const female = document.getElementById("radioFeMale" + id);
+
+            const inputName = document.getElementById("inputName"+id).value;
+
+            const textarea  = document.getElementById("textarea"+id).value;
+
+            const inputBirthday = document.getElementById("inputBirthday"+id).value;
+            if (male.checked) {
+                sex = 1;
+            }
+            if (female.checked) {
+                sex = 2;
+            }
+            let child = {
+                childId: id,
+                parentId : res.data.parentId,
+                childGender: sex,
+                childName: inputName,
+                childBirthday: inputBirthday,
+                childSf: textarea
+            };
+
+            const clientMethod = 'POST';
+            const clientUrl = 'http://localhost:1250/child/modifyChild';
+            const modifyChild = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const resultList = (data) => modifyChild(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+
+
+            resultList(JSON.stringify(child)).then((res) => {
+                window.location.href = "http://localhost:1250/childrenUi/infoUi"
+            }).catch(error => {
+                console.log(error);
+            });
+
+        }).catch(error => {
+            console.log(error);
+        });
+
+        //AjaxEnd
+    };
+    insertChild = () => {
+
+        const parentId = (url) => {
+            return new Promise((resolve, reject) => {
+                const client = new XMLHttpRequest();
+                client.open(clientMethod, url);
+                client.responseType = 'json';
+                client.onreadystatechange = () => {
+                    if (client.readyState === 4) {
+                        if (client.status === 200) {
+                            resolve(client.response);
+                        } else {
+                            reject(client.status);
+                        }
+                    }
+                };
+                client.send();
+            });
+        };
+
+        const JsonResponseList = () => parentId(clientUrl);
+
+        JsonResponseList().then((res) => {
+            let sex = 1;
+            const male = document.getElementById("site4");
+            const female = document.getElementById("site6");
+
+            if (male.checked){
+                sex = 1;
+            }
+            if (female.checked){
+                sex = 2;
+            }
+
+            let child = {
+                parentId: res.data.parentId,
+                childName : document.getElementById("site1").value,
+                childGender : sex,
+                childBirthday  : document.getElementById("data").value,
+                childSf : document.getElementById("bio").value,
+            };
+            //AjaxBegin
+            const clientMethod = 'POST';
+            const clientUrl = 'http://localhost:1250/child/insertChild';
+            const saveChild = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const resultList = (data) => saveChild(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+
+
+            resultList(JSON.stringify(child)).then((res) => {
+                window.location.href = "http://localhost:1250/childrenUi/infoUi"
+            }).catch(error => {
+                console.log(error);
+            });
+            //AjaxEnd
+
+
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
+    function changeTab() {
+
+        const id = "div" + this.id.substring(1);
+        const a = document.getElementById(this.id);
+        const aDisplay = document.getElementById(id);
+        const addChildTab = document.getElementById("addChild");
+        const li = document.getElementById(this.id.substring(1));
+        const divDisplay = document.getElementsByClassName("divDisplay");
+        const activeDisplay = document.getElementsByClassName("active");
+
+        addChildTab.style.display = "none";
+
+
+        for (let a = 0; a < divDisplay.length; a++) {
+            divDisplay[a].style.display = "none";
+        }
+
+        for (let a = 0; a < activeDisplay.length; a++) {
+            activeDisplay[a].className = "";
+        }
+
+        li.className = "active";
+        aDisplay.style.display = '';
+        a.style.color = "#01bacf";
+    }
+
+    function deleteChild(){
+        const id = this.id;
+        deleteThisChild(id.substring(4));
+    }
+
+    deleteThisChild=(id)=>{
+
+        let child={
+            childId : id
+        };
         const clientMethod = 'POST';
-        const clientUrl = 'http://localhost:1250/parent/updateParent';
-        const updateParent = ({url, method, data}) => {
+        const clientUrl = 'http://localhost:1250/child/deleteChild';
+
+        const removeChild = ({ url, method, data }) => {
             return new Promise((resolve, reject) => {
                 const client = new XMLHttpRequest();
                 client.open(clientMethod, url);
@@ -166,7 +592,7 @@
             });
         };
 
-        const resultList = (data) => updateParent(
+        const resultList = (data) => removeChild(
             {
                 url: clientUrl,
                 method: clientMethod,
@@ -174,20 +600,40 @@
             }
         );
 
-        console.log(JSON.stringify(parent));
 
-        resultList(JSON.stringify(parent)).then((res) => {
-            console.log(res);
-            window.location.href = '/loginUi/alreadyLoginUi';
+        resultList(JSON.stringify(child)).then((res) => {
+            window.location.href = '/childrenUi/infoUi'
         }).catch(error => {
             console.log(error);
         });
+    };
+
+    addChild = () => {
+        const addChildTab = document.getElementById("addChild");
+        const aAddChild = document.getElementById("aAddChild");
+        const aImgAddChild = document.getElementById("aImgAddChild");
+        const displayList = document.getElementsByClassName("divDisplay");
+        const activeDisplay = document.getElementsByClassName("active");
+        aAddChild.borderLeft = "none";
+        aImgAddChild.borderRight = "none";
+        for (let i = 0; i < displayList.length; i++) {
+            displayList[i].style.display = "none";
+        }
+        for (let a = 0; a < activeDisplay.length; a++) {
+            activeDisplay[a].className = "";
+        }
+        addChildTab.style.display = "block";
+        addChildTab.style.marginTop = "20px";
     };
 
 
     loginOut = () => {
         window.localStorage.clear();
         window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
+    };
+
+    cancelInsert = ()=>{
+        window.location.href  = "http://localhost:1250/childrenUi/infoUi";
     }
 
 </script>
@@ -241,9 +687,8 @@
                         <li><a href="">指导师</a></li>
                         <li>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-primary dropdown-toggle"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                        style="padding: 6px 12px;margin-top: 7px">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" style="padding: 6px 12px;margin-top: 7px">
                                     课程套餐
                                     <span class="caret"></span>
                                 </button>
@@ -255,8 +700,7 @@
                             </div>
                         </li>
                         <li><a href="">联系我们</a></li>
-                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
-                                class="fa fa-search"></i></a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
                         <li>
                             <div class="dropdown">
                                 <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
@@ -282,7 +726,9 @@
         <div id="dgtle_body_bg" style="margin-top: 110px">
             <div id="wp" class="wp">
                 <div id="ct" class="ct2 wp cl dgtle_wpct2">
-                    <div class="mn">
+
+
+                    <div class="mn" id="mn">
 
                         <!--有孩子的可以添加孩子-->
                         <ul class="nav nav-tabs" id="navUrl">
@@ -290,8 +736,64 @@
                         </ul>
 
                         <!--没有孩子可添加孩子-->
-                        <div class="addChild" id="addChild" style="width: 200px;display: none;height: 200px;background: #3caf36;margin: 0 auto">
-                            <img src="/images/加号2.png" alt="">
+                        <div class="addChild" id="addChild">
+
+                            <table cellspacing="0" cellpadding="0" class="tfm" id="profilelist" style="margin-left: 16px">
+                                <tbody>
+                                <tr id="tr_site1">
+                                    <th id="th_site1">孩子姓名</th>
+                                    <td id="td_site5">
+                                        <label for="site4"></label>
+                                        <input type="text" name="site" id="site1" class="px" value="" tabindex="1" style="height: auto;width: auto">
+                                        <div class="rq mtn" id="showerror_site1"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+
+                                <tr id="tr_site4">
+                                    <th id="th_site4">孩子性别</th>
+                                    <td id="td_site4">
+                                        <input type="radio" id="site4" name="sex" class="px" style="height: auto;width: auto" checked>男
+                                        <input type="radio" id="site6" name="sex" class="px" style="height: auto;width: auto">女
+                                        <div class="rq mtn" id="showerror_site4"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+
+                                <tr id="tr_site3">
+                                    <th id="th_site3">孩子生日</th>
+                                    <td id="td_site3">
+                                        <input type="date" value="2015-09-24" id="data" style="width: 333px" />
+                                        <div class="rq mtn" id="showerror_site3"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+
+
+                                <tr id="tr_bio">
+                                    <th id="th_bio">孩子简介</th>
+                                    <td id="td_bio">
+                                        <label for="bio"></label>
+                                        <textarea name="bio" id="bio" class="pt" rows="3" cols="40" tabindex="1" placeholder="添加孩子签名"></textarea>
+                                        <div class="rq mtn" id="showerror_bio"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <td colspan="2">
+                                        <button id="profilesubmitbtn" class="pn pnc" onclick="insertChild()">
+                                            <strong>保存</strong>
+                                        </button>
+                                        <button id="profilesubmitbtn2" class="pn pnc" onclick="cancelInsert()">
+                                            <strong>取消</strong>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <!--右侧边栏-->
@@ -299,18 +801,16 @@
 
                         <div class="sd_box">
                             <div class="group_sd_mymembers cr_grs">
-                                <div class="avat"
-                                     style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
+                                <div class="avat" style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
                                     <a target="_blank" sl-processed="1">
-                                        <img id="avatarImg2"
-                                             src="http://www.dgtle.com/uc_server/images/noavatar_big.gif" style="max-width: 100%;min-height: 100px;
+                                        <img id="avatarImg2" src="http://www.dgtle.com/uc_server/images/noavatar_big.gif" style="max-width: 100%;min-height: 100px;
                                                       min-width: 100px;max-height: 100%;
                                                       margin: 0">
                                     </a>
                                 </div>
                                 <div class="mporf cl">
                                     <p class="homeusername">
-                                        <a id="aName" style="margin-left: 80px;margin-top: 20px"></a>
+                                        <a id="aName1" style="margin-left: 80px;margin-top: 20px"></a>
                                     </p>
 
                                 </div>
@@ -323,27 +823,35 @@
                             <ul>
 
                                 <li>
-                                    <a href="/parentUi/parentChangeAvatarUi" sl-processed="1">修改头像</a>
+                                    <a href="/parentUi/parentChangeAvatarUi">修改头像</a>
                                 </li>
 
                                 <li>
-                                    <a href="/parentUi/parentSettingsUi" sl-processed="1">个人资料</a>
+                                    <a href="/parentUi/parentSettingsUi">个人资料</a>
                                 </li>
 
                                 <li>
-                                    <a href="/parentUi/parentChangePasswordUi" sl-processed="1">密码安全</a>
-                                </li>
-
-                                <li>
-                                    <a href="#" sl-processed="1">订单查询</a>
+                                    <a href="/parentUi/parentChangePasswordUi">密码安全</a>
                                 </li>
 
                                 <li class="a">
-                                    <a href="#" sl-processed="1">孩子资料</a>
+                                    <a href="#">孩子资料</a>
                                 </li>
 
                                 <li>
-                                    <a href="" sl-processed="1">帐号绑定</a>
+                                    <a href="#">订单查询</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">课程查询</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">活动查询</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">帐号绑定</a>
                                 </li>
                             </ul>
 
@@ -441,6 +949,7 @@
             </div>
         </div><!-- end container -->
     </div>
+
 
 </div>
 <!--模版自带-->

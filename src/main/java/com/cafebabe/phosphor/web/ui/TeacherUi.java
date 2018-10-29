@@ -13,14 +13,14 @@ import java.io.IOException;
 
 /**
  * @author kevingx2016@gmail.com
- *
+ * <p>
  * class_name: TeacherUi
- *
+ * <p>
  * create_date: 2018/10/18
- *
+ * <p>
  * create_time: 14:31
- *
- * description:
+ * <p>
+ * description:教师信息跳转界面
  **/
 @Controller
 @CrossOrigin
@@ -29,11 +29,12 @@ public class TeacherUi {
 
     @RequestMapping("getTeacherList")
     public void teacher(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/teacher/teacher.html").forward(httpServletRequest,httpServletResponse);
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/teacher/teacher.html").forward(httpServletRequest, httpServletResponse);
     }
+
     @RequestMapping("getTeacherInformation/{teacherId}")
     public void teacherInformation(@PathVariable Integer teacherId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletResponse.addCookie(new Cookie("teacherId",teacherId.toString()));
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/teacher/teacherInformation.html").forward(httpServletRequest,httpServletResponse);
+        httpServletResponse.addCookie(new Cookie("teacherId", teacherId.toString()));
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/teacher/teacherInformation.html").forward(httpServletRequest, httpServletResponse);
     }
 }

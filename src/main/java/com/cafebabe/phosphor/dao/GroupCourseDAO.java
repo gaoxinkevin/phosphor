@@ -17,14 +17,14 @@ public interface GroupCourseDAO extends MyBatisBaseDao<GroupCourse, Integer> {
      */
     Integer insertGroupCourse(GroupCourse groupCourse);
 
-    Integer insertGroupCourses(List<Course> groupCourse);
+    Integer updateGroupCourse(GroupCourse groupCourse);
 
     /**
      * 删除套餐的课程
-     * @param id
+     * @param courseId
      * @return
      */
-    Integer removeGroupCourse(Integer id);
+    Integer removeGroupCourse(Integer courseId);
 
     /**
      * 查询套餐的所有课程

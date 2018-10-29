@@ -3,12 +3,22 @@ package com.cafebabe.phosphor.model.entity;
 import lombok.*;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
 /**
- * user_login
- * @author 
- */
+ *
+ * @author supersuntangao@gmail.com
+ *
+ * class_name: UserLogin
+ *
+ * create_date: 2018/10/25
+ *
+ * create_time: 09:14
+ *
+ * description: 用户登录类
+ **/
+
 
 @Getter
 @Setter

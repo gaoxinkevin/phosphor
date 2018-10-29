@@ -1,23 +1,14 @@
 package com.cafebabe.phosphor.service.serviceImpl;
 
 
-import com.cafebabe.phosphor.dao.UserLoginDAO;
-import com.cafebabe.phosphor.dao.ValidateRegisterDAO;
-
-import com.cafebabe.phosphor.model.entity.ValidateRegister;
 import com.google.gson.Gson;
 import okhttp3.*;
-import org.apache.ibatis.annotations.Param;
 import org.junit.Test;
 
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 
 public class testValidateRegisterService {
 

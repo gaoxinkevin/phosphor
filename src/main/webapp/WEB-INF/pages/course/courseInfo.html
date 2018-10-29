@@ -21,13 +21,17 @@
     <link rel="stylesheet" href="/css/carousel.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
+    <!--<link rel="stylesheet" href="/css/styleCourse.css">-->
     <link rel="stylesheet" href="/css/styleLogin.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
+    <script src="/js/courseCommend.js"></script>
     <script>
-        const clientUrl = 'http://localhost:1250/course/findCourseInfo';
-        const clientMethod = 'GET';
-        const getJsonCourse = (url) => {
+        const courseId = document.cookie.split(';')[0].trim();
+        const id = courseId.split('=')[1].trim();
+        const clientUrl = 'http://localhost:1250/course/findCourseInfo/' + id;
+        const clientMethod = 'POST';
+        const getJsonCourse = ({url}) => {
             return new Promise((resolve, reject) => {
                 const client = new XMLHttpRequest();
                 client.open(clientMethod, url);
@@ -45,7 +49,11 @@
             });
         };
 
-        const courseInfo = () => getJsonCourse(clientUrl);
+        const courseInfo = () => getJsonCourse(
+            {
+                url:clientUrl
+            }
+            );
 
         courseInfo().then(({data}) => {
             const courseName = document.getElementById("courseName");
@@ -53,20 +61,24 @@
             const courseDesc = document.getElementById("courseDesc");
             const companyName = document.getElementById("companyName");
             const courseType = document.getElementById("courseType");
+            const courseCount = document.getElementById("courseCount");
             const courseContent = document.getElementById("courseContent");
             const courseStartDay = document.getElementById("courseStartDay");
+            const courseContinuedTime = document.getElementById("courseContinuedTime");
             const courseStartTime = document.getElementById("courseStartTime");
             const courseEndTime = document.getElementById("courseEndTime");
             const courseAddress = document.getElementById("courseAddress");
-            const courseTeacher = document.getElementById("courseTeacher")
+            const courseTeacher = document.getElementById("courseTeacher");
 
             courseName.innerText = data.courseName;
             coursePrice.innerText = data.coursePrice;
             courseDesc.innerText = data.courseDesc;
             companyName.innerText = data.companyName;
             courseType.innerText = data.typeName;
+            courseCount.innerText = data.courseCount;
             courseContent.innerText = data.courseContent;
             courseStartDay.innerText = data.courseStartDay;
+            courseContinuedTime.innerText = data.courseContinuedTime;
             courseStartTime.innerText = data.courseStartTime;
             courseEndTime.innerText = data.courseEndTime;
             courseAddress.innerText = data.courseAddress;
@@ -79,7 +91,6 @@
     </script>
 </head>
 <body>
-
 
 <!-- LOADER -->
 <div id="preloader" style="display: none;">
@@ -147,10 +158,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="tagline-message page-title">
-                        <br/>
-                        <h3>课程详情</h3>
-                    </div>
+                    <div class="tagline-message page-title"></div>
                 </div><!-- end col -->
                 <div class="col-md-6 text-right">
                     <!--<ul class="breadcrumb">-->
@@ -220,14 +228,20 @@
                             <small>价格：￥<span id="coursePrice"></span></small>
                             <p id="courseDesc">这里放课程简介：课程简介，大概两三行</p>
                             <div class="shop-meta">
-                                <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#" class="btn btn-primary">立即购买</a>
+                                <a href="#" class="btn btn-primary">立即购买</a>
                                 <ul class="list-inline">
                                     <li>公司: <span id="companyName"></span></li>
                                     <li>类别:
-                                        <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">
+                                        <a href="#">
                                             <span id="courseType">Bags</span></a>
                                     </li>
                                 </ul>
+                                <ul class="list-inline">
+                                    <li>销量：<span id="courseCount">被购次数</span></li>
+                                </ul>
+                            </div><!-- end shop meta -->
+                            <div class="shop-meta">
+                                <a href="#" class="btn btn-primary">收藏课程</a>
                             </div><!-- end shop meta -->
                         </div><!-- end desc -->
                     </div><!-- end col -->
@@ -240,13 +254,13 @@
                         <div class="shop-extra">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a data-toggle="tab"
-                                                      href="file:///E:/Demo/twts_102_edulogy/shop-single.html#home"
+                                                      href="#"
                                                       aria-expanded="true">课程内容</a></li>
                                 <li class=""><a data-toggle="tab"
-                                                href="file:///E:/Demo/twts_102_edulogy/shop-single.html#menu1"
+                                                href="#"
                                                 aria-expanded="false">详细信息</a></li>
                                 <li class=""><a data-toggle="tab"
-                                                href="file:///E:/Demo/twts_102_edulogy/shop-single.html#menu2"
+                                                href="#"
                                                 aria-expanded="false">课程评价</a></li>
                             </ul>
 
@@ -264,6 +278,13 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td><strong>课程周期</strong></td>
+                                            <td>
+                                                <span id="courseContinuedTime"></span>
+                                                <span>周</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td><strong>上课时间</strong></td>
                                             <td>
                                                 <span id="courseStartTime"></span>
@@ -278,7 +299,7 @@
                                         </tr>
                                         <tr>
                                             <td><strong>授课教师</strong></td>
-                                            <td><span id="courseTeacher"></span></td>
+                                            <td><span id="courseTeacher">暂未安排</span></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -326,150 +347,11 @@
                         <h3>课程推荐</h3>
                     </div><!-- end title -->
 
-                    <div class="row blog-grid shop-grid">
-                        <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_01.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html" title=""><i
-                                                class="flaticon-add"></i></a>
-                                    </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html" title="">Brown
-                                            leather bag</a>
-                                        <small>Bags</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#"><i
-                                                    class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                    <div class="row blog-grid shop-grid" id="courseGrid">
+                        <script type="text/javascript">
+                            getCommendCourseList();
+                        </script>
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">$441.00</a>
-                                            </li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
-
-                        <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_02.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html" title=""><i
-                                                class="flaticon-add"></i></a>
-                                    </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html" title="">Long coat
-                                            jacket</a>
-                                        <small>Jackets</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#"><i
-                                                    class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">$122.00</a>
-                                            </li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
-
-                        <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_03.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html" title=""><i
-                                                class="flaticon-add"></i></a>
-                                    </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html" title="">Style own
-                                            glasses</a>
-                                        <small>Glasses</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#"><i
-                                                    class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">$52.00</a>
-                                            </li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
-
-                        <div class="col-md-3">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_04.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html" title=""><i
-                                                class="flaticon-add"></i></a>
-                                    </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html" title="">Printed
-                                            white t-shirt</a>
-                                        <small>T-Shirts</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#"><i
-                                                    class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">$22.00</a>
-                                            </li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
                     </div><!-- end row -->
                 </div><!-- end related -->
             </div><!-- end boxed -->
@@ -484,7 +366,7 @@
                         <h3 class="widget-title">Subscribe Our Newsletter</h3>
                         <div class="newsletter-widget">
                             <p>You can opt out of our newsletters at any time.<br> See our <a
-                                    href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">privacy policy</a>.</p>
+                                    href="#">privacy policy</a>.</p>
                             <form class="form-inline" role="search">
                                 <div class="form-1">
                                     <input type="text" class="form-control" placeholder="Enter email here..">
@@ -501,7 +383,7 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">Join us today</h3>
                         <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
-                        <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#" class="readmore">Became a
+                        <a href="#" class="readmore">Became a
                             Teacher</a>
                     </div><!-- end widget -->
                 </div><!-- end col -->
@@ -511,16 +393,16 @@
                         <h3 class="widget-title">Popular Tags</h3>
                         <div class="tags-widget">
                             <ul class="list-inline">
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">course</a></li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">web design</a></li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">development</a></li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">language</a></li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">teacher</a></li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">speaking</a></li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">material</a></li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">css3</a></li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">html</a></li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">learning</a></li>
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
                             </ul>
                         </div><!-- end list-widget -->
                     </div><!-- end widget -->
@@ -531,14 +413,12 @@
                         <h3 class="widget-title">Support</h3>
                         <div class="list-widget">
                             <ul>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">Terms of Use</a></li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">Copyrights</a></li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">Create a Ticket</a>
-                                </li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">Pricing &amp; Plans</a>
-                                </li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">Carrier</a></li>
-                                <li><a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">Trademark</a></li>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing &amp; Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
                             </ul>
                         </div><!-- end list-widget -->
                     </div><!-- end widget -->
@@ -552,14 +432,14 @@
             <div class="clearfix">
                 <div class="pull-left">
                     <div class="cop-logo">
-                        <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#"><img src="/images/logo.png" alt=""></a>
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
                     </div>
                 </div>
 
                 <div class="pull-right">
                     <div class="footer-links">
                         <ul class="list-inline">
-                            <li>Design : <a href="file:///E:/Demo/twts_102_edulogy/shop-single.html#">HTML.Design</a>
+                            <li>Design : <a href="#">HTML.Design</a>
                             </li>
                             <li>Distributed by : More Templates <a href="http://www.cssmoban.com/" target="_blank"
                                                                    title="模板之家">模板之家</a> - Collect from <a

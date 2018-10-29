@@ -3,6 +3,7 @@ package com.cafebabe.phosphor.model.entity;
 import lombok.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -40,7 +41,7 @@ public class Course implements Serializable {
     /**
      * 课程价格
      */
-    private Long coursePrice;
+    private BigDecimal coursePrice;
 
     /**
      * 课程内容

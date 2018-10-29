@@ -18,6 +18,12 @@ public interface GroupDAO extends MyBatisBaseDao<Group, Integer> {
     Integer insertGroup(Group group);
 
     /**
+     * 获取最后插入的套餐id
+     * @return 套餐id
+     */
+    Integer getGroupId();
+
+    /**
      * 修改套餐
      * @return 0=>false | 1=>true
      */

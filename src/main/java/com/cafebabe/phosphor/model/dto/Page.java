@@ -28,7 +28,7 @@ public class Page<T> {
     /**
      * 每页显示记录数
      */
-    private final Integer pageSize = 4;
+    private Integer pageSize = 12;
     /**
      * 总记录数
      */

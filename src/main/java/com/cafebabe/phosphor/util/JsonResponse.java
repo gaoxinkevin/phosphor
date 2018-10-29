@@ -29,6 +29,7 @@ public class JsonResponse {
     private String  message;
     private Object  data;
 
+    @SuppressWarnings("unused")
     public enum Status{
 
         /**

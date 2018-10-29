@@ -3,12 +3,22 @@ package com.cafebabe.phosphor.model.entity;
 import lombok.*;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
 /**
- * parent
- * @author 
- */
+ *
+ * @author supersuntangao@gmail.com
+ *
+ * class_name: Parent
+ *
+ * create_date: 2018/10/25
+ *
+ * create_time: 09:13
+ *
+ * description: 家长类
+ **/
+
 
 @Getter
 @Setter
