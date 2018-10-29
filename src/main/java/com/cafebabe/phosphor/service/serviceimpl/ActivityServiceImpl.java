@@ -7,6 +7,7 @@ import com.cafebabe.phosphor.model.dto.Page;
 import com.cafebabe.phosphor.model.entity.Activity;
 import com.cafebabe.phosphor.model.entity.Teacher;
 import com.cafebabe.phosphor.service.ActivityService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,11 @@ import java.util.List;
 @Service
 public class ActivityServiceImpl implements ActivityService {
 
-    @Autowired
     private final ActivityDAO activityDAO;
 
-    @Autowired
     private final TeacherDAO teacherDAO;
 
+    @Autowired
     public ActivityServiceImpl(ActivityDAO activityDAO, TeacherDAO teacherDAO){
         this.activityDAO = activityDAO;
         this.teacherDAO = teacherDAO;
@@ -78,8 +78,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public List<ActivityInfo> merge(List<Activity> activityList) {
         List<ActivityInfo> activityInfoList = new ArrayList<>();
-        for(int i = 0; i < activityList.size(); i++){
-            Activity activity =activityList.get(i);
+        for (Activity activity : activityList) {
             Teacher teacher = teacherDAO.selectByPrimaryKey(activity.getTeacherId());
             ActivityInfo activityInfo = new ActivityInfo();
             activityInfo.setActivityId(activity.getActivityId());
