@@ -277,4 +277,5 @@ function nextPage() {
     if(currentPageCode >= (totalPages - 1))
         return void(0);
     getCourseListByPage((currentPageCode + 1), 12);
+
 }
