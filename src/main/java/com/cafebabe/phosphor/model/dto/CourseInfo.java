@@ -37,6 +37,10 @@ public class CourseInfo implements Serializable {
      * 课程名称
      */
     private String courseName;
+    /**
+     * 公司Id
+     */
+    private Integer companyId;
 
     /**
      * 公司名称

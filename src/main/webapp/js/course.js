@@ -1,22 +1,3 @@
-function getAllCouse() {
-    let request = null;
-    if(window.XMLHttpRequest)
-        request = new XMLHttpRequest();
-    else
-        request = new ActiveXObject('Microsoft.XMLHTTP');
-
-    request.open("GET", "/course/getCourseList", true);
-    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-    request.send(null);
-
-    request.onreadystatechange = function () {
-        if(request.readyState == 4){
-            if(request.status >= 200 && request.status<300 || request.status == 304)
-                loadCourseList(request.responseText);
-        }
-    }
-}
-
 /**
  * 分页查询
  * @param pageIndex 页码
@@ -157,7 +138,7 @@ function clearPageIndex(pageUl) {
 
 /**
  * 获取Xhr对象
- * @returns {any}
+ * @returns any
  */
 function getXhr() {
     let request = null;
@@ -167,22 +148,6 @@ function getXhr() {
         request = new ActiveXObject("Microsoft.XMLHTTP");
 
     return request;
-}
-
-/**
- * 解析JSON，并且装入到DOM中返回
- * @param courseInfoListJson
- */
-function loadCourseList(courseInfoListJson) {
-    let courseInfoList = JSON.parse(courseInfoListJson);
-    let div = document.getElementById("courseGrid");
-    let courseInfoListData = courseInfoList.data;
-
-    for(let i = 0; i < courseInfoListData.length ; i++){
-
-        let divGrid = generateDiv(courseInfoListData[i]);
-        div.appendChild(divGrid);
-    }
 }
 
 function generateDiv(courseInfo) {
