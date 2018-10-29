@@ -93,7 +93,7 @@
         <property name="hostName" value="47.100.247.29"/>
         <property name="port" value="6379"/>
         <property name="password" value="123"/>
-        <property name="database" value="3"/>
+        <property name="database" value="1"/>
         <property name="poolConfig" ref="poolConfig"/>
     </bean>
 
@@ -114,8 +114,7 @@
                     class="org.springframework.data.redis.serializer.StringRedisSerializer" />
         </property>
         <property name="hashValueSerializer">
-            <bean
-                    class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
         </property>
         <!-- 开启REIDS事务支持 -->
         <property name="enableTransactionSupport" value="false" />

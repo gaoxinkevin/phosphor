@@ -17,7 +17,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Feedback implements Serializable {
     /**
-     * 投诉ID
+     * 评价ID
      */
     private Integer feedbackId;
 
@@ -32,12 +32,12 @@ public class Feedback implements Serializable {
     private Integer parentId;
 
     /**
-     * 投诉内容
+     * 评价内容
      */
     private String feedbackContent;
 
     /**
-     * 投诉状态
+     * 评价状态
      */
     private Integer feedbackStatus;
 
@@ -46,6 +46,5 @@ public class Feedback implements Serializable {
      */
     private String feedbackSf;
 
-    private static final long serialVersionUID = 1L;
 
 }

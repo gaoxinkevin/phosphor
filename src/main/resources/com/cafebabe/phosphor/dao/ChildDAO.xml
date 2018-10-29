@@ -113,4 +113,12 @@ where ch.child_id = #{childId,jdbcType=INTEGER};
       child_sf = #{childSf,jdbcType=VARCHAR}
     where child_id = #{childId,jdbcType=INTEGER}
   </update>
+
+  <select id="getChildNameById" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select
+    child_name
+    from child
+    where child_id = #{childId,jdbcType=INTEGER}
+  </select>
+
 </mapper>

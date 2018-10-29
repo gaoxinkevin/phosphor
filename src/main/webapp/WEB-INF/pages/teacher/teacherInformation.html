@@ -10,7 +10,7 @@
     <!-- Mobile Meta -->
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Site Meta -->
-    <title>教师</title>
+    <title>教师详情</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/css/carousel.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleLogin.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="/js/login.js"></script>
 
@@ -60,6 +61,7 @@
             );
 
             let fatherDiv = document.getElementById("fatherDiv");
+            fatherDiv.innerText = "";
             scrollTo(0, 0);
             result().then((res) => {
                 let sonDiv = generateDiv(res.data);
@@ -67,8 +69,81 @@
                 fatherDiv.appendChild(sonDiv);
                 fatherDiv.appendChild(descDiv);
             });
+            getFeedback();
         }
 
+        getFeedback = () => {
+            const teacherId = document.cookie.split(';')[0].trim();
+            const id = teacherId.split('=')[1].trim();
+
+            const clientUrl = 'http://localhost:1250/feedback/getFeedbackList';
+            const clientMethod = 'POST';
+            const feedback = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const result = (data) => feedback(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+            let page = 1;
+            let pageModel = {
+                sf: id,
+                currentPageCode: page,
+            };
+
+            let grandfatherDiv = document.getElementById("feedbackDiv");
+            grandfatherDiv.innerText = "";
+            scrollTo(0, 0);
+            result(JSON.stringify(pageModel)).then((res) => {
+                if (res.data.modelList.length != 0) {
+                    for (let i = 0; i < res.data.modelList.length; i++) {
+                        let sonDiv = generateFeedbackDiv(res.data.modelList[i]);
+                        grandfatherDiv.appendChild(sonDiv);
+                    }
+                    let pageDiv = generatePageDiv(res.data.currentPageCode, res.data.totalPages);
+                    grandfatherDiv.appendChild(pageDiv);
+                    grandfatherDiv.appendChild(generateFeedDiv(1));
+                } else {
+                    let div1 = document.createElement("div");
+                    div1.setAttribute("style", "width: 100%; height: 60px;float: left; " +
+                        "margin: 20px auto auto -10px;text-align:center;font-size:25px;");
+                    div1.innerText = "该教师还没有评价，欢迎您的评价！";
+                    let fatherDiv = document.createElement("div");
+                    fatherDiv.classList.add("boxed", "boxedp4");
+                    fatherDiv.setAttribute("style", "margin-bottom: -90px;margin-top: 10px;");
+                    let div = document.createElement("div");
+                    div.classList.add("row", "blog-grid", "shop-grid");
+                    div.setAttribute("style", "border: 1px solid #eee;")
+                    grandfatherDiv.appendChild(fatherDiv);
+                    fatherDiv.appendChild(div);
+                    div.appendChild(div1);
+                    grandfatherDiv.appendChild(generateFeedDiv(0));
+                }
+
+            }).catch(error => {
+                console.log(error);
+            });
+
+        }
 
         generateDiv = (teacherData) => {
             let div = document.createElement("div");
@@ -78,12 +153,13 @@
             let divLeft2 = document.createElement("div");
             divLeft2.classList.add("course-box", "shop-wrapper");
             let divLeft3 = document.createElement("div");
-            divLeft3.classList.add("image-wrap", "entry");
+            // divLeft3.classList.add("image-wrap", "entry");
             let img = document.createElement("img");
             img.classList.add("img-responsive");
-            // img.setAttribute("src", teacherData.teacherPhoto);
-            img.setAttribute("src", "/upload/shop_01.jpg");
+            img.setAttribute("src", teacherData.teacherPhoto);
+            // img.setAttribute("src", "/upload/shop_01.jpg");
             img.setAttribute("alt", "");
+            img.setAttribute("style", "width:238.5px;height:238.5px;")
             div.appendChild(divLeft1);
             divLeft1.appendChild(divLeft2);
             divLeft2.appendChild(divLeft3);
@@ -97,16 +173,58 @@
             let divRightSpan1 = document.createElement("span");
             divRightSpan1.innerText = "教师姓名：" + teacherData.teacherName;
             let divRightSpan2 = document.createElement("span");
-            divRightSpan2.innerText = "教师电话：" + teacherData.teachePhone;
+            divRightSpan2.innerText = "所属公司：" + teacherData.companyName;
             let divRightSpan3 = document.createElement("span");
-            divRightSpan3.innerText = "教师邮箱：" + teacherData.teacherMail;
+            divRightSpan3.innerText = "教师电话：" + teacherData.teachePhone;
             let divRightSpan4 = document.createElement("span");
-            divRightSpan4.innerText = "工作时间：" + teacherData.teacherWorktime;
+            divRightSpan4.innerText = "教师邮箱：" + teacherData.teacherMail;
             let divRightSpan5 = document.createElement("span");
-            if (teacherData.teacherDesc == null || teacherData.teacherDesc == "") {
-                divRightSpan5.innerText = "教师简介：空";
+            let workTime = new Date(parseInt(teacherData.teacherWorktime)).toLocaleString();
+            let year = workTime.substring(0, 4);
+            let month;
+            let day;
+            if (workTime.substr(6, 1) == "/") {
+                if (workTime.substr(8, 1) == " ") {
+                    month = workTime.substr(5, 1);
+                    day = workTime.substr(7, 1);
+                } else {
+                    month = workTime.substr(5, 1);
+                    day = workTime.substr(7, 2);
+                }
             } else {
-                divRightSpan5.innerText = "教师简介：" + teacherData.teacherDesc;
+                if (workTime.substr(9, 1) == " ") {
+                    month = workTime.substr(5, 2);
+                    day = workTime.substr(8, 1);
+                } else {
+                    month = workTime.substr(5, 2);
+                    day = workTime.substr(8, 2);
+                }
+            }
+            divRightSpan5.innerText = "工作时间：" + year + "年" + month + "月" + day + "日";
+
+            const divRightA = document.createElement("a");
+            divRightA.setAttribute("href", "javascript:teacherLikeAdd()");
+            const divRightImg = document.createElement("img");
+            divRightImg.setAttribute("src", "http://ph4vwyi7h.bkt.clouddn.com/%E7%82%B9%E8%B5%9E%20%282%29.png");
+            divRightImg.setAttribute("style", "margin: auto auto 5px -6px;width:32px;height:32px;");
+            const divRightAddLikeSpan = document.createElement("span");
+            divRightAddLikeSpan.innerText = "点赞 ";
+            const divRightLikeSpan = document.createElement("span");
+            divRightLikeSpan.innerText = teacherData.teacherLikeCount;
+
+            // const divRightLikeSpan = document.createElement("span");
+            // divRightLikeSpan.innerText = "点赞数：" + teacherData.teacherLikeCount;
+            // const divRightA = document.createElement("a");
+            // divRightA.setAttribute("href", "javascript:teacherLikeAdd()");
+            // const likeImg = document.createElement("img");
+            // likeImg.setAttribute("src", "/images/teacherLike.png");
+            // likeImg.setAttribute("style", "margin: auto auto 5px 6px;width:18px;height:18px;");
+            //
+            let divRightSpan6 = document.createElement("span");
+            if (teacherData.teacherDesc == null || teacherData.teacherDesc == "") {
+                divRightSpan6.innerText = "教师简介：空";
+            } else {
+                divRightSpan6.innerText = "教师简介：" + teacherData.teacherDesc;
             }
             divRight1.appendChild(divRight2);
             divRight2.appendChild(divRightSpan1);
@@ -117,6 +235,16 @@
             divRight2.appendChild(document.createElement("br"));
             divRight2.appendChild(divRightSpan4);
             divRight2.appendChild(document.createElement("br"));
+            divRight2.appendChild(divRightSpan5);
+            divRight2.appendChild(document.createElement("br"));
+            divRight2.appendChild(divRightA);
+            divRightA.appendChild(divRightImg);
+            divRightA.appendChild(divRightAddLikeSpan);
+            divRight2.appendChild(divRightLikeSpan);
+
+            // divRight2.appendChild(divRightLikeSpan);
+            // divRight2.appendChild(divRightA);
+            // divRightA.appendChild(likeImg);
 
             div.appendChild(divRight1);
 
@@ -129,11 +257,384 @@
             span.innerText = "教师简介：" + teacherDesc;
             return div.appendChild(span);
         }
+
+        generateFeedbackDiv = (modelList) => {
+            let fatherDiv = document.createElement("div");
+            fatherDiv.classList.add("boxed", "boxedp4");
+            fatherDiv.setAttribute("style", "margin-bottom: -90px;margin-top: 10px;");
+            let div = document.createElement("div");
+            div.classList.add("row", "blog-grid", "shop-grid");
+            div.setAttribute("style", "border: 1px solid #eee;")
+            let divLeft1 = document.createElement("div");
+            divLeft1.classList.add("col-md-3");
+            let divLeft2 = document.createElement("div");
+            divLeft2.classList.add("course-box", "shop-wrapper");
+            let divLeft3 = document.createElement("div");
+            divLeft3.classList.add("entry");
+            let divParent = document.createElement("div");
+            divParent.setAttribute("style", "text-align: center;margin-left: -30px;");
+            let img = document.createElement("img");
+            img.classList.add("customizeImage");
+            img.setAttribute("style", "width: 150px;height:150px;");
+            img.setAttribute("src", modelList.parentPhoto);
+            // img.setAttribute("src", "/upload/shop_01.jpg");
+            let parentNameSpan = document.createElement("span");
+            parentNameSpan.innerText = modelList.parentName;
+            let parentPhoneSpan = document.createElement("span");
+            parentPhoneSpan.innerText = modelList.parentPhone;
+            let feedbackDiv = document.createElement("div");
+            feedbackDiv.classList.add("customizeFeedbackDiv");
+            let feedbackSpan = document.createElement("span");
+            feedbackSpan.innerText = modelList.feedbackContent;
+
+            fatherDiv.appendChild(div);
+            div.appendChild(divLeft1);
+            divLeft1.appendChild(divLeft2);
+            divLeft2.appendChild(divLeft3);
+            divLeft3.appendChild(divParent);
+            divParent.appendChild(img);
+            divParent.appendChild(document.createElement("br"));
+            divParent.appendChild(parentNameSpan);
+            divParent.appendChild(document.createElement("br"));
+            divParent.appendChild(parentPhoneSpan);
+
+            div.appendChild(feedbackDiv);
+            feedbackDiv.appendChild(feedbackSpan);
+
+            return fatherDiv;
+        }
+
+        generatePageDiv = (currentPageCode, totalPages) => {
+            let div = document.createElement("div");
+            let hr = document.createElement("hr");
+            hr.classList.add("invis");
+            let div1 = document.createElement("div");
+            div1.classList.add("row", "text-center");
+            let div2 = document.createElement("div");
+            div2.classList.add("col-md-12");
+            div2.setAttribute("style", "margin-top: -35px;");
+            let ul = document.createElement("ul");
+            ul.classList.add("pagination");
+            let liFirstPage = document.createElement("li");
+            let liLastPage = document.createElement("li");
+            let liEndPage = document.createElement("li");
+            let liNextPage = document.createElement("li");
+            let li = document.createElement("li");
+            li.classList.add("disabled");
+            if (currentPageCode == 1) {
+                liFirstPage.classList.add("customizeDisable");
+                liLastPage.classList.add("customizeDisable");
+            }
+            else {
+                liFirstPage.classList.add("active");
+                liLastPage.classList.add("active");
+            }
+
+            if (currentPageCode == totalPages) {
+                liEndPage.classList.add("customizeDisable");
+                liNextPage.classList.add("customizeDisable");
+            }
+            else {
+                liEndPage.classList.add("active");
+                liNextPage.classList.add("active");
+            }
+            let aFirstPage = document.createElement("a");
+            aFirstPage.setAttribute("href", "javascript:getPageList(1)");
+            aFirstPage.setAttribute("style", "cursor: pointer;");
+            aFirstPage.innerText = "首页";
+            let aLastPage = document.createElement("a");
+            aLastPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode - 1) + ")");
+            aLastPage.setAttribute("style", "cursor: pointer;");
+            aLastPage.innerText = "上一页";
+            let aEndPage = document.createElement("a");
+            aEndPage.setAttribute("href", "javascript:getPageList(" + totalPages + ")");
+            aEndPage.setAttribute("style", "cursor: pointer;");
+            aEndPage.innerText = "尾页";
+            let aNextPage = document.createElement("a");
+            aNextPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode + 1) + ")");
+            aNextPage.setAttribute("style", "cursor: pointer;");
+            aNextPage.innerText = "下一页";
+            let a = document.createElement("a");
+            a.innerText = currentPageCode;
+
+            div.appendChild(hr);
+            div.appendChild(div1);
+            div1.appendChild(div2);
+            div2.appendChild(ul);
+            ul.appendChild(liFirstPage);
+            ul.appendChild(liLastPage);
+            ul.appendChild(li);
+            ul.appendChild(liNextPage);
+            ul.appendChild(liEndPage);
+            liFirstPage.appendChild(aFirstPage);
+            liLastPage.appendChild(aLastPage);
+            li.appendChild(a);
+            liNextPage.appendChild(aNextPage);
+            liEndPage.appendChild(aEndPage);
+
+            return div;
+        }
+
+        getPageList = (pageCode) => {
+            const teacherId = document.cookie.split(';')[0].trim();
+            const id = teacherId.split('=')[1].trim();
+            const clientUrl = 'http://localhost:1250/feedback/getFeedbackList';
+            const clientMethod = 'POST';
+            const teacherList = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const resultList = (data) => teacherList(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+
+            let pageModel = {
+                sf: id,
+                currentPageCode: pageCode,
+            };
+
+            let grandfatherDiv = document.getElementById("feedbackDiv");
+            grandfatherDiv.innerText = "";
+            scrollTo(0, 0);
+            resultList(JSON.stringify(pageModel)).then((res) => {
+                for (let i = 0; i < res.data.modelList.length; i++) {
+                    let sonDiv = generateFeedbackDiv(res.data.modelList[i]);
+                    grandfatherDiv.appendChild(sonDiv);
+                }
+                let pageDiv = generatePageDiv(res.data.currentPageCode, res.data.totalPages);
+                grandfatherDiv.appendChild(pageDiv);
+
+                grandfatherDiv.appendChild(generateFeedDiv());
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+
+        generateFeedDiv = (flag) => {
+            let div = document.createElement("div");
+            div.classList.add("row", "blog-grid", "shop-grid");
+            if (flag == 1) {
+                div.setAttribute("style", "border: 1px solid #eee;margin-top: 60px;margin-left: 0px;width: 1044px;");
+            } else {
+                div.setAttribute("style", "border: 1px solid #eee;margin-top: 130px;margin-left: 0px;width: 1044px;");
+            }
+            let div1 = document.createElement("div");
+            div1.classList.add("row", "text-center");
+            div1.setAttribute("style", "margin-left:0px;")
+            let div2 = document.createElement("div");
+            div2.classList.add("col-md-12");
+            // div2.setAttribute("style", "");
+            let textarea = document.createElement("textarea");
+            textarea.setAttribute("id", "textarea");
+            textarea.setAttribute("style", "width: 978px;height:200px;margin-top:30px;margin-left:13px;")
+            textarea.classList.add("form-control");
+            let commitButton = document.createElement("a");
+            commitButton.classList.add("btn", "btn-primary");
+            commitButton.setAttribute("href", "javascript:commitFeedback()");
+            commitButton.innerText = "提交";
+            commitButton.setAttribute("style", "margin-bottom:10px;");
+            let clearButton = document.createElement("a");
+            clearButton.classList.add("btn", "btn-primary");
+            clearButton.setAttribute("href", "javascript:clearFeedback()");
+            clearButton.innerText = "清空";
+            clearButton.setAttribute("style", "margin-right: 10px;margin-bottom:10px;")
+
+            div.appendChild(div1);
+            div1.appendChild(div2);
+            div2.appendChild(textarea);
+            div2.appendChild(document.createElement("br"));
+            div2.appendChild(clearButton);
+            div2.appendChild(commitButton);
+            div2.appendChild(document.createElement("br"));
+
+            return div;
+        }
+
+        clearFeedback = () => {
+            let feed = document.getElementById("textarea");
+            feed.value = "";
+        }
+
+        commitFeedback = () => {
+            let feedbackContent = document.getElementById("textarea").value;
+            if (localStorage.getItem("userLoginPhone") === null) {
+                loginPrompt(1);
+            } else {
+                if (feedbackContent === "" || feedbackContent === null) {
+                    alert("请填写内容！");
+                } else if (feedbackContent.length > 200) {
+                    alert("超出字数限制！最多200字！");
+                } else {
+                    let a = JSON.parse(localStorage.getItem("userLoginPhone")).val;
+                    const teacherId = document.cookie.split(';')[0].trim();
+                    const id = teacherId.split('=')[1].trim();
+                    const clientUrl = 'http://localhost:1250/feedback/insertFeedback';
+                    const clientMethod = 'POST';
+                    const commitFeedback = ({url, method, data}) => {
+                        return new Promise((resolve, reject) => {
+                            const client = new XMLHttpRequest();
+                            client.open(clientMethod, url);
+                            client.responseType = 'json';
+                            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                            client.onreadystatechange = () => {
+                                if (client.readyState === 4) {
+                                    if (client.status === 200) {
+                                        resolve(client.response);
+                                    } else {
+                                        reject(client.status);
+                                    }
+                                }
+                            };
+                            client.send(data);
+                        });
+                    };
+
+                    const result = (data) => commitFeedback(
+                        {
+                            url: clientUrl,
+                            method: clientMethod,
+                            data
+                        }
+                    );
+                    let feedback = {
+                        teacherId: id,
+                        feedbackSf: a,
+                        feedbackContent: feedbackContent,
+
+                    };
+                    scrollTo(0, 0);
+                    result(JSON.stringify(feedback)).then((res) => {
+                        clearFeedback();
+                        getTeacher();
+                        alert("提交成功");
+                    }).catch(error => {
+                        alert("提交失败，请勿提交特殊字符！");
+                    });
+                }
+            }
+        }
+
+        teacherLikeAdd = () => {
+            if (localStorage.getItem("userLoginPhone") === null) {
+                loginPrompt(0);
+            } else {
+                const teacherId = document.cookie.split(';')[0].trim();
+                const id = teacherId.split('=')[1].trim();
+                const clientUrl = 'http://localhost:1250/teacherLike/teacherLikeAdd';
+                const clientMethod = 'POST';
+                const commitFeedback = ({url, method, data}) => {
+                    return new Promise((resolve, reject) => {
+                        const client = new XMLHttpRequest();
+                        client.open(clientMethod, url);
+                        client.responseType = 'json';
+                        client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                        client.onreadystatechange = () => {
+                            if (client.readyState === 4) {
+                                if (client.status === 200) {
+                                    resolve(client.response);
+                                } else {
+                                    reject(client.status);
+                                }
+                            }
+                        };
+                        client.send(data);
+                    });
+                };
+
+                const result = (data) => commitFeedback(
+                    {
+                        url: clientUrl,
+                        method: clientMethod,
+                        data
+                    }
+                );
+                let teacher = {
+                    teacherId: id,
+                };
+
+                scrollTo(0, 0);
+                result(JSON.stringify(teacher)).then((res) => {
+                    getTeacher();
+                }).catch(error => {
+                    console.log(error);
+                });
+
+            }
+        }
+
+        loginPrompt = (type) => {
+            console.log("登录");
+            document.body.style.overflowX = "hidden";
+            document.body.style.overflowY = "hidden";
+            let div1 = document.getElementById("dialog");
+            let div2 = document.getElementById("v-modal");
+            let p = document.getElementById("information");
+            p.innerText="";
+            div1.style.display = "block";
+            div2.style.display = "block";
+            if (type === 0) {
+                p.innerText = "您还未登录，请登录后点赞。";
+            } else {
+                p.innerText = "您还未登录，请登录后评论。";
+            }
+        }
+
+        cancelLogin = () => {
+            document.body.style.overflowX = "auto";
+            document.body.style.overflowY = "auto";
+            let div1 = document.getElementById("dialog");
+            let div2 = document.getElementById("v-modal");
+            let p = document.getElementById("information");
+            div1.style.display = "none";
+            div2.style.display = "none";
+            p.innerText ="";
+        }
+
     </script>
 
 </head>
 <body onload="getTeacher()">
+<div id="dialog">
+    <div class="el-message-box" style="width: 450px;">
+        <div class="el-message-box__content">
+            <div class="el-message-box__status"></div>
+            <div class="el-message-box__message">
+                <p id="information" style="font-size: 20px;"></p>
+            </div>
+            <div class="el-message-box__input" style="display: none;">
+                <div class="el-input">
+                    <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                </div>
+                <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+            </div>
+        </div>
+        <div class="el-message-box__btns">
+            <a href="/loginUi/loginUi" id="el-button" class="btn-primary btn-sm" style="margin-right: 30px;font-size: 20px;">登录</a>
+            <a href="javascript:void(0);onclick=cancelLogin()" class="btn-primary btn-sm"style="font-size: 20px;">取消</a>
+        </div>
 
+    </div>
+</div>
+<div id="v-modal" style="z-index: 9998;"></div>
 <!-- LOADER -->
 <div id="preloader">
     <img class="preloader" src="/images/loader.gif" alt="">
@@ -213,73 +714,12 @@
     </section><!-- end section -->
 
     <section class="section gb nopadtop">
-        <div class="container">
-            <div class="boxed boxedp4" id="fatherDiv">
-                <!--<div class="shop-top">-->
-                <!--<div class="clearfix">-->
-                <!--<div class="pull-left">-->
-                <!--<p> Showing 1–9 of 11 results</p>-->
-                <!--</div>-->
-                <!--<div class="pull-right">-->
-                <!--<select class="selectpicker">-->
-                <!--<option>Price - High to Low</option>-->
-                <!--<option>Price - Low to High</option>-->
-                <!--<option>Newest Items</option>-->
-                <!--<option>Older Items</option>-->
-                <!--</select>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
+        <div style="width: 400px;height: 247px;background-color: snow;display: none;">ceshi</div>
+        <div class="container" id="grandfatherDiv">
+            <div class="boxed boxedp4" id="fatherDiv"></div>
+            <div class="boxed boxedp4" id="feedbackDiv"></div>
 
-                <!--<div class="row blog-grid shop-grid">-->
-                <!--<div class="col-md-3">-->
-                <!--<div class="course-box shop-wrapper">-->
-                <!--<div class="image-wrap entry">-->
-                <!--<img src="/upload/shop_01.jpg" alt="" class="img-responsive">-->
-                <!--<div class="magnifier">-->
-                <!--<a href="courseSingle.html" title=""><i class="flaticon-add"></i></a>-->
-                <!--</div>-->
-                <!--</div>-->
 
-                <!--</div>&lt;!&ndash; end box &ndash;&gt;-->
-                <!--</div>&lt;!&ndash; end col &ndash;&gt;-->
-                <!--<div style="width: 805.5px;height: 270px;float: left">-->
-                <!--&lt;!&ndash; end image-wrap &ndash;&gt;-->
-                <!--<div class="course-details shop-box text-center">-->
-                <!--<h4>-->
-                <!--<a href="courseSingle.html" title="">Brown leather bag</a>-->
-                <!--<small>Bags</small>-->
-                <!--</h4>-->
-                <!--</div>-->
-                <!--&lt;!&ndash; end details &ndash;&gt;-->
-                <!--<div class="course-footer clearfix">-->
-                <!--<div class="pull-left">-->
-                <!--<ul class="list-inline">-->
-                <!--<li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>-->
-                <!--</ul>-->
-                <!--</div>&lt;!&ndash; end left &ndash;&gt;-->
-
-                <!--<div class="pull-right">-->
-                <!--<ul class="list-inline">-->
-                <!--<li><a href="#">$441.00</a></li>-->
-                <!--</ul>-->
-                <!--</div>&lt;!&ndash; end left &ndash;&gt;-->
-                <!--</div>&lt;!&ndash; end footer &ndash;&gt;-->
-                <!--</div>-->
-                <!--<hr class="invis">-->
-                <!--<div class="row text-center">-->
-                <!--<div class="col-md-12">-->
-                <!--<ul class="pagination">-->
-                <!--<li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>-->
-                <!--<li class="active"><a href="javascript:void(0)">1</a></li>-->
-                <!--<li><a href="javascript:void(0)">2</a></li>-->
-                <!--<li><a href="javascript:void(0)">3</a></li>-->
-                <!--<li><a href="javascript:void(0)">...</a></li>-->
-                <!--<li><a href="javascript:void(0)">&raquo;</a></li>-->
-                <!--</ul>-->
-                <!--</div>&lt;!&ndash; end col &ndash;&gt;-->
-                <!--</div>&lt;!&ndash; end row &ndash;&gt;-->
-            </div>
         </div><!-- end container -->
     </section>
 

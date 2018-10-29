@@ -17,6 +17,11 @@
         from teacher_course
         where teacher_course_id = #{teacherCourseId,jdbcType=INTEGER}
     </select>
+    <select id="getCoursesByTeacheerId" parameterType="java.lang.Integer" resultType="com.cafebabe.phosphor.model.entity.Course">
+        select c.course_id, c.course_name
+        from course c where c.course_id in
+        (select tc.course_id from teacher_course tc where tc.teacher_id = #{teacherId, jdbcType=INTEGER})
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from teacher_course

@@ -1,5 +1,7 @@
 package com.cafebabe.phosphor.model.dto;
 
+import lombok.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,6 +19,12 @@ import java.util.List;
  *
  * description: 订单列表
  **/
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDTO implements Serializable {
 
     /**
@@ -48,6 +56,15 @@ public class OrderDTO implements Serializable {
      * 孩子ID
      */
     private Integer childId;
+    /**
+     * 家长名称
+     */
+    private String parent;
+
+    /**
+     * 孩子名称
+     */
+    private String child;
 
     /**
      * 订单详情

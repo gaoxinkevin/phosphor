@@ -32,7 +32,7 @@
     const clientUrl = 'http://localhost:1250/company/company?companyId=10001';
     const clientMethod = 'GET';
     const getJsonCompany = (url) => {
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
             const client = new XMLHttpRequest();
             client.open(clientMethod, url);
             client.responseType = 'json';
@@ -49,8 +49,9 @@
         });
     };
 
-    const company = () => getJsonCompany(clientUrl) ;
+    const company = () => getJsonCompany(clientUrl);
 
+    let companyId = 0;
     company().then(({data}) => {
         const companyName = document.getElementById("companyName");
         const companyDesc = document.getElementById("companyDesc");
@@ -60,14 +61,14 @@
         const companyPhoto = document.getElementById("companyPhoto");
         const companyAddress = document.getElementById("companyAddress");
 
-
-        companyName.innerText=data.companyName;
+        companyName.innerText = data.companyName;
         companyDesc.innerHTML += data.companyDesc;
-        companyPhoto.src=data.companyPhoto;
+        companyPhoto.src = data.companyPhoto;
         companyCreateTime.innerText += data.companyCreateTime;
         companyPhone.innerText += data.companyPhone;
         companyAddress.innerText += data.companyAddress;
         companyNum.innerText += data.companyRegistrationId;
+        companyId = data.companyId;
 
     }).catch(error => {
         console.log(error);
@@ -75,8 +76,8 @@
 
     /*动态加载js和css*/
     const dynamicLoading = {
-        css: function(path){
-            if(!path || path.length === 0){
+        css: function (path) {
+            if (!path || path.length === 0) {
                 throw new Error('argument "path" is required !');
             }
             var head = document.getElementsByTagName('head')[0];
@@ -86,8 +87,8 @@
             link.type = 'text/css';
             head.appendChild(link);
         },
-        js: function(path){
-            if(!path || path.length === 0){
+        js: function (path) {
+            if (!path || path.length === 0) {
                 throw new Error('argument "path" is required !');
             }
             var head = document.getElementsByTagName('head')[0];
@@ -97,8 +98,115 @@
             head.appendChild(script);
         }
     }
-</script>
 
+    addCompanyCollection = () => {
+        let a = localStorage.getItem("userLoginPhone");
+        if (a === null) {
+            prompt(0);
+        } else {
+            let companyCollection = {
+                companyId: companyId,
+                companyCollectionSf: JSON.parse(localStorage.getItem("userLoginPhone")).val,
+            }
+
+            const clientUrl = 'http://localhost:1250/companyCollection/insertCompanyCollection';
+            const clientMethod = 'POST';
+            const getResult = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const result = (data) => getResult(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+
+            result(JSON.stringify(companyCollection)).then((res) => {
+                // if (res.data == -1) {
+                //     alert("您已收藏该公司，请勿重复收藏！");
+                // } else if (res.data == 1) {
+                //     alert("收藏成功！");
+                // } else {
+                //     alert("收藏失败！");
+                // }
+                prompt(res.data);
+            });
+        }
+
+    }
+
+    prompt = (type) => {
+        document.body.style.overflowX = "hidden";
+        document.body.style.overflowY = "hidden";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        div1.style.display = "block";
+        div2.style.display = "block";
+        let p = document.getElementById("information");
+        p.innerText = "";
+        if (type == 0) {
+            p.innerText = "您还未登录，请登录后收藏。";
+        } else if (type == 1) {
+            p.innerText = "收藏成功";
+        } else if (type == -1) {
+            p.innerText = "您已收藏，请勿重复收藏。";
+        } else {
+            p.innerText ="收藏失败";
+        }
+    }
+
+    determine = () => {
+        document.body.style.overflowX = "auto";
+        document.body.style.overflowY = "auto";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        let p = document.getElementById("information");
+        div1.style.display = "none";
+        div2.style.display = "none";
+        p.innerText ="";
+    }
+
+</script>
+<div id="dialog">
+    <div class="el-message-box" style="width: 330px;height: 165px;">
+        <div class="el-message-box__content">
+            <div class="el-message-box__status"></div>
+            <div class="el-message-box__message">
+                <p id="information" style="font-size: 18px;"></p>
+            </div>
+            <div class="el-message-box__input" style="display: none;">
+                <div class="el-input">
+                    <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                </div>
+                <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+            </div>
+        </div>
+        <div class="el-message-box__btns">
+            <span style="display: none;" id="collectionId"></span>
+            <a href="javascript:void(0);onclick=determine()" id="el-button" class="btn-primary btn-sm"
+               style="font-size: 18px;">确定</a>
+        </div>
+
+    </div>
+</div>
+<div id="v-modal" style="z-index: 9998;"></div>
 <div id="wrapper">
 
     <div id="preloader">
@@ -187,8 +295,16 @@
                                         <li id="companyCreateTime"></li>
                                     </ul>
                                     <ul class="list-inline">
-                                        <li><a href="#">联系方式:</a></li>
-                                        <li id="companyPhone"><mark>Tel</mark></li>
+                                        <li style="display: block;float: left;"><a href="#">联系方式:</a></li>
+                                        <li id="companyPhone" style="display: block;float: left;">
+                                            <mark>Tel</mark>
+                                        </li>
+                                        <li style="display:block;float: right;margin-right: 15px;margin-bottom: 20px;">
+                                            <a href="javascript:addCompanyCollection()"
+                                               style="font-size: 16px;color: #01bacf">
+                                                添加收藏
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div><!-- end blog-meta -->
 
@@ -224,12 +340,19 @@
 
                         <div class="authorbox">
                             <div class="site-publisher clearfix">
-                                <img src="/upload/people.jpg" alt="" class="img-responsive img-circle" >
-                                <a href="" title=""><h4><small>about</small> <span>2018AIIA人工智能开发者大会</span></h4></a>
+                                <img src="/upload/people.jpg" alt="" class="img-responsive img-circle">
+                                <a href="" title="">
+                                    <h4>
+                                        <small>about</small>
+                                        <span>2018AIIA人工智能开发者大会</span></h4>
+                                </a>
                                 <p>
                                     2018AIIA人工智能开发者大会将于2018年10月15日到16日在苏州国际博览中心举办。
-                                    报名详情:<button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o">立即报名</i>
-                                </button></p>
+                                    报名详情:
+                                    <button type="submit" class="btn btn-primary"><i
+                                            class="fa fa-paper-plane-o">立即报名</i>
+                                    </button>
+                                </p>
                             </div><!-- end publisher -->
                         </div><!-- end details -->
                     </div>
@@ -325,28 +448,28 @@
         </div><!-- end container -->
     </div>
 
-    <div id="dialog">
-        <div class="el-message-box">
-            <div class="el-message-box__content">
-                <div class="el-message-box__status"></div>
-                <div class="el-message-box__message">
-                    <p id="dialogPInnerHtml"></p>
-                </div>
-                <div class="el-message-box__input" style="display: none;">
-                    <div class="el-input">
-                        <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
-                    </div>
-                    <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
-                </div>
-            </div>
-            <div class="el-message-box__btns">
-                <a href="/loginUi/loginUi" id="el-button" class="el-button"></a>
-            </div>
+    <!--<div id="dialog">-->
+    <!--<div class="el-message-box">-->
+    <!--<div class="el-message-box__content">-->
+    <!--<div class="el-message-box__status"></div>-->
+    <!--<div class="el-message-box__message">-->
+    <!--<p id="dialogPInnerHtml"></p>-->
+    <!--</div>-->
+    <!--<div class="el-message-box__input" style="display: none;">-->
+    <!--<div class="el-input">-->
+    <!--<input type="text" placeholder="" autocomplete="off" class="el-input__inner">-->
+    <!--</div>-->
+    <!--<div class="el-message-box__errormsg" style="visibility: hidden;"></div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="el-message-box__btns">-->
+    <!--<a href="/loginUi/loginUi" id="el-button" class="el-button"></a>-->
+    <!--</div>-->
 
-        </div>
-    </div>
+    <!--</div>-->
+    <!--</div>-->
 
-    <div id="v-modal" style="z-index: 9998"></div>
+    <!--<div id="v-modal" style="z-index: 9998"></div>-->
 
 </div>
 <script src="/js/jquery.min.js"></script>

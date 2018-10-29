@@ -79,4 +79,60 @@
       group_course_sf = #{groupCourseSf,jdbcType=VARCHAR}
     where group_course_id = #{groupCourseId,jdbcType=INTEGER}
   </update>
+  <select id="getGroupCourse" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from group_course
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
+  <insert id="insertGroupCourse" parameterType="com.cafebabe.phosphor.model.entity.GroupCourse">
+    insert into group_course
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="groupCourseId != null">
+        group_course_id,
+      </if>
+      <if test="courseId != null">
+        course_id,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="groupCourseSf != null">
+        group_course_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="groupCourseId != null">
+        #{groupCourseId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="groupCourseSf != null">
+        #{groupCourseSf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateGroupCourse" parameterType="com.cafebabe.phosphor.model.entity.GroupCourse">
+    update group_course
+    <set>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="groupCourseSf != null">
+        group_course_sf = #{groupCourseSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where group_course_id = #{groupCourseId,jdbcType=INTEGER}
+  </update>
+  <delete id="removeGroupCourse" parameterType="java.lang.Integer">
+    delete from group_course
+    where group_course_id = #{groupCourseId,jdbcType=INTEGER}
+  </delete>
 </mapper>

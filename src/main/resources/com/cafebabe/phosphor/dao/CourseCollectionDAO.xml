@@ -19,6 +19,20 @@
     from course_collection
     where course_collection_id = #{courseCollectionId,jdbcType=INTEGER}
   </select>
+    <select id="getCourseCollectionByParentId" resultType="com.cafebabe.phosphor.model.dto.CourseCollectionInfo" parameterType="com.cafebabe.phosphor.model.dto.Page">
+      select course_collection_id, course.course_id,course_name,company_name,course_price,teacher_name,course_sf,course_count,course_collection_create_time
+      from course_collection
+      join course on course_collection.course_id=course.course_id
+      join course_rank on course.course_id=course_rank.course_id
+      join teacher_course on course.course_id=teacher_course.course_id
+      join teacher on teacher.teacher_id=teacher_course.teacher_id
+      where parent_id=#{parentId}
+      limit #{startRecord},#{pageSize}
+    </select>
+  <select id="getCourseCollectionCount" resultType="java.lang.Integer" parameterType="com.cafebabe.phosphor.model.dto.Page">
+    select count(parent_id) from course_collection
+    where parent_id=#{parentId}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from course_collection
     where course_collection_id = #{courseCollectionId,jdbcType=INTEGER}

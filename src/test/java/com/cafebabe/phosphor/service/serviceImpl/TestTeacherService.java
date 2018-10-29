@@ -25,12 +25,12 @@ public class TestTeacherService {
     public void testGetTeacherList() {
         PageModel<Teacher> pageModel=new PageModel<>();
         pageModel.setStartRecord(0);
-        List<Teacher> list = teacherDAO.getTeacherList(pageModel);
+//        List<Teacher> list = teacherDAO.getTeacherList(pageModel);
 //        List<Teacher> list2 = service.getTeacherList(0);
 //        System.out.println(service.getTeacherById(10000));
-        for (Teacher t : list) {
-            System.out.println(t);
-        }
+//        for (Teacher t : list) {
+//            System.out.println(t);
+//        }
 //        System.out.println(list2);
     }
 

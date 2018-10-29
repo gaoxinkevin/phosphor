@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.service;
 
+import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.dto.GroupDTO;
 import com.cafebabe.phosphor.model.entity.Group;
 import java.math.BigDecimal;
@@ -20,12 +21,22 @@ public interface GroupService {
 
     /**
      * 添加套餐
+     * @param courses 课程ID
+     * @param group 套餐
      * @return 0=>false | 1=>true
      */
-    Integer insertGroup(GroupDTO group);
+    Integer insertGroup(Group group,List<Integer> courses);
+
+    /**
+     * 添加套餐
+     * @param groupDTO 套餐传输对象
+     * @return 套餐id
+     */
+    Integer insertGroupDTO(GroupDTO groupDTO);
 
     /**
      * 修改套餐
+     * @param group 套餐
      * @return 0=>false | 1=>true
      */
     Integer updateGroup(Group group);
@@ -36,7 +47,7 @@ public interface GroupService {
      * @param groupDiscount   套餐折扣
      * @return 0=>false | 1=>true
      */
-    Integer updateGroupDiscount( BigDecimal groupDiscount, Integer groupId);
+    Integer updateGroupDiscount(BigDecimal groupDiscount, Integer groupId);
 
     /**
      * 修改套餐状态
@@ -70,17 +81,24 @@ public interface GroupService {
     List<Group> getGroupListAll();
 
     /**
+     * 根据活动编号获取课程
+     * @param  groupId
+     * @return
+     */
+    List<CourseInfo> getCourseListByGroupId(Integer groupId);
+
+    /**
      * 获取所有正在进行的套餐
      * @return group的列表
      */
-    List<Group> getGroupListAlive();
+    List<GroupDTO> getGroupListAlive();
 
     /**
      * 根据套餐的折扣查询套餐信息
      * @param discount 套餐折扣
      * @return 套餐信息列表
      */
-    List<Group> getGroupListByDiscount(BigDecimal discount);
+    List<GroupDTO> getGroupListByDiscount(BigDecimal discount);
 
     /**
      * 根据套餐的折扣范围查询套餐信息
@@ -88,6 +106,21 @@ public interface GroupService {
      * @param maxDiscount 最大折扣
      * @return 套餐信息列表
      */
-    List<Group> getGroupListByDiscountScope( BigDecimal minDiscount, BigDecimal maxDiscount);
+    List<GroupDTO> getGroupListByDiscountScope( BigDecimal minDiscount, BigDecimal maxDiscount);
 
+    /**
+     * 在已有自定义套餐中添加课程
+     * @param groupDTO 套餐传输对象
+     * @param courseId 课程编号
+     * @return 套餐
+     */
+    GroupDTO addCourseToGroup(GroupDTO groupDTO,Integer courseId);
+
+    /**
+     * 在已有自定义套餐中删除课程
+     * @param groupDTO 套餐传输对象
+     * @param courseId 课程编号
+     * @return 套餐
+     */
+    GroupDTO delCourseFromCourse(GroupDTO groupDTO,Integer courseId);
 }

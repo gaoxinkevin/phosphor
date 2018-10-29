@@ -15,6 +15,5 @@ public class TestActivityService {
     @Test
     public void testGetActivityAll(){
         List<Activity> activityList = activityDAO.getActivityAll();
-        activityList.forEach(System.out::println);
     }
 }

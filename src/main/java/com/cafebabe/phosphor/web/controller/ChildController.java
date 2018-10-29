@@ -8,6 +8,7 @@ import com.cafebabe.phosphor.util.JsonResponse;
 
 import com.cafebabe.phosphor.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,16 +35,14 @@ import java.util.List;
 public class ChildController {
 
     private final ChildServiceImpl childService;
-
     private final ParentServiceImpl parentService;
-
-    private final HttpServletRequest httpServletRequest;
+    @Autowired(required = false)
+    private  HttpServletRequest httpServletRequest;
 
 
     @Autowired
-    public ChildController(ChildServiceImpl childService, HttpServletRequest httpServletRequest, ParentServiceImpl parentService) {
+    public ChildController(ChildServiceImpl childService, ParentServiceImpl parentService) {
         this.childService = childService;
-        this.httpServletRequest = httpServletRequest;
         this.parentService = parentService;
     }
 

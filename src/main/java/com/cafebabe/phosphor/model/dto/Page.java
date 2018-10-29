@@ -3,6 +3,8 @@ package com.cafebabe.phosphor.model.dto;
 import lombok.*;
 
 import java.util.List;
+import java.util.Map;
+
 /**
  *
  * @author thethingyk@gmail.com
@@ -26,7 +28,7 @@ public class Page<T> {
     /**
      * 每页显示记录数
      */
-    private final Integer pageSize = 4;
+    private Integer pageSize = 12;
     /**
      * 总记录数
      */
@@ -47,6 +49,22 @@ public class Page<T> {
      * 到第几条记录结束显示
      */
     private Integer endRecord;
+
+    /**
+     * 排序字段
+     */
+    private String key;
+
+    /**
+     * 升序或者降序
+     */
+    private String ascOrDesc;
+
+    /**
+     * 模糊查询条件
+     */
+    private String title;
+
     /**
      * 当前页显示记录对象集合
      */
