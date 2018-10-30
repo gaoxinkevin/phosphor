@@ -40,7 +40,7 @@ import java.util.Map;
 public class ParentController {
 
     private final ParentServiceImpl parentService;
-
+    @Autowired(required = false)
     private HttpServletRequest httpServletRequest;
     private static final String TRUE_RESULT = "true";
     private static final String FALSE_RESULT = "false";
@@ -49,9 +49,8 @@ public class ParentController {
      * 短信接口相关
      */
     @Autowired
-    public ParentController(ParentServiceImpl parentService, HttpServletRequest httpServletRequest){
+    public ParentController(ParentServiceImpl parentService){
         this.parentService = parentService;
-        this.httpServletRequest = httpServletRequest;
     }
 
     @ResponseBody
@@ -111,7 +110,7 @@ public class ParentController {
     }
 
     @ResponseBody
-    @PostMapping("parentAllInfo")
+    @RequestMapping("parentAllInfo")
     public JsonResponse parentAllInfo(){
         String parentPhone = (String) httpServletRequest.getSession().getAttribute("userLoginPhone");
         return new JsonResponse(20000,"成功 ",parentService.getAllInfoAboutParentService(parentPhone));

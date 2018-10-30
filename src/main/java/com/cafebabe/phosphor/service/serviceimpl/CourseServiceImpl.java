@@ -128,6 +128,22 @@ public class CourseServiceImpl implements CourseService {
         return courseList;
     }
 
+    @Override
+    public CourseInfo getConflictCourseInfo(List<CourseInfo> courseInfoList, Integer courseId) {
+        CourseInfo courseInfo =courseDAO.getCourseInfo(courseId);
+        for (int i = 0; i < courseInfoList.size() ; i++) {
+            if (courseInfoList.get(i).getCourseId().equals(courseId)){
+                return courseInfoList.get(i);
+            }
+        }
+        for (CourseInfo info : courseInfoList) {
+            if (contrastCourseTime(info,courseInfo)){
+                return info;
+            }
+        }
+        return null;
+    }
+
     /**
      * 判断课程上课时间是否有冲突
      * @param courseFirst 课程1
@@ -135,7 +151,7 @@ public class CourseServiceImpl implements CourseService {
      * @return 是否有冲突
      */
     public boolean contrastCourseTime(CourseInfo courseFirst, CourseInfo courseSecond){
-        if (courseFirst.getCourseTimeStatus()!= courseSecond.getCourseTimeStatus()){
+        if (!courseFirst.getCourseTimeStatus().equals(courseSecond.getCourseTimeStatus()) ){
             return true;
         }else if ( Integer.parseInt(courseFirst.getCourseEndTime().toString())-Integer.parseInt(courseSecond.getCourseStartTime().toString())>0){
             return true;

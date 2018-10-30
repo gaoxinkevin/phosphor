@@ -69,9 +69,10 @@
 
     const clientUrl = 'http://localhost:1250';
     const orderValidateUrl = clientUrl +'/order/orderValidate/';
-    const courseUrl= clientUrl +'courseUi/courseInfoUi/';
-    const activityUrl= clientUrl + 'activityUi/activityInfo/';
-    const childUrl= clientUrl + 'child/childInfo';
+    const courseUrl= clientUrl +'/courseUi/courseInfoUi/';
+    const activityUrl= clientUrl + '/activityUi/activityInfo/';
+    const parentUrl = clientUrl + '/parent/parentAllInfo';
+    const childUrl= clientUrl + '/child/childInfo';
     const chooseChildUrl = clientUrl + '/order/childInfo?childId=';
     const getJson = (url) => {
         return new Promise((resolve, reject) => {
@@ -92,41 +93,96 @@
         });
     };
     const JsonResponseList = () => getJson(orderValidateUrl);
+    JsonResponseList().then((res) => {
 
-    getChildInfo = (childId) => getJson(chooseChildUrl+childId);
+        let orderNumber =0;
+        const otbody = document.getElementById("otbody");
+        for(let i = 0; i < res.data.details.length; i++) {
+            let otr=getDetail(res.data.details[i]);
+            otbody.appendChild(otr);
+            orderNumber+=1;
+        }
+        const price = document.getElementById("price");
+        const number = document.getElementById("number");
 
-    getChildInfo().then(res => {
+        price.innerText ="￥"+ res.data.orderPrice;
+        number.innerText = orderNumber;
+    }).catch(error => {
+        console.log(error);
+    });
+    const getParent = () => getJson(parentUrl);
+    getParent().then((res) => {
+        console.log(res);
+        const parentName = document.getElementById("parentName");
+        const tel = document.getElementById("tel");
+        parentName.innerText = res.data.parentName;
+        tel.innerText = res.data.parentPhone;
+    }).catch(error => {
+        console.log(error);
+    });
+
+    const getChild = () => getJson(childUrl);
+
+    getChild().then(res => {
         if(res.code<=30000){
-            let picker = document.createElement('selectPicker');
+            let picker = document.getElementById('selectPicker');
             for (let i = 0; i < res.data.length; i++) {
-                let option = document.createElement("option");
-                option.setAttribute("value",res.data[i].childId);
-                option.innerText = res.data[i].childName;
-                picker.appendChild(option);
+                picker.options.add(new Option(res.data[i].childName,res.data[i].childId));
             }
         }else{
             console.log(res.data);
         }
     }).catch(res => {
         console.log(res);
-    })
-
-    JsonResponseList().then((res) => {
-        const otbody = document.getElementById("ordersPanel");
-        for(let i = 0; i < res.data.details.length; i++) {
-            let otr=getDetail(res.data.details[i])
-            otbody.appendChild(otr);
-        }
-        const price = document.getElementById("price");
-        const number = document.getElementById("number");
-
-        price.innerText = res.data.price;
-        number.innerText = res.data.number;
-
-
-    }).catch(error => {
-        console.log(error);
     });
+
+    childInfo = (child) => {
+
+        const getChildInfo = () => getJson(chooseChildUrl+child.value);
+
+        getChildInfo().then(res => {
+            if(res.code<=30000){
+
+            }else{
+                console.log(res.data);
+            }
+        }).catch(res => {
+            console.log(res);
+        });
+    };
+
+    selectChild = (message) => {
+        document.body.style.overflowX = "hidden";
+        document.body.style.overflowY = "hidden";
+        let dialog = document.getElementById("dialog");
+        let vModal =document.getElementById("v-modal");
+        let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+        let elButton = document.getElementById("el-button");
+        const cancelBtn = document.getElementById("cancel-button");
+        elButton.innerText="新增孩子";
+        cancelBtn.innerText = "返回选择";
+        elButton.style.padding = "0.8em 2em";
+        elButton.setAttribute("href","/childrenUi/infoUi");
+        cancelBtn.setAttribute("href","javascript:void(0)");
+        cancelBtn.setAttribute("onclick","cancelDialog()");
+        vModal.style.display="block";
+        dialog.style.display="block";
+        dialogPInnerHtml.innerText=message;
+    };
+
+    cancelDialog =() =>{
+        document.body.style.overflowX = "visible";
+        document.body.style.overflowY = "visible";
+        let dialog = document.getElementById("dialog");
+        let vModal =document.getElementById("v-modal");
+        vModal.style.display="none";
+        dialog.style.display="none";
+    };
+
+    btnOrder = () => {
+        getOrder = () => getJson()
+    }
+
     getDetail = (detail) => {
 
         let detailUrl="";
@@ -294,12 +350,12 @@
                         <div class="shop-desc">
                             <h4 class="title">购买信息</h4>
                             <ul class="media-list">
-                                <li width="200">家长:<span id="parentName">牛大春</span></li>
-                                <li>电话:<span id="tel">13913514578</span></li>
+                                <li width="200">家长:<span id="parentName"></span></li>
+                                <li>电话:<span id="tel"></span></li>
                             </ul>
                             <div class="shop-meta">
                                 <h4 class="title">选择孩子</h4>
-                                <select class="selectpicker" onchange="getChildInfo(this.value)" id="selectPicker">
+                                <select onchange="childInfo(this.value)" id="selectPicker">
                                     <option value="0">---选择孩子</option>
                                 </select>
                             </div><!-- end shop meta -->
@@ -313,8 +369,8 @@
                         <div class=" col-md-12">
                             <h3 class="widget-title">订单详情:</h3>
                             <table class="table table-hover table-condensed" cellpadding="0" cellspacing="0">
-                                <h3>订单编号:x284318973</h3>
-                                <tbody id="ordersPanel">
+                                <h3>订单编号:<span>x284318973</span></h3>
+                                <tbody id="otbody">
                                 </tbody>
                             </table>
                         </div>
@@ -333,7 +389,7 @@
                         </div>
                     <div class="clearfix col-md-11">
                         <div class="pull-right">
-                            <a href="javascript:groupOrder(groupId);" class="btn btn-primary">确认订单</a>
+                            <a href="javascript:btnOrder();" class="btn btn-primary">确认订单</a>
                         </div>
                     </div>
 
@@ -431,6 +487,29 @@
             </div>
         </div><!-- end container -->
     </div>
+    <div id="dialog">
+        <div class="el-message-box">
+            <div class="el-message-box__content">
+                <div class="el-message-box__status"></div>
+                <div class="el-message-box__message">
+                    <p id="dialogPInnerHtml"></p>
+                </div>
+                <div class="el-message-box__input" style="display: none;">
+                    <div class="el-input">
+                        <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                    </div>
+                    <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+                </div>
+            </div>
+            <div class="el-message-box__btns">
+                <a id="el-button" class="el-button" style="padding: 0.8em 1em"></a>
+                <a id="cancel-button" class="el-button" style="padding: 0.8em 2em"></a>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="v-modal" style="z-index: 9998"></div>
 
 </div>
 <!--模版自带-->

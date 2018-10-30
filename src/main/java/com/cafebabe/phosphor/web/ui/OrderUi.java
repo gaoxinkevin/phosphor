@@ -27,9 +27,10 @@ import java.io.IOException;
 @RequestMapping("/orderUi")
 public class OrderUi {
 
-    @RequestMapping("orderUi")
-    public void orderUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+    @RequestMapping("orderUi/{orderId}")
+    public void orderUi(@PathVariable Integer orderId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
             throws ServletException, IOException {
+        httpServletRequest.getSession().setAttribute("orderId",orderId);
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/order/order.html")
                 .forward(httpServletRequest,httpServletResponse);
     }

@@ -4,6 +4,7 @@ import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.dto.GroupDTO;
 import com.cafebabe.phosphor.model.entity.Course;
 import com.cafebabe.phosphor.model.entity.Group;
+import com.cafebabe.phosphor.service.serviceimpl.CourseServiceImpl;
 import com.cafebabe.phosphor.service.serviceimpl.GroupServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
 import com.mysql.cj.x.protobuf.Mysqlx;
@@ -32,14 +33,19 @@ import java.util.List;
 public class GroupController {
 
     private final  GroupServiceImpl groupService;
+    private final CourseServiceImpl courseService;
     private final  String diyGroupDTOStr = "diyGroupDTO";
-    @Autowired
+    @Autowired(required = false)
     private HttpServletRequest httpServletRequest;
 
 
 
+
     @Autowired
-    public GroupController(GroupServiceImpl groupService) { this.groupService = groupService; }
+    public GroupController(GroupServiceImpl groupService,CourseServiceImpl courseService) {
+        this.courseService = courseService;
+        this.groupService = groupService;
+    }
 
     @GetMapping("groupList")
     @ResponseBody
@@ -50,19 +56,18 @@ public class GroupController {
 
     @GetMapping("group")
     @ResponseBody
-    public JsonResponse getGroup(Integer groupId){
-        if (groupId == null) {
-            groupId = (Integer) httpServletRequest.getSession().getAttribute("groupId");
+    public JsonResponse getGroup(){
+        if (httpServletRequest.getSession().getAttribute("groupId") != null) {
+            Integer groupId = (Integer) httpServletRequest.getSession().getAttribute("groupId");
             if (groupId == null) {
                 return new JsonResponse(40000,"success","找不到套餐");
             }else{
                 GroupDTO group =groupService.getGroupDTOById(groupId);
                 httpServletRequest.getSession().removeAttribute("groupId");
-                return new JsonResponse(200,"success",group);
+                return new JsonResponse(20000,"success",group);
             }
         }
-        GroupDTO group =groupService.getGroupDTOById(groupId);
-        return new JsonResponse(200,"success",group);
+        return new JsonResponse(50000,"error","找不到数据");
     }
 
     @RequestMapping("addCourse")
@@ -77,12 +82,25 @@ public class GroupController {
             }else {
                 return new JsonResponse(40000,"error","没有该课程");
             }
-
         }else{
             GroupDTO diyGroupDTO =(GroupDTO) httpServletRequest.getSession().getAttribute(diyGroupDTOStr);
-            diyGroupDTO=groupService.addCourseToGroup(diyGroupDTO,course.getCourseId());
-            httpServletRequest.getSession().setAttribute(diyGroupDTOStr,diyGroupDTO);
-            return new JsonResponse(30000,"success",diyGroupDTO);
+
+            CourseInfo conflictCourseInfo = courseService.getConflictCourseInfo(diyGroupDTO.getCourseInfos(),course.getCourseId());
+
+            if (conflictCourseInfo == null) {
+                if(diyGroupDTO.getCourseInfos().size()>=4){
+                    return new JsonResponse(50000,"最多只能添加四个课程","");
+                }
+                diyGroupDTO=groupService.addCourseToGroup(diyGroupDTO,course.getCourseId());
+                httpServletRequest.getSession().setAttribute(diyGroupDTOStr,diyGroupDTO);
+                return new JsonResponse(30000,"success",diyGroupDTO);
+            }else {
+                if(conflictCourseInfo.getCourseId().equals(course.getCourseId())){
+                    return new JsonResponse(40100,"不能重复添加课程","");
+                }else {
+                    return new JsonResponse(40200,"该课程和已选课程《"+conflictCourseInfo.getCourseName()+"》有时间冲突,只能选择其中一个","");
+                }
+            }
         }
     }
     @RequestMapping("delCourse")

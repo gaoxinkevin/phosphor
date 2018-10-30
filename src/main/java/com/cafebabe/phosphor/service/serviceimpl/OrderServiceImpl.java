@@ -37,9 +37,7 @@ public class OrderServiceImpl implements OrderService {
     private final ParentDAO parentDAO;
     private final ChildDAO childDAO;
     private final GroupDAO groupDAO;
-    private final String groupType= "group";
-    private final String courseType = "course";
-    private final String activityType = "activity";
+
     @Autowired
     public OrderServiceImpl(GroupDAO groupDAO, OrderDAO orderDAO, OrderDetailServiceImpl orderDetailService, ParentDAO parentDAO, ChildDAO childDAO) {
         this.groupDAO = groupDAO;
@@ -53,7 +51,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer insertOrder(Order order) {
-        return orderDAO.insertOrder(order);
+        if(orderDAO.insertOrder(order)>0){
+           return orderDAO.getOrderId();
+        }else{
+            return 0;
+        }
+
     }
 
     @Override
@@ -179,6 +182,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO createOrder(String type, Integer detailId) {
+        String groupType= "group";
+        String courseType = "course";
+        String activityType = "activity";
         List<OrderDetail> orderDetails;
         OrderDTO orderDTO =new OrderDTO();
         if(groupType.equals(type)){
@@ -195,7 +201,7 @@ public class OrderServiceImpl implements OrderService {
         }else {
             return null;
         }
-        if (orderDetails.size()<2) {orderDTO.setOrderPrice(orderDetails.get(0).getPrice());}
+        if (orderDetails.size()<=1) {orderDTO.setOrderPrice(orderDetails.get(0).getPrice());}
         orderDTO.setDetails(orderDetails);
         orderDTO.setOrderNumber("X"+Math.random()*100000);
         orderDTO.setOrderCreateTime(new Date());

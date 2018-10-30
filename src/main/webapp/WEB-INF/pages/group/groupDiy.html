@@ -136,6 +136,7 @@
                 let divBody = document.getElementById("divBody");
                 divBody.innerHTML="";
                 setGroupNull();
+                submit.disabled=true;
             }else {
                 console.log("删除失败!")
             }
@@ -152,7 +153,7 @@
         let divBody = document.getElementById(courseId);
         let course = {
             courseId:courseId
-        }
+        };
         let getCourseInfo = (data) => postJson(
             {
                 url:delCourseUrl,
@@ -163,6 +164,9 @@
             if (res.code<=30000) {
                 divBody.parentNode.removeChild(divBody);
                 setGroupDiy(res.data);
+                if (res.data.courseInfos.length<= 1){
+                    submit.disabled=true;
+                }
             }else {
                 console.log(res);
             }
@@ -187,8 +191,12 @@
             });
         console.log(JSON.stringify(course));
         getCourseInfo(JSON.stringify(course)).then((res) => {
+            console.log(res);
             if (res.code<=30000) {
-                console.log(res);
+                let submit = document.getElementById("submit");
+                if (res.data.courseInfos.length>1){
+                    submit.disabled=false;
+                }
                 let divBody = document.getElementById("divBody");
                 divBody.innerHTML = "";
                 for (let i = 0; i < res.data.courseInfos.length; i++) {
@@ -197,7 +205,15 @@
                 }
                 setGroupDiy(res.data);
             }else {
-                console.log(res);
+                if (res.code===50000) {
+                    overMax(res.message);
+                }
+                else if(res.code===40100){
+                    courseConflict(res.message);
+                }
+                else if(res.code===40200){
+                    courseConflict(res.message);
+                }
             }
         }).catch(error => {
             console.log(error);
@@ -260,6 +276,50 @@
         }).catch(res => {
             console.log(res);
         });
+    };
+    overMax = (message) => {
+        document.body.style.overflowX = "hidden";
+        document.body.style.overflowY = "hidden";
+        let dialog = document.getElementById("dialog");
+        let vModal =document.getElementById("v-modal");
+        let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+        let elButton = document.getElementById("el-button");
+
+        elButton.innerText="继续添加";
+        elButton.style.padding = "0.8em 2em";
+        elButton.setAttribute("href","javascript:void(0)");
+        elButton.setAttribute("onclick","cancelDialog()");
+
+        vModal.style.display="block";
+        dialog.style.display="block";
+        dialogPInnerHtml.innerText=message;
+    }
+
+    courseConflict = (message) => {
+        document.body.style.overflowX = "hidden";
+        document.body.style.overflowY = "hidden";
+        let dialog = document.getElementById("dialog");
+        let vModal =document.getElementById("v-modal");
+        let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+        let elButton = document.getElementById("el-button");
+
+        elButton.innerText="重新添加";
+        elButton.style.padding = "0.8em 2em";
+        elButton.setAttribute("href","javascript:void(0)");
+        elButton.setAttribute("onclick","cancelDialog()");
+
+        vModal.style.display="block";
+        dialog.style.display="block";
+        dialogPInnerHtml.innerText=message;
+    }
+
+    cancelDialog =() =>{
+        document.body.style.overflowX = "visible";
+        document.body.style.overflowY = "visible";
+        let dialog = document.getElementById("dialog");
+        let vModal =document.getElementById("v-modal");
+        vModal.style.display="none";
+        dialog.style.display="none";
     }
 </script>
 <!-- LOADER -->
@@ -355,7 +415,6 @@
 
                                     <tbody id="divBody">
                                     </tbody>
-                                    <script>addCourse();</script>
                                 </table>
                             </div>
 
@@ -371,9 +430,9 @@
                                     <li>课程数:<span id="groupCourseNumber"></span></li>
                                 </ul>
                                 <small>折扣价:<span id="groupDiscount" style="color:red;"></span></small>
-                                <p id="groupContent">两件九折,三件八折,四件七折,最多五件</p>
+                                <p id="groupContent">两件九折,三件八折,四件七折,最少两个,最多四个</p>
                                 <div class="shop-meta">
-                                    <a href="javascript:addGroup();" class="btn btn-primary">立即购买</a>
+                                    <a id="submit" href="javascript:void(0)" onclick="addGroup()" disabled="true" class="btn btn-primary">立即购买</a>
                                     <ul class="list-inline">
                                         <li id="mmp"> Tip: 套餐购买是促销活动,购买<a href="#">课程</a>的所有权益均保留</li>
                                     </ul>
@@ -557,6 +616,29 @@
             </div>
         </div><!-- end container -->
     </div><!-- end copy -->
+
+    <div id="dialog">
+        <div class="el-message-box">
+            <div class="el-message-box__content">
+                <div class="el-message-box__status"></div>
+                <div class="el-message-box__message">
+                    <p id="dialogPInnerHtml"></p>
+                </div>
+                <div class="el-message-box__input" style="display: none;">
+                    <div class="el-input">
+                        <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                    </div>
+                    <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+                </div>
+            </div>
+            <div class="el-message-box__btns">
+                <a id="el-button" class="el-button" style="padding: 0.8em 1em"></a>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="v-modal" style="z-index: 9998"></div>
 </div><!-- end wrapper -->
 
 <!-- jQuery Files -->

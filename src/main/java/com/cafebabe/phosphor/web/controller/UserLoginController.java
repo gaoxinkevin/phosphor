@@ -54,7 +54,6 @@ public class UserLoginController {
         if (rightResult.equals(result)) {
             HttpSession session = httpServletRequest.getSession();
             session.setAttribute("userLoginPhone", userLogin.getUserLoginPhone());
-            session.setAttribute("parent",parentService.getAllInfoAboutParentService(loginPhone));
             return new JsonResponse(20000, "用户名密码正确", result);
         } else if (errorResult.equals(result)) {
             return new JsonResponse(10000, "用户名或密码不正确，请确认后登录", result);

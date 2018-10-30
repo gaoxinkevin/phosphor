@@ -58,11 +58,15 @@
 
     const groupList = () => getJson(groupListUrl) ;
 
-    groupList().then(({data}) => {
-        const groupsPanel = document.getElementById("groupsPanel");
-        for(let i = 0; i < data.length ; i++) {
-            let divGrid = generateGroupDiv(data[i]);
-            groupsPanel.appendChild(divGrid);
+    groupList().then(res => {
+        if(res.code<=30000){
+            const groupsPanel = document.getElementById("groupsPanel");
+            for(let i = 0; i < res.data.length ; i++) {
+                let divGrid = generateGroupDiv(res.data[i]);
+                groupsPanel.appendChild(divGrid);
+            }
+        }else {
+            console.log(res);
         }
     }).catch(error => {
         console.log(error);

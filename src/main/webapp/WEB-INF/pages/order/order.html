@@ -54,7 +54,7 @@
 
 <script>
     //region 个人中心的信息填充
-    const clientUrl = 'http://localhost:1250/parent/parentAllInfo';
+   /* const clientUrl = 'http://localhost:1250/parent/parentAllInfo';
     const clientMethod = 'POST';
     const getParentImg = (url) => {
         return new Promise((resolve, reject) => {
@@ -87,14 +87,14 @@
 
     }).catch(error => {
         console.log(error);
-    });
+    });*/
     //endregion
 
     //region 订单信息填充
     const orderUrl ="/orderUi/orderUi/";
     const courseUrl = "/courseUi/courseInfoUi/";
     const activityUrl = "/activityUi/activityInfoUi/";
-    const clientUrl1 = 'http://localhost:1250/order/orderList';
+    const clientUrl1 = 'http://localhost:1250/order/order';
     const clientMethod1 = 'POST';
     const getJsonOrder = (url) => {
         return new Promise((resolve,reject) => {
@@ -117,6 +117,7 @@
     const orderList = () => getJsonOrder(clientUrl1) ;
 
     orderList().then(({data}) => {
+        console.log(data);
         const otbody = document.getElementById("otbody");
         const orderNumber = document.getElementById("orderNumber");
         const createTime = document.getElementById("createTime");
@@ -127,19 +128,19 @@
         orderNumber.innerText = data.orderNumber;
         createTime.innerText = data.orderCreateTime;
         endTime.innerText = data.orderEndTime;
-        parent.innerText = data.parentName;
-        child.innerText = data.childName;
-        price.innerText = data.orderPrice;
+        parent.innerText = data.parent;
+        child.innerText = data.child;
+        price.innerText ="￥"+ data.orderPrice;
         for(let i = 0; i < data.details.length ; i++) {
-            let detail=getDetail(data.details[i])
-            otbody.appendChild(detail);
+            let otr=getDetail(data.details[i]);
+            otbody.appendChild(otr);
         }
 
     }).catch(error => {
         console.log(error);
     });
     function getDetail (detail){
-
+        console.log(detail);
         let detailUrl="";
         if (detail.type=="课程") {
             detailUrl=courseUrl+detail.id;
@@ -291,7 +292,7 @@
 
                         <!-- <div class="bm bw0"> </div> -->
                         <ul class="tb cl">
-                            <li class="a"><a href="" sl-processed="1">返回订单列表</a></li>
+                            <li class="a"><a href="/orderUi/orderListUi" sl-processed="1">返回订单列表</a></li>
                         </ul>
                         <div id="ordersPanel">
                              <div class="mn row">
@@ -305,36 +306,13 @@
                                                  <li><span style="display: inline-block; min-width: 100px;">订单编号:</span><span id="orderNumber">X328498383</span></li>
                                                  <li><span style="display: inline-block; min-width: 100px;">创建时间:</span><span id="createTime">2018-07-04</span></li>
                                                  <li><span style="display: inline-block; min-width: 100px;">完成时间:</span><span id="endTime"> 2018-07-04</span></li>
-                                                 <li><span style="display: inline-block; min-width: 100px;">家长:</span><span id="parent">牛大春</span></li>
-                                                 <li><span style="display: inline-block; min-width: 100px;">孩子:</span><span id="child"></span>曹思雨</li>
-                                                 <li><span style="display: inline-block; min-width: 100px;">价格:</span><span style="color: red;" id="price">$100.00</span></li>
+                                                 <li><span style="display: inline-block; min-width: 100px;">家长:</span><span id="parent"></span></li>
+                                                 <li><span style="display: inline-block; min-width: 100px;">孩子:</span><span id="child"></span></li>
+                                                 <li><span style="display: inline-block; min-width: 100px;">价格:</span><span style="color: red;" id="price"></span></li>
                                              </ul>
                                          </caption>
-                                         <tbody>
-                                         <tr>
-                                             <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                             <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                             <td width="120">$799.00</td>
-                                             <td width="80">
-                                                 <mark>正在进行</mark>
-                                             </td>
-                                         </tr>
-                                         <tr>
-                                             <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                             <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                             <td width="120">$799.00</td>
-                                             <td width="80">
-                                                 <mark>正在进行</mark>
-                                             </td>
-                                         </tr>
-                                         <tr>
-                                             <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                             <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                             <td width="120">$799.00</td>
-                                             <td width="80">
-                                                 <mark>正在进行</mark>
-                                             </td>
-                                         </tr>
+                                         <tbody id="otbody">
+
                                          </tbody>
                                      </table>
                                  </div>

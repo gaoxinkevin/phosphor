@@ -199,7 +199,7 @@
     from parent
     where parent_phone = #{parentPhone}
   </select>
-  <select id="getParentById" parameterType="java.lang.Integer"  resultType="java.lang.String">
+  <select id="getParentNameById" parameterType="java.lang.Integer"  resultType="java.lang.String">
     select
     parent_name
     from parent

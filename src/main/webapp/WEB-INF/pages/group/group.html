@@ -54,32 +54,37 @@
 
     const group = () => getJson(groupUrl);
 
-    group().then(({data}) => {
+    group().then(res => {
+        if (res.code<=30000){
+            console.log(res);
+            const groupName = document.getElementById("groupName");
+            const groupContent = document.getElementById("groupContent");
+            const groupPrice = document.getElementById("groupPrice");
+            const groupDiscount = document.getElementById("groupDiscount");
+            const groupCourseNumber = document.getElementById("groupCourseNumber");
+            const groupPhoto = document.getElementById("groupPhoto");
+            const groupPrettyPhoto = document.getElementById("groupPrettyPhoto");
+            const buy = document.getElementById("buy");
 
-        const groupName = document.getElementById("groupName");
-        const groupContent = document.getElementById("groupContent");
-        const groupPrice = document.getElementById("groupPrice");
-        const groupDiscount = document.getElementById("groupDiscount");
-        const groupCourseNumber = document.getElementById("groupCourseNumber");
-        const groupPhoto = document.getElementById("groupPhoto");
-        const groupPrettyPhoto = document.getElementById("groupPrettyPhoto");
-        const buy = document.getElementById("buy");
+            groupName.innerText += res.data.groupName;
+            groupContent.innerText += res.data.groupContent;
+            groupPrice.innerText += res.data.groupPrice;
+            groupDiscount.innerText += res.data.groupPrice * res.data.groupDiscount;
+            groupCourseNumber.innerText += res.data.groupCourseNumber;
+            groupPhoto.src = res.data.groupPhoto;
+            groupPrettyPhoto.href = res.data.groupPhoto;
+            groupPrettyPhoto.innerText += res.data.groupName;
+            buy.setAttribute("href",orderUrl+res.data.groupId);
 
-        groupName.innerText += data.groupName;
-        groupContent.innerText += data.groupContent;
-        groupPrice.innerText += data.groupPrice;
-        groupDiscount.innerText += data.groupPrice * data.groupDiscount;
-        groupCourseNumber.innerText += data.groupCourseNumber;
-        groupPhoto.src = data.groupPhoto;
-        groupPrettyPhoto.href = data.groupPhoto;
-        groupPrettyPhoto.innerText += data.groupName;
-        buy.setAttribute("href",orderUrl+data.groupId);
-
-        const groupsPanel = document.getElementById("groupsPanel");
-        for (let i = 0; i < data.courseInfos.length; i++) {
-            let divGrid = generateCourseDiv(data.courseInfos[i]);
-            groupsPanel.appendChild(divGrid);
+            const groupsPanel = document.getElementById("groupsPanel");
+            for (let i = 0; i < res.data.courseInfos.length; i++) {
+                let divGrid = generateCourseDiv(res.data.courseInfos[i]);
+                groupsPanel.appendChild(divGrid);
+            }
+        } else{
+            console.log(res);
         }
+
     }).catch(error => {
         console.log(error);
     });
@@ -93,7 +98,7 @@
         ablock.setAttribute("style","display:block;");
         ablock.setAttribute("href",courseUrl+course.courseId);
         let image =document.createElement("img");
-        image.setAttribute("src",course.coursePhoto);
+        image.setAttribute("src",course.courseSf);
         image.classList.add("img-responsive", "alignleft", "img-rounded");
         ablock.appendChild(image);
         div2.appendChild(ablock);

@@ -27,6 +27,12 @@ public interface OrderDAO extends MyBatisBaseDao<Order, Integer> {
     Integer insertOrder(Order order);
 
     /**
+     * 获取最后插入的订单id
+     * @return 订单id
+     */
+    Integer getOrderId();
+
+    /**
      * 修改订单
      * @param order 订单对象
      * @return  0=>false | 1=>true
