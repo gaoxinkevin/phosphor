@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="/css/carousel.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleLogin.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="/js/login.js"></script>
     <style>
@@ -71,13 +72,13 @@
             console.log(error);
         });
 
-        searchALL=()=>{
+        searchALL = () => {
             alert(1);
             const searchContent = document.getElementById("searchContent").value;
-            const clientUrl = "http://localhost:1250/searchUi/searchTeacher/"+searchContent;
+            const clientUrl = "http://localhost:1250/searchUi/searchTeacher/" + searchContent;
             const clientMethod = 'GET';
             const search = (url) => {
-                return new Promise((resolve,reject) => {
+                return new Promise((resolve, reject) => {
                     const client = new XMLHttpRequest();
                     client.open(clientMethod, url);
                     client.responseType = 'json';
@@ -97,7 +98,7 @@
             searchList().then((res) => {
                 console.log(res);
                 alert(res);
-                window.location.href="/searchUi/searchTeacher/"+searchContent;
+                window.location.href = "/searchUi/searchTeacher/" + searchContent;
             }).catch(error => {
                 console.log(error);
             });
@@ -526,7 +527,8 @@
                 <div class="caro-item" style="float: left;width: 270px;height: 570px;margin: 8px;">
                     <div class="course-box">
                         <div>
-                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E4%B8%AD%E5%85%AC%E6%95%99%E8%82%B2logo.png" alt=""
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E4%B8%AD%E5%85%AC%E6%95%99%E8%82%B2logo.png"
+                                 alt=""
                                  class="img-responsive"
                                  style="height: 270px;">
                             <div class="magnifier">
@@ -566,7 +568,8 @@
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%91%A8%E5%BC%BA.bmp" alt=""
                                  class="img-responsive" style="height: 460px;">
                             <div class="magnifier">
-                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10006"><i class="flaticon-add"></i></a>
+                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10006"><i
+                                        class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
 
@@ -590,7 +593,8 @@
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%88%98%E4%BA%91%E6%B5%A9.jpg" alt=""
                                  class="img-responsive" style="height: 460px;">
                             <div class="magnifier">
-                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10005"><i class="flaticon-add"></i></a>
+                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10005"><i
+                                        class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
 
@@ -614,7 +618,8 @@
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%AD%99%E5%AE%B6%E5%B9%BF.jpg" alt=""
                                  class="img-responsive" style="height: 460px;">
                             <div class="magnifier">
-                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10004"><i class="flaticon-add"></i></a>
+                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10004"><i
+                                        class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
 
@@ -745,12 +750,12 @@
                 <div class="col-lg-2 col-md-2">
                     <div class="widget clearfix">
                         <h3 class="widget-title">支持</h3>
-                        <div class="list-widget">
+                        <div class="list-widget" style="color: #9A9A9A;">
                             <ul>
-                                <li><a href="#">随便写写</a></li>
-                                <li><a href="#">看看效果</a></li>
-                                <li><a href="#">觉得不错</a></li>
-                                <li><a href="#">以后再说</a></li>
+                                <li>随便写写 看看效果</li>
+                                <li>觉得不错 那就留着</li>
+                                <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a> 试试效果</li>
+                                <li>有了想法 以后再加</li>
                             </ul>
                         </div><!-- end list-widget -->
                     </div><!-- end widget -->
@@ -779,10 +784,47 @@
         </div><!-- end container -->
     </div><!-- end copy -->
 
+    <div id="dialog">
+        <div class="el-message-box" style="width: 500px;height: 1000px;background-color: transparent;margin-top: 90px;">
+            <div style="float: right;"><img src="/images/close.png" style="width: 50px;cursor: pointer;"
+                                            onclick="closeLight()"></div>
+            <img id="image" onclick="turnOnOrOff()" style="cursor: pointer;">
+        </div>
+    </div>
+    <div id="v-modal" style="z-index: 9998;"></div>
+
 </div>
 
 <!--END WRAPPER-->
 
+<script>
+    lightPoint = () => {
+        document.body.style.overflowX = "hidden";
+        document.body.style.overflowY = "hidden";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        div1.style.display = "block";
+        div2.style.display = "block";
+        let img = document.getElementById("image");
+        img.setAttribute("src", "/images/light1.png");
+    }
+    turnOnOrOff = () => {
+        let img = document.getElementById("image");
+        if (img.getAttribute("src") === "/images/light1.png") {
+            img.setAttribute("src", "/images/light0.png");
+        } else if (img.getAttribute("src") === "/images/light0.png") {
+            img.setAttribute("src", "/images/light1.png");
+        }
+    }
+    closeLight = () => {
+        document.body.style.overflowX = "auto";
+        document.body.style.overflowY = "auto";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        div1.style.display = "none";
+        div2.style.display = "none";
+    }
+</script>
 <!-- jQuery Js Files -->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>

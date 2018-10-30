@@ -128,7 +128,6 @@
                         let img = document.createElement("img");
                         img.classList.add("img-responsive");
                         img.setAttribute("src", res.data[item].teacherPhoto);
-                        // img.setAttribute("src", "/upload/shop_01.jpg");
                         img.setAttribute("style","width:188.5px;height:188.5px;margin-top:28px;float:left")
                         img.setAttribute("alt", "");
                         containerDiv.appendChild(divLeft1);
@@ -169,7 +168,7 @@
                         resultDiv.appendChild(document.createElement("br"));
                         resultDiv.appendChild(document.createElement("br"));
                         resultDiv.appendChild(divRightA);
-
+                        resultDiv.style.height = "222px";
                         resultDiv.style.cssFloat = "left";
                         resultDiv.style.marginTop = "25px";
                         resultDiv.style.marginLeft = "20px";
