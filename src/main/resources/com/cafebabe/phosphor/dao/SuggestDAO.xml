@@ -23,7 +23,15 @@
     from suggest
     where suggest_id = #{suggestId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="getSuggestByCourse" resultType="com.cafebabe.phosphor.model.entity.Suggest">
+      select
+      <include refid="Base_Column_List" />
+      from suggest
+      where course_id = #{courseId,jdbcType=INTEGER}
+      order by suggest_create_time desc
+      limit 0,2
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from suggest
     where suggest_id = #{suggestId,jdbcType=INTEGER}
   </delete>

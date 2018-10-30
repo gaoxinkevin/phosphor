@@ -76,4 +76,5 @@ public interface CourseDAO extends MyBatisBaseDao<Course, Integer> {
 
     List<Course> getAllCourse();
 
+
 }

@@ -71,7 +71,6 @@ function generateDiv(courseInfo) {
     ulRight.classList.add("list-inline");
     let liRight = document.createElement("li");
     let aRight = document.createElement("a");
-    aRight.setAttribute("href","#");
     aRight.innerText = "￥"+courseInfo.coursePrice;
     liRight.appendChild(aRight);
     ulRight.appendChild(liRight);
@@ -95,26 +94,43 @@ function loadCourseList(courseInfoListJson) {
     }
 }
 
-function refreshGrid(courseInfoList) {
-    let div = document.getElementById("courseGrid");
-    let length = courseInfoList.length;
-    for(let i = 0; i < length; i ++){
-        let courseInfo = courseInfoList[i];
-        let courseName = courseInfo.courseName;
-        let couName = document.getElementsByClassName("couName")[i];
-        couName.innerText = courseName;
-
-        let courseId = courseInfo.courseId;
-        let courseSign = document.getElementsByClassName("courseDetail")[i];
-        courseSign.setAttribute("href","http://localhost:1250/courseUi/courseInfoUi/" + courseInfo.courseId);
-
-        let courseCompany = courseInfo.companyName;
-        let couCompany = document.getElementsByClassName("couCompany")[i];
-        couCompany.innerText = courseCompany;
-
-        let coursePrice = courseInfo.coursePrice;
-        let couPrice = document.getElementsByClassName("couPrice")[i];
-        couPrice.innerText = coursePrice;
-    }
+function infomation() {
+    const home = document.getElementById("home");
+    home.className=null;
+    home.style.display="none";
+    const menu1 = document.getElementById("menu1");
+    menu1.className=null;
+    menu1.style.display="";
+    const menu2 = document.getElementById("menu2");
+    menu2.className=null;
+    menu2.style.display="none";
 }
 
+function content() {
+    const home = document.getElementById("home");
+    home.className=null;
+    home.style.display="";
+    const menu1 = document.getElementById("menu1");
+    menu1.className=null;
+    menu1.style.display="none";
+    const menu2 = document.getElementById("menu2");
+    menu2.className=null;
+    menu2.style.display="none";
+}
+
+function suggest() {
+    const home = document.getElementById("home");
+    home.className=null;
+    home.style.display="none";
+    const menu1 = document.getElementById("menu1");
+    menu1.className=null;
+    menu1.style.display="none";
+    const menu2 = document.getElementById("menu2");
+    menu2.className=null;
+    menu2.style.display="";
+}
+
+function collection() {
+    const collection = document.getElementById("collection");
+    const dialog = document.getElementById("dialog");
+}

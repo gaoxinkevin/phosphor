@@ -4,6 +4,7 @@ import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.dto.Page;
 import com.cafebabe.phosphor.model.dto.PageCourse;
 import com.cafebabe.phosphor.model.entity.Course;
+import com.cafebabe.phosphor.model.entity.Suggest;
 
 import java.util.List;
 
@@ -83,4 +84,18 @@ public interface CourseService {
      * @return 有冲突就返回冲突的课程,没有就返回null
      */
     CourseInfo getConflictCourseInfo(List<CourseInfo> courseInfoList, Integer courseId);
+    
+    /** 
+     * 获得某课程所有评价
+     * @param courseId 课程id
+     * @return 建议列表
+     */
+    List<Suggest> getSuggestByCourse(Integer courseId);
+
+    /**
+     * 添加课程评价
+     * @param suggest 评价
+     * @return
+     */
+    Integer insertSuggest(Suggest suggest);
 }

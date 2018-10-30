@@ -12,6 +12,7 @@ import java.util.List;
  * @CreateDate:     2018/10/18 10:55
  * @Version:        1.0
  */
+
 public interface ActivityService {
     List<Activity> getActivityAll();
 
