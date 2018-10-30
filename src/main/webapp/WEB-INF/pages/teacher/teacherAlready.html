@@ -29,6 +29,8 @@
     <script src="/js/login.js"></script>
 
     <script>
+
+        //获取教师列表
         getTeacherList = () => {
             const clientUrl = 'http://localhost:1250/teacher/getTeacherList/1';
             const clientMethod = 'POST';
@@ -68,6 +70,7 @@
             });
         }
 
+        //获取分页信息
         getPageList = (pageCode) => {
             const clientUrl = 'http://localhost:1250/teacher/getTeacherList/' + pageCode;
             const clientMethod = 'POST';
@@ -110,6 +113,7 @@
             });
         }
 
+        //生成教师的html元素
         generateDiv = (teacherData) => {
             let div = document.createElement("div");
             div.classList.add("row", "blog-grid", "shop-grid");
@@ -168,6 +172,7 @@
             return div;
         }
 
+        //生成分页的heml元素
         generatePageDiv = (currentPageCode, totalPages) => {
             let div = document.createElement("div");
             let hr = document.createElement("hr");
@@ -237,6 +242,7 @@
 
             return div;
         }
+
     </script>
 
 </head>
@@ -269,7 +275,8 @@
     </div>
     <!-- END # MODAL LOGIN -->
 
-    <header class="header affix" style=" background-image: linear-gradient(-225deg, #9DC8C8 0%, #58C9B9 48%, #519D9E 100%);padding: 15px 0;">
+    <header class="header affix"
+            style=" background-image: linear-gradient(-225deg, #9DC8C8 0%, #58C9B9 48%, #519D9E 100%);padding: 15px 0;">
         <div class="container">
             <nav class="navbar navbar-default yamm">
                 <div class="navbar-header">

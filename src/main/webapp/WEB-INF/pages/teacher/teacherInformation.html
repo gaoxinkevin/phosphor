@@ -30,6 +30,8 @@
     <script src="/js/login.js"></script>
 
     <script>
+
+        // 根据教师ID获取该教师信息
         getTeacher = () => {
             const teacherId = document.cookie.split(';')[0].trim();
             const id = teacherId.split('=')[1].trim();
@@ -59,6 +61,7 @@
                 }
             );
 
+            //调用函数展示教师信息
             let fatherDiv = document.getElementById("fatherDiv");
             fatherDiv.innerText = "";
             scrollTo(0, 0);
@@ -71,6 +74,7 @@
             getFeedback();
         }
 
+        // 根据教师ID获得该教师评价内容
         getFeedback = () => {
             const teacherId = document.cookie.split(';')[0].trim();
             const id = teacherId.split('=')[1].trim();
@@ -143,6 +147,62 @@
 
         }
 
+        // 获取分页信息
+        getPageList = (pageCode) => {
+            const teacherId = document.cookie.split(';')[0].trim();
+            const id = teacherId.split('=')[1].trim();
+            const clientUrl = 'http://localhost:1250/feedback/getFeedbackList';
+            const clientMethod = 'POST';
+            const teacherList = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const resultList = (data) => teacherList(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+
+            let pageModel = {
+                sf: id,
+                currentPageCode: pageCode,
+            };
+
+            let grandfatherDiv = document.getElementById("feedbackDiv");
+            grandfatherDiv.innerText = "";
+            scrollTo(0, 0);
+            resultList(JSON.stringify(pageModel)).then((res) => {
+                for (let i = 0; i < res.data.modelList.length; i++) {
+                    let sonDiv = generateFeedbackDiv(res.data.modelList[i]);
+                    grandfatherDiv.appendChild(sonDiv);
+                }
+                let pageDiv = generatePageDiv(res.data.currentPageCode, res.data.totalPages);
+                grandfatherDiv.appendChild(pageDiv);
+
+                grandfatherDiv.appendChild(generateFeedDiv());
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+
+        // 生成教师信息的html元素
         generateDiv = (teacherData) => {
             let div = document.createElement("div");
             div.classList.add("row", "blog-grid", "shop-grid");
@@ -245,6 +305,7 @@
             return div;
         }
 
+        // 生成教师描述信息的html元素
         generateDescDiv = (teacherDesc) => {
             let div = document.createElement("div");
             let span = document.createElement("span");
@@ -252,6 +313,7 @@
             return div.appendChild(span);
         }
 
+        // 生成评价的html元素
         generateFeedbackDiv = (modelList) => {
             let fatherDiv = document.createElement("div");
             fatherDiv.classList.add("boxed", "boxedp4");
@@ -297,6 +359,7 @@
             return fatherDiv;
         }
 
+        // 生成分页的html元素
         generatePageDiv = (currentPageCode, totalPages) => {
             let div = document.createElement("div");
             let hr = document.createElement("hr");
@@ -368,60 +431,7 @@
             return div;
         }
 
-        getPageList = (pageCode) => {
-            const teacherId = document.cookie.split(';')[0].trim();
-            const id = teacherId.split('=')[1].trim();
-            const clientUrl = 'http://localhost:1250/feedback/getFeedbackList';
-            const clientMethod = 'POST';
-            const teacherList = ({url, method, data}) => {
-                return new Promise((resolve, reject) => {
-                    const client = new XMLHttpRequest();
-                    client.open(clientMethod, url);
-                    client.responseType = 'json';
-                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-                    client.onreadystatechange = () => {
-                        if (client.readyState === 4) {
-                            if (client.status === 200) {
-                                resolve(client.response);
-                            } else {
-                                reject(client.status);
-                            }
-                        }
-                    };
-                    client.send(data);
-                });
-            };
-
-            const resultList = (data) => teacherList(
-                {
-                    url: clientUrl,
-                    method: clientMethod,
-                    data
-                }
-            );
-
-            let pageModel = {
-                sf: id,
-                currentPageCode: pageCode,
-            };
-
-            let grandfatherDiv = document.getElementById("feedbackDiv");
-            grandfatherDiv.innerText = "";
-            scrollTo(0, 0);
-            resultList(JSON.stringify(pageModel)).then((res) => {
-                for (let i = 0; i < res.data.modelList.length; i++) {
-                    let sonDiv = generateFeedbackDiv(res.data.modelList[i]);
-                    grandfatherDiv.appendChild(sonDiv);
-                }
-                let pageDiv = generatePageDiv(res.data.currentPageCode, res.data.totalPages);
-                grandfatherDiv.appendChild(pageDiv);
-
-                grandfatherDiv.appendChild(generateFeedDiv());
-            }).catch(error => {
-                console.log(error);
-            });
-        }
-
+        // 生成添加评价的html元素
         generateFeedDiv = (flag) => {
             let div = document.createElement("div");
             div.classList.add("row", "blog-grid", "shop-grid");
@@ -461,11 +471,13 @@
             return div;
         }
 
+        // 清空添加评价的textarea的内容
         clearFeedback = () => {
             let feed = document.getElementById("textarea");
             feed.value = "";
         }
 
+        // 提交评价
         commitFeedback = () => {
             let feedbackContent = document.getElementById("textarea").value;
             if (localStorage.getItem("userLoginPhone") === null) {
@@ -525,6 +537,7 @@
             }
         }
 
+        // 增加点赞数
         teacherLikeAdd = () => {
             if (localStorage.getItem("userLoginPhone") === null) {
                 loginPrompt(0);
@@ -566,6 +579,7 @@
                 scrollTo(0, 0);
                 result(JSON.stringify(teacher)).then((res) => {
                     getTeacher();
+                    commit(4);
                 }).catch(error => {
                     console.log(error);
                 });
@@ -573,6 +587,7 @@
             }
         }
 
+        // 已登录情况下，提交后提示信息
         commit = (type) => {
             document.body.style.overflowX = "hidden";
             document.body.style.overflowY = "hidden";
@@ -590,9 +605,12 @@
                 p.innerText = "提交成功";
             } else if (type === 3) {
                 p.innerText = "提交失败，请勿提交特殊字符！";
+            } else if (type === 4) {
+                p.innerText = "点赞成功";
             }
         }
 
+        // 未登录情况下，提交评价和点赞进行登录提示
         loginPrompt = (type) => {
             console.log("登录");
             document.body.style.overflowX = "hidden";
@@ -610,6 +628,7 @@
             }
         }
 
+        // 用户取消登录
         cancelLogin = () => {
             document.body.style.overflowX = "auto";
             document.body.style.overflowY = "auto";
@@ -621,6 +640,7 @@
             p.innerText = "";
         }
 
+        // 用户提交成功后，点击确定按钮后执行的方法
         cancel = () => {
             document.body.style.overflowX = "auto";
             document.body.style.overflowY = "auto";
