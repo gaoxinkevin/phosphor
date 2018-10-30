@@ -32,14 +32,12 @@ import java.util.List;
 @RequestMapping("/group")
 public class GroupController {
 
+    private static final String GROUP_ID = "groupId";
     private final  GroupServiceImpl groupService;
     private final CourseServiceImpl courseService;
     private final  String diyGroupDTOStr = "diyGroupDTO";
     @Autowired(required = false)
     private HttpServletRequest httpServletRequest;
-
-
-
 
     @Autowired
     public GroupController(GroupServiceImpl groupService,CourseServiceImpl courseService) {
@@ -57,13 +55,12 @@ public class GroupController {
     @GetMapping("group")
     @ResponseBody
     public JsonResponse getGroup(){
-        if (httpServletRequest.getSession().getAttribute("groupId") != null) {
-            Integer groupId = (Integer) httpServletRequest.getSession().getAttribute("groupId");
+        if (httpServletRequest.getSession().getAttribute(GROUP_ID) != null) {
+            Integer groupId = (Integer) httpServletRequest.getSession().getAttribute(GROUP_ID);
             if (groupId == null) {
                 return new JsonResponse(40000,"success","找不到套餐");
             }else{
                 GroupDTO group =groupService.getGroupDTOById(groupId);
-                httpServletRequest.getSession().removeAttribute("groupId");
                 return new JsonResponse(20000,"success",group);
             }
         }

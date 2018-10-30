@@ -25,7 +25,6 @@
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleCommon.css">
-    <link rel="stylesheet" href="/css/bootstrap-select.min.css">
 
     <!--自己写的 -->
     <link rel="stylesheet" href="/css/alreadyLogin.css">
@@ -73,7 +72,10 @@
     const activityUrl= clientUrl + '/activityUi/activityInfo/';
     const parentUrl = clientUrl + '/parent/parentAllInfo';
     const childUrl= clientUrl + '/child/childInfo';
-    const chooseChildUrl = clientUrl + '/order/childInfo?childId=';
+    const chooseChildUrl = clientUrl + '/order/orderChild?childId=';
+    const currentOrderUrl = clientUrl + '/order/currentOrder';
+    const orderPayUrl = clientUrl + '/order/orderPay';
+    const letPayUrl = clientUrl + '/orderUi/payUi';
     const getJson = (url) => {
         return new Promise((resolve, reject) => {
             const client = new XMLHttpRequest();
@@ -92,8 +94,8 @@
             client.send();
         });
     };
-    const JsonResponseList = () => getJson(orderValidateUrl);
-    JsonResponseList().then((res) => {
+    const orderList = () => getJson(orderValidateUrl);
+    orderList().then((res) => {
 
         let orderNumber =0;
         const otbody = document.getElementById("otbody");
@@ -112,7 +114,6 @@
     });
     const getParent = () => getJson(parentUrl);
     getParent().then((res) => {
-        console.log(res);
         const parentName = document.getElementById("parentName");
         const tel = document.getElementById("tel");
         parentName.innerText = res.data.parentName;
@@ -120,9 +121,7 @@
     }).catch(error => {
         console.log(error);
     });
-
     const getChild = () => getJson(childUrl);
-
     getChild().then(res => {
         if(res.code<=30000){
             let picker = document.getElementById('selectPicker');
@@ -136,9 +135,14 @@
         console.log(res);
     });
 
-    childInfo = (child) => {
+    childInfo = () => {
 
-        const getChildInfo = () => getJson(chooseChildUrl+child.value);
+        let child = document.getElementById("selectPicker");
+        let index = child.selectedIndex;
+
+        let childId = child.options[index].value;
+        alert(childId);
+        const getChildInfo = () => getJson(chooseChildUrl+childId);
 
         getChildInfo().then(res => {
             if(res.code<=30000){
@@ -180,13 +184,37 @@
     };
 
     btnOrder = () => {
-        getOrder = () => getJson()
-    }
+        let getOrder = () => getJson(currentOrderUrl);
+        getOrder().then(res => {
+            console.log(res);
+            if(res.code<=30000){
+                if(res.data.childId!=null){
+                   let getOrderPay = () => getJson(orderPayUrl);
+                   getOrderPay().then(res => {
+                       if(res.code<=30000){
+                            window.location.href=letPayUrl;
+                       }else{
+                           console.log(res.data);
+                       }
+                   }).catch(res => {
+                       console.log(res);
+                   });
+                }else{
+                    selectChild(res.message);
+                }
+            }else{
+                console.log(res.data);
+            }
+        }).catch(res => {
+            console.log(res);
+        });
+    };
+
 
     getDetail = (detail) => {
 
         let detailUrl="";
-        if (detail.type=="课程") {
+        if (detail.type==="课程") {
             detailUrl=courseUrl+detail.id;
         } else {
             detailUrl=activityUrl+detail.id;
@@ -225,11 +253,11 @@
         td5.setAttribute("width","100");
         let marktype = document.createElement("mark");
         marktype.innerText=detail.type;
-        if (0==detail.state) {
+        if (0===detail.state) {
             marktype.innerText="未开始";
-        } else if (1==detail.state) {
+        } else if (1===detail.state) {
             marktype.innerText="正在进行";
-        } else if (2==detail.state) {
+        } else if (2===detail.state) {
             marktype.innerText="去评价";
         }else {
             marktype.innerText="完成";
@@ -487,6 +515,7 @@
             </div>
         </div><!-- end container -->
     </div>
+
     <div id="dialog">
         <div class="el-message-box">
             <div class="el-message-box__content">
@@ -516,7 +545,6 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/customLogin.js"></script>
-<script src="/js/bootstrap-select.min.js"></script>
 </body>
 
 </html>

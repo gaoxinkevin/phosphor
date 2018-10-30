@@ -35,6 +35,7 @@ public class GroupUi {
     @RequestMapping("groupUi/{groupId}")
     public void Group(@PathVariable Integer groupId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)throws IOException,ServletException {
         httpServletRequest.getSession().setAttribute("groupId",groupId);
+        System.out.println(groupId);
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/group/group.html").forward(httpServletRequest,httpServletResponse);
     }
 

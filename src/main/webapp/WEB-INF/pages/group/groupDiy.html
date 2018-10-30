@@ -263,7 +263,7 @@
         otr.appendChild(td3);
         otr.appendChild(td4);
         return otr;
-    }
+    };
 
     addGroup = () => {
         let delSession = () => getJson(addGroupUrl);
@@ -403,21 +403,19 @@
                     <div class="col-md-8">
                         <a href="javascript:optionError();" class="xi2 xs1 xw0 y">清空</a>
                         <div class="mn row">
-                            <div class="col-md-12">
-                                <table summary="我的订单" cellspacing="0" cellpadding="0" class="table table-hover">
-
+                            <div class="col-md-12" style="z-index: 1; position: relative">
+                                <table cellspacing="0" cellpadding="0" class="table table-hover">
                                     <tr>
                                         <th>课程</th>
                                         <th></th>
                                         <th ></th>
                                         <th width="80"><a href="" class="xi2 xs1 xw0 y">操作</a></th>
                                     </tr>
-
                                     <tbody id="divBody">
                                     </tbody>
                                 </table>
                             </div>
-
+                            <div id="cover" style="position:absolute; z-index: 2; background-color: #00a2ca; width: 600px; height: 600px;"></div>
                         </div>
 
                     </div>
@@ -450,7 +448,7 @@
                 <div class="row blog-grid shop-grid" id="courseGrid">
                     <script type="text/javascript">
 
-                        getAllCoureForGroup();
+                        getCourseForGroup();
                     </script>
                     <!--课程单元-->
 

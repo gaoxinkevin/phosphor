@@ -161,11 +161,11 @@
         td4.setAttribute("width","80");
         let marktype = document.createElement("mark");
         marktype.innerText=detail.type;
-        if (0==detail.state) {
+        if (0===detail.state) {
             marktype.innerText="未开始";
-        } else if (1==detail.state) {
+        } else if (1===detail.state) {
             marktype.innerText="正在进行";
-        } else if (2==detail.state) {
+        } else if (2===detail.state) {
             marktype.innerText="去评价";
         }else {
             marktype.innerText="完成";
@@ -194,14 +194,14 @@
         hmbm.classList.add("mbm","xs2");
         let astate = document.createElement("a");
         astate.classList.add("xi2","xs1","xw0","y");
-        if (order.orderState==0) {
+        if (order.orderState===0) {
             astate.innerText = "交易失败";
             astate.setAttribute("style","color:red;");
         } else {
             astate.innerText = "交易成功";
         }
         hmbm.appendChild(astate);
-        hmbm.innerHTML += order.orderEndTime+"&nbsp;&nbsp;&nbsp;订单号:"+order.orderNumber
+        hmbm.innerHTML += order.orderEndTime+"&nbsp;&nbsp;&nbsp;订单号:"+order.orderNumber;
         captionName.appendChild(hmbm);
         tableOrder.appendChild(captionName);
         let otbody = document.createElement("tbody");
@@ -346,78 +346,7 @@
                             </li>
                         </ul>
                         <div id="ordersPanel">
-                           <!-- <div class="mn row">
-                                <div class="col-md-12">
-                                    <table summary="我的订单" cellspacing="0" cellpadding="0" class="dt mtm">
-                                        <caption>
-                                            <h2 class="mbm xs2">
-                                                <a href="" class="xi2 xs1 xw0 y">交易成功</a>2018-10-29 订单号:7974738
-                                            </h2>
-                                        </caption>
-                                        <tbody>
-                                        <tr>
-                                            <th width="80">孩子:曹思雨</th>
-                                            <th>订单金额:$788.00</th>
-                                            <th width="120"></th>
-                                            <th width="80"><a href="" class="xi2 xs1 xw0 y">查看更多»</a></th>
-                                        </tr>
-                                        <tr>
-                                            <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                            <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                            <td width="120">$799.00</td>
-                                            <td width="80">
-                                                <mark>正在进行</mark>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
 
-                            <div class="mn row">
-                                <div class=" col-md-12">
-                                    <table summary="我的订单" cellspacing="0" cellpadding="0" class="dt mtm">
-                                        <caption>
-                                            <h2 class="mbm xs2">
-                                                <a href="" class="xi2 xs1 xw0 y">交易成功</a>2018-10-29 订单号:7974738
-                                            </h2>
-                                        </caption>
-                                        <tbody>
-                                        <tr>
-                                            <th width="80">孩子:曹思雨</th>
-                                            <th>订单金额:$788.00</th>
-                                            <th width="120"></th>
-                                            <th width="80"><a href="" class="xi2 xs1 xw0 y">查看更多»</a></th>
-                                        </tr>
-                                        <tr>
-                                            <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                            <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                            <td width="120">$799.00</td>
-                                            <td width="80">
-                                                <mark>正在进行</mark>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                            <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                            <td width="120">$799.00</td>
-                                            <td width="80">
-                                                <mark>正在进行</mark>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><img src="/upload/people.jpg" width="80" height="80"></td>
-                                            <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
-                                            <td width="120">$799.00</td>
-                                            <td width="80">
-                                                <mark>正在进行</mark>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>-->
                         </div>
                         <div class="bm bw0">
                             <h1 class="mt">积分

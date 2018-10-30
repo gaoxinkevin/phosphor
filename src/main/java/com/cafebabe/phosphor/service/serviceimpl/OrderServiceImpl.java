@@ -185,25 +185,27 @@ public class OrderServiceImpl implements OrderService {
         String groupType= "group";
         String courseType = "course";
         String activityType = "activity";
+
         List<OrderDetail> orderDetails;
         OrderDTO orderDTO =new OrderDTO();
         if(groupType.equals(type)){
             orderDetails = orderDetailService.getListByGroupId(detailId);
             Group group = groupDAO.getGroupById(detailId);
             orderDTO.setOrderPrice(group.getGroupPrice());
-            orderDTO.setOrderState(group.getGroupId());
+            orderDTO.setOrderSf(groupType);
         }else if(courseType.equals(type)){
             orderDetails = orderDetailService.getListByCourseId(detailId,1);
-            orderDTO.setOrderState(0);
+            orderDTO.setOrderSf(courseType);
         }else if(activityType.equals(type)){
             orderDetails = orderDetailService.getListByActivityId(detailId,1);
-            orderDTO.setOrderState(1);
+            orderDTO.setOrderSf(activityType);
         }else {
             return null;
         }
         if (orderDetails.size()<=1) {orderDTO.setOrderPrice(orderDetails.get(0).getPrice());}
+        orderDTO.setOrderState(detailId);
         orderDTO.setDetails(orderDetails);
-        orderDTO.setOrderNumber("X"+Math.random()*100000);
+        orderDTO.setOrderNumber("x"+new Random().nextLong());
         orderDTO.setOrderCreateTime(new Date());
         return orderDTO;
     }

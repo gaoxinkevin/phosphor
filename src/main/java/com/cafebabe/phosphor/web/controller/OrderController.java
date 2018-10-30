@@ -33,16 +33,13 @@ import java.util.List;
 @RequestMapping("/order")
 public class OrderController {
 
-
-    private final OrderServiceImpl orderService;
+    private static final String ORDER_ID = "orderId";
     private static final String ORDER_VALIDATE_TYPE=  "orderValidateType";
-    private static final  String ORDER_VALIDATE_ID= "orderValidateId";
+    private static final String ORDER_VALIDATE_ID= "orderValidateId";
     private static final String CREATE_ORDER = "createOrder";
 
-
+    private final OrderServiceImpl orderService;
     private final ParentServiceImpl parentService;
-
-
     @Autowired(required = false)
     private HttpServletRequest httpServletRequest;
 
@@ -55,11 +52,11 @@ public class OrderController {
     @RequestMapping("order")
     @ResponseBody
     public JsonResponse getOrder(){
-        if (httpServletRequest.getSession().getAttribute("orderId") == null) {
+        if (httpServletRequest.getSession().getAttribute(ORDER_ID) == null) {
             return new JsonResponse(50000,"error","订单生成失败!");
         }else {
 
-            Integer orderId = (Integer)httpServletRequest.getSession().getAttribute("orderId");
+            Integer orderId = (Integer)httpServletRequest.getSession().getAttribute(ORDER_ID);
             OrderDTO orderDTO = orderService.getOrderById(orderId);
             if (orderDTO == null) {
                 return new JsonResponse(40000,"error","订单生成失败!");
@@ -107,22 +104,27 @@ public class OrderController {
     @RequestMapping("orderPay")
     @ResponseBody
     public JsonResponse getOrderPay(){
+        String groupType= "group";
+        String courseType = "course";
+        String activityType = "activity";
         if (httpServletRequest.getSession().getAttribute(CREATE_ORDER)==null) {
             return new JsonResponse(50000,"error","订单生成失败!");
         }else {
             OrderDTO orderDTO = (OrderDTO)httpServletRequest.getSession().getAttribute(CREATE_ORDER);
             Order order =new Order();
-            order.setOrderState(1);
+            order.setOrderState(0);
             order.setOrderCreateTime(orderDTO.getOrderCreateTime());
             order.setOrderEndTime(new Date());
             order.setOrderNumber(orderDTO.getOrderNumber());
             order.setOrderPrice(orderDTO.getOrderPrice());
             order.setChildId(orderDTO.getChildId());
             order.setParentId(orderDTO.getParentId());
-            if(orderDTO.getOrderState()<2){
-                order.setCourseId(orderDTO.getDetails().get(0).getId());
-            }else{
+            if(orderDTO.getOrderSf().equals(groupType)){
+                order.setGroupId(orderDTO.getOrderState());
+            }else if(courseType.equals(orderDTO.getOrderSf())){
                 order.setCourseId(orderDTO.getOrderState());
+            }else if(activityType.equals(orderDTO.getOrderSf())){
+                order.setActivityId(orderDTO.getOrderState());
             }
             if (orderService.insertOrder(order)>0){
                 httpServletRequest.getSession().removeAttribute(CREATE_ORDER);
