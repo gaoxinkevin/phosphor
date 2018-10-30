@@ -50,14 +50,14 @@
     <!--Ajax向后台输出数据-->
     <script>
 
-        //
-        <!--判断用户登录-->
+        // 判断用户登录
         let a = localStorage.getItem("userLoginPhone");
         if (a === null) {
             localStorage.clear();
             window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
         }
 
+        // 获取公司收藏列表
         getCompanyCollectionList = () => {
             let phone = JSON.parse(localStorage.getItem("userLoginPhone")).val;
             let page = 1;
@@ -97,7 +97,7 @@
             const fatherDiv = document.createElement("div");
             fatherDiv.setAttribute("style", "width:620px;height:600px;");
             fatherDiv.setAttribute("id", "fatherDiv");
-            fatherDiv.innerText=""
+            fatherDiv.innerText = "";
             grandfatherDiv.appendChild(fatherDiv);
             scrollTo(0, 0);
             result(JSON.stringify(pageModel)).then((res) => {
@@ -121,6 +121,7 @@
             });
         }
 
+        // 获取分页信息
         getPageList = (pageCode) => {
             const clientUrl = 'http://localhost:1250/companyCollection/getCompanyCollectionList';
             const clientMethod = 'POST';
@@ -160,7 +161,6 @@
             const fatherDiv = document.getElementById("fatherDiv");
             fatherDiv.innerText = "";
             grandfatherDiv.appendChild(fatherDiv);
-            // scrollTo(0, 0);
             resultList(JSON.stringify(pageModel)).then((res) => {
                 for (let i = 0; i < res.data.modelList.length; i++) {
                     let sonDiv = generateCompanyList(res.data.modelList[i]);
@@ -173,12 +173,13 @@
             });
         }
 
+        // 生成公司生成的html元素
         generateCompanyList = (data) => {
             let div = document.createElement("div");
             div.classList.add("mn");
+            div.setAttribute("style", "border-radius: 10px;");
             let photo = document.createElement("img");
             photo.setAttribute("src", data.companyPhoto);
-            // photo.setAttribute("src", "/upload/shop_01.jpg");
             photo.setAttribute("style", "width:20%;display:block;float:left;");
             let companyDiv = document.createElement("div");
             companyDiv.setAttribute("style", "float:left;margin-top:10px;margin-left:15px;");
@@ -231,6 +232,7 @@
             return div;
         }
 
+        // 生成分页html元素
         generatePageDiv = (currentPageCode, totalPages) => {
             let div = document.createElement("div");
             let hr = document.createElement("hr");
@@ -302,6 +304,7 @@
             return div;
         }
 
+        // 提示用户是否确认删除
         confirmDelete = (collectionId) => {
             document.body.style.overflowX = "hidden";
             document.body.style.overflowY = "hidden";
@@ -310,12 +313,13 @@
             let p = document.getElementById("information");
             let span = document.getElementById("collectionId");
             span.value = collectionId;
-            p.innerText="";
+            p.innerText = "";
             div1.style.display = "block";
             div2.style.display = "block";
-                p.innerText = "确认删除吗？";
+            p.innerText = "确认删除吗？";
         }
 
+        // 删除公司收藏
         deleteCollection = () => {
             const collectionId = document.getElementById("collectionId").value;
             const clientUrl = 'http://localhost:1250/companyCollection/removeCompanyCollection/' + collectionId;
@@ -344,15 +348,11 @@
                 }
             );
             result().then((res) => {
-                // cancelDelete();
-                // let div = document.getElementById("fatherDiv");
-                // div.innerText = "";
-                // div.setAttribute("style", "width:0px;height:0px;");
-                // getCompanyCollectionList();
                 window.location.href = "http://localhost:1250/parentUi/companyCollectionUi";
             });
         }
 
+        // 取消删除
         cancelDelete = () => {
             document.body.style.overflowX = "auto";
             document.body.style.overflowY = "auto";
@@ -361,9 +361,10 @@
             let p = document.getElementById("information");
             div1.style.display = "none";
             div2.style.display = "none";
-            p.innerText ="";
+            p.innerText = "";
         }
 
+        //退出登录
         loginOut = () => {
             window.localStorage.clear();
             window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
@@ -389,7 +390,7 @@
             </div>
         </div>
         <div class="el-message-box__btns">
-            <span style="display: none;"id="collectionId"></span>
+            <span style="display: none;" id="collectionId"></span>
             <a href="javascript:void(0);onclick=deleteCollection()" id="el-button" class="btn-primary btn-sm"
                style="margin-right: 30px;font-size: 18px;">删除</a>
             <a href="javascript:void(0);onclick=cancelDelete()" class="btn-primary btn-sm"
