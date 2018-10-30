@@ -68,6 +68,38 @@
         }).catch(error => {
             console.log(error);
         });
+
+        searchALL=()=>{
+            alert(1);
+            const searchContent = document.getElementById("searchContent").value;
+            const clientUrl = "http://localhost:1250/searchUi/searchTeacher/"+searchContent;
+            const clientMethod = 'GET';
+            const search = (url) => {
+                return new Promise((resolve,reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send();
+                });
+            };
+            const searchList = () => search(clientUrl);
+            searchList().then((res) => {
+                console.log(res);
+                alert(res);
+                window.location.href="/searchUi/searchTeacher/"+searchContent;
+            }).catch(error => {
+                console.log(error);
+            });
+        }
     </script>
 
 </head>
@@ -98,7 +130,10 @@
                                 <span class="flaticon-add" aria-hidden="true"></span>
                             </button>
                             <div class="modal-body">
-                                <input class="form-control" type="text" placeholder="What you are looking for?" required>
+                                <input class="form-control" id="searchContent"
+                                       type="text" placeholder="What you are looking for?"
+                                       style="color: white" required
+                                onkeydown="if(event.keyCode===13) searchALL(); ">
                             </div>
                         </form><!-- End # Login Form -->
                     </div><!-- End # DIV Form -->
@@ -128,7 +163,7 @@
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="/indexUi/returnIndexPage">首页</a></li>
-                            <li><a href="/courseUi/courseInfoUi">课程</a></li>
+                            <li><a href="/courseUi/courseListUi">课程</a></li>
                             <li><a href="/activityUi/returnActivityUi">活动</a></li>
                             <li><a href="http://localhost:1250/teacherUi/getTeacherList">指导师</a></li>
                             <li>
@@ -149,7 +184,7 @@
                             <li><a href="">联系我们</a></li>
                             <li><a href="/loginUi/loginUi">登录|注册</a></li>
                             <li class="iconitem">
-                                <a href="#" data-toggle="modal" data-target="#login-modal">
+                                <a href="/searchUi/search">
                                     <i class="fa fa-search"></i>
                                 </a>
                             </li>

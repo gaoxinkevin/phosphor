@@ -12,14 +12,15 @@ import java.io.IOException;
 
 /**
  * @author supersuntangao@gmail.com
- * <p>
+ *
  * class_name: ParentUi
- * <p>
+ *
  * create_date: 2018/9/27
- * <p>
+ *
  * create_time: 15:33
- * <p>
+ *
  * description: 家长信息跳转界面
+ *
  **/
 
 @Controller
