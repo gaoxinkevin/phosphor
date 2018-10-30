@@ -1,11 +1,13 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
 import com.cafebabe.phosphor.dao.CourseDAO;
+import com.cafebabe.phosphor.dao.SuggestDAO;
 import com.cafebabe.phosphor.dao.TypeDAO;
 import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.dto.Page;
 import com.cafebabe.phosphor.model.dto.PageCourse;
 import com.cafebabe.phosphor.model.entity.Course;
+import com.cafebabe.phosphor.model.entity.Suggest;
 import com.cafebabe.phosphor.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,9 +33,12 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private final CourseDAO courseDAO;
 
+    @Autowired
+    private final SuggestDAO suggestDAO;
 
-    public CourseServiceImpl(CourseDAO courseDAO){
+    public CourseServiceImpl(CourseDAO courseDAO,SuggestDAO suggestDAO){
         this.courseDAO = courseDAO;
+        this.suggestDAO = suggestDAO;
     }
 
     /**
@@ -126,6 +131,26 @@ public class CourseServiceImpl implements CourseService {
         PageCourse pageCourse = new PageCourse();
         List<Course> courseList = courseDAO.getCourseByType(pageCourse);
         return courseList;
+    }
+
+    /**
+     * 获得某课程所有评价
+     * @param courseId 课程id
+     * @return 建议列表
+     */
+    @Override
+    public List<Suggest> getSuggestByCourse(Integer courseId) {
+        return suggestDAO.getSuggestByCourse(courseId);
+    }
+
+    /**
+     * 添加评价
+     * @param suggest 评价
+     * @return
+     */
+    @Override
+    public Integer insertSuggest(Suggest suggest) {
+        return suggestDAO.insertSelective(suggest);
     }
 
     /**

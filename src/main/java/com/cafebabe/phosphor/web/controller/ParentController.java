@@ -11,6 +11,7 @@ import com.cafebabe.phosphor.util.GsonUtil;
 import com.cafebabe.phosphor.util.JsonResponse;
 import com.cafebabe.phosphor.util.SmsUtil;
 
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +42,7 @@ public class ParentController {
 
     private final ParentServiceImpl parentService;
 
+    @Autowired(required = false)
     private HttpServletRequest httpServletRequest;
     private static final String TRUE_RESULT = "true";
     private static final String FALSE_RESULT = "false";
@@ -49,9 +51,8 @@ public class ParentController {
      * 短信接口相关
      */
     @Autowired
-    public ParentController(ParentServiceImpl parentService, HttpServletRequest httpServletRequest){
+    public ParentController(ParentServiceImpl parentService){
         this.parentService = parentService;
-        this.httpServletRequest = httpServletRequest;
     }
 
     @ResponseBody

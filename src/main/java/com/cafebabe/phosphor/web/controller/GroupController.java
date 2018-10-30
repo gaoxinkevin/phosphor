@@ -33,7 +33,7 @@ public class GroupController {
 
     private final  GroupServiceImpl groupService;
     private final  String diyGroupDTOStr = "diyGroupDTO";
-    @Autowired
+    @Autowired(required = false)
     private HttpServletRequest httpServletRequest;
 
 

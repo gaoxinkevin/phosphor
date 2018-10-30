@@ -25,12 +25,11 @@ import java.util.Map;
 @Service
 public class ActivityServiceImpl implements ActivityService {
 
-    @Autowired
     private final ActivityDAO activityDAO;
 
-    @Autowired
-    private final TeacherDAO teacherDAO;
 
+    private final TeacherDAO teacherDAO;
+    @Autowired
     public ActivityServiceImpl(ActivityDAO activityDAO, TeacherDAO teacherDAO){
         this.activityDAO = activityDAO;
         this.teacherDAO = teacherDAO;
