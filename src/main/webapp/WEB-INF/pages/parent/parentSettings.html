@@ -26,24 +26,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleDgtle.css">
     <link rel="stylesheet" href="/css/styleCommon.css">
-
-    <!--自己写的 -->
     <link rel="stylesheet" href="/css/alreadyLogin.css">
-    <style>
-        .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
-            background-color:#82B43F;
-            border-color: #82B43F;
-        }
-        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
-            background: #82B43F;
-            color: #ffffff !important;
-        }
-        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
-            background: #82B43F none repeat scroll 0 0 !important;
-
-        }
-    </style>
-
 </head>
 
 <body>
@@ -101,7 +84,7 @@
         console.log(error);
     });
 
-    updateParent = () => {
+    updateParentNoChild = () => {
 
         const trSite4 = document.getElementById("tr_site4");
         const familyAdress = document.getElementById("site4").value;
@@ -401,7 +384,7 @@
                                         <th>&nbsp;</th>
                                         <td colspan="2">
                                             <input type="hidden" name="profilesubmit" value="true">
-                                            <button id="profilesubmitbtn" class="pn pnc" onclick="updateParent()">
+                                            <button id="profilesubmitbtn" class="pn pnc" onclick="updateParentNoChild()">
                                                 <strong>保存</strong>
                                             </button>
                                             <span id="submit_result" class="rq"></span>
