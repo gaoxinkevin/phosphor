@@ -25,6 +25,7 @@ import java.util.List;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class OrderDTO implements Serializable {
 
     /**

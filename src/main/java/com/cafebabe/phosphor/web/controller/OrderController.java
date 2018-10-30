@@ -9,14 +9,22 @@ import com.cafebabe.phosphor.service.serviceimpl.OrderDetailServiceImpl;
 import com.cafebabe.phosphor.service.serviceimpl.OrderServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
 import com.cafebabe.phosphor.util.OrderType;
+import org.apache.commons.io.FileUtils;
 import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -139,5 +147,15 @@ public class OrderController {
     public JsonResponse getChildInfo(Integer childId){
         System.out.println(childId);
         return new JsonResponse(20000,"success","成功");
+    }
+
+    @RequestMapping("/downloadOrderPDF/{orderId}")
+    public ResponseEntity<byte[]> downloadOrderPDF(@PathVariable Integer orderId) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        File pdfFile = orderService.createOrderPdfFile(orderId);
+
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "order_"+orderId+".pdf");
+        return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(pdfFile), headers, HttpStatus.CREATED);
     }
 }

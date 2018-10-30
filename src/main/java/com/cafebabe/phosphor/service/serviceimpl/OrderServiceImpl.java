@@ -10,10 +10,15 @@ import com.cafebabe.phosphor.model.entity.Group;
 import com.cafebabe.phosphor.model.entity.Order;
 import com.cafebabe.phosphor.service.OrderService;
 import com.cafebabe.phosphor.util.RedisUtil;
+import com.cafebabe.phosphor.util.pdfUtils.component.PDFHeaderFooter;
+import com.cafebabe.phosphor.util.pdfUtils.component.PDFKit;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -30,6 +35,7 @@ import java.util.*;
  **/
 
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDAO orderDAO;
@@ -200,6 +206,34 @@ public class OrderServiceImpl implements OrderService {
         orderDTO.setOrderNumber("X"+Math.random()*100000);
         orderDTO.setOrderCreateTime(new Date());
         return orderDTO;
+    }
+
+    @Override
+    public File createOrderPdfFile(Integer orderId) {
+        String templatePath = "/templates";
+        OrderDTO orderDTO = getOrderById(orderId);
+        String fileName = "order_"+orderDTO.getOrderId()+".pdf";
+        try {
+            //设置自定义PDF页眉页脚工具类
+            PDFHeaderFooter headerFooter = new PDFHeaderFooter();
+            PDFKit kit = new PDFKit();
+            kit.setHeaderFooterBuilder(headerFooter);
+            //设置输出路径
+            kit.setSaveFilePath("C:\\Users\\lnt20\\Desktop\\order_"+orderId+".pdf");
+
+            File savedFile = kit.exportToFile(fileName, orderDTO);
+            return savedFile;
+        }catch (Exception e){
+            System.out.println("PDF生成失败");
+            log.error("PDF生成失败{}", ExceptionUtils.getFullStackTrace(e));
+        }
+
+        return null;
+    }
+
+    @Override
+    public Integer delFile(File file) {
+        return null;
     }
 
     /**
