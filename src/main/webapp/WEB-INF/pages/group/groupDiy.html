@@ -31,296 +31,29 @@
 
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="/css/styleGroup.css">
+
     <script src="/js/course.js"></script>
-    <style>
-        .sd_box{
-            background: #fff;
-            box-shadow: 0px 1px 1px #a2a2a2;
-            border-radius: 4px;
-            font-size: 14px;
-            color: #333333;
-            line-height: 24px;
-            padding: 15px;
-            margin-bottom: 30px;
-        }
-        .table tbody tr td {
-            vertical-align: middle;
-        }
-    </style>
+    <script src="/js/group.js"></script>
+
 </head>
 <body>
 <script>
-    const clientUrl = "http://localhost:1250"
-    const courseUrl = clientUrl+ "/courseUi/courseInfoUi/";
-    const addCourseUrl = clientUrl+ "/group/addCourse";
-    const delCourseUrl= clientUrl+ "/group/delCourse";
-    const optionUrl =  clientUrl+ "/group/delSession";
-    const addGroupUrl = clientUrl+ "/group/addGroup";
-    const orderUrl =  clientUrl+"/orderUi/orderGroupUi/";
-    /**
-     * post 方法访问网站
-     * @Param url 访问地址
-     * @Param method 请求方法
-     * @param data 上传数据
-     */
-    const postJson = ({ url, method, data }) => {
-        return new Promise((resolve, reject) => {
-            const client = new XMLHttpRequest();
-            client.open(method, url);
-            client.responseType = 'json';
-            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-            client.onreadystatechange = () => {
-                if (client.readyState === 4) {
-                    if (client.status === 200) {
-                        resolve(client.response);
-                    } else {
-                        reject(client.status);
-                    }
-                }
-            };
-            client.send(data);
-        });
-    };
-    /**
-     * get 方法访问网站
-     * @Param url 访问地址
-     */
-    const getJson = (url) => {
-        return new Promise((resolve, reject) => {
-            const client = new XMLHttpRequest();
-            client.open("GET", url);
-            client.responseType = 'json';
-            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-            client.onreadystatechange = () => {
-                if (client.readyState === 4) {
-                    if (client.status === 200) {
-                        resolve(client.response);
-                    } else {
-                        reject(client.status);
-                    }
-                }
-            };
-            client.send();
-        });
-    };
+    const diyGroupUrl = clientGroupUrl + "/group/diyGroup";
 
-    setGroupDiy = (group) => {
-        let divGroupPrice = document.getElementById("groupPrice");
-        let divNumber = document.getElementById("groupCourseNumber");
-        let divDiscount = document.getElementById("groupDiscount");
-        let price = 0;
-        divNumber.innerText =group.courseInfos.length;
-        divDiscount.innerText ="￥"+ group.groupPrice;
-        for (let i = 0; i <group.courseInfos.length; i++) {
-            console.log(group.courseInfos[i]);
-            price+=group.courseInfos[i].coursePrice;
+    const getGroupDTO = () => getJson(diyGroupUrl);
+    getGroupDTO().then(res => {
+        if (res.code<=30000){
+            setGroupDiy(res.data);
+            showImg();
+            for (let i = 0; i < res.data.courseInfos.length; i++) {
+                let divGrid = getCourse(res.data.courseInfos[i]);
+                divBody.appendChild(divGrid);
+            }
         }
-        divGroupPrice.innerText="￥"+price;
-
-    };
-    setGroupNull = () =>{
-        let divGroupPrice = document.getElementById("groupPrice");
-        let divNumber = document.getElementById("groupCourseNumber");
-        let divDiscount = document.getElementById("groupDiscount");
-        divNumber.innerText = 0;
-        divDiscount.innerText ="￥"+ 0;
-        divGroupPrice.innerText="￥"+0;
-    }
-    /**
-     * 清空session和界面的选择课程
-     */
-    optionError = () => {
-        let delSession = () => getJson(optionUrl);
-        delSession().then(res => {
-            if(res.code<=30000){
-                let divBody = document.getElementById("divBody");
-                divBody.innerHTML="";
-                setGroupNull();
-                submit.disabled=true;
-            }else {
-                console.log("删除失败!")
-            }
-        }).catch(res => {
-            console.log(res);
-        });
-
-    };
-    /**
-     * 取消选择
-     * @param courseId 课程编号
-     */
-    cancelChoose = (courseId) => {
-        let divBody = document.getElementById(courseId);
-        let course = {
-            courseId:courseId
-        };
-        let getCourseInfo = (data) => postJson(
-            {
-                url:delCourseUrl,
-                method: "POST",
-                data
-            });
-        getCourseInfo(JSON.stringify(course)).then((res) => {
-            if (res.code<=30000) {
-                divBody.parentNode.removeChild(divBody);
-                setGroupDiy(res.data);
-                if (res.data.courseInfos.length<= 1){
-                    submit.disabled=true;
-                }
-            }else {
-                console.log(res);
-            }
-        }).catch(error => {
-            console.log(error);
-        });
-    };
-    /**
-     * 添加课程
-     * @param courseId 课程编号
-     */
-    addCourse=(courseId)=>{
-
-        let course = {
-            courseId:courseId
-        };
-        let getCourseInfo = (data) => postJson(
-            {
-                url:addCourseUrl,
-                method: "POST",
-                data
-            });
-        console.log(JSON.stringify(course));
-        getCourseInfo(JSON.stringify(course)).then((res) => {
-            console.log(res);
-            if (res.code<=30000) {
-                let submit = document.getElementById("submit");
-                if (res.data.courseInfos.length>1){
-                    submit.disabled=false;
-                }
-                let divBody = document.getElementById("divBody");
-                divBody.innerHTML = "";
-                for (let i = 0; i < res.data.courseInfos.length; i++) {
-                    let divGrid = getCourse(res.data.courseInfos[i]);
-                    divBody.appendChild(divGrid);
-                }
-                setGroupDiy(res.data);
-            }else {
-                if (res.code===50000) {
-                    overMax(res.message);
-                }
-                else if(res.code===40100){
-                    courseConflict(res.message);
-                }
-                else if(res.code===40200){
-                    courseConflict(res.message);
-                }
-            }
-        }).catch(error => {
-            console.log(error);
-        });
-    };
-    /**
-     * 绘制选择课程
-     * @param course 课程信息
-     * @returns {HTMLElement} 绘制的table row
-     */
-    getCourse = (course) => {
-
-        let otr = document.createElement("tr");
-        otr.setAttribute("id",course.courseId);
-        otr.classList.add("sd_box");
-        let td1 = document.createElement("td");
-        let adetail1 = document.createElement("a");
-        adetail1.setAttribute("href",courseUrl+course.courseId);
-        let imageGroup = document.createElement("img");
-        imageGroup.setAttribute("src", "/upload/people.jpg");
-        imageGroup.setAttribute("width","80");
-        imageGroup.setAttribute("height","80");
-        adetail1.appendChild(imageGroup);
-        td1.appendChild(adetail1);
-
-        let td2 = document.createElement("td");
-        let adetail2 = document.createElement("a");
-        adetail2.setAttribute("href",courseUrl+course.courseId);
-        let pname =document.createElement("p");
-        pname.innerText= course.courseName;
-        adetail2.appendChild(pname);
-        td2.appendChild(adetail2);
-
-        let td3 = document.createElement("td");
-        td3.setAttribute("width","120");
-        td3.innerText="￥"+course.coursePrice;
-        td3.setAttribute("style","color:red;");
-        let td4 = document.createElement("td");
-        td4.setAttribute("width","80");
-
-        let marktype = document.createElement("a");
-        marktype.setAttribute("href","javascript:cancelChoose("+course.courseId+")");
-        marktype.innerText="取消";
-        td4.appendChild(marktype);
-        otr.appendChild(td1);
-        otr.appendChild(td2);
-        otr.appendChild(td3);
-        otr.appendChild(td4);
-        return otr;
-    };
-
-    addGroup = () => {
-        let delSession = () => getJson(addGroupUrl);
-        delSession().then(res => {
-            if(res.code<=30000){
-                window.location.href = orderUrl+res.data;
-            }else {
-                console.log("创建套餐失败!")
-            }
-        }).catch(res => {
-            console.log(res);
-        });
-    };
-    overMax = (message) => {
-        document.body.style.overflowX = "hidden";
-        document.body.style.overflowY = "hidden";
-        let dialog = document.getElementById("dialog");
-        let vModal =document.getElementById("v-modal");
-        let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
-        let elButton = document.getElementById("el-button");
-
-        elButton.innerText="继续添加";
-        elButton.style.padding = "0.8em 2em";
-        elButton.setAttribute("href","javascript:void(0)");
-        elButton.setAttribute("onclick","cancelDialog()");
-
-        vModal.style.display="block";
-        dialog.style.display="block";
-        dialogPInnerHtml.innerText=message;
-    }
-
-    courseConflict = (message) => {
-        document.body.style.overflowX = "hidden";
-        document.body.style.overflowY = "hidden";
-        let dialog = document.getElementById("dialog");
-        let vModal =document.getElementById("v-modal");
-        let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
-        let elButton = document.getElementById("el-button");
-
-        elButton.innerText="重新添加";
-        elButton.style.padding = "0.8em 2em";
-        elButton.setAttribute("href","javascript:void(0)");
-        elButton.setAttribute("onclick","cancelDialog()");
-
-        vModal.style.display="block";
-        dialog.style.display="block";
-        dialogPInnerHtml.innerText=message;
-    }
-
-    cancelDialog =() =>{
-        document.body.style.overflowX = "visible";
-        document.body.style.overflowY = "visible";
-        let dialog = document.getElementById("dialog");
-        let vModal =document.getElementById("v-modal");
-        vModal.style.display="none";
-        dialog.style.display="none";
-    }
+    }).catch(res => {
+        console.log(res);
+    })
 </script>
 <!-- LOADER -->
 <div id="preloader">
@@ -403,7 +136,7 @@
                     <div class="col-md-8">
                         <a href="javascript:optionError();" class="xi2 xs1 xw0 y">清空</a>
                         <div class="mn row">
-                            <div class="col-md-12" style="z-index: 1; position: relative">
+                            <div class="col-md-12" id="content" style="z-index: 1; position: relative;  display: none;">
                                 <table cellspacing="0" cellpadding="0" class="table table-hover">
                                     <tr>
                                         <th>课程</th>
@@ -415,7 +148,11 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div id="cover" style="position:absolute; z-index: 2; background-color: #00a2ca; width: 600px; height: 600px;"></div>
+                            <div id="cover" style="position:absolute; z-index: 2;  width: 710px; height: 430px; text-align: center;">
+
+                                <img src="http://cafebabe.club/without.jpg" style="margin-top: 100px;"/>
+                                <h3 style="color: #a2a2a2">还没有课程,自定义你的套餐!</h3>
+                            </div>
                         </div>
 
                     </div>

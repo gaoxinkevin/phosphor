@@ -60,7 +60,7 @@ function generateCourse(courseInfo) {
     divImage.classList.add("image-wrap", "entry");
 
     let imageGroup = document.createElement("img");
-    imageGroup.setAttribute("src", "/upload/kidcoding.jpeg");
+    imageGroup.setAttribute("src", courseInfo.courseSf);
     imageGroup.setAttribute("alt", "");
     imageGroup.classList.add("img-responsive");
 

@@ -25,36 +25,14 @@
     <link rel="stylesheet" href="/css/styleLogin.css">
     <link rel="stylesheet" href="/css/bootstrap-select.min.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script src="/js/group.js"></script>
 </head>
 
 <body>
 <!--Ajax向后台输出数据-->
 <script>
-    const clientUrl = 'http://localhost:1250';
-    const groupUrl = clientUrl + '/groupUi/groupUi/';
-    const groupListUrl= clientUrl + '/group/groupList';
-    /**
-     * get 方法访问网站
-     * @Param url 访问地址
-     */
-    const getJson = (url) => {
-        return new Promise((resolve, reject) => {
-            const client = new XMLHttpRequest();
-            client.open("GET", url);
-            client.responseType = 'json';
-            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-            client.onreadystatechange = () => {
-                if (client.readyState === 4) {
-                    if (client.status === 200) {
-                        resolve(client.response);
-                    } else {
-                        reject(client.status);
-                    }
-                }
-            };
-            client.send();
-        });
-    };
+    const groupListUrl= clientGroupUrl + '/group/groupList';
 
     const groupList = () => getJson(groupListUrl) ;
 
@@ -72,76 +50,7 @@
         console.log(error);
     });
 
-    generateGroupDiv = (group) => {
-        let divGrid = document.createElement("div");
-        divGrid.classList.add("col-md-4");
-        let divBox = document.createElement("div");
-        divBox.classList.add("course-box", "shop-wrapper");
-        let divImage = document.createElement("div");
-        divImage.classList.add("image-wrap", "entry");
 
-        let imageGroup = document.createElement("img");
-        imageGroup.setAttribute("src", group.groupPhoto);
-        imageGroup.setAttribute("alt", "");
-        imageGroup.classList.add("img-responsive");
-
-        let divMagnifier = document.createElement("div");
-        divMagnifier.classList.add("magnifier");
-        let aHead  = document.createElement("a");
-        aHead.setAttribute("href",groupUrl+group.groupId);
-        let icon = document.createElement("i");
-        icon.classList.add("flaticon-add");
-        aHead.appendChild(icon);
-        divMagnifier.appendChild(aHead);
-        divImage.appendChild(imageGroup);
-        divImage.appendChild(divMagnifier);
-        divBox.appendChild(divImage);
-
-        let divDetails = document.createElement("div");
-        divDetails.classList.add("course-details", "shop-box", "text-center");
-        let hFour = document.createElement("h4");
-        let aMid = document.createElement("a");
-        aMid.setAttribute("href",groupUrl+group.groupId);
-        aMid.innerText = group.groupName;
-        let groupNum = document.createElement("small");
-        groupNum.innerText="课程 x"+group.groupNumber;
-        hFour.appendChild(aMid);
-        hFour.appendChild(groupNum);
-        divDetails.appendChild(hFour);
-        divBox.appendChild(divDetails);
-        let divFooter = document.createElement("div");
-        divFooter.classList.add("course-footer", "clearfix");
-
-        let divLeft = document.createElement("div");
-        divLeft.classList.add("pull-left");
-        let ulLeft = document.createElement("ul");
-        ulLeft.classList.add("list-inline");
-        let liLeft = document.createElement("li");
-        let aLeft = document.createElement("a");
-        aLeft.setAttribute("href","#");
-        aLeft.innerText = "￥"+group.groupPrice;
-        liLeft.appendChild(aLeft);
-        ulLeft.appendChild(liLeft);
-        divLeft.appendChild(ulLeft);
-
-        let divRight = document.createElement("div");
-        divRight.classList.add("pull-right");
-        let ulRight = document.createElement("ul");
-        ulRight.classList.add("list-inline");
-        let liRight = document.createElement("li");
-        let aRight = document.createElement("a");
-        aRight.setAttribute("href","#");
-        aRight.innerText = "立即购买";
-        liRight.appendChild(aRight);
-        ulRight.appendChild(liRight);
-        divRight.appendChild(ulRight);
-
-        divFooter.appendChild(divLeft);
-        divFooter.appendChild(divRight);
-        divBox.appendChild(divFooter);
-        divGrid.appendChild(divBox);
-        return divGrid;
-    }
 </script>
 
 <div id="wrapper">
@@ -229,10 +138,10 @@
                         </div>
                         <div class="pull-right">
                             <select class="selectpicker" id="select" onchange="">
-                                <option value="0">Price - High to Low</option>
-                                <option value="1">Price - Low to High</option>
-                                <option value="2">Newest Items</option>
-                                <option value="3">Older Items</option>
+                                <option value="2">按照发布时间</option>
+                                <option value="0">价格由高到低</option>
+                                <option value="1">价格由低到高</option>
+
                             </select>
                         </div>
                     </div>
@@ -244,18 +153,7 @@
 
                 <hr class="invis">
 
-                <div class="row text-center">
-                    <div class="col-md-12">
-                        <ul class="pagination">
-                            <li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>
-                            <li class="active"><a href="javascript:void(0)">1</a></li>
-                            <li><a href="javascript:void(0)">2</a></li>
-                            <li><a href="javascript:void(0)">3</a></li>
-                            <li><a href="javascript:void(0)">...</a></li>
-                            <li><a href="javascript:void(0)">&raquo;</a></li>
-                        </ul>
-                    </div><!-- end col -->
-                </div><!-- end row -->
+
             </div>
         </div><!-- end container -->
     </section>

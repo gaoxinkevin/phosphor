@@ -29,92 +29,19 @@
 
     <!--自己写的 -->
     <link rel="stylesheet" href="/css/alreadyLogin.css">
+    <link rel="stylesheet" href="/css/styleGroup.css">
 
-    <style>
-        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
-            background-color: #82B43F;
-            border-color: #82B43F;
-        }
-
-        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
-            background: #82B43F;
-            color: #ffffff !important;
-        }
-
-        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
-            background: #82B43F none repeat scroll 0 0 !important;
-
-        }
-
-    </style>
+    <script src="/js/parent.js" ></script>
+    <script src="/js/order.js"></script>
 </head>
 
 <body>
 <!--Ajax向后台输出数据-->
 
 <script>
-    //region 个人中心的信息填充
-   /* const clientUrl = 'http://localhost:1250/parent/parentAllInfo';
-    const clientMethod = 'POST';
-    const getParentImg = (url) => {
-        return new Promise((resolve, reject) => {
-            const client = new XMLHttpRequest();
-            client.open(clientMethod, url);
-            client.responseType = 'json';
-            client.onreadystatechange = () => {
-                if (client.readyState === 4) {
-                    if (client.status === 200) {
-                        resolve(client.response);
-                    } else {
-                        reject(client.status);
-                    }
-                }
-            };
-            client.send();
-        });
-    };
-    const JsonResponseList = () => getParentImg(clientUrl);
-    JsonResponseList().then((res) => {
+    const getOrderUrl =  clientOrderUrl+ '/order/order';
 
-        const imgSrc = document.getElementById("avatarImg");
-        const imgSrc1 = document.getElementById("avatarImg2");
-        const imgSrc3 = document.getElementById("defaultImg");
-        const parentName2 = document.getElementById("aName");
-        imgSrc.src = res.data.parentPhoto;
-        imgSrc1.src = res.data.parentPhoto;
-        imgSrc3.src = res.data.parentPhoto;
-        parentName2.innerText = res.data.parentName;
-
-    }).catch(error => {
-        console.log(error);
-    });*/
-    //endregion
-
-    //region 订单信息填充
-    const orderUrl ="/orderUi/orderUi/";
-    const courseUrl = "/courseUi/courseInfoUi/";
-    const activityUrl = "/activityUi/activityInfoUi/";
-    const clientUrl1 = 'http://localhost:1250/order/order';
-    const clientMethod1 = 'POST';
-    const getJsonOrder = (url) => {
-        return new Promise((resolve,reject) => {
-            const client = new XMLHttpRequest();
-            client.open(clientMethod1, url);
-            client.responseType = 'json';
-            client.onreadystatechange = () => {
-                if (client.readyState === 4) {
-                    if (client.status === 200) {
-                        resolve(client.response);
-                    } else {
-                        reject(client.status);
-                    }
-                }
-            };
-            client.send();
-        });
-    };
-
-    const orderList = () => getJsonOrder(clientUrl1) ;
+    const orderList = () => getJson(getOrderUrl) ;
 
     orderList().then(({data}) => {
         console.log(data);
@@ -139,60 +66,7 @@
     }).catch(error => {
         console.log(error);
     });
-    function getDetail (detail){
-        console.log(detail);
-        let detailUrl="";
-        if (detail.type=="课程") {
-            detailUrl=courseUrl+detail.id;
-        } else {
-            detailUrl=activityUrl+detail.id;
-        }
-        let otr = document.createElement("tr");
-        let td1 = document.createElement("td");
-        let adetail1 = document.createElement("a");
-        adetail1.setAttribute("href",detailUrl);
-        let imageGroup = document.createElement("img");
-        imageGroup.setAttribute("src", detail.photo);
-        imageGroup.setAttribute("width","80");
-        imageGroup.setAttribute("height","80");
-        adetail1.appendChild(imageGroup);
-        td1.appendChild(adetail1);
 
-        let td2 = document.createElement("td");
-        let adetail2 = document.createElement("a");
-        adetail2.setAttribute("href",detailUrl);
-        let smalltype = document.createElement("mark");
-        smalltype.innerText=detail.type;
-        let pname =document.createElement("p");
-        pname.innerText= detail.name;
-        adetail2.appendChild(smalltype);
-        adetail2.appendChild(pname);
-        td2.appendChild(adetail2);
-
-        let td3 = document.createElement("td");
-        td3.setAttribute("width","120");
-        td3.innerText="￥"+detail.price;
-        let td4 = document.createElement("td");
-        td4.setAttribute("width","80");
-        let marktype = document.createElement("mark");
-        marktype.innerText=detail.type;
-        if (0==detail.state) {
-            marktype.innerText="未开始";
-        } else if (1==detail.state) {
-            marktype.innerText="正在进行";
-        } else if (2==detail.state) {
-            marktype.innerText="去评价";
-        }else {
-            marktype.innerText="完成";
-        }
-        td4.appendChild(marktype);
-        otr.appendChild(td1);
-        otr.appendChild(td2);
-        otr.appendChild(td3);
-        otr.appendChild(td4);
-        return otr;
-    }
-    //endregion
 
 </script>
 <div id="wrapper">
