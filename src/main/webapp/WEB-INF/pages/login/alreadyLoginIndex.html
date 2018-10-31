@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/alreadyLogin.css">
+    <link rel="stylesheet" href="/css/styleLogin.css">
     <script src="/js/parent.js"></script>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
@@ -436,10 +437,10 @@
                 <div class="caro-item" style="float: left;width: 270px;height: 570px;margin: 8px;">
                     <div class="course-box">
                         <div>
-                            <div style="height: 112px;"></div>
-                            <img src="/images/logo.png" alt="" class="img-responsive"
-                                 style="height: 56px; background-color: #00ccff;border-radius: 4px;">
-                            <div style="height: 102px;"></div>
+
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%90%AF%E6%98%8E%E6%98%9Flogo.png" alt="" class="img-responsive"
+                                 style=" height:270px;border-radius: 4px;">
+
                             <div class="magnifier">
                                 <a href="#" title=""><i class="flaticon-add"></i></a>
                             </div>
@@ -456,11 +457,11 @@
                 <div class="caro-item" style="float: left;width: 270px;height: 570px;margin: 8px;">
                     <div class="course-box">
                         <div>
-                            <div style="height: 60px;"></div>
+                            <div style="height: 85px;"></div>
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E9%A9%B0%E6%98%9Flogo.png" alt=""
                                  class="img-responsive"
-                                 style="height: 150px;">
-                            <div style="height: 60px;"></div>
+                                 style="height: 100px;">
+                            <div style="height: 85px;"></div>
                             <div class="magnifier">
                                 <a href="#" title=""><i class="flaticon-add"></i></a>
                             </div>
@@ -496,7 +497,8 @@
                 <div class="caro-item" style="float: left;width: 270px;height: 570px;margin: 8px;">
                     <div class="course-box">
                         <div>
-                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E4%B8%AD%E5%85%AC%E6%95%99%E8%82%B2logo.png" alt=""
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E4%B8%AD%E5%85%AC%E6%95%99%E8%82%B2logo.png"
+                                 alt=""
                                  class="img-responsive"
                                  style="height: 270px;">
                             <div class="magnifier">
@@ -685,7 +687,7 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">关于我们</h3>
                         <div class="newsletter-widget" style="width: 350px;">
-                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class">phosphor</a></p>
+                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class" target="_blank">phosphor</a></p>
                         </div><!-- end newsletter -->
                     </div><!-- end widget -->
                 </div><!-- end col -->
@@ -715,12 +717,12 @@
                 <div class="col-lg-2 col-md-2">
                     <div class="widget clearfix">
                         <h3 class="widget-title">支持</h3>
-                        <div class="list-widget">
+                        <div class="list-widget" style="color: #9A9A9A;">
                             <ul>
-                                <li><a href="#">随便写写</a></li>
-                                <li><a href="#">看看效果</a></li>
-                                <li><a href="#">觉得不错</a></li>
-                                <li><a href="#">以后再说</a></li>
+                                <li>随便写写 看看效果</li>
+                                <li>觉得不错 那就留着</li>
+                                <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a> 试试效果</li>
+                                <li>有了想法 以后再加</li>
                             </ul>
                         </div><!-- end list-widget -->
                     </div><!-- end widget -->
@@ -749,9 +751,47 @@
         </div><!-- end container -->
     </div><!-- end copy -->
 
+    <div id="dialog">
+        <div class="el-message-box" style="width: 500px;height: 1000px;background-color: transparent;margin-top: 90px;">
+            <div style="float: right;"><img src="/images/close.png" style="width: 50px;cursor: pointer;"
+                                            onclick="closeLight()"></div>
+            <img id="image" onclick="turnOnOrOff()" style="cursor: pointer;">
+        </div>
+    </div>
+    <div id="v-modal" style="z-index: 9998;"></div>
+
 </div>
 
 <!--END WRAPPER-->
+
+<script>
+    lightPoint = () => {
+        document.body.style.overflowX = "hidden";
+        document.body.style.overflowY = "hidden";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        div1.style.display = "block";
+        div2.style.display = "block";
+        let img = document.getElementById("image");
+        img.setAttribute("src", "/images/light1.png");
+    }
+    turnOnOrOff = () => {
+        let img = document.getElementById("image");
+        if (img.getAttribute("src") === "/images/light1.png") {
+            img.setAttribute("src", "/images/light0.png");
+        } else if (img.getAttribute("src") === "/images/light0.png") {
+            img.setAttribute("src", "/images/light1.png");
+        }
+    }
+    closeLight = () => {
+        document.body.style.overflowX = "auto";
+        document.body.style.overflowY = "auto";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        div1.style.display = "none";
+        div2.style.display = "none";
+    }
+</script>
 
 <!-- jQuery Js Files -->
 <script src="/js/jquery.min.js"></script>

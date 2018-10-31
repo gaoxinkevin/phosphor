@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="/css/carousel.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleLogin.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="/js/login.js"></script>
     <style>
@@ -71,13 +72,13 @@
             console.log(error);
         });
 
-        searchALL=()=>{
+        searchALL = () => {
             alert(1);
             const searchContent = document.getElementById("searchContent").value;
-            const clientUrl = "http://localhost:1250/searchUi/searchTeacher/"+searchContent;
+            const clientUrl = "http://localhost:1250/searchUi/searchTeacher/" + searchContent;
             const clientMethod = 'GET';
             const search = (url) => {
-                return new Promise((resolve,reject) => {
+                return new Promise((resolve, reject) => {
                     const client = new XMLHttpRequest();
                     client.open(clientMethod, url);
                     client.responseType = 'json';
@@ -97,7 +98,7 @@
             searchList().then((res) => {
                 console.log(res);
                 alert(res);
-                window.location.href="/searchUi/searchTeacher/"+searchContent;
+                window.location.href = "/searchUi/searchTeacher/" + searchContent;
             }).catch(error => {
                 console.log(error);
             });
@@ -166,7 +167,7 @@
                         <li><a href="">联系我们</a></li>
                         <li><a href="/loginUi/loginUi">登录|注册</a></li>
                         <li class="iconitem">
-                            <a href="#" data-toggle="modal" data-target="#login-modal">
+                            <a href="/searchUi/search">
                                 <i class="fa fa-search"></i>
                             </a>
                         </li>
@@ -268,9 +269,9 @@
                 <div class="caro-item">
                     <div class="course-box">
                         <div>
-                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E9%92%A2%E7%90%B41.jpg" alt=""
+                            <img src="http://cafebabe.club/pinano001.jpg" alt=""
                                  class="img-responsive"
-                                 style="height: 270px;">
+                                 style="height: 220px;">
                             <div class="magnifier">
                                 <a href="#" title=""><i class="flaticon-add"></i></a>
                             </div>
@@ -278,9 +279,10 @@
                         <div class="course-details">
                             <h4>
                                 <small>钢琴</small>
-                                <a href="#" title="">钢琴基础</a>
+                                <small style="float: right;margin-top: -24px;">新东方</small>
+                                <a href="http://localhost:1250/courseUi/courseInfoUi/10000" title="">钢琴基础</a>
                             </h4>
-                            <p>启明星专业教师授课，主讲内容：识谱，指法练习，钢琴基础等内容。</p>
+                            <p>新东方专业教师授课，主讲内容：识谱，指法练习，钢琴基础等内容。</p>
                         </div><!-- end details -->
                         <div class="course-footer clearfix">
                             <div class="pull-left">
@@ -292,7 +294,7 @@
 
                             <div class="pull-right">
                                 <ul class="list-inline">
-                                    <li><a href="#">¥500.00</a></li>
+                                    <li><a href="#">¥2000.00</a></li>
                                 </ul>
                             </div><!-- end left -->
                         </div><!-- end footer -->
@@ -302,19 +304,20 @@
                 <div class="caro-item">
                     <div class="course-box">
                         <div>
-                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E9%92%A2%E7%90%B42.jpeg" alt=""
+                            <img src="http://cafebabe.club/draw001.jpg" alt=""
                                  class="img-responsive"
-                                 style="height: 270px;">
+                                 style="height: 220px;">
                             <div class="magnifier">
                                 <a href="#" title=""><i class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
                         <div class="course-details">
                             <h4>
-                                <small>钢琴</small>
-                                <a href="#" title="">钢琴考级</a>
+                                <small>绘画</small>
+                                <small style="float: right;margin-top: -24px;">驰星</small>
+                                <a href="http://localhost:1250/courseUi/courseInfoUi/10017" title="">儿童绘画</a>
                             </h4>
-                            <p>新东方专业教师授课，主讲钢琴考级重点曲目及考级注意事项等。</p>
+                            <p>驰星专业教师授课，为婴幼儿绘画进行启发，学习绘画基础知识，培养孩子的兴趣。</p>
                         </div><!-- end details -->
                         <div class="course-footer clearfix">
                             <div class="pull-left">
@@ -326,7 +329,7 @@
 
                             <div class="pull-right">
                                 <ul class="list-inline">
-                                    <li><a href="#">¥300.00</a></li>
+                                    <li><a href="#">¥1000.00</a></li>
                                 </ul>
                             </div><!-- end left -->
                         </div><!-- end footer -->
@@ -336,19 +339,20 @@
                 <div class="caro-item">
                     <div class="course-box">
                         <div>
-                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E7%BB%98%E7%94%BB1.jpg" alt=""
+                            <img src="http://cafebabe.club/font002.jpg" alt=""
                                  class="img-responsive"
-                                 style="height: 270px;">
+                                 style="height: 220px;">
                             <div class="magnifier">
                                 <a href="#" title=""><i class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
                         <div class="course-details">
                             <h4>
-                                <small>绘画</small>
-                                <a href="#" title="">幼儿绘画课程</a>
+                                <small>书法</small>
+                                <small style="float: right;margin-top: -24px;">驰星</small>
+                                <a href="http://localhost:1250/courseUi/courseInfoUi/10019" title="">书法基础</a>
                             </h4>
-                            <p>启明星教师授课，为婴幼儿绘画进行启发，学习绘画基础知识，培养孩子的兴趣。</p>
+                            <p>驰星教师授课，让孩子了解书法知识，了解古代文化，学习写一手好字。</p>
                         </div><!-- end details -->
                         <div class="course-footer clearfix">
                             <div class="pull-left">
@@ -360,7 +364,7 @@
 
                             <div class="pull-right">
                                 <ul class="list-inline">
-                                    <li><a href="#">¥350.00</a></li>
+                                    <li><a href="#">¥800.00</a></li>
                                 </ul>
                             </div><!-- end left -->
                         </div><!-- end footer -->
@@ -370,19 +374,20 @@
                 <div class="caro-item">
                     <div class="course-box">
                         <div>
-                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E7%BB%98%E7%94%BB2.png" alt=""
+                            <img src="http://cafebabe.club/song001.jpg" alt=""
                                  class="img-responsive"
-                                 style="height: 270px;">
+                                 style="height: 220px;">
                             <div class="magnifier">
-                                <a href="#" title=""><i class="flaticon-add"></i></a>
+                                <a href="http://localhost:1250/courseUi/courseInfoUi/10027" title=""><i class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
                         <div class="course-details">
                             <h4>
-                                <small>计算机</small>
-                                <a href="#" title="">电脑绘画</a>
+                                <small>表演</small>
+                                <small style="float: right;margin-top: -24px;">达内教育</small>
+                                <a href="#" title="">儿童音乐剧</a>
                             </h4>
-                            <p>驰星教育专业教师授课，主讲电脑绘画基础，使用ps，画图等软件。</p>
+                            <p>达内教育专业教师授课，主讲音乐剧表演，舞台表现力等，增强儿童表达力。</p>
                         </div><!-- end details -->
                         <div class="course-footer clearfix">
                             <div class="pull-left">
@@ -394,7 +399,7 @@
 
                             <div class="pull-right">
                                 <ul class="list-inline">
-                                    <li><a href="#">¥660.00</a></li>
+                                    <li><a>¥3000.00</a></li>
                                 </ul>
                             </div><!-- end left -->
                         </div><!-- end footer -->
@@ -404,19 +409,20 @@
                 <div class="caro-item">
                     <div class="course-box">
                         <div>
-                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A11.jpeg"
+                            <img src="http://cafebabe.club/english04.jpg"
                                  alt="" class="img-responsive"
-                                 style="height: 270px;">
+                                 style="height: 220px;">
                             <div class="magnifier">
                                 <a href="#" title=""><i class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
                         <div class="course-details">
                             <h4>
-                                <small>程序设计</small>
-                                <a href="#" title="">Java程序设计进阶</a>
+                                <small>英语</small>
+                                <small style="float: right;margin-top: -24px;">达内教育</small>
+                                <a href="http://localhost:1250/courseUi/courseInfoUi/10023" title="">国际音标</a>
                             </h4>
-                            <p>驰星教育教师授课，主讲Java基础课程及高级应用，WEB服务开发、企业级软件开发等。</p>
+                            <p>达内教育教师授课，主讲国际音标基础知识，让您的孩子更快，更好的学习英语知识。</p>
                         </div><!-- end details -->
                         <div class="course-footer clearfix">
                             <div class="pull-left">
@@ -428,7 +434,7 @@
 
                             <div class="pull-right">
                                 <ul class="list-inline">
-                                    <li><a href="#">¥5000.00</a></li>
+                                    <li><a>¥2000.00</a></li>
                                 </ul>
                             </div><!-- end left -->
                         </div><!-- end footer -->
@@ -439,7 +445,7 @@
             <hr class="invis">
 
             <div class="section-button text-center">
-                <a href="#" class="btn btn-primary">查看更多</a>
+                <a href="http://localhost:1250/courseUi/courseListUi" class="btn btn-primary">查看更多</a>
             </div>
         </div><!-- end container -->
     </section>
@@ -466,10 +472,10 @@
                 <div class="caro-item" style="float: left;width: 270px;height: 570px;margin: 8px;">
                     <div class="course-box">
                         <div>
-                            <div style="height: 112px;"></div>
-                            <img src="/images/logo.png" alt="" class="img-responsive"
-                                 style="height: 56px; background-color: #00ccff;border-radius: 4px;">
-                            <div style="height: 102px;"></div>
+
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%90%AF%E6%98%8E%E6%98%9Flogo.png" alt="" class="img-responsive"
+                                 style=" height:270px;border-radius: 4px;">
+
                             <div class="magnifier">
                                 <a href="#" title=""><i class="flaticon-add"></i></a>
                             </div>
@@ -486,11 +492,11 @@
                 <div class="caro-item" style="float: left;width: 270px;height: 570px;margin: 8px;">
                     <div class="course-box">
                         <div>
-                            <div style="height: 60px;"></div>
+                            <div style="height: 85px;"></div>
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E9%A9%B0%E6%98%9Flogo.png" alt=""
                                  class="img-responsive"
-                                 style="height: 150px;">
-                            <div style="height: 60px;"></div>
+                                 style="height: 100px;">
+                            <div style="height: 85px;"></div>
                             <div class="magnifier">
                                 <a href="#" title=""><i class="flaticon-add"></i></a>
                             </div>
@@ -509,7 +515,7 @@
                         <div>
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E6%96%B0%E4%B8%9C%E6%96%B9logo.png" alt=""
                                  class="img-responsive"
-                                 style="height: 270px;">
+                                 style="height: 220px;margin: 25px auto;">
                             <div class="magnifier">
                                 <a href="#" title=""><i class="flaticon-add"></i></a>
                             </div>
@@ -526,7 +532,8 @@
                 <div class="caro-item" style="float: left;width: 270px;height: 570px;margin: 8px;">
                     <div class="course-box">
                         <div>
-                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E4%B8%AD%E5%85%AC%E6%95%99%E8%82%B2logo.png" alt=""
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E4%B8%AD%E5%85%AC%E6%95%99%E8%82%B2logo.png"
+                                 alt=""
                                  class="img-responsive"
                                  style="height: 270px;">
                             <div class="magnifier">
@@ -566,7 +573,8 @@
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%91%A8%E5%BC%BA.bmp" alt=""
                                  class="img-responsive" style="height: 460px;">
                             <div class="magnifier">
-                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10006"><i class="flaticon-add"></i></a>
+                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10006"><i
+                                        class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
 
@@ -590,7 +598,8 @@
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%88%98%E4%BA%91%E6%B5%A9.jpg" alt=""
                                  class="img-responsive" style="height: 460px;">
                             <div class="magnifier">
-                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10005"><i class="flaticon-add"></i></a>
+                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10005"><i
+                                        class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
 
@@ -614,7 +623,8 @@
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%AD%99%E5%AE%B6%E5%B9%BF.jpg" alt=""
                                  class="img-responsive" style="height: 460px;">
                             <div class="magnifier">
-                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10004"><i class="flaticon-add"></i></a>
+                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10004"><i
+                                        class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
 
@@ -715,7 +725,7 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">关于我们</h3>
                         <div class="newsletter-widget" style="width: 350px;">
-                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class">phosphor</a></p>
+                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class" target="_blank">phosphor</a></p>
                         </div><!-- end newsletter -->
                     </div><!-- end widget -->
                 </div><!-- end col -->
@@ -745,12 +755,12 @@
                 <div class="col-lg-2 col-md-2">
                     <div class="widget clearfix">
                         <h3 class="widget-title">支持</h3>
-                        <div class="list-widget">
+                        <div class="list-widget" style="color: #9A9A9A;">
                             <ul>
-                                <li><a href="#">随便写写</a></li>
-                                <li><a href="#">看看效果</a></li>
-                                <li><a href="#">觉得不错</a></li>
-                                <li><a href="#">以后再说</a></li>
+                                <li>随便写写 看看效果</li>
+                                <li>觉得不错 那就留着</li>
+                                <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a> 试试效果</li>
+                                <li>有了想法 以后再加</li>
                             </ul>
                         </div><!-- end list-widget -->
                     </div><!-- end widget -->
@@ -779,10 +789,47 @@
         </div><!-- end container -->
     </div><!-- end copy -->
 
+    <div id="dialog">
+        <div class="el-message-box" style="width: 500px;height: 1000px;background-color: transparent;margin-top: 90px;">
+            <div style="float: right;"><img src="/images/close.png" style="width: 50px;cursor: pointer;"
+                                            onclick="closeLight()"></div>
+            <img id="image" onclick="turnOnOrOff()" style="cursor: pointer;">
+        </div>
+    </div>
+    <div id="v-modal" style="z-index: 9998;"></div>
+
 </div>
 
 <!--END WRAPPER-->
 
+<script>
+    lightPoint = () => {
+        document.body.style.overflowX = "hidden";
+        document.body.style.overflowY = "hidden";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        div1.style.display = "block";
+        div2.style.display = "block";
+        let img = document.getElementById("image");
+        img.setAttribute("src", "/images/light1.png");
+    }
+    turnOnOrOff = () => {
+        let img = document.getElementById("image");
+        if (img.getAttribute("src") === "/images/light1.png") {
+            img.setAttribute("src", "/images/light0.png");
+        } else if (img.getAttribute("src") === "/images/light0.png") {
+            img.setAttribute("src", "/images/light1.png");
+        }
+    }
+    closeLight = () => {
+        document.body.style.overflowX = "auto";
+        document.body.style.overflowY = "auto";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        div1.style.display = "none";
+        div2.style.display = "none";
+    }
+</script>
 <!-- jQuery Js Files -->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>

@@ -52,6 +52,10 @@
         #infoTeacher,#infoTeacher2,#infoTeacher3{
             padding: 20px 30px;
         }
+        #searchBtn:hover{
+            box-shadow: none;
+            border-color: #01bacf;
+        }
     </style>
 </head>
 <body>
@@ -128,14 +132,12 @@
                         let img = document.createElement("img");
                         img.classList.add("img-responsive");
                         img.setAttribute("src", res.data[item].teacherPhoto);
-                        // img.setAttribute("src", "/upload/shop_01.jpg");
-                        img.setAttribute("style","width:188.5px;height:188.5px;margin-top:28px;float:left")
+                        img.setAttribute("style","width:188.5px;height:188.5px;margin-top:28px;float:left;border-radius: 6px;")
                         img.setAttribute("alt", "");
                         containerDiv.appendChild(divLeft1);
                         divLeft1.appendChild(divLeft2);
                         divLeft2.appendChild(divLeft3);
                         divLeft3.appendChild(img);
-
 
                         let divRight1 = document.createElement("div");
                         divRight1.classList.add("customizeDiv");
@@ -169,10 +171,11 @@
                         resultDiv.appendChild(document.createElement("br"));
                         resultDiv.appendChild(document.createElement("br"));
                         resultDiv.appendChild(divRightA);
-
+                        resultDiv.style.height = "222px";
                         resultDiv.style.cssFloat = "left";
-                        resultDiv.style.marginTop = "25px";
+                        resultDiv.style.marginTop = "35px";
                         resultDiv.style.marginLeft = "20px";
+                        resultDiv.style.fontSize= "15px";
                         resultDiv.padding = "10px";
 
                         containerDiv.appendChild(resultDiv);
@@ -249,6 +252,7 @@
                 <input type="text" class="form-control" aria-label="..." id="inputInfo">
                 <div class="input-group-btn">
                     <button type="button" class="btn btn-default dropdown-toggle"
+                            style="background-color: #01bacf;border-color: #01bacf;"
                             data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false" id="searchBtn"
                             onclick="searchAll()">查询</button>
@@ -261,7 +265,9 @@
         <div class="col-lg-8 col-md-offset-2" style="margin-top: 30px;min-height: 800px" id="divResult">
             <ul class="nav nav-pills">
                 <li role="presentation" class="active">
-                    <a href="#" id="infoTeacher">教师信息</a>
+                    <a href="#" id="infoTeacher" style="background-color: #01bacf;">
+                        教师信息
+                    </a>
                 </li>
                 <li role="presentation">
                     <a href="#" id="infoTeacher2">课程信息</a>
@@ -272,10 +278,10 @@
             </ul>
             <ul class="searchResult">
                <li>
-                   <div class="left" style="float: left;background: red;width: 25%;height: 10px">
+                   <div class="left" style="float: left;background-color: #01bacf;width: 25%;height: 3px;margin-top: 3px;">
                        <img src="" alt="">
                    </div>
-                   <div class="right"style="float: left;background: purple;width: 75%;height: 10px"></div>
+                   <div class="right"style="float: left;background-color: #01bacf;width: 75%;height: 3px;margin-top: 3px;"></div>
                </li>
            </ul>
             <div id="containerDiv"  style="margin-left: 0">
