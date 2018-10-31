@@ -9,6 +9,7 @@ import com.cafebabe.phosphor.service.serviceimpl.OrderDetailServiceImpl;
 import com.cafebabe.phosphor.service.serviceimpl.OrderServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
 import com.cafebabe.phosphor.util.OrderType;
+import com.cafebabe.phosphor.util.PDFUtil;
 import org.apache.commons.io.FileUtils;
 import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -149,13 +151,14 @@ public class OrderController {
         return new JsonResponse(20000,"success","成功");
     }
 
-    @RequestMapping("/downloadOrderPDF/{orderId}")
-    public ResponseEntity<byte[]> downloadOrderPDF(@PathVariable Integer orderId) throws IOException {
-        HttpHeaders headers = new HttpHeaders();
-        File pdfFile = orderService.createOrderPdfFile(orderId);
 
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDispositionFormData("attachment", "order_"+orderId+".pdf");
-        return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(pdfFile), headers, HttpStatus.CREATED);
+    @RequestMapping("downloadOrderPDF")
+    public void downloadOrderPDF(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
+        PDFUtil pdfUtil = new PDFUtil();
+        String htmlCode = orderService.getHtmlCode();
+        String fileName = "MyPDF.pdf";
+        pdfUtil.createPDF(htmlCode, fileName);
+        pdfUtil.downLoad(fileName, httpServletResponse);
+        pdfUtil.deletePDF(fileName);
     }
 }

@@ -10,15 +10,12 @@ import com.cafebabe.phosphor.model.entity.Group;
 import com.cafebabe.phosphor.model.entity.Order;
 import com.cafebabe.phosphor.service.OrderService;
 import com.cafebabe.phosphor.util.RedisUtil;
-import com.cafebabe.phosphor.util.pdfUtils.component.PDFHeaderFooter;
-import com.cafebabe.phosphor.util.pdfUtils.component.PDFKit;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -210,23 +207,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public File createOrderPdfFile(Integer orderId) {
-        String templatePath = "/templates";
-        OrderDTO orderDTO = getOrderById(orderId);
-        String fileName = "order_"+orderDTO.getOrderId()+".pdf";
-        try {
-            //设置自定义PDF页眉页脚工具类
-            PDFHeaderFooter headerFooter = new PDFHeaderFooter();
-            PDFKit kit = new PDFKit();
-            kit.setHeaderFooterBuilder(headerFooter);
-            //设置输出路径
-            kit.setSaveFilePath("C:\\Users\\lnt20\\Desktop\\order_"+orderId+".pdf");
-
-            File savedFile = kit.exportToFile(fileName, orderDTO);
-            return savedFile;
-        }catch (Exception e){
-            System.out.println("PDF生成失败");
-            log.error("PDF生成失败{}", ExceptionUtils.getFullStackTrace(e));
-        }
 
         return null;
     }
@@ -266,6 +246,49 @@ public class OrderServiceImpl implements OrderService {
             orderDTO.setParent(parentDAO.getParentNameById(order.getParentId()));
             return orderDTO;
         }
+    }
+
+    /**
+     * 生成HTML代码
+     * @return
+     */
+    public String getHtmlCode() throws IOException {
+        //TODO 这里暂时生成静态的html代码，验证功能之后要删掉
+        /*StringBuffer html = new StringBuffer();
+        html.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+        html.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">")
+                .append("<head>")
+                .append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />")
+                .append("<style type=\"text/css\" mce_bogus=\"1\">body {font-family: SimSun;}</style>")
+                .append("<style type=\"text/css\">img {width: 700px;}</style>")
+                .append("</head>")
+                .append("<body>");
+        html.append("<h1>这是一个PDF文档</h1>");
+        html.append("<table>");
+        html.append("<tr>")
+                .append("<td>第一列</td>")
+                .append("<td>第二列</td>")
+                .append("<td>第三列</td>")
+                .append("<td>第四列</td>");
+        html.append("</tr>");
+        html.append("</table>");
+        html.append("</body>");
+        html.append("</html>");
+        return html.toString();*/
+        String path = this.getClass().getResource("/") +"\\templates\\template.js";
+        File file = new File(path);
+        String suffix = ".html";
+        if(!file.exists() && !file.getAbsolutePath().endsWith(suffix)){
+            return "";
+        }
+
+        InputStream inputStream = new FileInputStream(file);
+        StringBuffer stringBuffer = new StringBuffer();
+        int c;
+        while ((c = inputStream.read()) != 1){
+            stringBuffer.append((char) c);
+        }
+        return stringBuffer.toString();
     }
 
 }
