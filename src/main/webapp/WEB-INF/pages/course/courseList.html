@@ -32,10 +32,7 @@
 
     <script src="/js/course.js"></script>
 </head>
-<body>
-<script type="text/javascript">
-    loadCourseListByPage(0,12);
-</script>
+<body onload="getCourseListByPage(0,12)">
     <!-- LOADER -->
     <div id="preloader">
         <img class="preloader" src="/images/loader.gif" alt="">
@@ -114,19 +111,21 @@
             <div class="container">
                 <div class="boxed boxedp4">
                     <div class="shop-top">
-                        <!--<div class="clearfix">-->
-                            <!--<div class="pull-left">-->
-                                <!--<p>排序方式:</p>-->
-                            <!--</div>-->
-                            <!--<div class="pull-right">-->
-                            <!--<select class="selectpicker" >-->
-                                <!--<option>价格升序</option>-->
-                                <!--<option>价格降序</option>-->
-                                <!--<option>课程创建时间</option>-->
-                                <!--<option>课程销量</option>-->
-                            <!--</select>-->
-                            <!--</div>-->
-                        <!--</div>-->
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <p>分类:</p>
+
+                            </div>
+                            <div class="pull-right">
+                                <p>排序方式：</p>
+                            <select class="selectpicker" id="pid" onchange="getValue(this.value)" >
+                                <option>默认</option>
+                                <option id="priceAsc" value="priceAsc">价格升序</option>
+                                <option id="priceDesc" value="priceDesc">价格降序</option>
+                                <option id="courseTime" value="courseTime">课程创建时间</option>
+                            </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row blog-grid shop-grid" id="courseGrid" >
@@ -139,7 +138,7 @@
                             <div class="row courseGrid">
                             <div class="course-box shop-wrapper">
                                 <div class="image-wrap entry">
-                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                    <img class="img-responsive">
                                 </div>
                                 <!-- end image-wrap -->
                                 <div class="course-details shop-box text-center">

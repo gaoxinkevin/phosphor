@@ -74,6 +74,10 @@ public interface CourseDAO extends MyBatisBaseDao<Course, Integer> {
      */
     List<Course> getCourseByType(PageCourse pageCourse);
 
+    /**
+     * 查询所有课程
+     * @return
+     */
     List<Course> getAllCourse();
 
 

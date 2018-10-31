@@ -71,11 +71,11 @@ public interface CourseService {
 
     /**
      *
-     * @param pageIndex
-     * @param pageSize
+     * @param pageIndex 页码
+     * @param pageSize 每页信息数量
      * @return
      */
-    List<Course> getCourseByType(Integer pageIndex, Integer pageSize);
+    PageCourse getCourseByType(Integer pageIndex, Integer pageSize,String orderField,Integer typeId);
 
     /**
      * 获得某课程所有评价

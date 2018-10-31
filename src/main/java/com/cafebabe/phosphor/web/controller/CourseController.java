@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.web.controller;
 
 import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.dto.Page;
+import com.cafebabe.phosphor.model.dto.PageCourse;
 import com.cafebabe.phosphor.model.entity.Course;
 import com.cafebabe.phosphor.model.entity.Suggest;
 import com.cafebabe.phosphor.service.serviceimpl.CourseServiceImpl;
@@ -87,9 +88,16 @@ public class CourseController {
         return new JsonResponse(200, "success", page);
     }
 
+    @ResponseBody
+    @RequestMapping("/getCourseListByType")
+    public JsonResponse getCourseListByType(Integer pageIndex, Integer pageSize,String orderField,Integer typeId){
+        PageCourse pageCourse = courseService.getCourseByType(pageIndex,pageSize,orderField,typeId);
+        return new JsonResponse(200,"success",pageCourse);
+    }
+
     /**
      * 课程收藏
-     * @return
+     * @return 课程集合
      */
     @ResponseBody
     @RequestMapping("/getCommendCourseList")
