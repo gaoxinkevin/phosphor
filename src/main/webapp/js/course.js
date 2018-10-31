@@ -134,6 +134,26 @@ function getCourseListByPage(pageIndex, pageSize) {
     }
 }
 
+function getCourseListByPageAndType(pageIndex, pageSize,orderField,typeId) {
+    let request = getXhr();
+    if(typeof (orderField) == undefined)
+        orderField = null;
+    if(typeof (typeId) == undefined)
+        typeId = null;
+    let postData = "pageIndex="+pageIndex +"&pageSize="+ pageSize +"&orderField="+ orderField + "&typeId=" + typeId;
+    request.open("POST", "http://localhost:1250/course/getCourseListByType", true);
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.send(postData);
+
+    request.onreadystatechange = function () {
+        if(request.readyState == 4){
+            if(request.status >= 200 && request.status < 300 || request.status == 304){
+                loadCourseListByPage(request.responseText);
+            }
+        }
+    }
+}
+
 function loadCourseListByPage(pageJson) {
     let page = JSON.parse(pageJson);
     let courseInfoListData = page.data;
@@ -161,7 +181,7 @@ function loadCourseListByPage(pageJson) {
     }
     else if(courseInfoList.length <= 0 && currentPageCode != 0)
     {
-        getCourseListByPage(0, pageSize);
+        getCourseListByPageAndType(0, pageSize);
     }
     else{
         refreshGrid(courseInfoList, pageSize);
@@ -174,13 +194,15 @@ function refreshGrid(courseInfoList, pageSize) {
     let length = courseInfoList.length;
     for(let i = 0; i < length; i ++){
         let courseInfo = courseInfoList[i];
-        let courseName = courseInfo.courseName;
         let couName = document.getElementsByClassName("couName")[i];
-        couName.innerText = courseName;
+        couName.innerText = courseInfo.courseName;
 
-        let courseId = courseInfo.courseId;
         let courseSign = document.getElementsByClassName("courseDetail")[i];
         courseSign.setAttribute("href","http://localhost:1250/courseUi/courseInfoUi/" + courseInfo.courseId);
+
+        let courseImg = courseInfo.courseSf;
+        let couImg = document.getElementsByClassName("img-responsive")[i];
+        couImg.setAttribute("src",courseImg);
 
         let courseCompany = courseInfo.companyName;
         let couCompany = document.getElementsByClassName("couCompany")[i];
@@ -291,7 +313,7 @@ function generateDiv(courseInfo) {
     divImage.classList.add("image-wrap", "entry");
 
     let imageGroup = document.createElement("img");
-    imageGroup.setAttribute("src", "/upload/kidcoding.jpeg");
+    imageGroup.setAttribute("src", courseInfo.courseSf);
     imageGroup.setAttribute("alt", "");
     imageGroup.classList.add("img-responsive");
 
@@ -376,5 +398,61 @@ function nextPage() {
     getCourseListByPage((currentPageCode + 1), 12);
 }
 
+/**
+ * 根据课程类别获得课程列表
+ * @returns {*}
+ */
+function getCourseByType() {
+    let courseType = document.getElementById("typeId");
+    if(courseType.value != null && courseType.value != ""){
+        getCourseListByPageAndType(0, 12, null,courseType.value);
+    }
+    else
+        return void(0);
+}
 
+/**
+ * 根据客户才能创建时间排序
+ * @returns {*}
+ */
+function getCourseByTime() {
+    let courseTime = document.getElementById("courseTime");
+    if (courseTime.value != null && courseTime.value !=""){
+        getCourseListByPageAndType(0,12,"createTime",0);
+    }
+    else
+        return void(0);
+}
 
+function getCourseByPriceAsc() {
+    let priceAsc = document.getElementById("priceAsc");
+    if (priceAsc.value != null && priceAsc.value !=""){
+        getCourseListByPageAndType(0,12,"priceAsc",0);
+    }
+    else
+        return void(0);
+}
+
+function getCourseByPriceDesc() {
+    let priceDesc = document.getElementById("priceDesc");
+    if (priceDesc.value != null && priceDesc.value !=""){
+        getCourseListByPageAndType(0,12,"priceDesc",0);
+    }
+    else
+        return void(0);
+}
+
+function getValue(orderValue) {
+    var objs = document.getElementById("pid");
+    let grade = objs.options[objs.selectedIndex].value;
+    orderValue = grade;
+    if (orderValue == "courseTime"){
+        getCourseByTime();
+    } else if (orderValue == "priceAsc") {
+        getCourseByPriceAsc();
+    }else if(orderValue == "priceDesc"){
+        getCourseByPriceDesc();
+    }else {
+        getCourseListByPage(0,12)
+    }
+}

@@ -71,11 +71,11 @@ public interface CourseService {
 
     /**
      *
-     * @param pageIndex
-     * @param pageSize
+     * @param pageIndex 页码
+     * @param pageSize 每页信息数量
      * @return
      */
-    List<Course> getCourseByType(Integer pageIndex, Integer pageSize);
+    PageCourse getCourseByType(Integer pageIndex, Integer pageSize,String orderField,Integer typeId);
 
     /**
      * 查询插入课程是否与课程列表里面有时间冲突,如果有冲突,返回第一个有冲突的课程

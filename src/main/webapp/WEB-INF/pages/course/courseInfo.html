@@ -72,6 +72,7 @@
             const courseEndTime = document.getElementById("courseEndTime");
             const courseAddress = document.getElementById("courseAddress");
             const courseTeacher = document.getElementById("courseTeacher");
+            const courseImg = document.getElementById("courseImg");
 
             courseName.innerText = data.courseName;
             coursePrice.innerText = data.coursePrice;
@@ -87,6 +88,7 @@
             courseEndTime.innerText = data.courseEndTime;
             courseAddress.innerText = data.courseAddress;
             courseTeacher.innerText = data.teacherName;
+            courseImg.setAttribute("src",data.courseSf);
 
         }).catch(error => {
             console.log(error);
@@ -115,6 +117,51 @@
         }).catch(error => {
             console.log(error);
         });
+
+        const clientUrl3 = 'http://localhost:1250/course/getSuggest/';
+        const clientMethod3 = 'POST';
+        const getNewSuggest = ({ url, method, data }) => {
+            return new Promise((resolve, reject) => {
+                const client = new XMLHttpRequest();
+                client.open(clientMethod3, clientUrl3);
+                client.responseType = 'json';
+                client.setRequestHeader("Content-Type", "application/json; charset=utf-8")
+                client.onreadystatechange = () => {
+                    if (client.readyState === 4) {
+                        if (client.status === 200) {
+                            resolve(client.response);
+                        } else {
+                            reject(client.status);
+                        }
+                    }
+                };
+                client.send(data);
+            });
+        };
+
+        const getSuggest = (data) => getNewSuggest(
+            {
+                url: clientUrl3,
+                method: clientMethod3,
+                data
+            }
+        );
+        submitBtn = (event) => {
+            let suggest = {
+
+                courseId: id,
+                suggestContent: document.getElementById('newSuggest').value,
+                suggestCreateTime:window.now(),
+            };
+            getSuggest(JSON.stringify(suggest)).then((res) => {
+                alert('成功');
+                console.log(res.data);
+                console.log(res.code);
+                console.log(res.message)
+            }, err => {
+                console.log(err)
+            })
+        }
     </script>
 </head>
 <body>
@@ -205,7 +252,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="image-wrap entry">
-                                    <img src="/upload/single_shop_01.jpg" alt="" class="img-responsive">
+                                    <img src="/upload/single_shop_01.jpg" alt="" class="img-responsive" id="courseImg">
                                     <div class="magnifier">
                                         <a rel="prettyPhoto[inline]" href="/upload/single_shop_01.jpg" title=""><i
                                                 class="flaticon-add"></i></a>
@@ -216,37 +263,37 @@
 
                         <hr class="invis">
 
-                        <div class="row">
-                            <div class="col-md-4 col-sm-4 col-xs-4">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/single_shop_02.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a rel="prettyPhoto[inline]" href="/upload/single_shop_02.jpg" title=""><i
-                                                class="flaticon-add"></i></a>
-                                    </div>
-                                </div><!-- end image-wrap -->
-                            </div>
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-4 col-sm-4 col-xs-4">-->
+                                <!--<div class="image-wrap entry">-->
+                                    <!--<img src="/upload/single_shop_02.jpg" alt="" class="img-responsive">-->
+                                    <!--<div class="magnifier">-->
+                                        <!--<a rel="prettyPhoto[inline]" href="/upload/single_shop_02.jpg" title=""><i-->
+                                                <!--class="flaticon-add"></i></a>-->
+                                    <!--</div>-->
+                                <!--</div>&lt;!&ndash; end image-wrap &ndash;&gt;-->
+                            <!--</div>-->
 
-                            <div class="col-md-4 col-sm-4 col-xs-4">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/single_shop_03.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a rel="prettyPhoto[inline]" href="/upload/single_shop_03.jpg" title=""><i
-                                                class="flaticon-add"></i></a>
-                                    </div>
-                                </div><!-- end image-wrap -->
-                            </div>
+                            <!--<div class="col-md-4 col-sm-4 col-xs-4">-->
+                                <!--<div class="image-wrap entry">-->
+                                    <!--<img src="/upload/single_shop_03.jpg" alt="" class="img-responsive">-->
+                                    <!--<div class="magnifier">-->
+                                        <!--<a rel="prettyPhoto[inline]" href="/upload/single_shop_03.jpg" title=""><i-->
+                                                <!--class="flaticon-add"></i></a>-->
+                                    <!--</div>-->
+                                <!--</div>&lt;!&ndash; end image-wrap &ndash;&gt;-->
+                            <!--</div>-->
 
-                            <div class="col-md-4 col-sm-4 col-xs-4">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/single_shop_04.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a rel="prettyPhoto[inline]" href="/upload/single_shop_04.jpg" title=""><i
-                                                class="flaticon-add"></i></a>
-                                    </div>
-                                </div><!-- end image-wrap -->
-                            </div>
-                        </div><!-- end row -->
+                            <!--<div class="col-md-4 col-sm-4 col-xs-4">-->
+                                <!--<div class="image-wrap entry">-->
+                                    <!--<img src="/upload/single_shop_04.jpg" alt="" class="img-responsive">-->
+                                    <!--<div class="magnifier">-->
+                                        <!--<a rel="prettyPhoto[inline]" href="/upload/single_shop_04.jpg" title=""><i-->
+                                                <!--class="flaticon-add"></i></a>-->
+                                    <!--</div>-->
+                                <!--</div>&lt;!&ndash; end image-wrap &ndash;&gt;-->
+                            <!--</div>-->
+                        <!--</div>&lt;!&ndash; end row &ndash;&gt;-->
                     </div><!-- end col -->
 
                     <div class="col-md-6">
@@ -333,7 +380,7 @@
                                     </table>
                                 </div>
                                 <div id="menu2" class="tab-pane fade">
-                                    <h4><i>用户评价</i></h4>
+                                    <h4><i class="userSuggest">用户评价</i></h4>
                                     <div id="courseSuggest">
                                         <p><span class="suggest">评价1</span></p>
                                         <p><span class="userId">用户1</span></p>
@@ -344,7 +391,7 @@
                                     <hr class="invis">
                                     <form class="big-contact-form row" role="search">
                                         <div class="col-md-12">
-                                            <textarea class="form-control" placeholder="您的意见或者建议..."></textarea>
+                                            <textarea class="form-control" id="newSuggest" placeholder="您的意见或者建议..."></textarea>
                                         </div>
                                         <div class="col-md-12">
                                             <button type="submit" class="btn btn-primary">提交</button>

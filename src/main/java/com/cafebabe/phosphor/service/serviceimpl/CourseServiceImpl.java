@@ -58,10 +58,29 @@ public class CourseServiceImpl implements CourseService {
         page.setEndRecord(pageSize * (pageIndex + 1) - 1);
         List<Course> courseList = courseDAO.getCourseByPage(page);
         page.setModelList(courseList);
-        //System.out.println(page.toString());
         return page;
     }
 
+    @Override
+    public PageCourse getCourseByType(Integer pageIndex, Integer pageSize,String orderField,Integer typeId) {
+        PageCourse pageCourse = new PageCourse();
+        if (orderField!=null && !orderField.equals("undefined") && !orderField.equals("null")){
+            pageCourse.setOrderField(orderField);
+        }
+        if (typeId !=null && !typeId.equals("undefined") && !orderField.equals("null")){
+            pageCourse.setTypeId(typeId);
+        }
+        pageCourse.setTotalRecord(courseDAO.getCourseCount());
+        Integer totalPages = (pageCourse.getTotalRecord()%pageCourse.getPageSize()==0)?(pageCourse.getTotalRecord()/pageCourse.getPageSize()):
+                ((pageCourse.getTotalRecord()/pageCourse.getPageSize())+1);
+        pageCourse.setTotalPages(totalPages);
+        pageCourse.setCurrentPageCode(pageIndex);
+        pageCourse.setStartRecord(pageSize * pageIndex);
+        pageCourse.setEndRecord(pageSize*(pageIndex+1)-1);
+        List<Course> courseList = courseDAO.getCourseByType(pageCourse);
+        pageCourse.setModelList(courseList);
+        return pageCourse;
+    }
     /**
      * 获得课程总记录数
      * @return 课程总数
@@ -178,7 +197,7 @@ public class CourseServiceImpl implements CourseService {
     public boolean contrastCourseTime(CourseInfo courseFirst, CourseInfo courseSecond){
         if (!courseFirst.getCourseTimeStatus().equals(courseSecond.getCourseTimeStatus()) ){
             return true;
-        }else if ( Integer.parseInt(courseFirst.getCourseEndTime().toString())-Integer.parseInt(courseSecond.getCourseStartTime().toString())>0){
+        }else if (courseFirst.getCourseStartTime()!= courseSecond.getCourseEndTime()){
             return true;
         }else {
             return false;

@@ -61,7 +61,7 @@
     </select>
 
   <!--select courses of a company-->
-  <select id="getCourseByCompanyName" resultType="com.cafebabe.phosphor.model.entity.Course">
+  <select id="getCourseByCompanyName" resultType="com.cafebabe.phosphor.model.dto.CourseInfo">
         select
         <include refid="Base_Column_List"/>
         from course
@@ -70,7 +70,7 @@
     <select id="getCourseByPage" resultType="com.cafebabe.phosphor.model.entity.Course"
             parameterType="com.cafebabe.phosphor.model.dto.Page">
         select
-        course_id,course_name,course_price,company_name,course_create_time
+        course_id,course_name,course_price,company_name,course_create_time,course_sf
         from course
         limit #{startRecord},#{pageSize}
     </select>
@@ -87,15 +87,16 @@
 
     <select id="getCourseByType" resultType="com.cafebabe.phosphor.model.entity.Course"
             parameterType="com.cafebabe.phosphor.model.dto.PageCourse">
-        select course.course_id,course_name,course_price,company_name,type_id,course_create_time
+        select course.course_id,course_name,course_price,company_name,type_id,course_create_time,course_sf
         from course
         join course_type on course_type.course_id=course.course_id
         <where>
-            <if test="typeId != null">
-                type_id = #{typeId,jdbcType=INTEGER}
+            <if test="typeId != null and typeId != 0">
+                type_id = #{typeId}
             </if>
+
         </where>
-        <if test="orderField != null">
+        <if test="orderField != null and orderField != 'null'">
             order by
             <choose>
                 <when test="orderField == 'priceAsc'">
@@ -108,7 +109,7 @@
                     course_create_time desc
                 </when>
                 <otherwise>
-                    course.course_id ${orderField}
+                    course.course_id
                 </otherwise>
             </choose>
         </if>
@@ -120,13 +121,7 @@
         from course
     </select>
   <!--根据公司ID查询课程-->
-  <select id="getCourseByCompanyId" resultType="com.cafebabe.phosphor.model.entity.Course" parameterType="java.lang.Integer">
-    select
-    <include refid="Base_Column_List"/>
-    from course
-    where company_id = #{companyId, jdbcType=INTEGER}
-    limit 5
-  </select>
+
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 >>>>>>> devlnt
