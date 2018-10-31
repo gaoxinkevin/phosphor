@@ -1,0 +1,891 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="no-js ie9 fixed-layout" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js " lang="en"> <!--<![endif]-->
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Site Meta -->
+    <title>教师详情</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="/images/favicon.ico">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+    <!-- Custom & Default Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleLogin.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="/js/login.js"></script>
+
+    <script>
+
+        // 根据教师ID获取该教师信息
+        getTeacher = () => {
+            const teacherId = document.cookie.split(';')[0].trim();
+            const id = teacherId.split('=')[1].trim();
+            const clientUrl = 'http://localhost:1250/teacher/getTeacherById/' + id;
+            const clientMethod = 'POST';
+            const teacher = ({url}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send();
+                });
+            };
+
+            const result = () => teacher(
+                {
+                    url: clientUrl
+                }
+            );
+
+            //调用函数展示教师信息
+            let fatherDiv = document.getElementById("fatherDiv");
+            fatherDiv.innerText = "";
+            scrollTo(0, 0);
+            result().then((res) => {
+                let sonDiv = generateDiv(res.data);
+                let descDiv = generateDescDiv(res.data.teacherDesc);
+                fatherDiv.appendChild(sonDiv);
+                fatherDiv.appendChild(descDiv);
+            });
+            getFeedback();
+        }
+
+        // 根据教师ID获得该教师评价内容
+        getFeedback = () => {
+            const teacherId = document.cookie.split(';')[0].trim();
+            const id = teacherId.split('=')[1].trim();
+            const clientUrl = 'http://localhost:1250/feedback/getFeedbackList';
+            const clientMethod = 'POST';
+            const feedback = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const result = (data) => feedback(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+            let page = 1;
+            let pageModel = {
+                sf: id,
+                currentPageCode: page,
+            };
+
+            let grandfatherDiv = document.getElementById("feedbackDiv");
+            grandfatherDiv.innerText = "";
+            scrollTo(0, 0);
+            result(JSON.stringify(pageModel)).then((res) => {
+                if (res.data.modelList.length != 0) {
+                    for (let i = 0; i < res.data.modelList.length; i++) {
+                        let sonDiv = generateFeedbackDiv(res.data.modelList[i]);
+                        grandfatherDiv.appendChild(sonDiv);
+                    }
+                    let pageDiv = generatePageDiv(res.data.currentPageCode, res.data.totalPages);
+                    grandfatherDiv.appendChild(pageDiv);
+                    grandfatherDiv.appendChild(generateFeedDiv(1));
+                } else {
+                    let div1 = document.createElement("div");
+                    div1.setAttribute("style", "width: 100%; height: 60px;float: left; " +
+                        "margin: 20px auto auto -10px;text-align:center;font-size:25px;");
+                    div1.innerText = "该教师还没有评价，欢迎您的评价！";
+                    let fatherDiv = document.createElement("div");
+                    fatherDiv.classList.add("boxed", "boxedp4");
+                    fatherDiv.setAttribute("style", "margin-bottom: -90px;margin-top: 10px;");
+                    let div = document.createElement("div");
+                    div.classList.add("row", "blog-grid", "shop-grid");
+                    div.setAttribute("style", "border: 1px solid #eee;");
+                    grandfatherDiv.appendChild(fatherDiv);
+                    fatherDiv.appendChild(div);
+                    div.appendChild(div1);
+                    grandfatherDiv.appendChild(generateFeedDiv(0));
+                }
+
+            }).catch(error => {
+                console.log(error);
+            });
+
+        }
+
+        // 获取分页信息
+        getPageList = (pageCode) => {
+            const teacherId = document.cookie.split(';')[0].trim();
+            const id = teacherId.split('=')[1].trim();
+            const clientUrl = 'http://localhost:1250/feedback/getFeedbackList';
+            const clientMethod = 'POST';
+            const teacherList = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const resultList = (data) => teacherList(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+
+            let pageModel = {
+                sf: id,
+                currentPageCode: pageCode,
+            };
+
+            let grandfatherDiv = document.getElementById("feedbackDiv");
+            grandfatherDiv.innerText = "";
+            scrollTo(0, 0);
+            resultList(JSON.stringify(pageModel)).then((res) => {
+                for (let i = 0; i < res.data.modelList.length; i++) {
+                    let sonDiv = generateFeedbackDiv(res.data.modelList[i]);
+                    grandfatherDiv.appendChild(sonDiv);
+                }
+                let pageDiv = generatePageDiv(res.data.currentPageCode, res.data.totalPages);
+                grandfatherDiv.appendChild(pageDiv);
+
+                grandfatherDiv.appendChild(generateFeedDiv());
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+
+        // 生成教师信息的html元素
+        generateDiv = (teacherData) => {
+            let div = document.createElement("div");
+            div.classList.add("row", "blog-grid", "shop-grid");
+            let divLeft1 = document.createElement("div");
+            divLeft1.classList.add("col-md-3");
+            let divLeft2 = document.createElement("div");
+            divLeft2.classList.add("course-box", "shop-wrapper");
+            let divLeft3 = document.createElement("div");
+            let img = document.createElement("img");
+            img.classList.add("img-responsive");
+            img.setAttribute("src", teacherData.teacherPhoto);
+            img.setAttribute("alt", "");
+            img.setAttribute("style", "width:238.5px;height:238.5px;");
+            div.appendChild(divLeft1);
+            divLeft1.appendChild(divLeft2);
+            divLeft2.appendChild(divLeft3);
+            divLeft3.appendChild(img);
+
+            let divRight1 = document.createElement("div");
+            divRight1.classList.add("customizeDiv");
+            let divRight2 = document.createElement("div");
+            divRight2.classList.add("course-details", "shop-box", "customizeFont");
+            let divRightSpan1 = document.createElement("span");
+            divRightSpan1.innerText = "教师姓名：" + teacherData.teacherName;
+            let divRightSpan2 = document.createElement("span");
+            divRightSpan2.innerText = "所属公司：" + teacherData.companyName;
+            let divRightSpan3 = document.createElement("span");
+            divRightSpan3.innerText = "教师电话：" + teacherData.teachePhone;
+            let divRightSpan4 = document.createElement("span");
+            divRightSpan4.innerText = "教师邮箱：" + teacherData.teacherMail;
+            let divRightSpan5 = document.createElement("span");
+            let workTime = new Date(parseInt(teacherData.teacherWorktime)).toLocaleString();
+            let year = workTime.substring(0, 4);
+            let month;
+            let day;
+            if (workTime.substr(6, 1) == "/") {
+                if (workTime.substr(8, 1) == " ") {
+                    month = workTime.substr(5, 1);
+                    day = workTime.substr(7, 1);
+                } else {
+                    month = workTime.substr(5, 1);
+                    day = workTime.substr(7, 2);
+                }
+            } else {
+                if (workTime.substr(9, 1) == " ") {
+                    month = workTime.substr(5, 2);
+                    day = workTime.substr(8, 1);
+                } else {
+                    month = workTime.substr(5, 2);
+                    day = workTime.substr(8, 2);
+                }
+            }
+            divRightSpan5.innerText = "工作时间：" + year + "年" + month + "月" + day + "日";
+            const divRightA = document.createElement("a");
+            divRightA.setAttribute("href", "javascript:teacherLikeAdd()");
+            const divRightImg = document.createElement("img");
+            divRightImg.setAttribute("src", "http://ph4vwyi7h.bkt.clouddn.com/%E7%82%B9%E8%B5%9E%20%282%29.png");
+            divRightImg.setAttribute("style", "margin: auto auto 5px -6px;width:32px;height:32px;");
+            const divRightAddLikeSpan = document.createElement("span");
+            divRightAddLikeSpan.innerText = "点赞 ";
+            const divRightLikeSpan = document.createElement("span");
+            divRightLikeSpan.innerText = teacherData.teacherLikeCount;
+
+            // const divRightLikeSpan = document.createElement("span");
+            // divRightLikeSpan.innerText = "点赞数：" + teacherData.teacherLikeCount;
+            // const divRightA = document.createElement("a");
+            // divRightA.setAttribute("href", "javascript:teacherLikeAdd()");
+            // const likeImg = document.createElement("img");
+            // likeImg.setAttribute("src", "/images/teacherLike.png");
+            // likeImg.setAttribute("style", "margin: auto auto 5px 6px;width:18px;height:18px;");
+
+            let divRightSpan6 = document.createElement("span");
+            if (teacherData.teacherDesc == null || teacherData.teacherDesc == "") {
+                divRightSpan6.innerText = "教师简介：空";
+            } else {
+                divRightSpan6.innerText = "教师简介：" + teacherData.teacherDesc;
+            }
+            divRight1.appendChild(divRight2);
+            divRight2.appendChild(divRightSpan1);
+            divRight2.appendChild(document.createElement("br"));
+            divRight2.appendChild(divRightSpan2);
+            divRight2.appendChild(document.createElement("br"));
+            divRight2.appendChild(divRightSpan3);
+            divRight2.appendChild(document.createElement("br"));
+            divRight2.appendChild(divRightSpan4);
+            divRight2.appendChild(document.createElement("br"));
+            divRight2.appendChild(divRightSpan5);
+            divRight2.appendChild(document.createElement("br"));
+            divRight2.appendChild(divRightA);
+            divRightA.appendChild(divRightImg);
+            divRightA.appendChild(divRightAddLikeSpan);
+            divRight2.appendChild(divRightLikeSpan);
+
+            // divRight2.appendChild(divRightLikeSpan);
+            // divRight2.appendChild(divRightA);
+            // divRightA.appendChild(likeImg);
+
+            div.appendChild(divRight1);
+
+            return div;
+        }
+
+        // 生成教师描述信息的html元素
+        generateDescDiv = (teacherDesc) => {
+            let div = document.createElement("div");
+            let span = document.createElement("span");
+            span.innerText = "教师简介：" + teacherDesc;
+            return div.appendChild(span);
+        }
+
+        // 生成评价的html元素
+        generateFeedbackDiv = (modelList) => {
+            let fatherDiv = document.createElement("div");
+            fatherDiv.classList.add("boxed", "boxedp4");
+            fatherDiv.setAttribute("style", "margin-bottom: -90px;margin-top: 10px;border-radius: 10px;");
+            let div = document.createElement("div");
+            div.classList.add("row", "blog-grid", "shop-grid");
+            div.setAttribute("style", "border: 1px solid #eee;")
+            let divLeft1 = document.createElement("div");
+            divLeft1.classList.add("col-md-3");
+            let divLeft2 = document.createElement("div");
+            divLeft2.classList.add("course-box", "shop-wrapper");
+            let divLeft3 = document.createElement("div");
+            divLeft3.classList.add("entry");
+            let divParent = document.createElement("div");
+            divParent.setAttribute("style", "text-align: center;margin-left: -30px;");
+            let img = document.createElement("img");
+            img.classList.add("customizeImage");
+            img.setAttribute("style", "width: 150px;height:150px;border-radius: 6px;");
+            img.setAttribute("src", modelList.parentPhoto);
+            let parentNameSpan = document.createElement("span");
+            parentNameSpan.innerText = modelList.parentName;
+            let parentPhoneSpan = document.createElement("span");
+            parentPhoneSpan.innerText = modelList.parentPhone;
+            let feedbackDiv = document.createElement("div");
+            feedbackDiv.classList.add("customizeFeedbackDiv");
+            let feedbackSpan = document.createElement("span");
+            feedbackSpan.innerText = modelList.feedbackContent;
+
+            fatherDiv.appendChild(div);
+            div.appendChild(divLeft1);
+            divLeft1.appendChild(divLeft2);
+            divLeft2.appendChild(divLeft3);
+            divLeft3.appendChild(divParent);
+            divParent.appendChild(img);
+            divParent.appendChild(document.createElement("br"));
+            divParent.appendChild(parentNameSpan);
+            divParent.appendChild(document.createElement("br"));
+            divParent.appendChild(parentPhoneSpan);
+
+            div.appendChild(feedbackDiv);
+            feedbackDiv.appendChild(feedbackSpan);
+
+            return fatherDiv;
+        }
+
+        // 生成分页的html元素
+        generatePageDiv = (currentPageCode, totalPages) => {
+            let div = document.createElement("div");
+            let hr = document.createElement("hr");
+            hr.classList.add("invis");
+            let div1 = document.createElement("div");
+            div1.classList.add("row", "text-center");
+            let div2 = document.createElement("div");
+            div2.classList.add("col-md-12");
+            div2.setAttribute("style", "margin-top: -35px;");
+            let ul = document.createElement("ul");
+            ul.classList.add("pagination");
+            let liFirstPage = document.createElement("li");
+            let liLastPage = document.createElement("li");
+            let liEndPage = document.createElement("li");
+            let liNextPage = document.createElement("li");
+            let li = document.createElement("li");
+            li.classList.add("disabled");
+            if (currentPageCode == 1) {
+                liFirstPage.classList.add("customizeDisable");
+                liLastPage.classList.add("customizeDisable");
+            }
+            else {
+                liFirstPage.classList.add("active");
+                liLastPage.classList.add("active");
+            }
+
+            if (currentPageCode == totalPages) {
+                liEndPage.classList.add("customizeDisable");
+                liNextPage.classList.add("customizeDisable");
+            }
+            else {
+                liEndPage.classList.add("active");
+                liNextPage.classList.add("active");
+            }
+            let aFirstPage = document.createElement("a");
+            aFirstPage.setAttribute("href", "javascript:getPageList(1)");
+            aFirstPage.setAttribute("style", "cursor: pointer;");
+            aFirstPage.innerText = "首页";
+            let aLastPage = document.createElement("a");
+            aLastPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode - 1) + ")");
+            aLastPage.setAttribute("style", "cursor: pointer;");
+            aLastPage.innerText = "上一页";
+            let aEndPage = document.createElement("a");
+            aEndPage.setAttribute("href", "javascript:getPageList(" + totalPages + ")");
+            aEndPage.setAttribute("style", "cursor: pointer;");
+            aEndPage.innerText = "尾页";
+            let aNextPage = document.createElement("a");
+            aNextPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode + 1) + ")");
+            aNextPage.setAttribute("style", "cursor: pointer;");
+            aNextPage.innerText = "下一页";
+            let a = document.createElement("a");
+            a.innerText = currentPageCode;
+
+            div.appendChild(hr);
+            div.appendChild(div1);
+            div1.appendChild(div2);
+            div2.appendChild(ul);
+            ul.appendChild(liFirstPage);
+            ul.appendChild(liLastPage);
+            ul.appendChild(li);
+            ul.appendChild(liNextPage);
+            ul.appendChild(liEndPage);
+            liFirstPage.appendChild(aFirstPage);
+            liLastPage.appendChild(aLastPage);
+            li.appendChild(a);
+            liNextPage.appendChild(aNextPage);
+            liEndPage.appendChild(aEndPage);
+
+            return div;
+        }
+
+        // 生成添加评价的html元素
+        generateFeedDiv = (flag) => {
+            let div = document.createElement("div");
+            div.classList.add("row", "blog-grid", "shop-grid");
+            if (flag == 1) {
+                div.setAttribute("style", "border: 1px solid #eee;margin-top: 60px;margin-left: 0px;width: 1044px;");
+            } else {
+                div.setAttribute("style", "border: 1px solid #eee;margin-top: 130px;margin-left: 0px;width: 1044px;");
+            }
+            let div1 = document.createElement("div");
+            div1.classList.add("row", "text-center");
+            div1.setAttribute("style", "margin-left:0px;");
+            let div2 = document.createElement("div");
+            div2.classList.add("col-md-12");
+            let textarea = document.createElement("textarea");
+            textarea.setAttribute("id", "textarea");
+            textarea.setAttribute("style", "width: 978px;height:200px;margin-top:30px;margin-left:13px;");
+            textarea.classList.add("form-control");
+            let commitButton = document.createElement("a");
+            commitButton.classList.add("btn", "btn-primary");
+            commitButton.setAttribute("href", "javascript:commitFeedback()");
+            commitButton.innerText = "提交";
+            commitButton.setAttribute("style", "margin-bottom:10px;");
+            let clearButton = document.createElement("a");
+            clearButton.classList.add("btn", "btn-primary");
+            clearButton.setAttribute("href", "javascript:clearFeedback()");
+            clearButton.innerText = "清空";
+            clearButton.setAttribute("style", "margin-right: 10px;margin-bottom:10px;");
+
+            div.appendChild(div1);
+            div1.appendChild(div2);
+            div2.appendChild(textarea);
+            div2.appendChild(document.createElement("br"));
+            div2.appendChild(clearButton);
+            div2.appendChild(commitButton);
+            div2.appendChild(document.createElement("br"));
+
+            return div;
+        }
+
+        // 清空添加评价的textarea的内容
+        clearFeedback = () => {
+            let feed = document.getElementById("textarea");
+            feed.value = "";
+        }
+
+        // 提交评价
+        commitFeedback = () => {
+            let feedbackContent = document.getElementById("textarea").value;
+            if (localStorage.getItem("userLoginPhone") === null) {
+                loginPrompt(1);
+            } else {
+                if (feedbackContent === "" || feedbackContent === null) {
+                    commit(0)
+                } else if (feedbackContent.length > 200) {
+                    commit(1);
+                } else {
+                    let a = JSON.parse(localStorage.getItem("userLoginPhone")).val;
+                    const teacherId = document.cookie.split(';')[0].trim();
+                    const id = teacherId.split('=')[1].trim();
+                    const clientUrl = 'http://localhost:1250/feedback/insertFeedback';
+                    const clientMethod = 'POST';
+                    const commitFeedback = ({url, method, data}) => {
+                        return new Promise((resolve, reject) => {
+                            const client = new XMLHttpRequest();
+                            client.open(clientMethod, url);
+                            client.responseType = 'json';
+                            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                            client.onreadystatechange = () => {
+                                if (client.readyState === 4) {
+                                    if (client.status === 200) {
+                                        resolve(client.response);
+                                    } else {
+                                        reject(client.status);
+                                    }
+                                }
+                            };
+                            client.send(data);
+                        });
+                    };
+
+                    const result = (data) => commitFeedback(
+                        {
+                            url: clientUrl,
+                            method: clientMethod,
+                            data
+                        }
+                    );
+                    let feedback = {
+                        teacherId: id,
+                        feedbackSf: a,
+                        feedbackContent: feedbackContent,
+
+                    };
+                    scrollTo(0, 0);
+                    result(JSON.stringify(feedback)).then((res) => {
+                        clearFeedback();
+                        getTeacher();
+                        commit(2);
+                    }).catch(error => {
+                        commit(3);
+                    });
+                }
+            }
+        }
+
+        // 增加点赞数
+        teacherLikeAdd = () => {
+            if (localStorage.getItem("userLoginPhone") === null) {
+                loginPrompt(0);
+            } else {
+                const teacherId = document.cookie.split(';')[0].trim();
+                const id = teacherId.split('=')[1].trim();
+                const clientUrl = 'http://localhost:1250/teacherLike/teacherLikeAdd';
+                const clientMethod = 'POST';
+                const commitFeedback = ({url, method, data}) => {
+                    return new Promise((resolve, reject) => {
+                        const client = new XMLHttpRequest();
+                        client.open(clientMethod, url);
+                        client.responseType = 'json';
+                        client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                        client.onreadystatechange = () => {
+                            if (client.readyState === 4) {
+                                if (client.status === 200) {
+                                    resolve(client.response);
+                                } else {
+                                    reject(client.status);
+                                }
+                            }
+                        };
+                        client.send(data);
+                    });
+                };
+
+                const result = (data) => commitFeedback(
+                    {
+                        url: clientUrl,
+                        method: clientMethod,
+                        data
+                    }
+                );
+                let teacher = {
+                    teacherId: id,
+                };
+
+                scrollTo(0, 0);
+                result(JSON.stringify(teacher)).then((res) => {
+                    getTeacher();
+                    commit(4);
+                }).catch(error => {
+                    console.log(error);
+                });
+
+            }
+        }
+
+        // 已登录情况下，提交后提示信息
+        commit = (type) => {
+            document.body.style.overflowX = "hidden";
+            document.body.style.overflowY = "hidden";
+            let div1 = document.getElementById("dialog1");
+            let div2 = document.getElementById("v-modal1");
+            let p = document.getElementById("information1");
+            p.innerText = "";
+            div1.style.display = "block";
+            div2.style.display = "block";
+            if (type === 0) {
+                p.innerText = "请填写内容！";
+            } else if (type === 1) {
+                p.innerText = "超出字数限制，最多200字！";
+            } else if (type === 2) {
+                p.innerText = "提交成功";
+            } else if (type === 3) {
+                p.innerText = "提交失败，请勿提交特殊字符！";
+            } else if (type === 4) {
+                p.innerText = "点赞成功";
+            }
+        }
+
+        // 未登录情况下，提交评价和点赞进行登录提示
+        loginPrompt = (type) => {
+            document.body.style.overflowX = "hidden";
+            document.body.style.overflowY = "hidden";
+            let div1 = document.getElementById("dialog");
+            let div2 = document.getElementById("v-modal");
+            let p = document.getElementById("information");
+            p.innerText = "";
+            div1.style.display = "block";
+            div2.style.display = "block";
+            if (type === 0) {
+                p.innerText = "您还未登录，请登录后点赞。";
+            } else {
+                p.innerText = "您还未登录，请登录后评论。";
+            }
+        }
+
+        // 用户取消登录
+        cancelLogin = () => {
+            document.body.style.overflowX = "auto";
+            document.body.style.overflowY = "auto";
+            let div1 = document.getElementById("dialog");
+            let div2 = document.getElementById("v-modal");
+            let p = document.getElementById("information");
+            div1.style.display = "none";
+            div2.style.display = "none";
+            p.innerText = "";
+        }
+
+        // 用户提交成功后，点击确定按钮后执行的方法
+        cancel = () => {
+            document.body.style.overflowX = "auto";
+            document.body.style.overflowY = "auto";
+            let div1 = document.getElementById("dialog1");
+            let div2 = document.getElementById("v-modal1");
+            let p = document.getElementById("information1");
+            div1.style.display = "none";
+            div2.style.display = "none";
+            p.innerText = "";
+        }
+
+    </script>
+
+</head>
+<body onload="getTeacher()">
+<div id="dialog">
+    <div class="el-message-box" style="width: 450px;">
+        <div class="el-message-box__content">
+            <div class="el-message-box__status"></div>
+            <div class="el-message-box__message">
+                <p id="information" style="font-size: 20px;"></p>
+            </div>
+            <div class="el-message-box__input" style="display: none;">
+                <div class="el-input">
+                    <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                </div>
+                <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+            </div>
+        </div>
+        <div class="el-message-box__btns">
+            <a href="/loginUi/loginUi" id="el-button" class="btn-primary btn-sm"
+               style="margin-right: 30px;font-size: 20px;">登录</a>
+            <a href="javascript:void(0);onclick=cancelLogin()" class="btn-primary btn-sm"
+               style="font-size: 20px;">取消</a>
+        </div>
+
+    </div>
+</div>
+<div id="v-modal" style="z-index: 9998;"></div>
+
+<div id="dialog1">
+    <div class="el-message-box" style="width: 450px;">
+        <div class="el-message-box__content">
+            <div class="el-message-box__status"></div>
+            <div class="el-message-box__message">
+                <p id="information1" style="font-size: 20px;"></p>
+            </div>
+            <div class="el-message-box__input" style="display: none;">
+                <div class="el-input">
+                    <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                </div>
+                <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+            </div>
+        </div>
+        <div class="el-message-box__btns">
+            <a href="javascript:void(0);onclick=cancel()" id="el-button1" class="btn-primary btn-sm"
+               style="margin-right: 30px;font-size: 20px;">确定</a>
+        </div>
+
+    </div>
+</div>
+<div id="v-modal1" style="z-index: 9998;"></div>
+<!-- LOADER -->
+<div id="preloader">
+    <img class="preloader" src="/images/loader.gif" alt="">
+</div><!-- end loader -->
+<!-- END LOADER -->
+
+<div id="wrapper">
+    <!-- BEGIN # MODAL LOGIN -->
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <form id="login-form">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="flaticon-add" aria-hidden="true"></span>
+                        </button>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="What you are looking for?" required>
+                        </div>
+                    </form><!-- End # Login Form -->
+                </div><!-- End # DIV Form -->
+            </div>
+        </div>
+    </div>
+    <!-- END # MODAL LOGIN -->
+
+    <header class="header affix"
+            style=" background-image: linear-gradient(-225deg, #9DC8C8 0%, #58C9B9 48%, #519D9E 100%);padding: 15px 0;">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="">课程</a></li>
+                        <li><a href="">活动</a></li>
+                        <li><a href="">指导师</a></li>
+                        <li><a href="">联系我们</a></li>
+                        <li><a href="/loginUi/loginUi">登录|注册</a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
+                                class="fa fa-search"></i></a></li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+    <section class="section lb p120">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tagline-message page-title text-center">
+                        <h3>教师</h3>
+                        <ul class="breadcrumb">
+                            <li><a href="javascript:void(0)">启明星</a></li>
+                            <li class="active">教师</li>
+                        </ul>
+                    </div>
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section><!-- end section -->
+
+    <section class="section gb nopadtop">
+        <div style="width: 400px;height: 247px;background-color: snow;display: none;">ceshi</div>
+        <div class="container" id="grandfatherDiv">
+            <div class="boxed boxedp4" id="fatherDiv"></div>
+            <div class="boxed boxedp4" id="feedbackDiv"></div>
+
+
+        </div><!-- end container -->
+    </section>
+
+    <footer class="section footer noover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
+                                policy</a>.</p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                        <a href="#" class="readmore">Became a Teacher</a>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags-widget">
+                            <ul class="list-inline">
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Support</h3>
+                        <div class="list-widget">
+                            <ul>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing & Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer><!-- end footer -->
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div><!-- end copy -->
+</div><!-- end wrapper -->
+
+<!-- jQuery Files -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/animate.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
+<script src="/js/custom.js"></script>
+
+</body>
+</html>

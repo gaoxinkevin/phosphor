@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.CourseRankDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.CourseRank">
+    <id column="course_rank_id" jdbcType="INTEGER" property="courseRankId" />
+    <result column="course_id" jdbcType="INTEGER" property="courseId" />
+    <result column="course_level" jdbcType="DECIMAL" property="courseLevel" />
+    <result column="course_count" jdbcType="INTEGER" property="courseCount" />
+    <result column="course_rank_sf" jdbcType="VARCHAR" property="courseRankSf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    course_rank_id, course_id, course_level, course_count, course_rank_sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from course_rank
+    where course_rank_id = #{courseRankId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from course_rank
+    where course_rank_id = #{courseRankId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.CourseRank">
+    insert into course_rank (course_rank_id, course_id, course_level, 
+      course_count, course_rank_sf)
+    values (#{courseRankId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{courseLevel,jdbcType=DECIMAL}, 
+      #{courseCount,jdbcType=INTEGER}, #{courseRankSf,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.CourseRank">
+    insert into course_rank
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courseRankId != null">
+        course_rank_id,
+      </if>
+      <if test="courseId != null">
+        course_id,
+      </if>
+      <if test="courseLevel != null">
+        course_level,
+      </if>
+      <if test="courseCount != null">
+        course_count,
+      </if>
+      <if test="courseRankSf != null">
+        course_rank_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courseRankId != null">
+        #{courseRankId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="courseLevel != null">
+        #{courseLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="courseCount != null">
+        #{courseCount,jdbcType=INTEGER},
+      </if>
+      <if test="courseRankSf != null">
+        #{courseRankSf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.CourseRank">
+    update course_rank
+    <set>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="courseLevel != null">
+        course_level = #{courseLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="courseCount != null">
+        course_count = #{courseCount,jdbcType=INTEGER},
+      </if>
+      <if test="courseRankSf != null">
+        course_rank_sf = #{courseRankSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where course_rank_id = #{courseRankId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.CourseRank">
+    update course_rank
+    set course_id = #{courseId,jdbcType=INTEGER},
+      course_level = #{courseLevel,jdbcType=DECIMAL},
+      course_count = #{courseCount,jdbcType=INTEGER},
+      course_rank_sf = #{courseRankSf,jdbcType=VARCHAR}
+    where course_rank_id = #{courseRankId,jdbcType=INTEGER}
+  </update>
+</mapper>

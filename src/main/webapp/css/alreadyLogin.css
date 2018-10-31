@@ -1,0 +1,96 @@
+.avatar-img{
+    display: block;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 0.75rem;
+    margin-left: 0.75rem;
+    position: relative;
+    border: 2px solid #fafafa;
+}
+.yamm .dropdown .dropdown-menu{
+    min-width: 0;
+    margin-top: 5px;
+    padding: 10px 30px;
+}
+
+#avatarImg{
+    border: none;
+    max-width: 100%;
+    max-height: 100%;
+    height: 33px;
+    width: 33px;
+    vertical-align: top;
+}
+@media (min-width: 768px){
+    .navbar-right .dropdown-menu {
+        right: -44px;
+        left: auto;
+    }
+}
+
+.btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
+    background-color:#82B43F;
+    border-color: #82B43F;
+}
+.btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+    background: #82B43F;
+    color: #ffffff !important;
+}
+.btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+    background: #82B43F none repeat scroll 0 0 !important;
+
+}
+
+.file {
+    position: relative;
+    display: inline-block;
+    background: #01bacf;
+    overflow: hidden;
+    color: white;
+    text-indent: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    box-shadow: inset 0 0 0 0 #00a8bd;
+}
+.file input {
+    position: absolute;
+    font-size: 100px;
+
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+.btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
+    background-color:#82B43F;
+    border-color: #82B43F;
+}
+.btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+    background: #82B43F;
+    color: #ffffff !important;
+}
+.btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+    background: #82B43F none repeat scroll 0 0 !important;
+
+}
+
+#addChild{
+    display: none;
+    margin: 20px auto;
+}
+
+.nav-tabs > li > a:hover{
+    border-color: white;
+}
+
+.nav > li > a:focus, .nav > li > a:hover{
+    background-color: white;
+}

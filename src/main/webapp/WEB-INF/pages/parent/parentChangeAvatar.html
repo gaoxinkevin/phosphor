@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Site Meta -->
+    <title>个人中心-更改密码</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+    <!--FontAwesome-->
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom & Default Styles  外部-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleDgtle.css">
+    <link rel="stylesheet" href="/css/styleCommon.css">
+
+    <!--自己写的 -->
+    <link rel="stylesheet" href="/css/alreadyLogin.css">
+
+    <style>
+        .file {
+            position: relative;
+            display: inline-block;
+            background: #01bacf;
+            overflow: hidden;
+            color: white;
+            text-indent: 0;
+            font-size: 12px;
+            line-height: 1.5;
+            border-radius: 3px;
+            box-shadow: inset 0 0 0 0 #00a8bd;
+        }
+        .file input {
+            position: absolute;
+            font-size: 100px;
+
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .file:hover {
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+<!--Ajax向后台输出数据-->
+<script>
+
+     //判断用户登录
+    let a = localStorage.getItem("userLoginPhone");
+    if (a === null) {
+        localStorage.clear();
+        window.location.href = "http://localhost:1250/indexUi/returnIndexPage"
+    }
+
+    const clientUrl = 'http://localhost:1250/parent/parentAllInfo';
+
+    const clientMethod = 'POST';
+
+    const getParentImg = (url) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open(clientMethod, url);
+            client.responseType = 'json';
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send();
+        });
+    };
+
+    const JsonResponseList = () => getParentImg(clientUrl);
+    JsonResponseList().then((res) => {
+        const imgSrc = document.getElementById("avatarImg");
+        const imgSrc1 = document.getElementById("avatarImg2");
+        const imgSrc3 = document.getElementById("defaultImg");
+        const parentName2 = document.getElementById("aName");
+        imgSrc.src = res.data.parentPhoto;
+        imgSrc1.src = res.data.parentPhoto;
+        imgSrc3.src = res.data.parentPhoto;
+        parentName2.innerText = res.data.parentName;
+
+    }).catch(error => {
+        console.log(error);
+    });
+
+
+    showAvatar = (picId, fileId) => {
+        document.getElementById("avatarDiv").style.display = "";
+        document.getElementById("defaultImg2").style.display = "";
+        const pic = document.getElementById(picId);
+        const file = document.getElementById(fileId);
+        if (window.FileReader) {
+            let oFReader = new FileReader();
+            oFReader.readAsDataURL(file.files[0]);
+            oFReader.onload = function (oFREvent) {
+                pic.src = oFREvent.target.result;
+            };
+        }
+        else if (document.getElementsByTagName("*")) {//IE8-
+            file.select();
+            let reallocalpath = document.selection.createRange().text;
+            if (window.ie6) pic.src = reallocalpath; //IE6浏览器设置img的src为本地路径可以直接显示图片
+            else { //非IE6版本的IE由于安全问题直接设置img的src无法显示本地图片，但是可以通过滤镜来实现，IE10浏览器不支持滤镜，需要用FileReader来实现，所以注意判断FileReader先
+                pic.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='image',src=\"" + reallocalpath + "\")";
+                pic.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';//设置img的src为base64编码的透明图片，要不会显示红xx
+            }
+        }
+    };
+
+    uploadAvatar = () => {
+
+        let parent = {
+            parentPhoto: document.getElementById("defaultImg2").src,
+            parentPhone: JSON.parse(localStorage.getItem("userLoginPhone")).val,
+        };
+
+        //AjaxBegin
+        const clientMethod = 'POST';
+        const clientUrl = 'http://localhost:1250/parent/updateParent';
+        const updateParent = ({ url, method, data }) => {
+            return new Promise((resolve, reject) => {
+                const client = new XMLHttpRequest();
+                client.open(clientMethod, url);
+                client.responseType = 'json';
+                client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                client.onreadystatechange = () => {
+                    if (client.readyState === 4) {
+                        if (client.status === 200) {
+                            resolve(client.response);
+                        } else {
+                            reject(client.status);
+                        }
+                    }
+                };
+                client.send(data);
+            });
+        };
+
+        const resultList = (data) => updateParent(
+            {
+                url: clientUrl,
+                method: clientMethod,
+                data
+            }
+        );
+
+        console.log(JSON.stringify(parent));
+
+        resultList(JSON.stringify(parent)).then((res) => {
+            console.log(res);
+            window.location.href = '/loginUi/alreadyLoginUi';
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
+    function submitForm() {
+
+        const formData = new FormData($("#aForm")[0]);//必须是new FormData后台才能接收到
+        $.ajax({
+            url: "/upload/fileupload.do",
+            data: formData,
+            type: 'post',
+            datatype: "json",
+            contentType: false,//必须false才会自动加上正确的Content-Type
+            processData: false,//必须false才会避开jQuery对 formdata 的默认处理，XMLHttpRequest会对 formdata 进行正确的处理
+            success: function () {
+                window.location.href = '/loginUi/alreadyLoginUi'
+            }
+        });
+
+    }
+
+
+
+    cancelChange = () => {
+        window.location.href = "/parentUi/parentSettingsUi"
+    };
+
+    loginOut = () => {
+        window.localStorage.clear();
+        window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
+    }
+
+</script>
+<div id="wrapper">
+
+    <div id="preloader">
+        <img class="preloader" src="/images/loader.gif" alt="">
+    </div>
+
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <form id="login-form">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="flaticon-add" aria-hidden="true"></span>
+                        </button>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="What you are looking for?" required>
+                        </div>
+                    </form><!-- End # Login Form -->
+                </div><!-- End # DIV Form -->
+            </div>
+        </div>
+    </div>
+
+    <header class="header affix">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="">课程</a></li>
+                        <li><a href="">活动</a></li>
+                        <li><a href="">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">官方套餐</a></li>
+                                    <li><a href="#">自定义套餐</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="">联系我们</a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
+                                    <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
+                                    <li><a href="#">我的关注</a></li>
+                                    <li><a href="#">我的收藏</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+    <div id="dgtle_body" style="min-height: 670px">
+        <div id="dgtle_body_bg" style="margin-top: 110px">
+            <div id="wp" class="wp">
+                <div id="ct" class="ct2 wp cl dgtle_wpct2">
+
+                    <div class="mn">
+                        <div class="bm bw0">
+                            <h1 class="mt">修改头像</h1>
+                            <div>
+
+                                <table cellspacing="0" cellpadding="0" class="tfm">
+                                    <caption>
+                                        <h2 class="xs2">当前我的头像</h2>
+                                        <p>如果您还没有设置自己的头像，系统会显示为默认头像，您需要自己上传一张新照片来作为自己的个人头像 </p>
+                                    </caption>
+
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div style="width: 200px;height: 200px;">
+                                                <img src="" id="defaultImg" style="max-width: 100%;max-height: 100%;
+                                                  min-width: 200px;border-radius: 150px;min-height: 200px;" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table cellspacing="0" cellpadding="0" class="tfm">
+                                    <caption>
+                                        <h2 class="xs2">设置我的新头像</h2>
+                                        <p>请选择一个新照片进行上传编辑。<br>头像保存后，您可能需要刷新一下本页面(按F5键)，才能查看最新的头像效果 </p>
+                                    </caption>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div style="width: 200px;height: 200px;display: none" id="avatarDiv">
+                                                <img id="defaultImg2" style="display: none;max-width: 100%;max-height: 100%;
+                                                  min-width: 200px;border-radius: 150px;min-height: 200px;"  src=""/>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <form id="aForm" enctype="multipart/form-data">
+                                                <a href="javascript:void(0);" class="file" style="padding: 8px 10px;margin-right: 10px;"
+                                                   name="a">更换头像
+                                                    <input type="file" name="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" id="file1" onchange="showAvatar('defaultImg2','file1')">
+                                                </a>
+                                                <!--<input class="btn-sm btn-primary"  name="btn" onclick="submitForm()" value="确认更改">-->
+                                            </form>
+                                        </td>
+
+                                        <td>
+
+                                            <button id="cancelAvatarBtn2" class="btn-sm btn-primary" onclick="submitForm()">
+                                                确认更改
+                                            </button>
+                                            <button id="cancelAvatarBtn" class="btn-sm btn-primary" onclick="cancelChange()">取消更改
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--右侧边栏-->
+                    <div class="appl">
+
+                        <div class="sd_box">
+                            <div class="group_sd_mymembers cr_grs">
+                                <div class="avat" style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
+                                    <a target="_blank" sl-processed="1">
+                                        <img id="avatarImg2" src="http://www.dgtle.com/uc_server/images/noavatar_big.gif" style="max-width: 100%;min-height: 100px;
+                                                      min-width: 100px;max-height: 100%;
+                                                      margin: 0">
+                                    </a>
+                                </div>
+                                <div class="mporf cl">
+                                    <p class="homeusername">
+                                        <a id="aName" style="margin-left: 80px;margin-top: 20px"></a>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tbn">
+                            <h2 class="mt bbda">设置</h2>
+
+                            <ul>
+
+                                <li class="a">
+                                    <a href="#" sl-processed="1">修改头像</a>
+                                </li>
+
+                                <li>
+                                    <a href="/parentUi/parentSettingsUi" sl-processed="1">个人资料</a>
+                                </li>
+
+                                <li>
+                                    <a href="/parentUi/parentChangePasswordUi" sl-processed="1">密码安全</a>
+                                </li>
+
+                                <li>
+                                    <a href="/childrenUi/infoUi">孩子资料</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">订单查询</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">课程查询</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">活动查询</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">帐号绑定</a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="section footer noover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
+                                policy</a>.</p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags-widget">
+                            <ul class="list-inline">
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Support</h3>
+                        <div class="list-widget">
+                            <ul>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing & Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer>
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div>
+
+</div>
+<!--模版自带-->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/customLogin.js"></script>
+</body>
+
+</html>

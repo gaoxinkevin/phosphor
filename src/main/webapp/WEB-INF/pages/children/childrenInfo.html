@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Site Meta -->
+    <title>个人中心-孩子信息</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+    <!--FontAwesome-->
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom & Default Styles  外部-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleDgtle.css">
+    <link rel="stylesheet" href="/css/styleCommon.css">
+
+    <!--自己写的 -->
+    <link rel="stylesheet" href="/css/alreadyLogin.css">
+    <style>
+
+        #addChild{
+            display: none;
+            margin: 20px auto;
+        }
+
+        .nav-tabs > li > a:hover{
+            border-color: white;
+        }
+
+        .nav > li > a:focus, .nav > li > a:hover{
+            background-color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+<!--Ajax向后台输出数据-->
+<script>
+
+    function timestampToTime(timestamp) {
+        let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        let Y = date.getFullYear() + '-';
+        let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        let X = date.getDate() <10 ? '0'+date.getDate():date.getDate();
+        console.log(X);
+        return Y+M+X;
+    }
+
+    //判断用户登录
+    let a = localStorage.getItem("userLoginPhone");
+    if (a === null) {
+        localStorage.clear();
+        window.location.href = "http://localhost:1250/indexUi/returnIndexPage"
+    }
+
+    const clientUrl = 'http://localhost:1250/parent/parentAllInfo';
+
+    const clientUrl1 = 'http://localhost:1250/child/childInfo';
+
+
+    const clientMethod = 'POST';
+
+
+    //页面获取用户头像
+
+    const getParentImg = (url) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open(clientMethod, url);
+            client.responseType = 'json';
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send();
+        });
+    };
+
+    const JsonResponseList = () => getParentImg(clientUrl);
+
+    JsonResponseList().then((res) => {
+        const imgSrc = document.getElementById("avatarImg");
+        const imgSrc1 = document.getElementById("avatarImg2");
+        const parentName2 = document.getElementById("aName1");
+        imgSrc.src = res.data.parentPhoto;
+        imgSrc1.src = res.data.parentPhoto;
+        parentName2.innerText = res.data.parentName;
+
+    }).catch(error => {
+        console.log(error);
+    });
+
+    //页面获取头像结束
+
+
+
+    //页面渲染开始
+
+    const getAllChildrenInfo = (url) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open(clientMethod, url);
+            client.responseType = 'json';
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send();
+        });
+    };
+
+    const childrenInfoList = () => getAllChildrenInfo(clientUrl1);
+
+    childrenInfoList().then((res) => {
+        if (res.data.length > 0) {
+            const urlChild = document.getElementById("navUrl");
+            const mn = document.getElementById("mn");
+            for (let item in res.data) {
+                const li = document.createElement("li");
+                const ali = document.createElement("a");
+                const div = document.createElement("div");
+                const a = document.createElement("a");
+                const aDelete = document.createElement("a");
+                const aUpdate = document.createElement("a");
+                const divName = document.createElement("div");
+                const divSex = document.createElement("div");
+                const divBio = document.createElement("div");
+                const divBirthday = document.createElement("div");
+                const spanName = document.createElement("span");
+                const spanSex = document.createElement("span");
+                const spanBio = document.createElement("span");
+                const spanBirthday = document.createElement("span");
+                const spanMeale = document.createElement("span");
+                const spanFemale = document.createElement("span");
+                const inputName = document.createElement("input");
+                const inputMale = document.createElement("input");
+                const inputFemale = document.createElement("input");
+                const textareaBio = document.createElement("textarea");
+                const inputBirthday = document.createElement("input");
+
+                a.type = "button";
+                a.id   = "a"+res.data[item].childId;
+                a.innerText = "阅读更多";
+                a.style.lineHeight = "5.5";
+                a.style.marginRight = "20px";
+                a.style.padding = "10px";
+                a.className = "btn-sm btn-primary";
+                a.setAttribute("href", "/childrenUi/singleChildInfo/"+res.data[item].childId);
+
+                aUpdate.type = "button";
+                aUpdate.id  = "aUpdate"+res.data[item].childId;
+                aUpdate.innerText =  "更改孩子信息";
+                aUpdate.style.lineHeight = "5.5";
+                aUpdate.style.padding = "10px";
+                aUpdate.className = "btn-sm btn-warning ";
+                aUpdate.setAttribute("href", "javascript:void(0);");
+
+                aDelete.type = "button";
+                aDelete.id = "aBtn"+ res.data[item].childId;
+                aDelete.innerText = "删除当前孩子信息";
+                aDelete.style.padding = "7px";
+                aDelete.style.cssFloat = "right";
+                aDelete.style.marginTop = "3%";
+                aDelete.style.cursor = "pointer";
+                aDelete.className = "btn-sm btn-danger";
+                aDelete.setAttribute("href", "javascript:void(0);");
+
+                spanName.innerText = "孩子姓名：";
+                spanSex.innerText = "孩子性别：";
+                spanBio.innerText = "孩子简介：";
+                spanBirthday.innerText = "孩子生日: ";
+
+                spanBio.style.cssFloat = "left";
+
+                li.id = res.data[item].childId;
+                li.className = "liDisplay";
+
+                ali.id = "a" + res.data[item].childId;
+
+                spanMeale.style.marginRight = "20px";
+                inputMale.style.marginRight  = "5px";
+                inputFemale.style.marginRight = "5px";
+
+                inputName.id = "inputName"+res.data[item].childId;
+
+                textareaBio.id = "textarea"+res.data[item].childId;
+
+                inputBirthday.id = "inputBirthday" + res.data[item].childId;
+
+                inputMale.type =  "radio";
+                inputFemale.type ="radio";
+                inputBirthday.type = "date";
+
+                spanMeale.innerText = "男";
+                spanFemale.innerText="女";
+
+                inputMale.name = "gender"+res.data[item].childId;
+                inputFemale.name = "gender"+res.data[item].childId;
+
+                inputMale.id = "radioId"+res.data[item].childId;
+                inputFemale.id = "radioFeMale"+res.data[item].childId;
+
+
+                div.style.display = "none";
+                div.className = "divDisplay";
+                div.style.marginTop = "20px";
+                div.style.marginLeft = "20px";
+                div.id = "div" + res.data[item].childId;
+
+                if (item == 0) {
+                    div.style.display = "";
+                    li.className = "active"
+                }
+
+                divName.id = "divName" + res.data[item].childId;
+                divSex.id = "divSex" + res.data[item].childId;
+                divBirthday.id = "divBirthday" + res.data[item].childId;
+                divBio.id = "divBio" +res.data[item].childId;
+
+                mn.appendChild(div);
+                li.appendChild(ali);
+                urlChild.appendChild(li);
+
+                ali.innerText = res.data[item].childName;
+
+                ali.cursor = "pointer";
+                ali.setAttribute("href", "javascript:void(0);");
+
+                ali.onclick = changeTab;
+                aUpdate.onclick = updateChild;
+                aDelete.onclick = deleteChild;
+
+
+                div.appendChild(divName);
+                div.appendChild(divSex);
+                div.appendChild(divBirthday);
+                div.appendChild(divBio);
+                div.appendChild(a);
+                div.appendChild(aUpdate);
+                div.appendChild(aDelete);
+
+                divName.appendChild(spanName);
+                divName.appendChild(inputName);
+
+                divSex.style.marginTop = "25px";
+                divSex.appendChild(spanSex);
+                divSex.appendChild(inputMale);
+                divSex.appendChild(spanMeale);
+                divSex.appendChild(inputFemale);
+                divSex.appendChild(spanFemale);
+
+                divBirthday.style.marginTop = "25px";
+                divBirthday.appendChild(spanBirthday);
+                divBirthday.appendChild(inputBirthday);
+
+                divBio.style.marginTop  = "25px";
+                divBio.appendChild(spanBio);
+                divBio.appendChild(textareaBio);
+
+                inputName.value = res.data[item].childName;
+                inputBirthday.style.marginLeft="6px";
+                let birthday = timestampToTime(res.data[item].childBirthday);
+                inputBirthday.value = birthday;
+
+                if (1 === res.data[item].childGender) {
+                    document.getElementById("radioId"+res.data[item].childId).checked  = true;
+                } else if(2 === res.data[item].childGender) {
+                    document.getElementById("radioFeMale"+res.data[item].childId).checked  = true;
+                }
+                textareaBio.innerText =  res.data[item].childSf;
+            }
+
+            //添加tab  添加孩子
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            const aImg = document.createElement("a");
+
+            a.id = "aAddChild";
+            aImg.id = "aImgAddChild";
+
+            a.setAttribute("href", "javascript:void(0);");
+            aImg.setAttribute("href", "javascript:void(0);");
+
+            li.style.margin = "8px";
+            a.cursor = "pointer";
+            a.onclick = addChild;
+            aImg.onclick = addChild;
+            a.innerText = "添加孩子";
+            a.style.display = "inline";
+            aImg.style.display = "inline";
+            aImg.style.zIndex = "9999";
+            a.style.marginLeft = "-15%";
+
+            li.appendChild(aImg);
+            li.appendChild(a);
+            urlChild.appendChild(li);
+
+            aImg.style.background = "url('http://pg8h1ukn9.bkt.clouddn.com/plus.png') no-repeat center 50%";
+
+        } else {
+            const urlChild = document.getElementById("navUrl");
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.innerText = "添加孩子";
+            a.cursor = "pointer";
+            urlChild.appendChild(li);
+            li.appendChild(a);
+            const addChild = document.getElementById("addChild");
+            addChild.style.display = "block";
+        }
+    }).catch(error => {
+        console.log(error);
+    });
+
+    //页面渲染结束
+
+
+    function updateChild(){
+        const id = this.id;
+        updateThisChild(id.substring(7))
+    }
+
+    updateThisChild = (id) => {
+        const parentId = (url) => {
+            return new Promise((resolve, reject) => {
+                const client = new XMLHttpRequest();
+                client.open(clientMethod, url);
+                client.responseType = 'json';
+                client.onreadystatechange = () => {
+                    if (client.readyState === 4) {
+                        if (client.status === 200) {
+                            resolve(client.response);
+                        } else {
+                            reject(client.status);
+                        }
+                    }
+                };
+                client.send();
+            });
+        };
+
+        const JsonResponseList = () => parentId(clientUrl);
+
+        JsonResponseList().then((res) => {
+
+
+            let sex = 1;
+            const male = document.getElementById("radioId" + id);
+            const female = document.getElementById("radioFeMale" + id);
+
+            const inputName = document.getElementById("inputName"+id).value;
+
+            const textarea  = document.getElementById("textarea"+id).value;
+
+            const inputBirthday = document.getElementById("inputBirthday"+id).value;
+            if (male.checked) {
+                sex = 1;
+            }
+            if (female.checked) {
+                sex = 2;
+            }
+            let child = {
+                childId: id,
+                parentId : res.data.parentId,
+                childGender: sex,
+                childName: inputName,
+                childBirthday: inputBirthday,
+                childSf: textarea
+            };
+
+            const clientMethod = 'POST';
+            const clientUrl = 'http://localhost:1250/child/modifyChild';
+            const modifyChild = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const resultList = (data) => modifyChild(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+
+
+            resultList(JSON.stringify(child)).then((res) => {
+                window.location.href = "http://localhost:1250/childrenUi/infoUi"
+            }).catch(error => {
+                console.log(error);
+            });
+
+        }).catch(error => {
+            console.log(error);
+        });
+
+        //AjaxEnd
+    };
+    insertChild = () => {
+
+        const parentId = (url) => {
+            return new Promise((resolve, reject) => {
+                const client = new XMLHttpRequest();
+                client.open(clientMethod, url);
+                client.responseType = 'json';
+                client.onreadystatechange = () => {
+                    if (client.readyState === 4) {
+                        if (client.status === 200) {
+                            resolve(client.response);
+                        } else {
+                            reject(client.status);
+                        }
+                    }
+                };
+                client.send();
+            });
+        };
+
+        const JsonResponseList = () => parentId(clientUrl);
+
+        JsonResponseList().then((res) => {
+            let sex = 1;
+            const male = document.getElementById("site4");
+            const female = document.getElementById("site6");
+
+            if (male.checked){
+                sex = 1;
+            }
+            if (female.checked){
+                sex = 2;
+            }
+
+            let child = {
+                parentId: res.data.parentId,
+                childName : document.getElementById("site1").value,
+                childGender : sex,
+                childBirthday  : document.getElementById("data").value,
+                childSf : document.getElementById("bio").value,
+            };
+            //AjaxBegin
+            const clientMethod = 'POST';
+            const clientUrl = 'http://localhost:1250/child/insertChild';
+            const saveChild = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const resultList = (data) => saveChild(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+
+
+            resultList(JSON.stringify(child)).then((res) => {
+                window.location.href = "http://localhost:1250/childrenUi/infoUi"
+            }).catch(error => {
+                console.log(error);
+            });
+            //AjaxEnd
+
+
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
+    function changeTab() {
+
+        const id = "div" + this.id.substring(1);
+        const a = document.getElementById(this.id);
+        const aDisplay = document.getElementById(id);
+        const addChildTab = document.getElementById("addChild");
+        const li = document.getElementById(this.id.substring(1));
+        const divDisplay = document.getElementsByClassName("divDisplay");
+        const activeDisplay = document.getElementsByClassName("active");
+
+        addChildTab.style.display = "none";
+
+
+        for (let a = 0; a < divDisplay.length; a++) {
+            divDisplay[a].style.display = "none";
+        }
+
+        for (let a = 0; a < activeDisplay.length; a++) {
+            activeDisplay[a].className = "";
+        }
+
+        li.className = "active";
+        aDisplay.style.display = '';
+        a.style.color = "#01bacf";
+    }
+
+    function deleteChild(){
+        const id = this.id;
+        deleteThisChild(id.substring(4));
+    }
+
+    deleteThisChild=(id)=>{
+
+        let child={
+            childId : id
+        };
+        const clientMethod = 'POST';
+        const clientUrl = 'http://localhost:1250/child/deleteChild';
+
+        const removeChild = ({ url, method, data }) => {
+            return new Promise((resolve, reject) => {
+                const client = new XMLHttpRequest();
+                client.open(clientMethod, url);
+                client.responseType = 'json';
+                client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                client.onreadystatechange = () => {
+                    if (client.readyState === 4) {
+                        if (client.status === 200) {
+                            resolve(client.response);
+                        } else {
+                            reject(client.status);
+                        }
+                    }
+                };
+                client.send(data);
+            });
+        };
+
+        const resultList = (data) => removeChild(
+            {
+                url: clientUrl,
+                method: clientMethod,
+                data
+            }
+        );
+
+
+        resultList(JSON.stringify(child)).then((res) => {
+            window.location.href = '/childrenUi/infoUi'
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
+    addChild = () => {
+        const addChildTab = document.getElementById("addChild");
+        const aAddChild = document.getElementById("aAddChild");
+        const aImgAddChild = document.getElementById("aImgAddChild");
+        const displayList = document.getElementsByClassName("divDisplay");
+        const activeDisplay = document.getElementsByClassName("active");
+        aAddChild.borderLeft = "none";
+        aImgAddChild.borderRight = "none";
+        for (let i = 0; i < displayList.length; i++) {
+            displayList[i].style.display = "none";
+        }
+        for (let a = 0; a < activeDisplay.length; a++) {
+            activeDisplay[a].className = "";
+        }
+        addChildTab.style.display = "block";
+        addChildTab.style.marginTop = "20px";
+    };
+
+
+    loginOut = () => {
+        window.localStorage.clear();
+        window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
+    };
+
+    cancelInsert = ()=>{
+        window.location.href  = "http://localhost:1250/childrenUi/infoUi";
+    }
+
+</script>
+<div id="wrapper">
+
+    <div id="preloader">
+        <img class="preloader" src="/images/loader.gif" alt="">
+    </div>
+
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <form id="login-form">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="flaticon-add" aria-hidden="true"></span>
+                        </button>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="What you are looking for?" required>
+                        </div>
+                    </form><!-- End # Login Form -->
+                </div><!-- End # DIV Form -->
+            </div>
+        </div>
+    </div>
+
+    <header class="header affix">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="">课程</a></li>
+                        <li><a href="">活动</a></li>
+                        <li><a href="">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">官方套餐</a></li>
+                                    <li><a href="#">自定义套餐</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="">联系我们</a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
+                                    <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
+                                    <li><a href="#">我的关注</a></li>
+                                    <li><a href="#">我的收藏</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+    <div id="dgtle_body" style="min-height: 670px">
+        <div id="dgtle_body_bg" style="margin-top: 110px">
+            <div id="wp" class="wp">
+                <div id="ct" class="ct2 wp cl dgtle_wpct2">
+
+
+                    <div class="mn" id="mn">
+
+                        <!--有孩子的可以添加孩子-->
+                        <ul class="nav nav-tabs" id="navUrl">
+
+                        </ul>
+
+                        <!--没有孩子可添加孩子-->
+                        <div class="addChild" id="addChild">
+
+                            <table cellspacing="0" cellpadding="0" class="tfm" id="profilelist" style="margin-left: 16px">
+                                <tbody>
+                                <tr id="tr_site1">
+                                    <th id="th_site1">孩子姓名</th>
+                                    <td id="td_site5">
+                                        <label for="site4"></label>
+                                        <input type="text" name="site" id="site1" class="px" value="" tabindex="1" style="height: auto;width: auto">
+                                        <div class="rq mtn" id="showerror_site1"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+
+                                <tr id="tr_site4">
+                                    <th id="th_site4">孩子性别</th>
+                                    <td id="td_site4">
+                                        <input type="radio" id="site4" name="sex" class="px" style="height: auto;width: auto" checked>男
+                                        <input type="radio" id="site6" name="sex" class="px" style="height: auto;width: auto">女
+                                        <div class="rq mtn" id="showerror_site4"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+
+                                <tr id="tr_site3">
+                                    <th id="th_site3">孩子生日</th>
+                                    <td id="td_site3">
+                                        <input type="date" value="2015-09-24" id="data" style="width: 333px" />
+                                        <div class="rq mtn" id="showerror_site3"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+
+
+                                <tr id="tr_bio">
+                                    <th id="th_bio">孩子简介</th>
+                                    <td id="td_bio">
+                                        <label for="bio"></label>
+                                        <textarea name="bio" id="bio" class="pt" rows="3" cols="40" tabindex="1" placeholder="添加孩子签名"></textarea>
+                                        <div class="rq mtn" id="showerror_bio"></div>
+                                        <p class="d"></p>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <td colspan="2">
+                                        <button id="profilesubmitbtn" class="pn pnc" onclick="insertChild()">
+                                            <strong>保存</strong>
+                                        </button>
+                                        <button id="profilesubmitbtn2" class="pn pnc" onclick="cancelInsert()">
+                                            <strong>取消</strong>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--右侧边栏-->
+                    <div class="appl">
+
+                        <div class="sd_box">
+                            <div class="group_sd_mymembers cr_grs">
+                                <div class="avat" style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
+                                    <a target="_blank" sl-processed="1">
+                                        <img id="avatarImg2" src="http://www.dgtle.com/uc_server/images/noavatar_big.gif" style="max-width: 100%;min-height: 100px;
+                                                      min-width: 100px;max-height: 100%;
+                                                      margin: 0">
+                                    </a>
+                                </div>
+                                <div class="mporf cl">
+                                    <p class="homeusername">
+                                        <a id="aName1" style="margin-left: 80px;margin-top: 20px"></a>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tbn">
+                            <h2 class="mt bbda">设置</h2>
+
+                            <ul>
+
+                                <li>
+                                    <a href="/parentUi/parentChangeAvatarUi">修改头像</a>
+                                </li>
+
+                                <li>
+                                    <a href="/parentUi/parentSettingsUi">个人资料</a>
+                                </li>
+
+                                <li>
+                                    <a href="/parentUi/parentChangePasswordUi">密码安全</a>
+                                </li>
+
+                                <li class="a">
+                                    <a href="#">孩子资料</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">订单查询</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">课程查询</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">活动查询</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">帐号绑定</a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="section footer noover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
+                                policy</a>.</p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags-widget">
+                            <ul class="list-inline">
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Support</h3>
+                        <div class="list-widget">
+                            <ul>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing & Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer>
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div>
+
+
+</div>
+<!--模版自带-->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/customLogin.js"></script>
+</body>
+
+</html>

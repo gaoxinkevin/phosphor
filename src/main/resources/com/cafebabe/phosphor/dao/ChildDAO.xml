@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.ChildDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.Child">
+    <id column="child_id" jdbcType="INTEGER" property="childId" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="child_name" jdbcType="VARCHAR" property="childName" />
+    <result column="child_gender" jdbcType="INTEGER" property="childGender" />
+    <result column="child_birthday" jdbcType="DATE" property="childBirthday" />
+    <result column="child_sf" jdbcType="VARCHAR" property="childSf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    child_id, parent_id, child_name, child_gender, child_birthday, child_sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from child
+    where child_id = #{childId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getChildInfoDao" resultType="com.cafebabe.phosphor.model.dto.ChildrenInfoDto">
+    select child_id,child_name,child_gender,child_birthday,child_sf
+    from child
+    where parent_id = #{parentId}
+  </select>
+  <select id="getSingleChildInfo" resultType="com.cafebabe.phosphor.model.dto.ChildrenInfoDto" >
+    select ch.child_id,ch.child_name,ch.child_gender,ch.child_birthday,course_name,g.grade_score
+from child ch join grade g on ch.child_id=g.child_id
+join course c on c.course_id =g.course_id
+where ch.child_id = #{childId,jdbcType=INTEGER};
+  </select>
+  <select id="getSingleChildInfoNoCourseDao" resultType="com.cafebabe.phosphor.model.entity.Child">
+    select child_id,child_name,child_gender,child_birthday,child_sf
+    from child
+    where child_id = #{childId,jdbcType=INTEGER};
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from child
+    where child_id = #{childId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertChild" parameterType="com.cafebabe.phosphor.model.entity.Child">
+    insert into child
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="childId != null">
+        child_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="childName != null">
+        child_name,
+      </if>
+      <if test="childGender != null">
+        child_gender,
+      </if>
+      <if test="childBirthday != null">
+        child_birthday,
+      </if>
+      <if test="childSf != null">
+        child_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="childId != null">
+        #{childId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="childName != null">
+        #{childName,jdbcType=VARCHAR},
+      </if>
+      <if test="childGender != null">
+        #{childGender,jdbcType=INTEGER},
+      </if>
+      <if test="childBirthday != null">
+        #{childBirthday,jdbcType=DATE},
+      </if>
+      <if test="childSf != null">
+        #{childSf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Child">
+    update child
+    <set>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="childName != null">
+        child_name = #{childName,jdbcType=VARCHAR},
+      </if>
+      <if test="childGender != null">
+        child_gender = #{childGender,jdbcType=INTEGER},
+      </if>
+      <if test="childBirthday != null">
+        child_birthday = #{childBirthday,jdbcType=DATE},
+      </if>
+      <if test="childSf != null">
+        child_sf = #{childSf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where child_id = #{childId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.Child">
+    update child
+    set parent_id = #{parentId,jdbcType=INTEGER},
+      child_name = #{childName,jdbcType=VARCHAR},
+      child_gender = #{childGender,jdbcType=INTEGER},
+      child_birthday = #{childBirthday,jdbcType=DATE},
+      child_sf = #{childSf,jdbcType=VARCHAR}
+    where child_id = #{childId,jdbcType=INTEGER}
+  </update>
+
+  <select id="getChildNameById" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select
+    child_name
+    from child
+    where child_id = #{childId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

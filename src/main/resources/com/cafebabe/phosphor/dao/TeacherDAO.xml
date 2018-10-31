@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.TeacherDAO">
+    <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.Teacher">
+        <id column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <result column="company_id" jdbcType="INTEGER" property="companyId"/>
+        <result column="teacher_name" jdbcType="VARCHAR" property="teacherName"/>
+        <result column="teache_phone" jdbcType="VARCHAR" property="teachePhone"/>
+        <result column="teacher_worktime" jdbcType="TIMESTAMP" property="teacherWorktime"/>
+        <result column="teacher_desc" jdbcType="VARCHAR" property="teacherDesc"/>
+        <result column="teacher_photo" jdbcType="VARCHAR" property="teacherPhoto"/>
+        <result column="teacher_mail" jdbcType="VARCHAR" property="teacherMail"/>
+        <result column="teacher_status" jdbcType="INTEGER" property="teacherStatus"/>
+        <result column="teacher_sf" jdbcType="VARCHAR" property="teacherSf"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        teacher_id, company_id, teacher_name, teache_phone, teacher_worktime, teacher_desc,
+        teacher_photo, teacher_mail, teacher_status, teacher_sf
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from teacher
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.Teacher">
+        insert into teacher (teacher_id,
+                             company_id,
+                             teacher_name,
+                             teache_phone,
+                             teacher_worktime,
+                             teacher_desc,
+                             teacher_photo,
+                             teacher_mail,
+                             teacher_status,
+                             teacher_sf)
+        values (#{teacherId,jdbcType=INTEGER},
+                #{companyId,jdbcType=INTEGER},
+                #{teacherName,jdbcType=VARCHAR},
+                #{teachePhone,jdbcType=VARCHAR},
+                #{teacherWorktime,jdbcType=TIMESTAMP},
+                #{teacherDesc,jdbcType=VARCHAR},
+                #{teacherPhoto,jdbcType=VARCHAR},
+                #{teacherMail,jdbcType=VARCHAR},
+                #{teacherStatus,jdbcType=INTEGER},
+                #{teacherSf,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.Teacher">
+        insert into teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teacherId != null">
+                teacher_id,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="teacherName != null">
+                teacher_name,
+            </if>
+            <if test="teachePhone != null">
+                teache_phone,
+            </if>
+            <if test="teacherWorktime != null">
+                teacher_worktime,
+            </if>
+            <if test="teacherDesc != null">
+                teacher_desc,
+            </if>
+            <if test="teacherPhoto != null">
+                teacher_photo,
+            </if>
+            <if test="teacherMail != null">
+                teacher_mail,
+            </if>
+            <if test="teacherStatus != null">
+                teacher_status,
+            </if>
+            <if test="teacherSf != null">
+                teacher_sf,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teacherId != null">
+                #{teacherId,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="teacherName != null">
+                #{teacherName,jdbcType=VARCHAR},
+            </if>
+            <if test="teachePhone != null">
+                #{teachePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherWorktime != null">
+                #{teacherWorktime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="teacherDesc != null">
+                #{teacherDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherPhoto != null">
+                #{teacherPhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherMail != null">
+                #{teacherMail,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherStatus != null">
+                #{teacherStatus,jdbcType=INTEGER},
+            </if>
+            <if test="teacherSf != null">
+                #{teacherSf,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.Teacher">
+        update teacher
+        <set>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="teacherName != null">
+                teacher_name = #{teacherName,jdbcType=VARCHAR},
+            </if>
+            <if test="teachePhone != null">
+                teache_phone = #{teachePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherWorktime != null">
+                teacher_worktime = #{teacherWorktime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="teacherDesc != null">
+                teacher_desc = #{teacherDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherPhoto != null">
+                teacher_photo = #{teacherPhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherMail != null">
+                teacher_mail = #{teacherMail,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherStatus != null">
+                teacher_status = #{teacherStatus,jdbcType=INTEGER},
+            </if>
+            <if test="teacherSf != null">
+                teacher_sf = #{teacherSf,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.Teacher">
+        update teacher
+        set company_id       = #{companyId,jdbcType=INTEGER},
+            teacher_name     = #{teacherName,jdbcType=VARCHAR},
+            teache_phone     = #{teachePhone,jdbcType=VARCHAR},
+            teacher_worktime = #{teacherWorktime,jdbcType=TIMESTAMP},
+            teacher_desc     = #{teacherDesc,jdbcType=VARCHAR},
+            teacher_photo    = #{teacherPhoto,jdbcType=VARCHAR},
+            teacher_mail     = #{teacherMail,jdbcType=VARCHAR},
+            teacher_status   = #{teacherStatus,jdbcType=INTEGER},
+            teacher_sf       = #{teacherSf,jdbcType=VARCHAR}
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+    </update>
+
+    <!--获取教师信息-->
+    <select id="getTeacherList" resultType="com.cafebabe.phosphor.model.dto.TeacherInformationDTO">
+        select teacher.teacher_id,
+               teacher_name,
+               teache_phone,
+               teacher_mail,
+               teacher_photo,
+               teacher_worktime,
+               teacher_desc,
+               teacher_status,
+               teacher_sf,
+               teacher_like_count,
+               company_name
+        from teacher
+                 join teacher_like on teacher_like.teacher_id = teacher.teacher_id
+                 join company on teacher.company_id = company.company_id
+        limit #{startRecord},#{pageSize}
+    </select>
+
+    <!--获取教师人数-->
+    <select id="getTeacherCount" resultType="java.lang.Integer">
+        select count(*)
+        from teacher
+    </select>
+
+    <!--根据ID获取指定教师信息-->
+    <select id="getTeacherById" parameterType="java.lang.Integer"
+            resultType="com.cafebabe.phosphor.model.dto.TeacherInformationDTO">
+        select teacher.teacher_id,
+               teacher_name,
+               teache_phone,
+               teacher_mail,
+               teacher_photo,
+               teacher_worktime,
+               teacher_desc,
+               teacher_status,
+               teacher_sf,
+               teacher_like_count,
+               company_name
+        from teacher
+                 join teacher_like on teacher_like.teacher_id = teacher.teacher_id
+                 join company on teacher.company_id = company.company_id
+        where teacher.teacher_id = #{teacherId,jdbcType=INTEGER}
+    </select>
+
+    <!--根据公司ID获取教师信息-->
+    <select id="getTeacherByCompanyId" parameterType="java.lang.Integer"
+            resultType="com.cafebabe.phosphor.model.entity.Teacher">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher
+        where company_id = #{companyId,jdbcType=INTEGER}
+    </select>
+
+</mapper>

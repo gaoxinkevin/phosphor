@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.ActivitySummaryDAO">
+  <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.ActivitySummary">
+    <id column="activity_summary_id" jdbcType="INTEGER" property="activitySummaryId" />
+    <result column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="activity_summary_content" jdbcType="VARCHAR" property="activitySummaryContent" />
+    <result column="activity_summary_time" jdbcType="TIMESTAMP" property="activitySummaryTime" />
+    <result column="activity_summary_status" jdbcType="INTEGER" property="activitySummaryStatus" />
+    <result column="activity_summary_sf" jdbcType="VARCHAR" property="activitySummarySf" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    activity_summary_id, activity_id, activity_summary_content, activity_summary_time, 
+    activity_summary_status, activity_summary_sf
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from activity_summary
+    where activity_summary_id = #{activitySummaryId,jdbcType=INTEGER}
+  </select>
+
+    <!--根据ActivityID获取ActivitySummary-->
+  <select id="getActivitySummaryByActID" parameterType="java.lang.Integer" resultType="com.cafebabe.phosphor.model.entity.ActivitySummary">
+    select
+    <include refid="Base_Column_List"/>
+    from activity_summary
+    where activity_id = #{activityId, jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from activity_summary
+    where activity_summary_id = #{activitySummaryId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.ActivitySummary">
+    insert into activity_summary (activity_summary_id, activity_id, activity_summary_content, 
+      activity_summary_time, activity_summary_status, 
+      activity_summary_sf)
+    values (#{activitySummaryId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{activitySummaryContent,jdbcType=VARCHAR}, 
+      #{activitySummaryTime,jdbcType=TIMESTAMP}, #{activitySummaryStatus,jdbcType=INTEGER}, 
+      #{activitySummarySf,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.ActivitySummary">
+    insert into activity_summary
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="activitySummaryId != null">
+        activity_summary_id,
+      </if>
+      <if test="activityId != null">
+        activity_id,
+      </if>
+      <if test="activitySummaryContent != null">
+        activity_summary_content,
+      </if>
+      <if test="activitySummaryTime != null">
+        activity_summary_time,
+      </if>
+      <if test="activitySummaryStatus != null">
+        activity_summary_status,
+      </if>
+      <if test="activitySummarySf != null">
+        activity_summary_sf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="activitySummaryId != null">
+        #{activitySummaryId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null">
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="activitySummaryContent != null">
+        #{activitySummaryContent,jdbcType=VARCHAR},
+      </if>
+      <if test="activitySummaryTime != null">
+        #{activitySummaryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activitySummaryStatus != null">
+        #{activitySummaryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="activitySummarySf != null">
+        #{activitySummarySf,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.ActivitySummary">
+    update activity_summary
+    <set>
+      <if test="activityId != null">
+        activity_id = #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="activitySummaryContent != null">
+        activity_summary_content = #{activitySummaryContent,jdbcType=VARCHAR},
+      </if>
+      <if test="activitySummaryTime != null">
+        activity_summary_time = #{activitySummaryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activitySummaryStatus != null">
+        activity_summary_status = #{activitySummaryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="activitySummarySf != null">
+        activity_summary_sf = #{activitySummarySf,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where activity_summary_id = #{activitySummaryId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.ActivitySummary">
+    update activity_summary
+    set activity_id = #{activityId,jdbcType=INTEGER},
+      activity_summary_content = #{activitySummaryContent,jdbcType=VARCHAR},
+      activity_summary_time = #{activitySummaryTime,jdbcType=TIMESTAMP},
+      activity_summary_status = #{activitySummaryStatus,jdbcType=INTEGER},
+      activity_summary_sf = #{activitySummarySf,jdbcType=VARCHAR}
+    where activity_summary_id = #{activitySummaryId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Site Meta -->
+    <title>个人中心-孩子信息</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+    <!--FontAwesome-->
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom & Default Styles  外部-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleDgtle.css">
+    <link rel="stylesheet" href="/css/styleCommon.css">
+
+    <!--自己写的 -->
+    <link rel="stylesheet" href="/css/alreadyLogin.css">
+
+    <style>
+        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
+            background-color: #82B43F;
+            border-color: #82B43F;
+        }
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
+            background: #82B43F;
+            color: #ffffff !important;
+        }
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
+            background: #82B43F none repeat scroll 0 0 !important;
+
+        }
+
+    </style>
+</head>
+
+<body>
+<!--Ajax向后台输出数据-->
+<script>
+    //region 个人中心的信息填充
+/*    const clientUrl = 'http://localhost:1250/parent/parentAllInfo';
+    const clientMethod = 'POST';
+    const getParentImg = (url) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open(clientMethod, url);
+            client.responseType = 'json';
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send();
+        });
+    };
+    const JsonResponseList = () => getParentImg(clientUrl);
+    JsonResponseList().then((res) => {
+
+        const imgSrc = document.getElementById("avatarImg");
+        const imgSrc1 = document.getElementById("avatarImg2");
+        const imgSrc3 = document.getElementById("defaultImg");
+        const parentName2 = document.getElementById("aName");
+        imgSrc.src = res.data.parentPhoto;
+        imgSrc1.src = res.data.parentPhoto;
+        imgSrc3.src = res.data.parentPhoto;
+        parentName2.innerText = res.data.parentName;
+
+    }).catch(error => {
+        console.log(error);
+    });*/
+    //endregion
+
+    //region 订单信息填充
+    const orderUrl ="/orderUi/orderUi/";
+    const courseUrl = "/courseUi/courseInfoUi/";
+    const activityUrl = "/activityUi/activityInfoUi/";
+    const clientUrl1 = 'http://localhost:1250/order/orderList';
+    const clientMethod1 = 'POST';
+    const getJsonOrder = (url) => {
+        return new Promise((resolve,reject) => {
+            const client = new XMLHttpRequest();
+            client.open(clientMethod1, url);
+            client.responseType = 'json';
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send();
+        });
+    };
+
+    const orderList = () => getJsonOrder(clientUrl1) ;
+
+    orderList().then(({data}) => {
+        const ordersPanel = document.getElementById("ordersPanel");
+        for(let i = 0; i < data.length ; i++) {
+            let divGrid = generateOrderDiv(data[i]);
+            ordersPanel.appendChild(divGrid);
+        }
+    }).catch(error => {
+        console.log(error);
+    });
+    function getDetail (detail){
+
+        let detailUrl="";
+        if (detail.type=="课程") {
+            detailUrl=courseUrl+detail.id;
+        } else {
+            detailUrl=activityUrl+detail.id;
+        }
+        let otr = document.createElement("tr");
+        let td1 = document.createElement("td");
+        let adetail1 = document.createElement("a"); 
+        adetail1.setAttribute("href",detailUrl);
+        let imageGroup = document.createElement("img");
+        imageGroup.setAttribute("src", detail.photo);
+        imageGroup.setAttribute("width","80");
+        imageGroup.setAttribute("height","80");
+        adetail1.appendChild(imageGroup);
+        td1.appendChild(adetail1);
+
+        let td2 = document.createElement("td");
+        let adetail2 = document.createElement("a"); 
+        adetail2.setAttribute("href",detailUrl);
+        let smalltype = document.createElement("mark");
+        smalltype.innerText=detail.type;
+        let pname =document.createElement("p");
+        pname.innerText= detail.name;
+        adetail2.appendChild(smalltype);
+        adetail2.appendChild(pname);
+        td2.appendChild(adetail2);
+
+        let td3 = document.createElement("td");
+        td3.setAttribute("width","120");
+        td3.innerText="￥"+detail.price;
+        let td4 = document.createElement("td");
+        td4.setAttribute("width","80");
+        let marktype = document.createElement("mark");
+        marktype.innerText=detail.type;
+        if (0==detail.state) {
+            marktype.innerText="未开始";
+        } else if (1==detail.state) {
+            marktype.innerText="正在进行";
+        } else if (2==detail.state) {
+            marktype.innerText="去评价";
+        }else {
+            marktype.innerText="完成";
+        }
+        td4.appendChild(marktype);
+        otr.appendChild(td1);
+        otr.appendChild(td2);
+        otr.appendChild(td3);
+        otr.appendChild(td4);
+        return otr;
+    }
+
+    function generateOrderDiv (order){
+
+        let divGrid = document.createElement("div");
+        divGrid.classList.add("mn","row");
+        let divBox = document.createElement("div");
+        divBox.classList.add("col-md-12");
+        let tableOrder = document.createElement("table");
+        tableOrder.classList.add("dt", "mtm");
+        tableOrder.setAttribute("cellPadding","0");
+        tableOrder.setAttribute("cellSpacing","0")
+
+        let captionName =document.createElement("caption");
+        let hmbm = document.createElement("h2");
+        hmbm.classList.add("mbm","xs2");
+        let astate = document.createElement("a");
+        astate.classList.add("xi2","xs1","xw0","y");
+        if (order.orderState==0) {
+            astate.innerText = "交易失败";
+            astate.setAttribute("style","color:red;");
+        } else {
+            astate.innerText = "交易成功";
+        }
+        hmbm.appendChild(astate);
+        hmbm.innerHTML += order.orderEndTime+"&nbsp;&nbsp;&nbsp;订单号:"+order.orderNumber
+        captionName.appendChild(hmbm);
+        tableOrder.appendChild(captionName);
+        let otbody = document.createElement("tbody");
+        let otr = document.createElement("tr");
+        let th1 = document.createElement("th");
+        th1.setAttribute("width","80");
+        th1.innerText = "孩子:"+order.childId;
+        let th2 = document.createElement("th");
+        th2.innerText = "订单总金额:"+order.orderPrice;
+        let th3 = document.createElement("th");
+        th3.setAttribute("width","120");
+        let th4 = document.createElement("th");
+        th4.setAttribute("width","80");
+        let ay =document.createElement("a");
+        ay.setAttribute("href",orderUrl+order.orderId);
+        ay.classList.add("xi2","xs1","xw0","y");
+        ay.innerText = "查看更多»";
+        th4.appendChild(ay);
+        otr.appendChild(th1);
+        otr.appendChild(th2);
+        otr.appendChild(th3);
+        otr.appendChild(th4);
+        otbody.appendChild(otr);
+        for(let i = 0; i < order.details.length ; i++) {
+            let detail=getDetail(order.details[i])
+            otbody.appendChild(detail);
+        }
+        tableOrder.appendChild(otbody);
+        divBox.appendChild(tableOrder);
+        divGrid.appendChild(divBox);
+        return divGrid;
+    }
+    //endregion
+
+</script>
+<div id="wrapper">
+
+    <div id="preloader">
+        <img class="preloader" src="/images/loader.gif" alt="">
+    </div>
+
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <form id="login-form">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="flaticon-add" aria-hidden="true"></span>
+                        </button>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="What you are looking for?"
+                                   required>
+                        </div>
+                    </form><!-- End # Login Form -->
+                </div><!-- End # DIV Form -->
+            </div>
+        </div>
+    </div>
+
+    <header class="header affix">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="">课程</a></li>
+                        <li><a href="">活动</a></li>
+                        <li><a href="">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false"
+                                        style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">官方套餐</a></li>
+                                    <li><a href="#">自定义套餐</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="">联系我们</a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
+                                class="fa fa-search"></i></a></li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
+                                    <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
+                                    <li><a href="#">我的关注</a></li>
+                                    <li><a href="#">我的收藏</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+    <div id="dgtle_body" style="min-height: 670px">
+        <div id="dgtle_body_bg" style="margin-top: 110px">
+            <div id="wp" class="wp">
+                <div id="ct" class="ct2 wp cl dgtle_wpct2">
+
+                    <div class="mn">
+
+                        <!-- <div class="bm bw0"> </div> -->
+                        <ul class="tb cl">
+                            <li class="a"><a href=""
+                                             sl-processed="1">我的订单</a></li>
+                            <li class="y">
+                                <select onchange="">
+                                    <option value="">全局规则</option>
+                                    <option value="2">尾巴主版</option>
+                                    <option value="46">甩甩尾巴</option>
+                                    <option value="77">尾巴认证</option>
+                                </select>
+                            </li>
+                        </ul>
+                        <div id="ordersPanel">
+                           <!-- <div class="mn row">
+                                <div class="col-md-12">
+                                    <table summary="我的订单" cellspacing="0" cellpadding="0" class="dt mtm">
+                                        <caption>
+                                            <h2 class="mbm xs2">
+                                                <a href="" class="xi2 xs1 xw0 y">交易成功</a>2018-10-29 订单号:7974738
+                                            </h2>
+                                        </caption>
+                                        <tbody>
+                                        <tr>
+                                            <th width="80">孩子:曹思雨</th>
+                                            <th>订单金额:$788.00</th>
+                                            <th width="120"></th>
+                                            <th width="80"><a href="" class="xi2 xs1 xw0 y">查看更多»</a></th>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="/upload/people.jpg" width="80" height="80"></td>
+                                            <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
+                                            <td width="120">$799.00</td>
+                                            <td width="80">
+                                                <mark>正在进行</mark>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="mn row">
+                                <div class=" col-md-12">
+                                    <table summary="我的订单" cellspacing="0" cellpadding="0" class="dt mtm">
+                                        <caption>
+                                            <h2 class="mbm xs2">
+                                                <a href="" class="xi2 xs1 xw0 y">交易成功</a>2018-10-29 订单号:7974738
+                                            </h2>
+                                        </caption>
+                                        <tbody>
+                                        <tr>
+                                            <th width="80">孩子:曹思雨</th>
+                                            <th>订单金额:$788.00</th>
+                                            <th width="120"></th>
+                                            <th width="80"><a href="" class="xi2 xs1 xw0 y">查看更多»</a></th>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="/upload/people.jpg" width="80" height="80"></td>
+                                            <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
+                                            <td width="120">$799.00</td>
+                                            <td width="80">
+                                                <mark>正在进行</mark>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="/upload/people.jpg" width="80" height="80"></td>
+                                            <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
+                                            <td width="120">$799.00</td>
+                                            <td width="80">
+                                                <mark>正在进行</mark>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><img src="/upload/people.jpg" width="80" height="80"></td>
+                                            <td><i>专业制作张小明麻辣烫产品包你满意的温馨课程说实话我就是不待见你</i></td>
+                                            <td width="120">$799.00</td>
+                                            <td width="80">
+                                                <mark>正在进行</mark>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>-->
+                        </div>
+                        <div class="bm bw0">
+                            <h1 class="mt">积分
+                            </h1>
+                            <div class="tbmu bw0">
+                                <p>进行以下事件动作，会得到积分奖励。不过，在一个周期内，您最多得到的奖励次数有限制 </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 左侧边栏-->
+                    <!--右侧边栏-->
+                    <div class="appl">
+                        <div class="sd_box">
+                            <div class="group_sd_mymembers cr_grs">
+                                <div class="avat"
+                                     style="border: 2px solid black;width: 100px;height: 100px;margin: 20px auto;border-radius: 50px;">
+                                    <a target="_blank" sl-processed="1">
+                                        <img id="avatarImg2"
+                                             src="http://www.dgtle.com/uc_server/images/noavatar_big.gif"
+                                             style="max-width: 100%;min-height: 100px;
+                                                      min-width: 100px;max-height: 100%;
+                                                      margin: 0">
+                                    </a>
+                                </div>
+                                <div class="mporf cl">
+                                    <p class="homeusername">
+                                        <a id="aName" style="margin-left: 80px;margin-top: 20px"></a>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tbn">
+                            <h2 class="mt bbda">设置</h2>
+
+                            <ul>
+
+                                <li>
+                                    <a href="/parentUi/parentChangeAvatarUi" sl-processed="1">修改头像</a>
+                                </li>
+
+                                <li>
+                                    <a href="/parentUi/parentSettingsUi" sl-processed="1">个人资料</a>
+                                </li>
+
+                                <li>
+                                    <a href="/parentUi/parentChangePasswordUi" sl-processed="1">密码安全</a>
+                                </li>
+
+                                <li>
+                                    <a href="#" sl-processed="1">订单查询</a>
+                                </li>
+
+                                <li class="a">
+                                    <a href="#" sl-processed="1">孩子资料</a>
+                                </li>
+
+                                <li>
+                                    <a href="" sl-processed="1">帐号绑定</a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="section footer noover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
+                                policy</a>.</p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags-widget">
+                            <ul class="list-inline">
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Support</h3>
+                        <div class="list-widget">
+                            <ul>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing & Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer>
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div>
+
+</div>
+<!--模版自带-->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/customLogin.js"></script>
+</body>
+
+</html>

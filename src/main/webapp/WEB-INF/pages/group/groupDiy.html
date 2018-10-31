@@ -1,0 +1,653 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="no-js ie9 fixed-layout" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js " lang="en"> <!--<![endif]-->
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Site Meta -->
+    <title>课程</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+    <!-- Custom & Default Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleLogin.css">
+    <link rel="stylesheet" href="/css/styleCourse.css">
+    <link rel="stylesheet" href="/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="/css/styleCommon.css">
+
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script src="/js/course.js"></script>
+    <style>
+        .sd_box{
+            background: #fff;
+            box-shadow: 0px 1px 1px #a2a2a2;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333333;
+            line-height: 24px;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+        .table tbody tr td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<script>
+    const clientUrl = "http://localhost:1250"
+    const courseUrl = clientUrl+ "/courseUi/courseInfoUi/";
+    const addCourseUrl = clientUrl+ "/group/addCourse";
+    const delCourseUrl= clientUrl+ "/group/delCourse";
+    const optionUrl =  clientUrl+ "/group/delSession";
+    const addGroupUrl = clientUrl+ "/group/addGroup";
+    const orderUrl =  clientUrl+"/orderUi/orderGroupUi/";
+    /**
+     * post 方法访问网站
+     * @Param url 访问地址
+     * @Param method 请求方法
+     * @param data 上传数据
+     */
+    const postJson = ({ url, method, data }) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open(method, url);
+            client.responseType = 'json';
+            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send(data);
+        });
+    };
+    /**
+     * get 方法访问网站
+     * @Param url 访问地址
+     */
+    const getJson = (url) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open("GET", url);
+            client.responseType = 'json';
+            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send();
+        });
+    };
+
+    setGroupDiy = (group) => {
+        let divGroupPrice = document.getElementById("groupPrice");
+        let divNumber = document.getElementById("groupCourseNumber");
+        let divDiscount = document.getElementById("groupDiscount");
+        let price = 0;
+        divNumber.innerText =group.courseInfos.length;
+        divDiscount.innerText ="￥"+ group.groupPrice;
+        for (let i = 0; i <group.courseInfos.length; i++) {
+            console.log(group.courseInfos[i]);
+            price+=group.courseInfos[i].coursePrice;
+        }
+        divGroupPrice.innerText="￥"+price;
+
+    };
+    setGroupNull = () =>{
+        let divGroupPrice = document.getElementById("groupPrice");
+        let divNumber = document.getElementById("groupCourseNumber");
+        let divDiscount = document.getElementById("groupDiscount");
+        divNumber.innerText = 0;
+        divDiscount.innerText ="￥"+ 0;
+        divGroupPrice.innerText="￥"+0;
+    }
+    /**
+     * 清空session和界面的选择课程
+     */
+    optionError = () => {
+        let delSession = () => getJson(optionUrl);
+        delSession().then(res => {
+            if(res.code<=30000){
+                let divBody = document.getElementById("divBody");
+                divBody.innerHTML="";
+                setGroupNull();
+                submit.disabled=true;
+            }else {
+                console.log("删除失败!")
+            }
+        }).catch(res => {
+            console.log(res);
+        });
+
+    };
+    /**
+     * 取消选择
+     * @param courseId 课程编号
+     */
+    cancelChoose = (courseId) => {
+        let divBody = document.getElementById(courseId);
+        let course = {
+            courseId:courseId
+        };
+        let getCourseInfo = (data) => postJson(
+            {
+                url:delCourseUrl,
+                method: "POST",
+                data
+            });
+        getCourseInfo(JSON.stringify(course)).then((res) => {
+            if (res.code<=30000) {
+                divBody.parentNode.removeChild(divBody);
+                setGroupDiy(res.data);
+                if (res.data.courseInfos.length<= 1){
+                    submit.disabled=true;
+                }
+            }else {
+                console.log(res);
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+    /**
+     * 添加课程
+     * @param courseId 课程编号
+     */
+    addCourse=(courseId)=>{
+
+        let course = {
+            courseId:courseId
+        };
+        let getCourseInfo = (data) => postJson(
+            {
+                url:addCourseUrl,
+                method: "POST",
+                data
+            });
+        console.log(JSON.stringify(course));
+        getCourseInfo(JSON.stringify(course)).then((res) => {
+            console.log(res);
+            if (res.code<=30000) {
+                let submit = document.getElementById("submit");
+                if (res.data.courseInfos.length>1){
+                    submit.disabled=false;
+                }
+                let divBody = document.getElementById("divBody");
+                divBody.innerHTML = "";
+                for (let i = 0; i < res.data.courseInfos.length; i++) {
+                    let divGrid = getCourse(res.data.courseInfos[i]);
+                    divBody.appendChild(divGrid);
+                }
+                setGroupDiy(res.data);
+            }else {
+                if (res.code===50000) {
+                    overMax(res.message);
+                }
+                else if(res.code===40100){
+                    courseConflict(res.message);
+                }
+                else if(res.code===40200){
+                    courseConflict(res.message);
+                }
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+    /**
+     * 绘制选择课程
+     * @param course 课程信息
+     * @returns {HTMLElement} 绘制的table row
+     */
+    getCourse = (course) => {
+
+        let otr = document.createElement("tr");
+        otr.setAttribute("id",course.courseId);
+        otr.classList.add("sd_box");
+        let td1 = document.createElement("td");
+        let adetail1 = document.createElement("a");
+        adetail1.setAttribute("href",courseUrl+course.courseId);
+        let imageGroup = document.createElement("img");
+        imageGroup.setAttribute("src", "/upload/people.jpg");
+        imageGroup.setAttribute("width","80");
+        imageGroup.setAttribute("height","80");
+        adetail1.appendChild(imageGroup);
+        td1.appendChild(adetail1);
+
+        let td2 = document.createElement("td");
+        let adetail2 = document.createElement("a");
+        adetail2.setAttribute("href",courseUrl+course.courseId);
+        let pname =document.createElement("p");
+        pname.innerText= course.courseName;
+        adetail2.appendChild(pname);
+        td2.appendChild(adetail2);
+
+        let td3 = document.createElement("td");
+        td3.setAttribute("width","120");
+        td3.innerText="￥"+course.coursePrice;
+        td3.setAttribute("style","color:red;");
+        let td4 = document.createElement("td");
+        td4.setAttribute("width","80");
+
+        let marktype = document.createElement("a");
+        marktype.setAttribute("href","javascript:cancelChoose("+course.courseId+")");
+        marktype.innerText="取消";
+        td4.appendChild(marktype);
+        otr.appendChild(td1);
+        otr.appendChild(td2);
+        otr.appendChild(td3);
+        otr.appendChild(td4);
+        return otr;
+    }
+
+    addGroup = () => {
+        let delSession = () => getJson(addGroupUrl);
+        delSession().then(res => {
+            if(res.code<=30000){
+                window.location.href = orderUrl+res.data;
+            }else {
+                console.log("创建套餐失败!")
+            }
+        }).catch(res => {
+            console.log(res);
+        });
+    };
+    overMax = (message) => {
+        document.body.style.overflowX = "hidden";
+        document.body.style.overflowY = "hidden";
+        let dialog = document.getElementById("dialog");
+        let vModal =document.getElementById("v-modal");
+        let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+        let elButton = document.getElementById("el-button");
+
+        elButton.innerText="继续添加";
+        elButton.style.padding = "0.8em 2em";
+        elButton.setAttribute("href","javascript:void(0)");
+        elButton.setAttribute("onclick","cancelDialog()");
+
+        vModal.style.display="block";
+        dialog.style.display="block";
+        dialogPInnerHtml.innerText=message;
+    }
+
+    courseConflict = (message) => {
+        document.body.style.overflowX = "hidden";
+        document.body.style.overflowY = "hidden";
+        let dialog = document.getElementById("dialog");
+        let vModal =document.getElementById("v-modal");
+        let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+        let elButton = document.getElementById("el-button");
+
+        elButton.innerText="重新添加";
+        elButton.style.padding = "0.8em 2em";
+        elButton.setAttribute("href","javascript:void(0)");
+        elButton.setAttribute("onclick","cancelDialog()");
+
+        vModal.style.display="block";
+        dialog.style.display="block";
+        dialogPInnerHtml.innerText=message;
+    }
+
+    cancelDialog =() =>{
+        document.body.style.overflowX = "visible";
+        document.body.style.overflowY = "visible";
+        let dialog = document.getElementById("dialog");
+        let vModal =document.getElementById("v-modal");
+        vModal.style.display="none";
+        dialog.style.display="none";
+    }
+</script>
+<!-- LOADER -->
+<div id="preloader">
+    <img class="preloader" src="/images/loader.gif" alt="">
+</div><!-- end loader -->
+<!-- END LOADER -->
+
+<div id="wrapper">
+    <!-- BEGIN # MODAL LOGIN -->
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <form id="login-form">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="flaticon-add" aria-hidden="true"></span>
+                        </button>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="What you are looking for?" required>
+                        </div>
+                    </form><!-- End # Login Form -->
+                </div><!-- End # DIV Form -->
+            </div>
+        </div>
+    </div>
+    <!-- END # MODAL LOGIN -->
+
+    <header class="header affix">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="">课程</a></li>
+                        <li><a href="">活动</a></li>
+                        <li><a href="">指导师</a></li>
+                        <li><a href="">联系我们</a></li>
+                        <li><a href="/loginUi/loginUi">登录|注册</a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
+                                class="fa fa-search"></i></a></li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+    <section class="section lb p120" style="background-color: #0f0f0f">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tagline-message page-title text-center">
+                        <h3>课程</h3>
+                    </div>
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section><!-- end section -->
+    <section class="section gb nopadtop">
+        <div class="container">
+            <div class="boxed">
+                <div class="row">
+                    <h4 class="mbm xs2">套餐选择</h4>
+                    <div class="col-md-8">
+                        <a href="javascript:optionError();" class="xi2 xs1 xw0 y">清空</a>
+                        <div class="mn row">
+                            <div class="col-md-12">
+                                <table summary="我的订单" cellspacing="0" cellpadding="0" class="table table-hover">
+
+                                    <tr>
+                                        <th>课程</th>
+                                        <th></th>
+                                        <th ></th>
+                                        <th width="80"><a href="" class="xi2 xs1 xw0 y">操作</a></th>
+                                    </tr>
+
+                                    <tbody id="divBody">
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4 ">
+                            <div class="shop-desc sd_box">
+                                <h3 id="groupName">自定义套餐</h3>
+                                <ul class="media-list">
+                                    <li>原价:<span id="groupPrice" style="color:red;"></span></li>
+                                    <li>课程数:<span id="groupCourseNumber"></span></li>
+                                </ul>
+                                <small>折扣价:<span id="groupDiscount" style="color:red;"></span></small>
+                                <p id="groupContent">两件九折,三件八折,四件七折,最少两个,最多四个</p>
+                                <div class="shop-meta">
+                                    <a id="submit" href="javascript:void(0)" onclick="addGroup()" disabled="true" class="btn btn-primary">立即购买</a>
+                                    <ul class="list-inline">
+                                        <li id="mmp"> Tip: 套餐购买是促销活动,购买<a href="#">课程</a>的所有权益均保留</li>
+                                    </ul>
+                                </div><!-- end shop meta -->
+                            </div><!-- end desc -->
+
+                    </div>
+                </div><!-- end row -->
+            </div><!-- end boxed -->
+        </div><!-- end container -->
+    </section>
+    <section class="section gb nopadtop">
+        <div class="container">
+            <div class="boxed boxedp4">
+                <div class="row blog-grid shop-grid" id="courseGrid">
+                    <script type="text/javascript">
+
+                        getAllCoureForGroup();
+                    </script>
+                    <!--课程单元-->
+
+                </div><!-- end row -->
+
+            </div>
+        </div><!-- end container -->
+    </section>
+
+    <footer class="section footer noover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
+                                policy</a>.</p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <img src="" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                        <a href="#" class="readmore">Became a Teacher</a>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags-widget">
+                            <ul class="list-inline">
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Support</h3>
+                        <div class="list-widget">
+                            <ul>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing & Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer><!-- end footer -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="widget clearfix">
+                    <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                    <div class="newsletter-widget">
+                        <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.
+                        </p>
+                        <form class="form-inline" role="search">
+                            <div class="form-1">
+                                <input type="text" class="form-control" placeholder="Enter email here..">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <img src="" alt="" class="img-responsive">
+                    </div><!-- end newsletter -->
+                </div><!-- end widget -->
+            </div><!-- end col -->
+
+            <div class="col-lg-3 col-md-3">
+                <div class="widget clearfix">
+                    <h3 class="widget-title">Join us today</h3>
+                    <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                    <a href="#" class="readmore">Became a Teacher</a>
+                </div><!-- end widget -->
+            </div><!-- end col -->
+
+            <div class="col-lg-3 col-md-3">
+                <div class="widget clearfix">
+                    <h3 class="widget-title">Popular Tags</h3>
+                    <div class="tags-widget">
+                        <ul class="list-inline">
+                            <li><a href="#">course</a></li>
+                            <li><a href="#">web design</a></li>
+                            <li><a href="#">development</a></li>
+                            <li><a href="#">language</a></li>
+                            <li><a href="#">teacher</a></li>
+                            <li><a href="#">speaking</a></li>
+                            <li><a href="#">material</a></li>
+                            <li><a href="#">css3</a></li>
+                            <li><a href="#">html</a></li>
+                            <li><a href="#">learning</a></li>
+                        </ul>
+                    </div><!-- end list-widget -->
+                </div><!-- end widget -->
+            </div><!-- end col -->
+
+            <div class="col-lg-2 col-md-2">
+                <div class="widget clearfix">
+                    <h3 class="widget-title">Support</h3>
+                    <div class="list-widget">
+                        <ul>
+                            <li><a href="#">Terms of Use</a></li>
+                            <li><a href="#">Copyrights</a></li>
+                            <li><a href="#">Create a Ticket</a></li>
+                            <li><a href="#">Pricing & Plans</a></li>
+                            <li><a href="#">Carrier</a></li>
+                            <li><a href="#">Trademark</a></li>
+                        </ul>
+                    </div><!-- end list-widget -->
+                </div><!-- end widget -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+    </div><!-- end container -->
+    </footer><!-- end footer -->
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">HTML.Design</a></li>
+                            <li>Distributed by : More Templates <a href="http://www.cssmoban.com/" target="_blank"
+                                                                   title="模板之家">模板之家</a> - Collect from <a
+                                    href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div><!-- end copy -->
+
+    <div id="dialog">
+        <div class="el-message-box">
+            <div class="el-message-box__content">
+                <div class="el-message-box__status"></div>
+                <div class="el-message-box__message">
+                    <p id="dialogPInnerHtml"></p>
+                </div>
+                <div class="el-message-box__input" style="display: none;">
+                    <div class="el-input">
+                        <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                    </div>
+                    <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+                </div>
+            </div>
+            <div class="el-message-box__btns">
+                <a id="el-button" class="el-button" style="padding: 0.8em 1em"></a>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="v-modal" style="z-index: 9998"></div>
+</div><!-- end wrapper -->
+
+<!-- jQuery Files -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/animate.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
+<script src="/js/custom.js"></script>
+<script src="/js/carousel.js"></script>
+
+</body>
+</html>

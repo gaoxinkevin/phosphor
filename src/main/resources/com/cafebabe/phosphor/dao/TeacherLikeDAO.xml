@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cafebabe.phosphor.dao.TeacherLikeDAO">
+    <resultMap id="BaseResultMap" type="com.cafebabe.phosphor.model.entity.TeacherLike">
+        <id column="teacher_like_id" jdbcType="INTEGER" property="teacherLikeId"/>
+        <result column="teacher_like_count" jdbcType="INTEGER" property="teacherLikeCount"/>
+        <result column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        teacher_like_id, teacher_like_count, teacher_id
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher_like
+        where teacher_like_id = #{teacherLikeId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from teacher_like
+        where teacher_like_id = #{teacherLikeId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.cafebabe.phosphor.model.entity.TeacherLike">
+        insert into teacher_like (teacher_like_id, teacher_like_count, teacher_id)
+        values (#{teacherLikeId,jdbcType=INTEGER}, #{teacherLikeCount,jdbcType=INTEGER}, #{teacherId,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.cafebabe.phosphor.model.entity.TeacherLike">
+        insert into teacher_like
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teacherLikeId != null">
+                teacher_like_id,
+            </if>
+            <if test="teacherLikeCount != null">
+                teacher_like_count,
+            </if>
+            <if test="teacherId != null">
+                teacher_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teacherLikeId != null">
+                #{teacherLikeId,jdbcType=INTEGER},
+            </if>
+            <if test="teacherLikeCount != null">
+                #{teacherLikeCount,jdbcType=INTEGER},
+            </if>
+            <if test="teacherId != null">
+                #{teacherId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cafebabe.phosphor.model.entity.TeacherLike">
+        update teacher_like
+        <set>
+            <if test="teacherLikeCount != null">
+                teacher_like_count = #{teacherLikeCount,jdbcType=INTEGER},
+            </if>
+            <if test="teacherId != null">
+                teacher_id = #{teacherId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where teacher_like_id = #{teacherLikeId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cafebabe.phosphor.model.entity.TeacherLike">
+        update teacher_like
+        set teacher_like_count = #{teacherLikeCount,jdbcType=INTEGER},
+            teacher_id         = #{teacherId,jdbcType=INTEGER}
+        where teacher_like_id = #{teacherLikeId,jdbcType=INTEGER}
+    </update>
+
+    <!--根据教师ID为点赞数加1-->
+    <update id="updateTeacherLikeCountAdd" parameterType="com.cafebabe.phosphor.model.entity.TeacherLike">
+        update teacher_like
+        set teacher_like_count = teacher_like_count + 1
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+    </update>
+
+    <!--根据教师ID获得点赞数-->
+    <select id="selectByTeacherId" parameterType="java.lang.Integer"
+            resultType="java.lang.Integer">
+        select teacher_like_count
+        from teacher_like
+        where teacherId = #{teacherId,jdbcType=INTEGER}
+    </select>
+</mapper>

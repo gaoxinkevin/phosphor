@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Site Meta -->
+    <title>套餐详情</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+    <!-- Custom & Default Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleLogin.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+<!--Ajax向后台输出数据-->
+<script>
+    const clientUrl = 'http://localhost:1250';
+    const orderUrl = clientUrl +'/orderUi/orderGroupUi/'
+    const courseUrl= clientUrl + '/courseUi/courseInfoUi/';
+    const groupUrl = clientUrl + '/group/group';
+    const getJson = (url) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open("GET", url);
+            client.responseType = 'json';
+            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send();
+        });
+    };
+
+    const group = () => getJson(groupUrl);
+
+    group().then(res => {
+        if (res.code<=30000){
+            console.log(res);
+            const groupName = document.getElementById("groupName");
+            const groupContent = document.getElementById("groupContent");
+            const groupPrice = document.getElementById("groupPrice");
+            const groupDiscount = document.getElementById("groupDiscount");
+            const groupCourseNumber = document.getElementById("groupCourseNumber");
+            const groupPhoto = document.getElementById("groupPhoto");
+            const groupPrettyPhoto = document.getElementById("groupPrettyPhoto");
+            const buy = document.getElementById("buy");
+
+            groupName.innerText += res.data.groupName;
+            groupContent.innerText += res.data.groupContent;
+            groupPrice.innerText += res.data.groupPrice;
+            groupDiscount.innerText += res.data.groupPrice * res.data.groupDiscount;
+            groupCourseNumber.innerText += res.data.groupCourseNumber;
+            groupPhoto.src = res.data.groupPhoto;
+            groupPrettyPhoto.href = res.data.groupPhoto;
+            groupPrettyPhoto.innerText += res.data.groupName;
+            buy.setAttribute("href",orderUrl+res.data.groupId);
+
+            const groupsPanel = document.getElementById("groupsPanel");
+            for (let i = 0; i < res.data.courseInfos.length; i++) {
+                let divGrid = generateCourseDiv(res.data.courseInfos[i]);
+                groupsPanel.appendChild(divGrid);
+            }
+        } else{
+            console.log(res);
+        }
+
+    }).catch(error => {
+        console.log(error);
+    });
+
+    function generateCourseDiv(course) {
+        let divMedia = document.createElement("div");
+        divMedia.classList.add("media");
+        let div2 = document.createElement("div");
+        div2.classList.add("col-md-2");
+        let ablock =document.createElement("a");
+        ablock.setAttribute("style","display:block;");
+        ablock.setAttribute("href",courseUrl+course.courseId);
+        let image =document.createElement("img");
+        image.setAttribute("src",course.courseSf);
+        image.classList.add("img-responsive", "alignleft", "img-rounded");
+        ablock.appendChild(image);
+        div2.appendChild(ablock);
+        let div10 = document.createElement("div");
+        div10.classList.add("col-md-10");
+        let htt =document.createElement("h4");
+        htt.classList.add("mt-0");
+        let att =document.createElement("a");
+        att.setAttribute("href",courseUrl+course.courseId);
+        att.innerText = course.courseName+"&nbsp;&nbsp;&nbsp;"+course.courseDesc;
+        htt.appendChild(att);
+        let divMeta = document.createElement("div");
+        divMeta.classList.add("blog-meta");
+        let ulcou = document.createElement("ul");
+        ulcou.classList.add("media-list")
+        let liStart =document.createElement("li");
+        liStart.innerText="开课时间:"+course.courseStartDay;
+        let licont =document.createElement("li");
+        licont.innerText="持续时间:"+course.courseContinuedTime+"周";
+        let liTime =document.createElement("li");
+        liTime.innerText= "上课时间:"+course.courseStartTime+"-"+course.courseEndTime;
+        let liPrice =document.createElement("li");
+        let spanDesc = document.createElement("span");
+        spanDesc.innerText="课程原价:"
+        let spanPrice = document.createElement("span");
+        spanPrice.setAttribute("style","color:red");
+        spanPrice.innerText="￥"+course.coursePrice;
+        liPrice.appendChild(spanDesc);
+        liPrice.appendChild(spanPrice);
+        let liAdrs =document.createElement("li");
+        liAdrs.innerText="上课地点:"+course.courseAddress;
+        ulcou.appendChild(liStart);
+        ulcou.appendChild(licont);
+        ulcou.appendChild(liTime);
+        ulcou.appendChild(liPrice);
+        ulcou.appendChild(liAdrs);
+        divMeta.appendChild(ulcou);
+        div10.appendChild(htt);
+        div10.appendChild(divMeta);
+        divMedia.appendChild(div2);
+        divMedia.appendChild(div10);
+        return divMedia;
+    }
+</script>
+
+<div id="wrapper">
+
+    <div id="preloader">
+        <img class="preloader" src="/images/loader.gif" alt="">
+    </div>
+
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <form id="login-form">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="flaticon-add" aria-hidden="true"></span>
+                        </button>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="What you are looking for?" required>
+                        </div>
+                    </form><!-- End # Login Form -->
+                </div><!-- End # DIV Form -->
+            </div>
+        </div>
+    </div>
+
+    <header class="header affix">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="">课程</a></li>
+                        <li><a href="">活动</a></li>
+                        <li><a href="">指导师</a></li>
+                        <li><a href="/companyUi/companyUi">联系我们</a></li>
+                        <li><a href="/loginUi/loginUi">登录|注册</a></li>
+                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
+                                class="fa fa-search"></i></a></li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+    <section class="section db p120">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tagline-message page-title text-center">
+                        <h3>Blog & News</h3>
+                        <ul class="breadcrumb">
+                            <li><a href="">Edulogy</a></li>
+                            <li class="active">Blog</li>
+                        </ul>
+                    </div>
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section><!-- end section -->
+
+    <section class="section">
+        <div class="container">
+            <div class=" ">
+                <div class="row">
+                    <div class="col-md-6 shop-media">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="image-wrap entry">
+                                    <img src="" alt="" class="img-responsive" id="groupPhoto">
+                                    <div class="magnifier">
+                                        <a rel="prettyPhoto[inline]" href="" title="" id="groupPrettyPhoto"></a>
+                                    </div>
+                                </div><!-- end image-wrap -->
+                            </div>
+                        </div><!-- end row -->
+                    </div><!-- end col -->
+
+                    <div class="col-md-6">
+                        <div class="shop-desc">
+                            <h3 id="groupName"></h3>
+                            <ul class="media-list">
+                                <li>原价:<span id="groupPrice" style="color:red;">$</span></li>
+                                <li>课程数:<span id="groupCourseNumber"></span></li>
+                            </ul>
+                            <small>折扣价:<span id="groupDiscount" style="color:red;">$</span></small>
+                            <p id="groupContent"></p>
+                            <div class="shop-meta">
+                                <a href="" class="btn btn-primary" id="buy">立即购买</a>
+                                <ul class="list-inline">
+                                    <li> Tip: 套餐购买是促销活动,购买<a href="#">课程</a>的所有权益均保留</li>
+                                </ul>
+                            </div><!-- end shop meta -->
+                        </div><!-- end desc -->
+                    </div><!-- end col -->
+                </div><!-- end row -->
+
+                <hr class="invis">
+                <div class="row">
+                    <div class="sidebar col-md-12">
+                        <div class="widget clearfix">
+                            <div class="banner-widget">
+                                <img src="" alt="" class="img-responsive img-rounded">
+                            </div>
+                        </div>
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">套餐课程</h3>
+                            <div class="post-widget" id="groupsPanel">
+
+                                
+                                <div class="media">
+                                    <div class="col-md-2">
+                                        <a style="display: block" href="/courseUi/courseInfoUi"><img
+                                                src="/upload/01_team.png" alt=""
+                                                class="img-responsive alignleft img-rounded">
+                                        </a></div>
+                                    <div class="col-md-10">
+                                            <h5 class="mt-0"><a href="/courseUi/courseInfoUi">围棋 故国神游,多情应笑我,早生华发</a>
+                                            </h5>
+                                            <div class="blog-meta">
+                                                <ul class="media-list">
+                                                    <li>开课时间:2018-11-03</li>
+                                                    <li>持续时间:4周</li>
+                                                    <li>上课时间:09:00:00-11:00:00</li>
+                                                    <li><span>课程原价</span> <a href="" style="color:red;">$1200.00</a>
+                                                    </li>
+                                                    <li>上课地点:苏州工业园区创意产业园4幢B座2楼</li>
+                                                </ul>
+                                            </div><!-- end blog-meta -->
+                                        </div>
+                                </div>
+                            </div><!-- end post-widget -->
+                        </div><!-- end widget -->
+
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">套餐须知:</h3>
+                            <div class="newsletter-widget">
+                                <p>You can opt out of our newsletters at any time. See our <a href="#">privacy
+                                    policy</a>.</p>
+                                <form class="form-inline" role="search">
+                                    <div class="form-1">
+                                        <input type="text" class="form-control" placeholder="Enter email here..">
+                                        <button type="submit" class="btn btn-primary"><i
+                                                class="fa fa-paper-plane-o"></i></button>
+                                    </div>
+                                </form>
+                            </div><!-- end newsletter -->
+                        </div><!-- end widget -->
+
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">Popular Tags</h3>
+                            <div class="tags-widget">
+                                <ul class="list-inline">
+                                    <li><a href="#">course</a></li>
+                                    <li><a href="#">web design</a></li>
+                                    <li><a href="#">development</a></li>
+                                    <li><a href="#">language</a></li>
+                                    <li><a href="#">teacher</a></li>
+                                    <li><a href="#">speaking</a></li>
+                                    <li><a href="#">material</a></li>
+                                    <li><a href="#">css3</a></li>
+                                    <li><a href="#">html</a></li>
+                                    <li><a href="#">learning</a></li>
+                                </ul>
+                            </div><!-- end list-widget -->
+                        </div><!-- end widget -->
+                    </div><!-- end sidebar -->
+                </div><!-- end row -->
+                <hr class="invis">
+
+                <div class="related-products">
+                    <div class="text-widget">
+                        <h3>Related Products</h3>
+                    </div><!-- end title -->
+
+                    <div class="row blog-grid shop-grid">
+                        <div class="col-md-4">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/shop_01.jpg" alt="" class="img-responsive">
+                                    <div class="magnifier">
+                                        <a href="shop-single.html" title=""><i class="flaticon-add"></i></a>
+                                    </div>
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4>
+                                        <a href="shop-single.html" title="">Brown leather bag</a>
+                                        <small>Bags</small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">$441.00</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+
+                        <div class="col-md-4">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/shop_02.jpg" alt="" class="img-responsive">
+                                    <div class="magnifier">
+                                        <a href="" title=""><i class="flaticon-add"></i></a>
+                                    </div>
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4>
+                                        <a href="/shop-single.html" title="">Long coat jacket</a>
+                                        <small>Jackets</small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">$122.00</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+
+                        <div class="col-md-4">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/shop_03.jpg" alt="" class="img-responsive">
+                                    <div class="magnifier">
+                                        <a href="shop-single.html" title=""><i class="flaticon-add"></i></a>
+                                    </div>
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4>
+                                        <a href="shop-single.html" title="">Style own glasses</a>
+                                        <small>Glasses</small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">$52.00</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                </div><!-- end related -->
+            </div><!-- end boxed -->
+        </div><!-- end container -->
+    </section>
+
+
+    <footer class="section footer noover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
+                                policy</a>.</p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags-widget">
+                            <ul class="list-inline">
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Support</h3>
+                        <div class="list-widget">
+                            <ul>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing & Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer>
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div>
+
+    <div id="dialog">
+        <div class="el-message-box">
+            <div class="el-message-box__content">
+                <div class="el-message-box__status"></div>
+                <div class="el-message-box__message">
+                    <p id="dialogPInnerHtml"></p>
+                </div>
+                <div class="el-message-box__input" style="display: none;">
+                    <div class="el-input">
+                        <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                    </div>
+                    <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+                </div>
+            </div>
+            <div class="el-message-box__btns">
+                <a href="/loginUi/loginUi" id="el-button" class="el-button"></a>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="v-modal" style="z-index: 9998"></div>
+
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/animate.js"></script>
+<script src="/js/custom.js"></script>
+</body>
+
+</html>
