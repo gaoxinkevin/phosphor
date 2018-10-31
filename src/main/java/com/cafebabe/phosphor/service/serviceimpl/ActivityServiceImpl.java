@@ -64,40 +64,32 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Page getActivityInfoByPage(Integer pageIndex, Integer pageSize, String key, String ascOrDesc, String title) {
-        String undefined = "undefined";
+        String _undefined = "undefined";
         String _null = "null";
         Page page = new Page();
-        if(key != null && !key.equals(undefined) && !key.equals(_null) ){
+        if(key != null && !key.equals(_undefined) && !key.equals(_null) ){
             page.setKey(key);
         }
-        if(ascOrDesc != null && !ascOrDesc.equals(undefined) && !ascOrDesc.equals(_null)){
+        if(ascOrDesc != null && !ascOrDesc.equals(_undefined) && !ascOrDesc.equals(_null)){
             page.setAscOrDesc(ascOrDesc);
         }
-        if(title != null && !title.equals(undefined) && !title.equals(_null)){
+        if(title != null && !title.equals(_undefined) && !title.equals(_null)){
             page.setTitle(title);
         }
 
         page.setTotalRecord(activityDAO.getActivityCountWithCondition(page.getTitle()));
-        Integer totalPages = (page.getTotalRecord() % page.getPageSize() == 0) ? (page.getTotalRecord() / page.getPageSize()) : ((page.getTotalRecord() / page.getPageSize())+1);
-        page.setTotalPages(totalPages);
         page.setCurrentPageCode(pageIndex);
         page.setStartRecord(pageIndex * pageSize);
         page.setEndRecord(pageSize * (pageIndex + 1) - 1);
         page.setKey(key);
         page.setAscOrDesc(ascOrDesc);
         page.setTitle(title);
+        //设置pageSize,避免和其他开发者冲突
+        page.setPageSize(4);
+        Integer totalPages = (page.getTotalRecord() % page.getPageSize() == 0) ? (page.getTotalRecord() / page.getPageSize()) : ((page.getTotalRecord() / page.getPageSize())+1);
+        page.setTotalPages(totalPages);
         List<Activity> activityList = activityDAO.getActivityByPage(page);
-
-        System.out.println("************************************************");
-        for(Activity a:activityDAO.getActivityByPage(page)){
-            System.out.println("service activity :"+a);
-            System.out.println("===================================================");
-        }
-        System.out.println("************************************************");
-
-
         page.setModelList(activityList);
-        System.out.println(page.toString()+"=====");
         return page;
     }
 

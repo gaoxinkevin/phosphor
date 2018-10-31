@@ -229,8 +229,7 @@ function loadTeacherCourse2View(responseText) {
         let course = courseList[i];
         let aToCourse = document.createElement("a");
 
-        //TODO(添加跳到course详情页的url，这里暂时先设置为当前页)
-        aToCourse.setAttribute("href", "#");
+        aToCourse.setAttribute("href", "/courseUi/courseInfoUi/"+course.courseId);
         aToCourse.innerText = course.courseName;
 
         let liCourse = document.createElement("li");
@@ -334,8 +333,10 @@ function getRemainTime(stopApplyTime) {
  *报名参加活动
  */
 function signInForActivity() {
-    //TODO 暂时先不设置路径
-    alert("报名成功");
+    let request = getXhr();
+    request.open("GET", "/orderUi/orderActivityUi/"+activityDetail.activityId, true);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.send(null);
 }
 
 /**
