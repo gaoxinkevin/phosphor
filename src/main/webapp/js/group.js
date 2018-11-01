@@ -7,6 +7,7 @@ const addGroupUrl = clientGroupUrl+ "/group/addGroup";
 const orderUrl =  clientGroupUrl+"/orderUi/orderGroupUi/";
 const groupUrl = clientGroupUrl + '/groupUi/groupUi/';
 const getGroupUrl = clientGroupUrl + '/group/group/';
+const recommendGroupUrl = clientGroupUrl + '/group/groupRecommend';
 
 let a = localStorage.getItem("userLoginPhone");
 if (a === null) {
@@ -392,7 +393,7 @@ overMax = (message) => {
     let elButton = document.getElementById("el-button");
 
     elButton.innerText="继续添加";
-    elButton.style.padding = "0.8em 2em";
+    elButton.style.padding = "0.5em 1em";
     elButton.setAttribute("href","javascript:void(0)");
     elButton.setAttribute("onclick","cancelDialog()");
 
@@ -410,7 +411,7 @@ courseConflict = (message) => {
     let elButton = document.getElementById("el-button");
 
     elButton.innerText="重新添加";
-    elButton.style.padding = "0.8em 2em";
+    elButton.style.padding = "0.5em 1em";
     elButton.setAttribute("href","javascript:void(0)");
     elButton.setAttribute("onclick","cancelDialog()");
 

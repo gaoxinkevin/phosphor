@@ -89,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDTO> getOrderListAll() {
 
         List<OrderDTO> cache = RedisUtil.getList("getOrderDTOListAll");
-        if (cache != null){
+        if (cache != null&&cache.size()>0){
             return cache;
         }else {
             List<OrderDTO> orderDTOList = new ArrayList<>() ;
@@ -122,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDTO> getOrderListByChildId(Integer id) {
 
         List<OrderDTO> cache = RedisUtil.getList("getOrderListByChildId"+id);
-        if (cache != null){
+        if (cache != null&&cache.size()>0){
             return cache;
         }else {
             List<OrderDTO> orderDTOList = new ArrayList<>() ;
@@ -138,7 +138,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> getCourseOrderList(Integer parentId) {
         List<OrderDTO> cache = RedisUtil.getList("getCourseOrderList"+parentId);
-        if (cache != null){
+        if (cache != null&&cache.size()>0){
             return cache;
         }else {
             List<OrderDTO> orderDTOList = new ArrayList<>() ;
@@ -154,7 +154,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> getGroupOrderList(Integer parentId) {
         List<OrderDTO> cache = RedisUtil.getList("getGroupOrderList"+parentId);
-        if (cache != null){
+        if (cache != null&&cache.size()>0){
             return cache;
         }else {
             List<OrderDTO> orderDTOList = new ArrayList<>() ;
@@ -170,7 +170,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> getActivityOrderList(Integer parentId) {
         List<OrderDTO> cache = RedisUtil.getList("getActivityOrderList"+parentId);
-        if (cache != null){
+        if (cache != null&&cache.size()>0){
             return cache;
         }else {
             List<OrderDTO> orderDTOList = new ArrayList<>() ;

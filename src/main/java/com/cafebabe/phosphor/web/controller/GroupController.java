@@ -149,15 +149,36 @@ public class GroupController {
     @ResponseBody
     public JsonResponse getDelSession(){
         httpServletRequest.getSession().removeAttribute(diyGroupDTOStr);
-        return new JsonResponse(200,"success","删除成功!");
+        return new JsonResponse(20000,"success","删除成功!");
     }
 
     @RequestMapping("groupRecommend")
     @ResponseBody
     public JsonResponse getGroupRecommend(){
-        httpServletRequest.getSession().removeAttribute(diyGroupDTOStr);
-        return new JsonResponse(200,"success","删除成功!");
+        List<GroupDTO> groupDTOS = groupService.getGroupListRecommend();
+        return new JsonResponse(20000,"success",groupDTOS);
     }
+
+    @RequestMapping("groupByTime")
+    @ResponseBody
+    public JsonResponse getGroupByTime(){
+        List<GroupDTO> groupDTOS = groupService.getGroupByTime();
+        return new JsonResponse(20000,"success",groupDTOS);
+    }
+
+    @RequestMapping("groupByPriceAsc")
+    @ResponseBody
+    public JsonResponse getGroupByPriceAsc(){
+        List<GroupDTO> groupDTOS = groupService.getGroupByPriceAsc();
+        return new JsonResponse(20000,"success",groupDTOS);
+    }
+    @RequestMapping("groupByPriceDesc")
+    @ResponseBody
+    public JsonResponse getGroupByPriceDesc(){
+        List<GroupDTO> groupDTOS = groupService.getGroupByPriceDesc();
+        return new JsonResponse(20000,"success",groupDTOS);
+    }
+
 
 
 }

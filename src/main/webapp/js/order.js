@@ -65,7 +65,7 @@ const getJson = (url) => {
 function getDetail (detail){
     console.log(detail);
     let detailUrl="";
-    if (detail.type=="课程") {
+    if (detail.type==="课程") {
         detailUrl=courseUrl+detail.id;
     } else {
         detailUrl=activityUrl+detail.id;
@@ -99,11 +99,11 @@ function getDetail (detail){
     td4.setAttribute("width","80");
     let marktype = document.createElement("mark");
     marktype.innerText=detail.type;
-    if (0==detail.state) {
+    if (0===detail.state) {
         marktype.innerText="未开始";
-    } else if (1==detail.state) {
+    } else if (1===detail.state) {
         marktype.innerText="正在进行";
-    } else if (2==detail.state) {
+    } else if (2===detail.state) {
         marktype.innerText="去评价";
     }else {
         marktype.innerText="完成";
@@ -130,7 +130,7 @@ function generateOrderDiv (order){
     let tableOrder = document.createElement("table");
     tableOrder.classList.add("dt", "mtm");
     tableOrder.setAttribute("cellPadding","0");
-    tableOrder.setAttribute("cellSpacing","0")
+    tableOrder.setAttribute("cellSpacing","0");
 
     let captionName =document.createElement("caption");
     let hmbm = document.createElement("h2");
@@ -169,7 +169,7 @@ function generateOrderDiv (order){
     otr.appendChild(th4);
     otbody.appendChild(otr);
     for(let i = 0; i < order.details.length ; i++) {
-        let detail=getDetail(order.details[i])
+        let detail=getDetail(order.details[i]);
         otbody.appendChild(detail);
     }
     tableOrder.appendChild(otbody);
@@ -187,7 +187,6 @@ childInfo = () => {
     let index = child.selectedIndex;
 
     let childId = child.options[index].value;
-    alert(childId);
     const getChildInfo = () => getJson(chooseChildUrl+childId);
 
     getChildInfo().then(res => {
@@ -208,17 +207,19 @@ childInfo = () => {
 selectChild = (message) => {
     document.body.style.overflowX = "hidden";
     document.body.style.overflowY = "hidden";
-    let dialog = document.getElementById("dialog");
-    let vModal =document.getElementById("v-modal");
+    let dialog = document.getElementById("windowLog");
+    let vModal =document.getElementById("myModal");
     let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
     let elButton = document.getElementById("el-button");
-    const cancelBtn = document.getElementById("cancel-button");
+    let cancelBtn = document.getElementById("cancel-button");
+
     elButton.innerText="新增孩子";
     cancelBtn.innerText = "返回选择";
-    elButton.style.padding = "0.8em 2em";
+    elButton.style.padding = "0.5em 1em";
     elButton.setAttribute("href","/childrenUi/infoUi");
     cancelBtn.setAttribute("href","javascript:void(0)");
-    cancelBtn.setAttribute("onclick","cancelDialog()");
+    cancelBtn.setAttribute("onclick","cancelDialog");
+
     vModal.style.display="block";
     dialog.style.display="block";
     dialogPInnerHtml.innerText=message;
@@ -227,8 +228,8 @@ selectChild = (message) => {
 cancelDialog =() =>{
     document.body.style.overflowX = "visible";
     document.body.style.overflowY = "visible";
-    let dialog = document.getElementById("dialog");
-    let vModal =document.getElementById("v-modal");
+    let dialog = document.getElementById("windowLog");
+    let vModal =document.getElementById("myModal");
     vModal.style.display="none";
     dialog.style.display="none";
 };
@@ -318,4 +319,4 @@ getValidateDetail = (detail) => {
     otr.appendChild(td4);
     otr.appendChild(td5);
     return otr;
-}
+};

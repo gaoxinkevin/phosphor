@@ -123,4 +123,37 @@ public interface GroupService {
      * @return 套餐
      */
     GroupDTO delCourseFromCourse(GroupDTO groupDTO,Integer courseId);
+
+    /**
+     * 获取所有正在进行的套餐
+     * @return group的列表
+     */
+    List<GroupDTO> getGroupListRecommend();
+
+
+    /**
+     * 创建套餐
+     * @param courseId 课程编号
+     * @return 套餐传输对象
+     */
+    GroupDTO createGroup(Integer courseId);
+
+    /**
+     * 套餐按时间排序
+     * @return 套餐列表
+     */
+    List<GroupDTO> getGroupByTime();
+
+    /**
+     * 套餐按价格升序
+     * @return 套餐列表
+     */
+    List<GroupDTO>  getGroupByPriceAsc();
+
+    /**
+     * 套餐按价格降序
+     * @return 套餐列表
+     */
+    List<GroupDTO> getGroupByPriceDesc();
+
 }
