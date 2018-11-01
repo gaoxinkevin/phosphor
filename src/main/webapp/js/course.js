@@ -204,13 +204,20 @@ function refreshGrid(courseInfoList, pageSize) {
         let couImg = document.getElementsByClassName("img-responsive")[i];
         couImg.setAttribute("src",courseImg);
 
+
+
         let courseCompany = courseInfo.companyName;
         let couCompany = document.getElementsByClassName("couCompany")[i];
         couCompany.innerText = courseCompany;
 
+        let couOrder = document.getElementsByClassName("fa fa-shopping-basket")[i];
+        couOrder.setAttribute("href","http://localhost:1250/orderUi/orderCourseUi/"+courseInfo.courseId);
+
         let coursePrice = courseInfo.coursePrice;
         let couPrice = document.getElementsByClassName("couPrice")[i];
         couPrice.innerText = coursePrice;
+
+
     }
     for(let i = 0; i < (pageSize - length); i ++){
         let gridUseless = div.getElementsByClassName("courseGrid")[(pageSize - 1) - i];
@@ -341,7 +348,7 @@ function generateDiv(courseInfo) {
     ulLeft.classList.add("list-inline");
     let liLeft = document.createElement("li");
     let aLeft = document.createElement("a");
-    aLeft.setAttribute("href","#");
+    aLeft.setAttribute("href","/orderUi/orderCourseUi/"+courseInfo.courseId);
     aLeft.innerText = "立即购买";
 
     liLeft.appendChild(aLeft);
