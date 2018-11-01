@@ -5,7 +5,7 @@ const activityUrl =  clientOrderUrl+ "/activityUi/activityInfoUi/";
 const chooseChildUrl = clientOrderUrl + '/order/orderChild?childId=';
 const currentOrderUrl = clientOrderUrl + '/order/currentOrder';
 const orderPayUrl = clientOrderUrl + '/order/orderPay';
-const letPayUrl = clientOrderUrl + '/orderUi/payUi';
+const letPayUrl = clientOrderUrl + '/orderUi/confirmOrder';
 const orderUrl = clientOrderUrl + '/orderUi/orderUi/';
 
 
@@ -242,7 +242,8 @@ btnOrder = () => {
                 let getOrderPay = () => getJson(orderPayUrl);
                 getOrderPay().then(res => {
                     if(res.code<=30000){
-                        window.location.href=letPayUrl;
+                        window.location.href="http://localhost:8888/pay?id="+localStorage.getItem("userLoginPhone").val
+                        +"&money="+res.data.orderPrice;
                     }else{
                         console.log(res.data);
                     }
