@@ -10,6 +10,11 @@ import com.cafebabe.phosphor.model.entity.Group;
 import com.cafebabe.phosphor.model.entity.Order;
 import com.cafebabe.phosphor.service.OrderService;
 import com.cafebabe.phosphor.util.RedisUtil;
+import com.google.common.collect.Maps;
+import freemarker.cache.FileTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateExceptionHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +45,11 @@ public class OrderServiceImpl implements OrderService {
     private final ParentDAO parentDAO;
     private final ChildDAO childDAO;
     private final GroupDAO groupDAO;
+
+    private static Map<String, Configuration> configurationCache = Maps.newConcurrentMap();
+    private  static Map<String,FileTemplateLoader> fileTemplateLoaderCache=Maps.newConcurrentMap();
+
+    private final String UTF_8 = "UTF-8";
 
     @Autowired
     public OrderServiceImpl(GroupDAO groupDAO, OrderDAO orderDAO, OrderDetailServiceImpl orderDetailService, ParentDAO parentDAO, ChildDAO childDAO) {
@@ -258,45 +268,57 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 生成HTML代码
-     * @return
+     * @return HTML页面代码
      */
-    public String getHtmlCode() throws IOException {
-        //TODO 这里暂时生成静态的html代码，验证功能之后要删掉
-        /*StringBuffer html = new StringBuffer();
-        html.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-        html.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">")
-                .append("<head>")
-                .append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />")
-                .append("<style type=\"text/css\" mce_bogus=\"1\">body {font-family: SimSun;}</style>")
-                .append("<style type=\"text/css\">img {width: 700px;}</style>")
-                .append("</head>")
-                .append("<body>");
-        html.append("<h1>这是一个PDF文档</h1>");
-        html.append("<table>");
-        html.append("<tr>")
-                .append("<td>第一列</td>")
-                .append("<td>第二列</td>")
-                .append("<td>第三列</td>")
-                .append("<td>第四列</td>");
-        html.append("</tr>");
-        html.append("</table>");
-        html.append("</body>");
-        html.append("</html>");
-        return html.toString();*/
-        String path = this.getClass().getResource("/") +"\\templates\\template.js";
-        File file = new File(path);
-        String suffix = ".html";
-        if(!file.exists() && !file.getAbsolutePath().endsWith(suffix)){
-            return "";
-        }
+  public String getHtmlCode(Integer orderId) throws IOException {
+        String path = this.getClass().getResource("/").toString();
+        String templatePath = (path.substring(0, path.lastIndexOf("/class")) + "/pages/templates").substring(5).replace("/", "\\");
+        //String templatePath = "D:\\SourceCode\\JAVA\\JavaEE\\phosphor\\target\\phosphor\\WEB-INF\\pages\\templates";
+        String templateName = "orderInfoTemplate.ftl";
+        OrderDTO orderDTO = getOrderById(orderId);
+        return getContent(templatePath, templateName, orderDTO);
+    }
 
-        InputStream inputStream = new FileInputStream(file);
-        StringBuffer stringBuffer = new StringBuffer();
-        int c;
-        while ((c = inputStream.read()) != 1){
-            stringBuffer.append((char) c);
+    public String getContent(String templatePath, String templateName, OrderDTO orderDTO) throws IOException {
+        try {
+            Configuration configuration = getConfiguration(templatePath);
+            FileTemplateLoader fileTemplateLoader = new FileTemplateLoader(new File(templatePath));
+            configuration.setTemplateLoader(fileTemplateLoader);
+            Template template = configuration.getTemplate(templateName);
+            StringWriter writer = new StringWriter();
+            template.process(orderDTO, writer);
+            writer.flush();
+            String content = writer.toString();
+            return content;
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
         }
-        return stringBuffer.toString();
+        return null;
+    }
+
+    private Configuration getConfiguration(String templatePath){
+
+        if(null != configurationCache.get(templatePath)){
+            return configurationCache.get(templatePath);
+        }
+        Configuration config = new Configuration(Configuration.VERSION_2_3_25);
+        config.setDefaultEncoding(UTF_8);
+        config.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        config.setLogTemplateExceptions(false);
+        FileTemplateLoader fileTemplateLoader=null;
+        if(null!=fileTemplateLoaderCache.get(templatePath)){
+            fileTemplateLoader=fileTemplateLoaderCache.get(templatePath);
+        }
+        try {
+            fileTemplateLoader=new FileTemplateLoader(new File(templatePath));
+            fileTemplateLoaderCache.put(templatePath,fileTemplateLoader);
+        } catch (IOException e) {
+            System.out.println(e.getStackTrace());
+        }
+        config.setTemplateLoader(fileTemplateLoader);
+        configurationCache.put(templatePath,config);
+        return config;
+
     }
 
 }

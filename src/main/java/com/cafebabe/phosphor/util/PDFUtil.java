@@ -35,6 +35,7 @@ public class PDFUtil {
      * @param fileName  文件名
      */
     public void createPDF(String htmlCode, String fileName){
+
         try {
             File file = new File(PDF_TEMP_PATH + fileName);
             FileOutputStream outputStream = new FileOutputStream(file);
@@ -42,6 +43,7 @@ public class PDFUtil {
             ITextFontResolver fontResolver = renderer.getFontResolver();
             fontResolver.addFont(FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             renderer.setDocumentFromString(htmlCode);
+            renderer.getSharedContext().setBaseURL("file:/"+"D:\\SourceCode\\JAVA\\JavaEE\\phosphor\\src\\main\\webapp\\images");
             renderer.layout();
             renderer.createPDF(outputStream);
         }catch (Exception e){
