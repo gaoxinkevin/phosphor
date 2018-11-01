@@ -33,6 +33,7 @@
 
     <script src="/js/parent.js" ></script>
     <script src="/js/order.js"></script>
+    <script src="/js/templates/template.js"></script>
 </head>
 
 <body>
@@ -52,6 +53,7 @@
         const parent = document.getElementById("parent");
         const child = document.getElementById("child");
         const price = document.getElementById("price");
+<<<<<<< HEAD
         const astate = document.getElementById("astate");
         if (data.orderState===0) {
             astate.innerText = "交易失败";
@@ -59,12 +61,17 @@
         } else {
             astate.innerText = "交易成功";
         }
+=======
+        const print = document.getElementById("print");
+
+>>>>>>> devlnt
         orderNumber.innerText = data.orderNumber;
         createTime.innerText = data.orderCreateTime;
         endTime.innerText = data.orderEndTime;
         parent.innerText = data.parent;
         child.innerText = data.child;
         price.innerText ="￥"+ data.orderPrice;
+        print.setAttribute("href", "/order/downloadOrderPDF?orderId="+data.orderId);
         for(let i = 0; i < data.details.length ; i++) {
             let otr=getDetail(data.details[i]);
             otbody.appendChild(otr);
@@ -155,7 +162,7 @@
                         <!-- <div class="bm bw0"> </div> -->
                         <ul class="tb cl">
                             <li class="a"><a href="/orderUi/orderListUi" sl-processed="1">返回订单列表</a></li>
-                            <li  style="float: right;"><a id="print" href="#">打印订单</a></li>
+                            <li  style="float: right;"><a id="print" href="">下载订单</a></li>
                         </ul>
                         
                         <div id="ordersPanel">
