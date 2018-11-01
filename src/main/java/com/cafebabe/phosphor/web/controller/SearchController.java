@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.web.controller;
 
+import com.cafebabe.phosphor.model.dto.TeacherNameAndPageNumberDTO;
 import com.cafebabe.phosphor.model.entity.Teacher;
 import com.cafebabe.phosphor.service.serviceimpl.SearchServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
@@ -41,9 +42,17 @@ public class SearchController {
 
     @RequestMapping("searchTeacherInfo")
     @ResponseBody
-    public JsonResponse teacherInfo(@RequestBody Teacher teacher) throws IOException, SolrServerException {
-        String teacherName = teacher.getTeacherName();
-        SolrDocumentList solrDocuments =searchController.getTeacherInfo(teacherName);
+    public JsonResponse teacherInfo(@RequestBody TeacherNameAndPageNumberDTO dto) throws IOException, SolrServerException {
+        SolrDocumentList solrDocuments =searchController.getTeacherInfo(dto);
+        System.out.println(dto);
         return new JsonResponse(20000,"成功",solrDocuments);
+    }
+
+    @RequestMapping("searchNumber")
+    @ResponseBody
+    public JsonResponse teacherPageNumber(@RequestBody Teacher teacher) throws IOException, SolrServerException {
+        String teacherName = teacher.getTeacherName();
+        Long pageNumber = searchController.pageNumberService(teacherName);
+        return new JsonResponse(20000,"成功",pageNumber);
     }
 }
