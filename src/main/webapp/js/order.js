@@ -6,6 +6,7 @@ const chooseChildUrl = clientOrderUrl + '/order/orderChild?childId=';
 const currentOrderUrl = clientOrderUrl + '/order/currentOrder';
 const orderPayUrl = clientOrderUrl + '/order/orderPay';
 const letPayUrl = clientOrderUrl + '/orderUi/payUi';
+const orderUrl = clientOrderUrl + '/orderUi/orderUi/';
 
 
 

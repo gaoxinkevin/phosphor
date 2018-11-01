@@ -139,19 +139,6 @@ public class CourseServiceImpl implements CourseService {
     }
 
 
-    /**
-     *
-     * @param pageIndex
-     * @param pageSize
-     * @return
-     */
-    @Override
-    public List<Course> getCourseByType(Integer pageIndex, Integer pageSize) {
-        PageCourse pageCourse = new PageCourse();
-        List<Course> courseList = courseDAO.getCourseByType(pageCourse);
-        return courseList;
-    }
-
     @Override
     public CourseInfo getConflictCourseInfo(List<CourseInfo> courseInfoList, Integer courseId) {
         CourseInfo courseInfo =courseDAO.getCourseInfo(courseId);
