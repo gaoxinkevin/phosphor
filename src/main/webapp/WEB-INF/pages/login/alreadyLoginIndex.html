@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/alreadyLogin.css">
     <link rel="stylesheet" href="/css/styleLogin.css">
-    <script src="/js/parent.js"></script>
+
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
         .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
@@ -55,7 +55,7 @@
 <!-- LOADER 页面加载时显示的图片-->
 
 <div id="preloader">
-    <img class="preloader" src="/images/loader.gif" alt="">
+    <img class="preloader" id="imgLoading" src="/images/loader.gif" alt="">
 </div>
 
 <!-- END LOADER -->
@@ -764,40 +764,15 @@
 
 <!--END WRAPPER-->
 
-<script>
-    lightPoint = () => {
-        document.body.style.overflowX = "hidden";
-        document.body.style.overflowY = "hidden";
-        let div1 = document.getElementById("dialog");
-        let div2 = document.getElementById("v-modal");
-        div1.style.display = "block";
-        div2.style.display = "block";
-        let img = document.getElementById("image");
-        img.setAttribute("src", "/images/light1.png");
-    }
-    turnOnOrOff = () => {
-        let img = document.getElementById("image");
-        if (img.getAttribute("src") === "/images/light1.png") {
-            img.setAttribute("src", "/images/light0.png");
-        } else if (img.getAttribute("src") === "/images/light0.png") {
-            img.setAttribute("src", "/images/light1.png");
-        }
-    }
-    closeLight = () => {
-        document.body.style.overflowX = "auto";
-        document.body.style.overflowY = "auto";
-        let div1 = document.getElementById("dialog");
-        let div2 = document.getElementById("v-modal");
-        div1.style.display = "none";
-        div2.style.display = "none";
-    }
-</script>
+
 
 <!-- jQuery Js Files -->
+<script src="/js/light.js"></script>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/carousel.js"></script>
 <script src="/js/animate.js"></script>
-<script src="/js/custom.js"></script>
+<script src="/js/parent.js"></script>
+<script src="/js/comment.js"></script>
 </body>
 </html>

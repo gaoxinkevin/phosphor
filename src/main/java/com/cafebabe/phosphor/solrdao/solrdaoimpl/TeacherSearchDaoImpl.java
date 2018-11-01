@@ -44,7 +44,6 @@ public class TeacherSearchDaoImpl implements TeacherSearchDAO {
         solrQuery.set("q","teacherName:"+dto.getTeacherName());
 //        solrQuery.set("fq","teacherName:"+teacherName); 按照名字过滤
         //可进行排序搜索
-        solrQuery.addSort("teacherWorktime", SolrQuery.ORDER.desc);
         if (dto.getPageNumber()==0){
             solrQuery.setStart(dto.getPageNumber());
         }else if (dto.getPageNumber()==1){

@@ -30,6 +30,8 @@ const JsonResponseList = () => getParentImg(clientUrl);
 JsonResponseList().then((res) => {
     const imgSrc = document.getElementById("avatarImg");
     imgSrc.src = res.data;
+    document.getElementById("preloader").style.display="none";
+    document.getElementById("img").style.display="none";
 }).catch(error => {
     console.log(error);
 });
