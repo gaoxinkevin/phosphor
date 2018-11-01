@@ -122,9 +122,7 @@
     </select>
   <!--根据公司ID查询课程-->
 
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
->>>>>>> devlnt
     delete from course
     where course_id = #{courseId,jdbcType=INTEGER}
   </delete>

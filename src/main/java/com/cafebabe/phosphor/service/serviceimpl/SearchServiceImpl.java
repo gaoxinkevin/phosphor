@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
+import com.cafebabe.phosphor.model.dto.TeacherNameAndPageNumberDTO;
 import com.cafebabe.phosphor.service.SearchService;
 import com.cafebabe.phosphor.solrdao.solrdaoimpl.TeacherSearchDaoImpl;
 
@@ -35,7 +36,12 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public SolrDocumentList getTeacherInfo(String teacherName) throws IOException, SolrServerException {
-        return teacherSearchDao.getTeacherListByTeacherName(teacherName);
+    public SolrDocumentList getTeacherInfo(TeacherNameAndPageNumberDTO dto) throws IOException, SolrServerException {
+        return teacherSearchDao.getTeacherListByTeacherName(dto);
+    }
+
+    @Override
+    public Long pageNumberService(String teacherName) throws IOException, SolrServerException {
+        return teacherSearchDao.pageNumber(teacherName);
     }
 }

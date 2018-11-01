@@ -146,15 +146,4 @@ public class TestController {
         }
 
     }
-
-    @RequestMapping("teacherSearch")
-    @ResponseBody
-    public JsonResponse teacherSearch() throws IOException, SolrServerException {
-        List list = new ArrayList();
-        list.add(teacherService.getTeacherListByTeacherName("强"));
-        System.out.println(teacherService.getTeacherListByTeacherName("强"));
-        list.add(teacherService.getTeacherListByTeacherDesc("有丰富的软件开发与培训的经验"));
-        System.out.println(teacherService.getTeacherListByTeacherDesc("有丰富的软件开发与培训的经验"));
-        return new JsonResponse(20000,"成功",list);
-    }
 }
