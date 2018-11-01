@@ -242,8 +242,9 @@ btnOrder = () => {
                 let getOrderPay = () => getJson(orderPayUrl);
                 getOrderPay().then(res => {
                     if(res.code<=30000){
-                        window.location.href="http://localhost:8888/pay?id="+localStorage.getItem("userLoginPhone").val
-                        +"&money="+res.data.orderPrice;
+                        let a="http://localhost:8888/pay?id="+JSON.parse(localStorage.getItem("userLoginPhone")).val
+                            +"&money="+localStorage.getItem("money")
+                        window.location.href=a;
                     }else{
                         console.log(res.data);
                     }
