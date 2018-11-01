@@ -28,15 +28,17 @@
     <script src="/js/parent.js"></script>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
-        .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
-            background-color:#82B43F;
+        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
+            background-color: #82B43F;
             border-color: #82B43F;
         }
-        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
             background: #82B43F;
             color: #ffffff !important;
         }
-        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
             background: #82B43F none repeat scroll 0 0 !important;
 
         }
@@ -104,8 +106,11 @@
                             </div>
                         </li>
                         <li><a href="">联系我们</a></li>
-                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
-                                class="fa fa-search"></i></a></li>
+                        <li class="iconitem">
+                            <a href="/searchUi/search">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
                         <li>
                             <div class="dropdown">
                                 <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
@@ -130,7 +135,7 @@
     <section id="home" class="js-height-full">
         <div class="overlay"></div>
         <div class="home-text-wrapper relative container">
-            <div class="home-message" >
+            <div class="home-message">
                 <p style="margin-top: -25px;">孩子梦想开始的地方</p>
                 <p style="font-size: 20px;">为了孩子的未来，启明星是您的最佳选择。我们旨在提供优质教育，为孩子打造美好生活。</p>
                 <!--<small style="color: #78C3F3;">For the future of your child, Phosphor is your best choice. We aim to provide quality education, create a better life for your child.-->
@@ -417,7 +422,8 @@
                     <div class="course-box">
                         <div>
 
-                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%90%AF%E6%98%8E%E6%98%9Flogo.png" alt="" class="img-responsive"
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%90%AF%E6%98%8E%E6%98%9Flogo.png" alt=""
+                                 class="img-responsive"
                                  style=" height:270px;border-radius: 4px;">
 
                             <div class="magnifier">
@@ -459,7 +465,7 @@
                         <div>
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E6%96%B0%E4%B8%9C%E6%96%B9logo.png" alt=""
                                  class="img-responsive"
-                                 style="height: 270px;">
+                                 style="height: 220px;margin: 25px auto;">
                             <div class="magnifier">
                                 <a href="#" title=""><i class="flaticon-add"></i></a>
                             </div>
@@ -517,7 +523,8 @@
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%91%A8%E5%BC%BA.bmp" alt=""
                                  class="img-responsive" style="height: 460px;">
                             <div class="magnifier">
-                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10006"><i class="flaticon-add"></i></a>
+                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10006"><i
+                                        class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
 
@@ -541,7 +548,8 @@
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%88%98%E4%BA%91%E6%B5%A9.jpg" alt=""
                                  class="img-responsive" style="height: 460px;">
                             <div class="magnifier">
-                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10005"><i class="flaticon-add"></i></a>
+                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10005"><i
+                                        class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
 
@@ -565,7 +573,8 @@
                             <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%AD%99%E5%AE%B6%E5%B9%BF.jpg" alt=""
                                  class="img-responsive" style="height: 460px;">
                             <div class="magnifier">
-                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10004"><i class="flaticon-add"></i></a>
+                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10004"><i
+                                        class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
 
@@ -666,7 +675,8 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">关于我们</h3>
                         <div class="newsletter-widget" style="width: 350px;">
-                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class" target="_blank">phosphor</a></p>
+                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class" target="_blank">phosphor</a>
+                            </p>
                         </div><!-- end newsletter -->
                     </div><!-- end widget -->
                 </div><!-- end col -->
@@ -700,7 +710,9 @@
                             <ul>
                                 <li>随便写写 看看效果</li>
                                 <li>觉得不错 那就留着</li>
-                                <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a> 试试效果</li>
+                                <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a>
+                                    试试效果
+                                </li>
                                 <li>有了想法 以后再加</li>
                             </ul>
                         </div><!-- end list-widget -->
