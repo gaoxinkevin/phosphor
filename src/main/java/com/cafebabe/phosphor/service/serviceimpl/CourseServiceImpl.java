@@ -2,7 +2,6 @@ package com.cafebabe.phosphor.service.serviceimpl;
 
 import com.cafebabe.phosphor.dao.CourseDAO;
 import com.cafebabe.phosphor.dao.SuggestDAO;
-import com.cafebabe.phosphor.dao.TypeDAO;
 import com.cafebabe.phosphor.model.dto.CourseInfo;
 import com.cafebabe.phosphor.model.dto.Page;
 import com.cafebabe.phosphor.model.dto.PageCourse;
@@ -30,17 +29,16 @@ import java.util.List;
 @Service
 public class CourseServiceImpl implements CourseService {
 
-    @Autowired
     private final CourseDAO courseDAO;
 
-    @Autowired
     private final SuggestDAO suggestDAO;
 
-    public CourseServiceImpl(CourseDAO courseDAO,SuggestDAO suggestDAO){
+
+    @Autowired
+    public CourseServiceImpl(CourseDAO courseDAO, SuggestDAO suggestDAO){
         this.courseDAO = courseDAO;
         this.suggestDAO = suggestDAO;
     }
-
     /**
      * 获得分页查询信息
      * @param pageIndex 页码
@@ -49,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public Page getAllCourseByPage(Integer pageIndex, Integer pageSize) {
-        Page page = new Page();
+        Page<Course> page = new Page<>();
         page.setTotalRecord(courseDAO.getCourseCount());
         Integer totalPages = (page.getTotalRecord() % page.getPageSize() == 0) ? (page.getTotalRecord() / page.getPageSize()) : ((page.getTotalRecord() / page.getPageSize())+1);
         page.setTotalPages(totalPages);
@@ -63,11 +61,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public PageCourse getCourseByType(Integer pageIndex, Integer pageSize,String orderField,Integer typeId) {
-        PageCourse pageCourse = new PageCourse();
-        if (orderField!=null && !orderField.equals("undefined") && !orderField.equals("null")){
+        PageCourse<Course> pageCourse = new PageCourse<>();
+        String strundefind = "undefined";
+        String strnull = "null";
+        if (orderField!=null && !orderField.equals(strundefind) && !orderField.equals(strnull)){
             pageCourse.setOrderField(orderField);
         }
-        if (typeId !=null && !typeId.equals("undefined") && !orderField.equals("null")){
+        if (typeId !=null && !typeId.equals(strundefind) && !orderField.equals(strnull)){
             pageCourse.setTypeId(typeId);
         }
         pageCourse.setTotalRecord(courseDAO.getCourseCount());
@@ -97,16 +97,6 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getAllCourseInfo() {
         return courseDAO.getCourseByNewTime();
-    }
-
-    /**
-     * 根据课程名查询课程
-     * @param courseName 课程名
-     * @return 课程
-     */
-    @Override
-    public Course getCourseService(String courseName) {
-        return courseDAO.getCourseByName(courseName);
     }
 
     /**
@@ -168,7 +158,7 @@ public class CourseServiceImpl implements CourseService {
     /**
      * 添加评价
      * @param suggest 评价
-     * @return
+     * @return 受影响行数
      */
     @Override
     public Integer insertSuggest(Suggest suggest) {
@@ -181,13 +171,16 @@ public class CourseServiceImpl implements CourseService {
      * @param courseSecond 课程2
      * @return 是否有冲突
      */
+    @SuppressWarnings("unused")
     public boolean contrastCourseTime(CourseInfo courseFirst, CourseInfo courseSecond){
+<<<<<<< HEAD
         if (!courseFirst.getCourseTimeStatus().equals(courseSecond.getCourseTimeStatus()) ){
             return true;
         }else if (courseFirst.getCourseStartTime()!= courseSecond.getCourseEndTime()){
+=======
+        if (!courseFirst.getCourseTimeStatus().equals(courseSecond.getCourseTimeStatus())){
+>>>>>>> devWJC
             return true;
-        }else {
-            return false;
-        }
+        }else return courseFirst.getCourseStartTime() != courseSecond.getCourseEndTime();
     }
 }

@@ -25,16 +25,17 @@ import java.util.List;
 @Service
 public class CourseCollectionServiceImpl implements CourseCollectionService {
 
-    @Autowired
+
     private final CourseCollectionDAO courseCollectionDAO;
 
+    @Autowired
     public CourseCollectionServiceImpl(CourseCollectionDAO courseCollectionDAO) {
         this.courseCollectionDAO = courseCollectionDAO;
     }
 
     @Override
     public Page getAllCourseCollection(Integer pageIndex, Integer pageSize, Integer parentId) {
-        Page page = new Page();
+        Page<CourseCollectionInfo> page = new Page<>();
         page.setPageSize(3);
         page.setTotalRecord(courseCollectionDAO.getCourseCollectionCount(parentId));
         Integer totalPages = (page.getTotalRecord() % page.getPageSize() == 0) ? (page.getTotalRecord() / page.getPageSize()) : ((page.getTotalRecord() / page.getPageSize())+1);

@@ -6,7 +6,6 @@ import com.cafebabe.phosphor.model.dto.PageCourse;
 import com.cafebabe.phosphor.model.entity.Course;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -76,7 +75,7 @@ public interface CourseDAO extends MyBatisBaseDao<Course, Integer> {
 
     /**
      * 查询所有课程
-     * @return
+     * @return 所有课程
      */
     List<Course> getAllCourse();
 

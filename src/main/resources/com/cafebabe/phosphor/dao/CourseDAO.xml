@@ -87,12 +87,12 @@
 
     <select id="getCourseByType" resultType="com.cafebabe.phosphor.model.entity.Course"
             parameterType="com.cafebabe.phosphor.model.dto.PageCourse">
-        select course.course_id,course_name,course_price,company_name,type_id,course_create_time,course_sf
+        select course.course_id,course_name,course_price,company_name,type_id,course_create_time,course_sf,company_id
         from course
-        join course_type on course_type.course_id=course.course_id
+        left join course_type on course_type.course_id=course.course_id
         <where>
             <if test="typeId != null and typeId != 0">
-                type_id = #{typeId}
+                company_id = #{typeId}
             </if>
 
         </where>

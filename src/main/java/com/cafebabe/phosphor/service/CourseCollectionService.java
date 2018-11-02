@@ -24,7 +24,6 @@ public interface CourseCollectionService {
      * @return 课程List
      */
     Page getAllCourseCollection(Integer pageIndex, Integer pageSize,Integer parentId);
-
     /**
      * 添加收藏
      * @param courseCollection 收藏信息
