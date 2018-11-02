@@ -38,9 +38,9 @@
 <body>
 <!--Ajax向后台输出数据-->
 <script>
-    const orderValidateUrl = clientOrderUrl +'/order/orderValidate/';
+    const orderValidateUrl = clientOrderUrl + '/order/orderValidate/';
     const parentUrl = clientOrderUrl + '/parent/parentAllInfo';
-    const childUrl= clientOrderUrl + '/child/childInfo';
+    const childUrl = clientOrderUrl + '/child/childInfo';
 
 
     /**
@@ -53,21 +53,36 @@
      */
     orderList().then((res) => {
 
-        let orderNumber =0;
+        let orderNumber = 0;
         const otbody = document.getElementById("otbody");
-        for(let i = 0; i < res.data.details.length; i++) {
-            let otr=getValidateDetail(res.data.details[i]);
+        for (let i = 0; i < res.data.details.length; i++) {
+            let otr = getValidateDetail(res.data.details[i]);
             otbody.appendChild(otr);
-            orderNumber+=1;
+            orderNumber += 1;
         }
         const price = document.getElementById("price");
         const number = document.getElementById("number");
 
-        price.innerText ="￥"+ res.data.orderPrice;
+        price.innerText = "￥" + res.data.orderPrice;
+        localStorage.setItem("money", str_encrypt(res.data.orderPrice.toString()));
         number.innerText = orderNumber;
     }).catch(error => {
         console.log(error);
     });
+
+    function str_encrypt(str) {
+        console.log(str);
+        console.log(str.charCodeAt(0));
+        var c = String.fromCharCode(str.charCodeAt(0) + str.length);
+
+        for (var i = 1; i < str.length; i++) {
+            c += String.fromCharCode(str.charCodeAt(i) + str.charCodeAt(i - 1));
+        }
+
+        return encodeURIComponent(c);
+    }
+
+
     /**
      * 获取家长的信息并展示
      * @return {Promise<parent>}
@@ -83,12 +98,12 @@
     });
     const getChild = () => getJson(childUrl);
     getChild().then(res => {
-        if(res.code<=30000){
+        if (res.code <= 30000) {
             let picker = document.getElementById('selectPicker');
             for (let i = 0; i < res.data.length; i++) {
-                picker.options.add(new Option(res.data[i].childName,res.data[i].childId));
+                picker.options.add(new Option(res.data[i].childName, res.data[i].childId));
             }
-        }else{
+        } else {
             console.log(res.data);
         }
     }).catch(res => {
@@ -237,6 +252,7 @@
                                 </ul>
                             </div>
                         </div>
+                    </div>
                     <div class="clearfix col-md-11">
                         <div class="pull-right">
                             <a href="javascript:void(0)" onclick="btnOrder()" class="btn btn-primary">确认订单</a>

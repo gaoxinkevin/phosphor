@@ -200,6 +200,50 @@ childInfo = () => {
     });
 };
 
+/**
+ * 弹出
+ * @param message
+ */
+selectChild = (message) => {
+    document.body.style.overflowX = "hidden";
+    document.body.style.overflowY = "hidden";
+    let dialog = document.getElementById("dialog");
+    let vModal =document.getElementById("v-modal");
+    let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+    let elButton = document.getElementById("el-button");
+    const cancelBtn = document.getElementById("cancel-button");
+    elButton.innerText="新增孩子";
+    cancelBtn.innerText = "返回选择";
+    elButton.style.padding = "0.8em 2em";
+    elButton.setAttribute("href","/childrenUi/infoUi");
+    cancelBtn.setAttribute("href","javascript:void(0)");
+    cancelBtn.setAttribute("onclick","cancelDialog()");
+    vModal.style.display="block";
+    dialog.style.display="block";
+    dialogPInnerHtml.innerText=message;
+};
+
+cancelDialog =() =>{
+    document.body.style.overflowX = "visible";
+    document.body.style.overflowY = "visible";
+    let dialog = document.getElementById("dialog");
+    let vModal =document.getElementById("v-modal");
+    vModal.style.display="none";
+    dialog.style.display="none";
+};
+
+function str_encrypt(str) {
+    console.log(str);
+    console.log(str.charCodeAt(0));
+    var c = String.fromCharCode(str.charCodeAt(0) + str.length);
+
+    for (var i = 1; i < str.length; i++) {
+        c += String.fromCharCode(str.charCodeAt(i) + str.charCodeAt(i - 1));
+    }
+
+    return encodeURIComponent(c);
+}
+
 btnOrder = () => {
     let getOrder = () => getJson(currentOrderUrl);
     getOrder().then(res => {
@@ -209,8 +253,9 @@ btnOrder = () => {
                 let getOrderPay = () => getJson(orderPayUrl);
                 getOrderPay().then(res => {
                     if(res.code<=30000){
-                        window.location.href="http://localhost:8888/pay?id="+localStorage.getItem("userLoginPhone").val
-                        +"&money="+res.data.orderPrice;
+                        let a="http://localhost:8888/pay?id="+JSON.parse(localStorage.getItem("userLoginPhone")).val
+                            +"&money="+localStorage.getItem("money")+"&orderId="+str_encrypt(res.data.toString());
+                        window.location.href=a;
                     }else{
                         console.log(res.data);
                     }

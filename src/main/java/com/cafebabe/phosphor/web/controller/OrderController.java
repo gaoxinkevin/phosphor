@@ -140,9 +140,10 @@ public class OrderController {
             }else if(activityType.equals(orderDTO.getOrderSf())){
                 order.setActivityId(orderDTO.getOrderState());
             }
-            if (orderService.insertOrder(order)>0){
+            Integer orderId =orderService.insertOrder(order);
+            if (orderId>0){
                 httpServletRequest.getSession().removeAttribute(CREATE_ORDER);
-                return new JsonResponse(20000, "success", "success");
+                return new JsonResponse(20000, "success", orderId);
             }else{
                 return new JsonResponse(50000, "error", "sql插入失败!");
             }
