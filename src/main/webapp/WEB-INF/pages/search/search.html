@@ -61,14 +61,9 @@
 <body>
 
 <script>
-<<<<<<< HEAD
-    searchAll=()=>{
-
-=======
 
 
     searchSingle=()=>{
->>>>>>> devSTA
         const inputInfo = document.getElementById("inputInfo").value;
         if (inputInfo === ""){
             const dialog = document.getElementById("dialog");
@@ -88,12 +83,8 @@
             const clientMethod = 'POST';
             const clientUrl = "http://localhost:1250/searchInfo/searchTeacherInfo";
             let teacher = {
-<<<<<<< HEAD
-                teacherName: inputInfo
-=======
                 teacherName: inputInfo,
                 pageNumber:0
->>>>>>> devSTA
             };
             //AjaxBegin
             const updateParent = ({url, method, data}) => {
@@ -188,28 +179,17 @@
                         resultDiv.style.marginLeft = "20px";
                         resultDiv.style.fontSize= "15px";
                         resultDiv.padding = "10px";
-<<<<<<< HEAD
-
-                        containerDiv.appendChild(resultDiv);
-                    }
-
-=======
                         containerDiv.appendChild(resultDiv);
                     }
 
 
 
->>>>>>> devSTA
                 }
             }).catch(error => {
                 console.log(error);
             });
         }
 
-<<<<<<< HEAD
-
-    }
-=======
     };
 
 
@@ -450,7 +430,6 @@
 
     //生成分页
 
->>>>>>> devSTA
 </script>
 
 <div id="preloader">
@@ -517,11 +496,7 @@
                             style="background-color: #01bacf;border-color: #01bacf;"
                             data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false" id="searchBtn"
-<<<<<<< HEAD
-                            onclick="searchAll()">查询</button>
-=======
                             onclick="searchSingle(),createPagination()">查询</button>
->>>>>>> devSTA
                 </div><!-- /btn-group -->
             </div><!-- /input-group -->
         </div>
@@ -554,8 +529,6 @@
 
             </div>
 
-<<<<<<< HEAD
-=======
             <div id="pageNumDiv" style="margin-left: 0">
                 <nav aria-label="...">
                     <ul class="pagination" id="pageUrl">
@@ -564,7 +537,6 @@
                 </nav>
             </div>
 
->>>>>>> devSTA
             <div class="col-lg-8 col-md-offset-2" id="noResult" style="margin: 14px auto;margin-left: 28%;display: none;
                                                                 font-size: 20px;font-style: oblique;color: #a2a2a2">
                 <span>您查询的数据没有结果，十分抱歉</span>
