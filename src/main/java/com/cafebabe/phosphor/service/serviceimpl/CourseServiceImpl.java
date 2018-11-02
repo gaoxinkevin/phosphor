@@ -173,13 +173,7 @@ public class CourseServiceImpl implements CourseService {
      */
     @SuppressWarnings("unused")
     public boolean contrastCourseTime(CourseInfo courseFirst, CourseInfo courseSecond){
-<<<<<<< HEAD
-        if (!courseFirst.getCourseTimeStatus().equals(courseSecond.getCourseTimeStatus()) ){
-            return true;
-        }else if (courseFirst.getCourseStartTime()!= courseSecond.getCourseEndTime()){
-=======
         if (!courseFirst.getCourseTimeStatus().equals(courseSecond.getCourseTimeStatus())){
->>>>>>> devWJC
             return true;
         }else return courseFirst.getCourseStartTime() != courseSecond.getCourseEndTime();
     }
