@@ -107,8 +107,6 @@ function refreshGrid(courseInfoList, pageSize) {
         let couImg = document.getElementsByClassName("img-responsive")[i];
         couImg.setAttribute("src",courseImg);
 
-
-
         let courseCompany = courseInfo.companyName;
         let couCompany = document.getElementsByClassName("couCompany")[i];
         couCompany.innerText = courseCompany;
@@ -119,12 +117,16 @@ function refreshGrid(courseInfoList, pageSize) {
         let coursePrice = courseInfo.coursePrice;
         let couPrice = document.getElementsByClassName("couPrice")[i];
         couPrice.innerText = coursePrice;
-
-
     }
-    for(let i = 0; i < (pageSize - length); i ++){
-        let gridUseless = div.getElementsByClassName("courseGrid")[(pageSize - 1) - i];
-        gridUseless.style.visibility = "hidden";
+    for(let i = 0; i < pageSize; i ++){
+        if(i < (pageSize - length)){
+            let gridUseless = div.getElementsByClassName("courseGrid")[(pageSize - 1) - i];
+            gridUseless.style.visibility = "hidden";
+        }
+        else{
+            let gridUseless = div.getElementsByClassName("courseGrid")[(pageSize - 1) - i];
+            gridUseless.style.visibility = "visible";
+        }
     }
 }
 
@@ -208,7 +210,6 @@ function loadCourseList(courseInfoListJson) {
     let courseInfoListData = courseInfoList.data;
 
     for(let i = 0; i < courseInfoListData.length ; i++){
-
         let divGrid = generateDiv(courseInfoListData[i]);
         div.appendChild(divGrid);
     }
@@ -287,13 +288,13 @@ function newPage() {
  */
 
 function perPage() {
+    let orderFile = document.getElementById("pid");
     let currentPageCode = document.getElementById("currentPageCode").getAttribute("value");
     if(currentPageCode <= 0)
         return false;
     else{
-        getCourseListByPage(currentPageCode - 1, 12);
+        getCourseListByPage(currentPageCode - 1, 12,orderFile.value,0);
     }
-    window.location.reload();
 }
 
 /**
@@ -301,11 +302,13 @@ function perPage() {
  * @param currentPageCode
  */
 function nextPage() {
+
+    let orderFile = document.getElementById("pid");
     let currentPageCode = parseInt(document.getElementById("currentPageCode").getAttribute("value"));
     let totalPages = parseInt(document.getElementById("totalPages").getAttribute("value"));
     if(currentPageCode >= (totalPages - 1))
         return void(0);
-    getCourseListByPage((currentPageCode + 1), 12);
+    getCourseListByPageAndType((currentPageCode + 1), 12,orderFile.value,0);
 }
 
 /**
@@ -313,6 +316,7 @@ function nextPage() {
  * @returns {*}
  */
 function getCourseByType() {
+
     let courseType = document.getElementById("typeId");
     if(courseType.value != null && courseType.value != ""){
         getCourseListByPageAndType(0, 12, null,courseType.value);
@@ -326,27 +330,33 @@ function getCourseByType() {
  * @returns {*}
  */
 function getCourseByTime() {
+    let hidCurrentPageIndex = document.getElementById("currentPageCode");
+    let currentPageCode=hidCurrentPageIndex.value ;
     let courseTime = document.getElementById("courseTime");
     if (courseTime.value != null && courseTime.value !=""){
-        getCourseListByPageAndType(0,12,"createTime",0);
+        getCourseListByPageAndType(currentPageCode*12,12,"createTime",0);
     }
     else
         return void(0);
 }
 
 function getCourseByPriceAsc() {
+    let hidCurrentPageIndex = document.getElementById("currentPageCode");
+    let currentPageCode=hidCurrentPageIndex.value ;
     let priceAsc = document.getElementById("priceAsc");
     if (priceAsc.value != null && priceAsc.value !=""){
-        getCourseListByPageAndType(0,12,"priceAsc",0);
+        getCourseListByPageAndType(currentPageCode*12,12,"priceAsc",0);
     }
     else
         return void(0);
 }
 
 function getCourseByPriceDesc() {
+    let hidCurrentPageIndex = document.getElementById("currentPageCode");
+    let currentPageCode=hidCurrentPageIndex.value ;
     let priceDesc = document.getElementById("priceDesc");
     if (priceDesc.value != null && priceDesc.value !=""){
-        getCourseListByPageAndType(0,12,"priceDesc",0);
+        getCourseListByPageAndType(currentPageCode*12,12,"priceDesc",0);
     }
     else
         return void(0);
