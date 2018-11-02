@@ -107,7 +107,7 @@
             let companyCollection = {
                 companyId: companyId,
                 companyCollectionSf: JSON.parse(localStorage.getItem("userLoginPhone")).val,
-            }
+            };
 
             const clientUrl = 'http://localhost:1250/companyCollection/insertCompanyCollection';
             const clientMethod = 'POST';
@@ -139,18 +139,11 @@
             );
 
             result(JSON.stringify(companyCollection)).then((res) => {
-                // if (res.data == -1) {
-                //     alert("您已收藏该公司，请勿重复收藏！");
-                // } else if (res.data == 1) {
-                //     alert("收藏成功！");
-                // } else {
-                //     alert("收藏失败！");
-                // }
                 prompt(res.data);
             });
         }
 
-    }
+    };
 
     prompt = (type) => {
         document.body.style.overflowX = "hidden";
@@ -170,7 +163,7 @@
         } else {
             p.innerText ="收藏失败";
         }
-    }
+    };
 
     determine = () => {
         document.body.style.overflowX = "auto";
@@ -431,30 +424,6 @@
             </div>
         </div><!-- end container -->
     </div>
-
-    <!--<div id="dialog">-->
-    <!--<div class="el-message-box">-->
-    <!--<div class="el-message-box__content">-->
-    <!--<div class="el-message-box__status"></div>-->
-    <!--<div class="el-message-box__message">-->
-    <!--<p id="dialogPInnerHtml"></p>-->
-    <!--</div>-->
-    <!--<div class="el-message-box__input" style="display: none;">-->
-    <!--<div class="el-input">-->
-    <!--<input type="text" placeholder="" autocomplete="off" class="el-input__inner">-->
-    <!--</div>-->
-    <!--<div class="el-message-box__errormsg" style="visibility: hidden;"></div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="el-message-box__btns">-->
-    <!--<a href="/loginUi/loginUi" id="el-button" class="el-button"></a>-->
-    <!--</div>-->
-
-    <!--</div>-->
-    <!--</div>-->
-
-    <!--<div id="v-modal" style="z-index: 9998"></div>-->
-
 </div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>

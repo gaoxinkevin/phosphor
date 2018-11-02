@@ -12,7 +12,7 @@ const recommendGroupUrl = clientGroupUrl + '/group/groupRecommend';
 let a = localStorage.getItem("userLoginPhone");
 if (a === null) {
     localStorage.clear();
-    window.location.href =clientGroupUrl+ "/indexUi/returnIndexPage"
+    window.location.href =clientGroupUrl+ "/indexUi/returnIndexPage";
 }
 
 
@@ -40,7 +40,7 @@ function generateCourseDiv(course) {
     let divMeta = document.createElement("div");
     divMeta.classList.add("blog-meta");
     let ulcou = document.createElement("ul");
-    ulcou.classList.add("media-list")
+    ulcou.classList.add("media-list");
     let liStart =document.createElement("li");
     liStart.innerText="开课时间:"+course.courseStartDay;
     let licont =document.createElement("li");
@@ -49,7 +49,7 @@ function generateCourseDiv(course) {
     liTime.innerText= "上课时间:"+course.courseStartTime+"-"+course.courseEndTime;
     let liPrice =document.createElement("li");
     let spanDesc = document.createElement("span");
-    spanDesc.innerText="课程原价:"
+    spanDesc.innerText="课程原价:";
     let spanPrice = document.createElement("span");
     spanPrice.setAttribute("style","color:red");
     spanPrice.innerText="￥"+course.coursePrice;
@@ -208,7 +208,7 @@ setGroupNull = () =>{
     divNumber.innerText = 0;
     divDiscount.innerText ="￥"+ 0;
     divGroupPrice.innerText="￥"+0;
-}
+};
 /**
  * 清空session和界面的选择课程
  */
@@ -400,7 +400,7 @@ overMax = (message) => {
     vModal.style.display="block";
     dialog.style.display="block";
     dialogPInnerHtml.innerText=message;
-}
+};
 
 courseConflict = (message) => {
     document.body.style.overflowX = "hidden";
@@ -418,7 +418,7 @@ courseConflict = (message) => {
     vModal.style.display="block";
     dialog.style.display="block";
     dialogPInnerHtml.innerText=message;
-}
+};
 
 cancelDialog =() =>{
     document.body.style.overflowX = "visible";
@@ -427,4 +427,4 @@ cancelDialog =() =>{
     let vModal =document.getElementById("v-modal");
     vModal.style.display="none";
     dialog.style.display="none";
-}
+};
