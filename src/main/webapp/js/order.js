@@ -96,16 +96,22 @@ function getDetail (detail){
     td3.setAttribute("width","120");
     td3.innerText="￥"+detail.price;
     let td4 = document.createElement("td");
-    td4.setAttribute("width","80");
-    let marktype = document.createElement("mark");
+    td4.setAttribute("width","120");
+    let marktype = document.createElement("a");
+    marktype.setAttribute("style","border-radius:20px; padding:5px 14px; display:inline-block; border:1px solid #ddd;");
     marktype.innerText=detail.type;
     if (0===detail.state) {
+        marktype.classList.add("btn-warning");
         marktype.innerText="未开始";
     } else if (1===detail.state) {
+        marktype.classList.add("btn-success");
         marktype.innerText="正在进行";
     } else if (2===detail.state) {
+        marktype.classList.add("btn-danger");
         marktype.innerText="去评价";
+        marktype.setAttribute("href",detailUrl)
     }else {
+        marktype.classList.add("btn-info");
         marktype.innerText="完成";
     }
     td4.appendChild(marktype);
@@ -312,16 +318,22 @@ getValidateDetail = (detail) => {
     td4.innerText="￥"+detail.price;
 
     let td5 = document.createElement("td");
-    td5.setAttribute("width","100");
-    let marktype = document.createElement("mark");
+    td5.setAttribute("width","150");
+    let marktype = document.createElement("a");
+    marktype.setAttribute("style","border-radius:20px; padding:5px 14px; display:inline-block; border:1px solid #ddd;");
     marktype.innerText=detail.type;
     if (0===detail.state) {
+        marktype.classList.add("btn-warning");
         marktype.innerText="未开始";
     } else if (1===detail.state) {
+        marktype.classList.add("btn-success");
         marktype.innerText="正在进行";
     } else if (2===detail.state) {
+        marktype.classList.add("btn-danger");
         marktype.innerText="去评价";
+        marktype.setAttribute("href",detailUrl)
     }else {
+        marktype.classList.add("btn-info");
         marktype.innerText="完成";
     }
     td5.appendChild(marktype);

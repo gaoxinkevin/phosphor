@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
     private static Map<String, Configuration> configurationCache = Maps.newConcurrentMap();
     private  static Map<String,FileTemplateLoader> fileTemplateLoaderCache=Maps.newConcurrentMap();
 
-    private final String UTF_8 = "UTF-8";
+    private static final String UTF_8 = "UTF-8";
 
     @Autowired
     public OrderServiceImpl(GroupDAO groupDAO, OrderDAO orderDAO, OrderDetailServiceImpl orderDetailService, ParentDAO parentDAO, ChildDAO childDAO) {
@@ -207,10 +207,10 @@ public class OrderServiceImpl implements OrderService {
             orderDTO.setOrderPrice(group.getGroupPrice());
             orderDTO.setOrderSf(groupType);
         }else if(courseType.equals(type)){
-            orderDetails = orderDetailService.getListByCourseId(detailId,1);
+            orderDetails = orderDetailService.getListByCourseId(detailId);
             orderDTO.setOrderSf(courseType);
         }else if(activityType.equals(type)){
-            orderDetails = orderDetailService.getListByActivityId(detailId,1);
+            orderDetails = orderDetailService.getListByActivityId(detailId);
             orderDTO.setOrderSf(activityType);
         }else {
             return null;
@@ -245,11 +245,11 @@ public class OrderServiceImpl implements OrderService {
         }else {
             OrderDTO orderDTO = new OrderDTO();
             if (order.getCourseId()!=null){
-                orderDTO.setDetails(orderDetailService.getListByCourseId(order.getCourseId(),order.getOrderState()));
+                orderDTO.setDetails(orderDetailService.getListByCourseId(order.getCourseId()));
             } else if(order.getGroupId()!=null){
                 orderDTO.setDetails(orderDetailService.getListByGroupId(order.getGroupId()));
             } else if (order.getActivityId()!=null){
-                orderDTO.setDetails(orderDetailService.getListByActivityId(order.getActivityId(),order.getOrderState()));
+                orderDTO.setDetails(orderDetailService.getListByActivityId(order.getActivityId()));
             }
             orderDTO.setOrderId(order.getOrderId());
             orderDTO.setOrderCreateTime(order.getOrderCreateTime());
@@ -266,20 +266,17 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    /**
-     * 生成HTML代码
-     * @return HTML页面代码
-     */
-  public String getHtmlCode(Integer orderId) throws IOException {
+
+    @Override
+    public String getHtmlCode(Integer orderId) {
         String path = this.getClass().getResource("/").toString();
         String templatePath = (path.substring(0, path.lastIndexOf("/class")) + "/pages/templates").substring(5).replace("/", "\\");
-        //String templatePath = "D:\\SourceCode\\JAVA\\JavaEE\\phosphor\\target\\phosphor\\WEB-INF\\pages\\templates";
         String templateName = "orderInfoTemplate.ftl";
         OrderDTO orderDTO = getOrderById(orderId);
         return getContent(templatePath, templateName, orderDTO);
     }
 
-    public String getContent(String templatePath, String templateName, OrderDTO orderDTO) throws IOException {
+    private String getContent(String templatePath, String templateName, OrderDTO orderDTO)  {
         try {
             Configuration configuration = getConfiguration(templatePath);
             FileTemplateLoader fileTemplateLoader = new FileTemplateLoader(new File(templatePath));
@@ -288,8 +285,7 @@ public class OrderServiceImpl implements OrderService {
             StringWriter writer = new StringWriter();
             template.process(orderDTO, writer);
             writer.flush();
-            String content = writer.toString();
-            return content;
+            return writer.toString();
         }catch (Exception ex){
             System.out.println(ex.getMessage());
         }
@@ -313,7 +309,7 @@ public class OrderServiceImpl implements OrderService {
             fileTemplateLoader=new FileTemplateLoader(new File(templatePath));
             fileTemplateLoaderCache.put(templatePath,fileTemplateLoader);
         } catch (IOException e) {
-            System.out.println(e.getStackTrace());
+            System.out.println(Arrays.toString(e.getStackTrace()));
         }
         config.setTemplateLoader(fileTemplateLoader);
         configurationCache.put(templatePath,config);

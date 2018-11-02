@@ -95,4 +95,11 @@ public interface OrderService {
      * @return  是否删除成功 0:删除成功 1:删除失败
      */
     Integer delFile(File file);
+
+    /**
+     * 获取html页面代码
+     * @param orderId 订单编号
+     * @return 代码
+     */
+    String getHtmlCode(Integer orderId);
 }

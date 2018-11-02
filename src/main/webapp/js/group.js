@@ -219,7 +219,6 @@ optionError = () => {
             let divBody = document.getElementById("divBody");
             divBody.innerHTML="";
             setGroupNull();
-            submit.disabled=true;
             closeImg();
         }else {
             console.log("删除失败!")
@@ -251,9 +250,6 @@ cancelChoose = (courseId) => {
             if(res.data.courseInfos.length===0){
                 closeImg();
             }
-            if (res.data.courseInfos.length<= 1){
-                submit.disabled=true;
-            }
 
         }else {
             console.log(res);
@@ -280,10 +276,6 @@ addCourse=(courseId)=>{
     console.log(JSON.stringify(course));
     getCourseInfo(JSON.stringify(course)).then((res) => {
         if (res.code<=30000) {
-            let submit = document.getElementById("submit");
-            if (res.data.courseInfos.length>1){
-                submit.disabled=false;
-            }
             let divBody = document.getElementById("divBody");
             divBody.innerHTML = "";
             showImg();
@@ -378,7 +370,7 @@ addGroup = () => {
         if(res.code<=30000){
             window.location.href = orderUrl+res.data;
         }else {
-            console.log("创建套餐失败!")
+           courseLess("课程不能少于两个!");
         }
     }).catch(res => {
         console.log(res);
@@ -419,6 +411,25 @@ courseConflict = (message) => {
     dialog.style.display="block";
     dialogPInnerHtml.innerText=message;
 };
+
+courseLess = (message) => {
+    document.body.style.overflowX = "hidden";
+    document.body.style.overflowY = "hidden";
+    let dialog = document.getElementById("dialog");
+    let vModal =document.getElementById("v-modal");
+    let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+    let elButton = document.getElementById("el-button");
+
+    elButton.innerText="继续添加";
+    elButton.style.padding = "0.5em 1em";
+    elButton.setAttribute("href","javascript:void(0)");
+    elButton.setAttribute("onclick","cancelDialog()");
+
+    vModal.style.display="block";
+    dialog.style.display="block";
+    dialogPInnerHtml.innerText=message;
+};
+
 
 cancelDialog =() =>{
     document.body.style.overflowX = "visible";

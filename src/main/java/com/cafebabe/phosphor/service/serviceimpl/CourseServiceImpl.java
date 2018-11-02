@@ -138,7 +138,7 @@ public class CourseServiceImpl implements CourseService {
             }
         }
         for (CourseInfo info : courseInfoList) {
-            if (contrastCourseTime(info,courseInfo)){
+            if (!contrastCourseTime(info,courseInfo)){
                 return info;
             }
         }
@@ -171,10 +171,11 @@ public class CourseServiceImpl implements CourseService {
      * @param courseSecond 课程2
      * @return 是否有冲突
      */
-    @SuppressWarnings("unused")
-    public boolean contrastCourseTime(CourseInfo courseFirst, CourseInfo courseSecond){
+
+    private boolean contrastCourseTime(CourseInfo courseFirst, CourseInfo courseSecond){
         if (!courseFirst.getCourseTimeStatus().equals(courseSecond.getCourseTimeStatus())){
             return true;
-        }else return courseFirst.getCourseStartTime() != courseSecond.getCourseEndTime();
+        }
+        return courseFirst.getCourseStartTime() != courseSecond.getCourseEndTime();
     }
 }

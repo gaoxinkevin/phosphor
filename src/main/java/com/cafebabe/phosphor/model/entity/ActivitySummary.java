@@ -47,6 +47,4 @@ public class ActivitySummary implements Serializable {
      * 冗余字段
      */
     private String activitySummarySf;
-
-    private static final long serialVersionUID = 1L;
 }

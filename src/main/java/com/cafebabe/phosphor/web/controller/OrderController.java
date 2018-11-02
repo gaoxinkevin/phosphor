@@ -181,7 +181,7 @@ public class OrderController {
     @RequestMapping("downloadOrderPDF")
     public void downloadOrderPDF(Integer orderId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
         PDFUtil pdfUtil = new PDFUtil();
-        String htmlCode = orderService.getHtmlCode(orderId);
+        String htmlCode = (String) orderService.getHtmlCode(orderId);
         String fileName = "MyPDF.pdf";
         pdfUtil.createPDF(htmlCode, fileName);
         pdfUtil.downLoad(fileName, httpServletResponse);
