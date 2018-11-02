@@ -7,7 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+/**
+ * @Description:    活动总结Service层实现类
+ * @Author:         Ningtao Liu
+ * @CreateDate:     2018/11/2 14:13
+ * @Version:        1.0
+ */
 @Service
 public class ActivitySummaryServiceImpl implements ActivitySummaryService {
 

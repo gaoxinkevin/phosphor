@@ -57,7 +57,7 @@ function loadView(activityDetail) {
     let companyId = activityDetail.companyId
     let companyName = activityDetail.companyName;
     company.innerText = companyName;
-    company.setAttribute("href", "/company/company?companyId="+companyId);
+    company.setAttribute("href", "/companyUi/companyUi?companyId="+companyId);
     getCompanyInfo(companyId);
 
     let activityImg = document.getElementById("activityImg");

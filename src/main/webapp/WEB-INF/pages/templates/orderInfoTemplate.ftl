@@ -27,17 +27,17 @@
             width: 100%;
         }
         tr.row-title{
-            background-color: #aaaaaa;
+            background-color: #01BACF;
         }
         tr{
-            border-bottom: #aaaaaa solid 1px;
+            border-bottom: #01BACF solid 1px;
         }
     </style>
 </head>
 <body>
     <div class="div-common" style="margin-top: 40px">
         <img src="logo.png" alt=""/>
-        <table class="table-condensed" style="border-top: #aaaaaa 2px solid; border-bottom: #aaaaaa 1px solid; margin-top: 25px">
+        <table class="table-condensed" style="border-top: #01BACF 2px solid; border-bottom: #01BACF 1px solid; margin-top: 35px">
             <tbody style="text-align: left">
             <tr>
                 <td>订单编号：${orderNumber}</td>
@@ -63,7 +63,7 @@
                     <th>价格</th>
                 </tr>
                 <#list details as detail>
-                <tr style="border-bottom: #aaaaaa solid 1px">
+                <tr style="border-bottom: #01BACF solid 1px">
                     <td>
                         ${detail.name}
                     </td>
@@ -101,7 +101,7 @@
         </table>
     </div>
     <div style="text-align: center;">
-        <h4 style="margin: auto; width: 100%">给孩子最好的未来 尽在启明星教育</h4>
+        <h4 style="font-weight: lighter; margin: auto; width: 100%">给孩子最好的未来 尽在启明星教育</h4>
     </div>
 </body>
 </html>

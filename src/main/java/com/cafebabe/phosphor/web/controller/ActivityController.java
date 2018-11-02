@@ -25,6 +25,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/activity")
 public class ActivityController {
+
     @Autowired
     private final ActivityServiceImpl activityService;
     public ActivityController(ActivityServiceImpl activityService){
@@ -48,7 +49,6 @@ public class ActivityController {
     @RequestMapping(value = "getActivityInfoByPage", method = RequestMethod.POST)
     @ResponseBody
     public  JsonResponse getActivityInfoByPage(Integer pageIndex, Integer pageSize, String key, String ascOrDesc, String title){
-        System.out.println(pageIndex +"=="+ pageSize +"=="+key +"=="+ ascOrDesc +"==" + title);
         Page page = activityService.getActivityInfoByPage(pageIndex, pageSize, key, ascOrDesc, title);
         return new JsonResponse(200, "success", page);
     }
@@ -64,8 +64,8 @@ public class ActivityController {
 
     /**
      * 根据公司id获取该公司的其他活动
-     * @param companyId
-     * @return
+     * @param companyId 公司ID
+     * @return JSON
      */
     @RequestMapping("getActivityByCompanyId")
     @ResponseBody
@@ -84,7 +84,7 @@ public class ActivityController {
     /**
      * 获取近期热门活动
      * 按照开始时间排序，最多只取前3个
-     * @return
+     * @return  JSON
      */
     @RequestMapping("getRecentActivity")
     @ResponseBody

@@ -64,16 +64,16 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Page getActivityInfoByPage(Integer pageIndex, Integer pageSize, String key, String ascOrDesc, String title) {
-        String _undefined = "undefined";
-        String _null = "null";
+        String undefinedStr = "undefined";
+        String nullStr = "null";
         Page page = new Page();
-        if(key != null && !key.equals(_undefined) && !key.equals(_null) ){
+        if(key != null && !key.equals(undefinedStr) && !key.equals(nullStr) ){
             page.setKey(key);
         }
-        if(ascOrDesc != null && !ascOrDesc.equals(_undefined) && !ascOrDesc.equals(_null)){
+        if(ascOrDesc != null && !ascOrDesc.equals(undefinedStr) && !ascOrDesc.equals(nullStr)){
             page.setAscOrDesc(ascOrDesc);
         }
-        if(title != null && !title.equals(_undefined) && !title.equals(_null)){
+        if(title != null && !title.equals(undefinedStr) && !title.equals(nullStr)){
             page.setTitle(title);
         }
 
@@ -100,7 +100,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public List<Activity> getActivityByCompanyId(Integer companyId, Integer activityId) {
-        Map<String, Integer> idMap = new HashMap<>();
+        Map<String, Integer> idMap = new HashMap<>(16);
         idMap.put("companyId", companyId);
         idMap.put("activityId", activityId);
         return activityDAO.getActivityByCompanyId(idMap);
@@ -111,7 +111,7 @@ public class ActivityServiceImpl implements ActivityService {
         return activityDAO.getRecentActivity();
     }
 
-    public List<ActivityInfo> merge(List<Activity> activityList) {
+    private List<ActivityInfo> merge(List<Activity> activityList) {
         List<ActivityInfo> activityInfoList = new ArrayList<>();
         for (Activity activity : activityList) {
             Teacher teacher = teacherDAO.selectByPrimaryKey(activity.getTeacherId());

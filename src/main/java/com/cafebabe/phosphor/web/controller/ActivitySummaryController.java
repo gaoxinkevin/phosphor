@@ -12,6 +12,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+/**
+ * @Description:    活动控制层
+ * @Author:         Ningtao Liu
+ * @CreateDate:     2018/11/2 14:24
+ * @Version:        1.0
+ */
+
 @CrossOrigin
 @Controller
 @RequestMapping("/activitySummary")
