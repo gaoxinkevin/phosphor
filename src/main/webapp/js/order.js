@@ -200,40 +200,6 @@ childInfo = () => {
     });
 };
 
-/**
- * 弹出
- * @param message
- */
-selectChild = (message) => {
-    document.body.style.overflowX = "hidden";
-    document.body.style.overflowY = "hidden";
-    let dialog = document.getElementById("windowLog");
-    let vModal =document.getElementById("myModal");
-    let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
-    let elButton = document.getElementById("el-button");
-    let cancelBtn = document.getElementById("cancel-button");
-
-    elButton.innerText="新增孩子";
-    cancelBtn.innerText = "返回选择";
-    elButton.style.padding = "0.5em 1em";
-    elButton.setAttribute("href","/childrenUi/infoUi");
-    cancelBtn.setAttribute("href","javascript:void(0)");
-    cancelBtn.setAttribute("onclick","cancelDialog");
-
-    vModal.style.display="block";
-    dialog.style.display="block";
-    dialogPInnerHtml.innerText=message;
-};
-
-cancelDialog =() =>{
-    document.body.style.overflowX = "visible";
-    document.body.style.overflowY = "visible";
-    let dialog = document.getElementById("windowLog");
-    let vModal =document.getElementById("myModal");
-    vModal.style.display="none";
-    dialog.style.display="none";
-};
-
 btnOrder = () => {
     let getOrder = () => getJson(currentOrderUrl);
     getOrder().then(res => {
@@ -252,7 +218,7 @@ btnOrder = () => {
                     console.log(res);
                 });
             }else{
-                selectChild(res.message);
+                selectChild();
             }
         }else{
             console.log(res.data);

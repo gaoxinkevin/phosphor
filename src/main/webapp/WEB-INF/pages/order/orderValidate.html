@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleCommon.css">
+    <link rel="stylesheet" href="/css/simpleAlert.css">
+
 
     <!--自己写的 -->
     <link rel="stylesheet" href="/css/alreadyLogin.css">
@@ -92,6 +94,23 @@
     }).catch(res => {
         console.log(res);
     });
+
+    selectChild = () => {
+                let dblChoseAlert = simpleAlert({
+                    "title":"提示",
+                    "content":"您没有选择孩子,请选择!",
+                    "buttons":{
+                        "添加孩子":function () {
+                            window.location.href='http://localhost:1250//childrenUi/infoUi'
+                            dblChoseAlert.close();
+                        },
+                        "选择孩子":function () {
+                            dblChoseAlert.close();
+                        }
+                    }
+                })
+            }
+
 </script>
 <div id="wrapper">
 
@@ -99,6 +118,7 @@
         <img class="preloader" src="/images/loader.gif" alt="">
     </div>
 
+    
     <header class="header affix">
         <div class="container">
             <nav class="navbar navbar-default yamm">
@@ -199,7 +219,7 @@
                 <div class="row">
                         <div class=" col-md-12">
                             <table class="table table-hover table-condensed" cellpadding="0" cellspacing="0">
-                                <h3>订单编号:<span>x284318973</span></h3>
+                                <h4 class="title">订单详情:</h4>
                                 <tbody id="otbody">
                                 </tbody>
                             </table>
@@ -213,7 +233,7 @@
                             <div class="pull-right">
                                 <ul class="media-list">
                                     <li>个数:<span id="number" style="min-width: 210px; text-align: right; display: inline-block;"></span></li>
-                                    <li>价格:<span id="price" style="min-width: 210px; text-align: right;  display: inline-block; color: red; font-size: large">$121.49</span></li>
+                                    <li>价格:<span id="price" style="min-width: 210px; text-align: right;  display: inline-block; color: red; font-size: large"></span></li>
                                 </ul>
                             </div>
                         </div>
@@ -331,6 +351,7 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/customLogin.js"></script>
+<script src="/js/simpleAlert.js"></script>
 </body>
 
 </html>
