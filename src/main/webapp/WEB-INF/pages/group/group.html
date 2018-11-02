@@ -24,119 +24,65 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleLogin.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script src="/js/group.js"></script>
 </head>
 
 <body>
-<!--Ajax向后台输出数据-->
+<!--Ajax向后台提取数据-->
 <script>
-    const clientUrl = 'http://localhost:1250';
-    const orderUrl = clientUrl +'/orderUi/orderGroupUi/'
-    const courseUrl= clientUrl + '/courseUi/courseInfoUi/';
-    const groupUrl = clientUrl + '/group/group';
-    const getJson = (url) => {
-        return new Promise((resolve, reject) => {
-            const client = new XMLHttpRequest();
-            client.open("GET", url);
-            client.responseType = 'json';
-            client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-            client.onreadystatechange = () => {
-                if (client.readyState === 4) {
-                    if (client.status === 200) {
-                        resolve(client.response);
-                    } else {
-                        reject(client.status);
-                    }
-                }
-            };
-            client.send();
-        });
-    };
+    const group = () => getJson(getGroupUrl);
+    group().then(res => {
+        if (res.code<=30000){
+            console.log(res);
+            const groupName = document.getElementById("groupName");
+            const groupContent = document.getElementById("groupContent");
+            const groupPrice = document.getElementById("groupPrice");
+            const groupDiscount = document.getElementById("groupDiscount");
+            const groupCourseNumber = document.getElementById("groupCourseNumber");
+            const groupPhoto = document.getElementById("groupPhoto");
+            const groupPrettyPhoto = document.getElementById("groupPrettyPhoto");
+            const buy = document.getElementById("buy");
 
-    const group = () => getJson(groupUrl);
+            groupName.innerText += res.data.groupName;
+            groupContent.innerText += res.data.groupContent;
+            groupPrice.innerText += res.data.groupPrice / res.data.groupDiscount;
+            groupDiscount.innerText += res.data.groupPrice;
+            groupCourseNumber.innerText += res.data.groupCourseNumber;
+            groupPhoto.src = res.data.groupPhoto;
+            groupPrettyPhoto.href = res.data.groupPhoto;
+            groupPrettyPhoto.innerText += res.data.groupName;
+            buy.setAttribute("href",orderUrl+res.data.groupId);
 
-    group().then(({data}) => {
+            const groupsPanel = document.getElementById("coursesPanel");
+            for (let i = 0; i < res.data.courseInfos.length; i++) {
+                let divGrid = generateCourseDiv(res.data.courseInfos[i]);
+                groupsPanel.appendChild(divGrid);
+            }
+        } else{
+            console.log(res);
+        }
 
-        const groupName = document.getElementById("groupName");
-        const groupContent = document.getElementById("groupContent");
-        const groupPrice = document.getElementById("groupPrice");
-        const groupDiscount = document.getElementById("groupDiscount");
-        const groupCourseNumber = document.getElementById("groupCourseNumber");
-        const groupPhoto = document.getElementById("groupPhoto");
-        const groupPrettyPhoto = document.getElementById("groupPrettyPhoto");
-        const buy = document.getElementById("buy");
+    }).catch(error => {
+        console.log(error);
+    });
 
-        groupName.innerText += data.groupName;
-        groupContent.innerText += data.groupContent;
-        groupPrice.innerText += data.groupPrice;
-        groupDiscount.innerText += data.groupPrice * data.groupDiscount;
-        groupCourseNumber.innerText += data.groupCourseNumber;
-        groupPhoto.src = data.groupPhoto;
-        groupPrettyPhoto.href = data.groupPhoto;
-        groupPrettyPhoto.innerText += data.groupName;
-        buy.setAttribute("href",orderUrl+data.groupId);
+    const groupList = () => getJson(recommendGroupUrl) ;
 
-        const groupsPanel = document.getElementById("groupsPanel");
-        for (let i = 0; i < data.courseInfos.length; i++) {
-            let divGrid = generateCourseDiv(data.courseInfos[i]);
-            groupsPanel.appendChild(divGrid);
+    groupList().then(res => {
+        if(res.code<=30000){
+            const groupsPanel = document.getElementById("groupsPanel");
+            for(let i = 0; i < res.data.length ; i++) {
+                let divGrid = generateGroupDiv(res.data[i]);
+                groupsPanel.appendChild(divGrid);
+            }
+        }else {
+            console.log(res);
         }
     }).catch(error => {
         console.log(error);
     });
 
-    function generateCourseDiv(course) {
-        let divMedia = document.createElement("div");
-        divMedia.classList.add("media");
-        let div2 = document.createElement("div");
-        div2.classList.add("col-md-2");
-        let ablock =document.createElement("a");
-        ablock.setAttribute("style","display:block;");
-        ablock.setAttribute("href",courseUrl+course.courseId);
-        let image =document.createElement("img");
-        image.setAttribute("src",course.coursePhoto);
-        image.classList.add("img-responsive", "alignleft", "img-rounded");
-        ablock.appendChild(image);
-        div2.appendChild(ablock);
-        let div10 = document.createElement("div");
-        div10.classList.add("col-md-10");
-        let htt =document.createElement("h4");
-        htt.classList.add("mt-0");
-        let att =document.createElement("a");
-        att.setAttribute("href",courseUrl+course.courseId);
-        att.innerText = course.courseName+"&nbsp;&nbsp;&nbsp;"+course.courseDesc;
-        htt.appendChild(att);
-        let divMeta = document.createElement("div");
-        divMeta.classList.add("blog-meta");
-        let ulcou = document.createElement("ul");
-        ulcou.classList.add("media-list")
-        let liStart =document.createElement("li");
-        liStart.innerText="开课时间:"+course.courseStartDay;
-        let licont =document.createElement("li");
-        licont.innerText="持续时间:"+course.courseContinuedTime+"周";
-        let liTime =document.createElement("li");
-        liTime.innerText= "上课时间:"+course.courseStartTime+"-"+course.courseEndTime;
-        let liPrice =document.createElement("li");
-        let spanDesc = document.createElement("span");
-        spanDesc.innerText="课程原价:"
-        let spanPrice = document.createElement("span");
-        spanPrice.setAttribute("style","color:red");
-        spanPrice.innerText="￥"+course.coursePrice;
-        liPrice.appendChild(spanDesc);
-        liPrice.appendChild(spanPrice);
-        let liAdrs =document.createElement("li");
-        liAdrs.innerText="上课地点:"+course.courseAddress;
-        ulcou.appendChild(liStart);
-        ulcou.appendChild(licont);
-        ulcou.appendChild(liTime);
-        ulcou.appendChild(liPrice);
-        ulcou.appendChild(liAdrs);
-        divMeta.appendChild(ulcou);
-        div10.appendChild(htt);
-        div10.appendChild(divMeta);
-        divMedia.appendChild(div2);
-        divMedia.appendChild(div10);
-        return divMedia;
-    }
 </script>
 
 <div id="wrapper">
@@ -145,25 +91,7 @@
         <img class="preloader" src="/images/loader.gif" alt="">
     </div>
 
-    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Begin # DIV Form -->
-                <div id="div-forms">
-                    <form id="login-form">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span class="flaticon-add" aria-hidden="true"></span>
-                        </button>
-                        <div class="modal-body">
-                            <input class="form-control" type="text" placeholder="What you are looking for?" required>
-                        </div>
-                    </form><!-- End # Login Form -->
-                </div><!-- End # DIV Form -->
-            </div>
-        </div>
-    </div>
-
-    <header class="header affix">
+    <header class="header">
         <div class="container">
             <nav class="navbar navbar-default yamm">
                 <div class="navbar-header">
@@ -182,22 +110,49 @@
                 </div>
 
                 <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right" id="ul">
                         <li><a href="/indexUi/returnIndexPage">首页</a></li>
-                        <li><a href="">课程</a></li>
-                        <li><a href="">活动</a></li>
-                        <li><a href="">指导师</a></li>
-                        <li><a href="/companyUi/companyUi">联系我们</a></li>
-                        <li><a href="/loginUi/loginUi">登录|注册</a></li>
+                        <li><a href="/courseUi/courseListUi">课程</a></li>
+                        <li><a href="/activityUi/returnActivityUi">活动</a></li>
+                        <li><a href="/teacherUi/getTeacherList">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="/groupUi/groupListUi">官方套餐</a></li>
+                                    <li><a href="/groupUi/groupDiyUi">自定义套餐</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="">联系我们</a></li>
                         <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
                                 class="fa fa-search"></i></a></li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
+                                    <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
+                                    <li><a href="#">我的关注</a></li>
+                                    <li><a href="#">我的收藏</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
 
             </nav>
         </div>
     </header>
-
     <section class="section db p120">
         <div class="container">
             <div class="row">
@@ -260,64 +215,23 @@
                         </div>
                         <div class="widget clearfix">
                             <h3 class="widget-title">套餐课程</h3>
-                            <div class="post-widget" id="groupsPanel">
+                            <div class="post-widget" id="coursesPanel">
 
                                 
-                                <div class="media">
-                                    <div class="col-md-2">
-                                        <a style="display: block" href="/courseUi/courseInfoUi"><img
-                                                src="/upload/01_team.png" alt=""
-                                                class="img-responsive alignleft img-rounded">
-                                        </a></div>
-                                    <div class="col-md-10">
-                                            <h5 class="mt-0"><a href="/courseUi/courseInfoUi">围棋 故国神游,多情应笑我,早生华发</a>
-                                            </h5>
-                                            <div class="blog-meta">
-                                                <ul class="media-list">
-                                                    <li>开课时间:2018-11-03</li>
-                                                    <li>持续时间:4周</li>
-                                                    <li>上课时间:09:00:00-11:00:00</li>
-                                                    <li><span>课程原价</span> <a href="" style="color:red;">$1200.00</a>
-                                                    </li>
-                                                    <li>上课地点:苏州工业园区创意产业园4幢B座2楼</li>
-                                                </ul>
-                                            </div><!-- end blog-meta -->
-                                        </div>
-                                </div>
+
                             </div><!-- end post-widget -->
                         </div><!-- end widget -->
 
                         <div class="widget clearfix">
                             <h3 class="widget-title">套餐须知:</h3>
                             <div class="newsletter-widget">
-                                <p>You can opt out of our newsletters at any time. See our <a href="#">privacy
-                                    policy</a>.</p>
-                                <form class="form-inline" role="search">
-                                    <div class="form-1">
-                                        <input type="text" class="form-control" placeholder="Enter email here..">
-                                        <button type="submit" class="btn btn-primary"><i
-                                                class="fa fa-paper-plane-o"></i></button>
-                                    </div>
-                                </form>
-                            </div><!-- end newsletter -->
-                        </div><!-- end widget -->
-
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Popular Tags</h3>
-                            <div class="tags-widget">
-                                <ul class="list-inline">
-                                    <li><a href="#">course</a></li>
-                                    <li><a href="#">web design</a></li>
-                                    <li><a href="#">development</a></li>
-                                    <li><a href="#">language</a></li>
-                                    <li><a href="#">teacher</a></li>
-                                    <li><a href="#">speaking</a></li>
-                                    <li><a href="#">material</a></li>
-                                    <li><a href="#">css3</a></li>
-                                    <li><a href="#">html</a></li>
-                                    <li><a href="#">learning</a></li>
+                                <ul class="media-list" style="color: #a2a2a2">
+                                    <li>1.自定义套餐所购课程享受和单个购买课程相同的权益.</li>
+                                    <li>2.自定义套餐不能针对单个课程退款,只能按照当时购买的所有课程一起退款.</li>
+                                    <li>3.凡是有未上的课程想退款,需要联系该课程的老师来帮您实现退款.</li>
+                                    <li>4.以上解释权归启明星少儿教育有限公司所有</li>
                                 </ul>
-                            </div><!-- end list-widget -->
+                            </div><!-- end newsletter -->
                         </div><!-- end widget -->
                     </div><!-- end sidebar -->
                 </div><!-- end row -->
@@ -325,105 +239,12 @@
 
                 <div class="related-products">
                     <div class="text-widget">
-                        <h3>Related Products</h3>
+                        <h3>最近套餐</h3>
                     </div><!-- end title -->
 
-                    <div class="row blog-grid shop-grid">
-                        <div class="col-md-4">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_01.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="shop-single.html" title=""><i class="flaticon-add"></i></a>
-                                    </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="shop-single.html" title="">Brown leather bag</a>
-                                        <small>Bags</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
+                    <div class="row blog-grid shop-grid" id="groupsPanel">
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$441.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
 
-                        <div class="col-md-4">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_02.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="" title=""><i class="flaticon-add"></i></a>
-                                    </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="/shop-single.html" title="">Long coat jacket</a>
-                                        <small>Jackets</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$122.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
-
-                        <div class="col-md-4">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="/upload/shop_03.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="shop-single.html" title=""><i class="flaticon-add"></i></a>
-                                    </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a href="shop-single.html" title="">Style own glasses</a>
-                                        <small>Glasses</small>
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$52.00</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
                     </div><!-- end row -->
                 </div><!-- end related -->
             </div><!-- end boxed -->
@@ -431,49 +252,35 @@
     </section>
 
 
-    <footer class="section footer noover">
+    <footer class="section footer noover" style="height: 350px;">
         <div class="container">
-            <div class="row">
+            <div class="row" style="margin-top: -50px;">
                 <div class="col-lg-4 col-md-4">
                     <div class="widget clearfix">
-                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
-                        <div class="newsletter-widget">
-                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy
-                                policy</a>.</p>
-                            <form class="form-inline" role="search">
-                                <div class="form-1">
-                                    <input type="text" class="form-control" placeholder="Enter email here..">
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
-                                    </button>
-                                </div>
-                            </form>
-                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        <h3 class="widget-title">关于我们</h3>
+                        <div class="newsletter-widget" style="width: 350px;">
+                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class" target="_blank">phosphor</a></p>
                         </div><!-- end newsletter -->
                     </div><!-- end widget -->
                 </div><!-- end col -->
 
                 <div class="col-lg-3 col-md-3">
                     <div class="widget clearfix">
-                        <h3 class="widget-title">Join us today</h3>
-                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                        <h3 class="widget-title">加入我们</h3>
+                        <p>了解更多关于我们的故事，或者加入我们的团队。</p>
+                        <a href="#" class="readmore">向我们发送邮件</a>
                     </div><!-- end widget -->
                 </div><!-- end col -->
 
                 <div class="col-lg-3 col-md-3">
                     <div class="widget clearfix">
-                        <h3 class="widget-title">Popular Tags</h3>
+                        <h3 class="widget-title">友情链接</h3>
                         <div class="tags-widget">
                             <ul class="list-inline">
-                                <li><a href="#">course</a></li>
-                                <li><a href="#">web design</a></li>
-                                <li><a href="#">development</a></li>
-                                <li><a href="#">language</a></li>
-                                <li><a href="#">teacher</a></li>
-                                <li><a href="#">speaking</a></li>
-                                <li><a href="#">material</a></li>
-                                <li><a href="#">css3</a></li>
-                                <li><a href="#">html</a></li>
-                                <li><a href="#">learning</a></li>
+                                <li><a href="https://cn.aliyun.com" target="_blank">阿里云</a></li>
+                                <li><a href="https://www.qiniu.com" target="_blank">七牛云</a></li>
+                                <li><a href="http://www.iconfont.cn" target="_blank">阿里图标</a></li>
+                                <li><a href="https://github.com" target="_blank">GitHub</a></li>
                             </ul>
                         </div><!-- end list-widget -->
                     </div><!-- end widget -->
@@ -481,23 +288,20 @@
 
                 <div class="col-lg-2 col-md-2">
                     <div class="widget clearfix">
-                        <h3 class="widget-title">Support</h3>
-                        <div class="list-widget">
+                        <h3 class="widget-title">支持</h3>
+                        <div class="list-widget" style="color: #9A9A9A;">
                             <ul>
-                                <li><a href="#">Terms of Use</a></li>
-                                <li><a href="#">Copyrights</a></li>
-                                <li><a href="#">Create a Ticket</a></li>
-                                <li><a href="#">Pricing & Plans</a></li>
-                                <li><a href="#">Carrier</a></li>
-                                <li><a href="#">Trademark</a></li>
+                                <li>随便写写 看看效果</li>
+                                <li>觉得不错 那就留着</li>
+                                <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a> 试试效果</li>
+                                <li>有了想法 以后再加</li>
                             </ul>
                         </div><!-- end list-widget -->
                     </div><!-- end widget -->
                 </div><!-- end col -->
             </div><!-- end row -->
         </div><!-- end container -->
-    </footer>
-
+    </footer><!-- end footer -->
     <div class="copyrights">
         <div class="container">
             <div class="clearfix">

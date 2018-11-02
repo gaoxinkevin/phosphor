@@ -10,10 +10,17 @@ import com.cafebabe.phosphor.model.entity.Group;
 import com.cafebabe.phosphor.model.entity.Order;
 import com.cafebabe.phosphor.service.OrderService;
 import com.cafebabe.phosphor.util.RedisUtil;
+import com.google.common.collect.Maps;
+import freemarker.cache.FileTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateExceptionHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -30,6 +37,7 @@ import java.util.*;
  **/
 
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDAO orderDAO;
@@ -37,9 +45,12 @@ public class OrderServiceImpl implements OrderService {
     private final ParentDAO parentDAO;
     private final ChildDAO childDAO;
     private final GroupDAO groupDAO;
-    private final String groupType= "group";
-    private final String courseType = "course";
-    private final String activityType = "activity";
+
+    private static Map<String, Configuration> configurationCache = Maps.newConcurrentMap();
+    private  static Map<String,FileTemplateLoader> fileTemplateLoaderCache=Maps.newConcurrentMap();
+
+    private final String UTF_8 = "UTF-8";
+
     @Autowired
     public OrderServiceImpl(GroupDAO groupDAO, OrderDAO orderDAO, OrderDetailServiceImpl orderDetailService, ParentDAO parentDAO, ChildDAO childDAO) {
         this.groupDAO = groupDAO;
@@ -53,7 +64,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer insertOrder(Order order) {
-        return orderDAO.insertOrder(order);
+        if(orderDAO.insertOrder(order)>0){
+           return orderDAO.getOrderId();
+        }else{
+            return 0;
+        }
+
     }
 
     @Override
@@ -83,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDTO> getOrderListAll() {
 
         List<OrderDTO> cache = RedisUtil.getList("getOrderDTOListAll");
-        if (cache != null){
+        if (cache != null&&cache.size()>0){
             return cache;
         }else {
             List<OrderDTO> orderDTOList = new ArrayList<>() ;
@@ -116,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDTO> getOrderListByChildId(Integer id) {
 
         List<OrderDTO> cache = RedisUtil.getList("getOrderListByChildId"+id);
-        if (cache != null){
+        if (cache != null&&cache.size()>0){
             return cache;
         }else {
             List<OrderDTO> orderDTOList = new ArrayList<>() ;
@@ -132,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> getCourseOrderList(Integer parentId) {
         List<OrderDTO> cache = RedisUtil.getList("getCourseOrderList"+parentId);
-        if (cache != null){
+        if (cache != null&&cache.size()>0){
             return cache;
         }else {
             List<OrderDTO> orderDTOList = new ArrayList<>() ;
@@ -148,7 +164,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> getGroupOrderList(Integer parentId) {
         List<OrderDTO> cache = RedisUtil.getList("getGroupOrderList"+parentId);
-        if (cache != null){
+        if (cache != null&&cache.size()>0){
             return cache;
         }else {
             List<OrderDTO> orderDTOList = new ArrayList<>() ;
@@ -164,7 +180,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> getActivityOrderList(Integer parentId) {
         List<OrderDTO> cache = RedisUtil.getList("getActivityOrderList"+parentId);
-        if (cache != null){
+        if (cache != null&&cache.size()>0){
             return cache;
         }else {
             List<OrderDTO> orderDTOList = new ArrayList<>() ;
@@ -179,27 +195,43 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO createOrder(String type, Integer detailId) {
+        String groupType= "group";
+        String courseType = "course";
+        String activityType = "activity";
+
         List<OrderDetail> orderDetails;
         OrderDTO orderDTO =new OrderDTO();
         if(groupType.equals(type)){
             orderDetails = orderDetailService.getListByGroupId(detailId);
             Group group = groupDAO.getGroupById(detailId);
             orderDTO.setOrderPrice(group.getGroupPrice());
-            orderDTO.setOrderState(group.getGroupId());
+            orderDTO.setOrderSf(groupType);
         }else if(courseType.equals(type)){
             orderDetails = orderDetailService.getListByCourseId(detailId,1);
-            orderDTO.setOrderState(0);
+            orderDTO.setOrderSf(courseType);
         }else if(activityType.equals(type)){
             orderDetails = orderDetailService.getListByActivityId(detailId,1);
-            orderDTO.setOrderState(1);
+            orderDTO.setOrderSf(activityType);
         }else {
             return null;
         }
-        if (orderDetails.size()<2) {orderDTO.setOrderPrice(orderDetails.get(0).getPrice());}
+        if (orderDetails.size()<=1) {orderDTO.setOrderPrice(orderDetails.get(0).getPrice());}
+        orderDTO.setOrderState(detailId);
         orderDTO.setDetails(orderDetails);
-        orderDTO.setOrderNumber("X"+Math.random()*100000);
+        orderDTO.setOrderNumber("x"+new Random().nextLong());
         orderDTO.setOrderCreateTime(new Date());
         return orderDTO;
+    }
+
+    @Override
+    public File createOrderPdfFile(Integer orderId) {
+
+        return null;
+    }
+
+    @Override
+    public Integer delFile(File file) {
+        return null;
     }
 
     /**
@@ -232,6 +264,61 @@ public class OrderServiceImpl implements OrderService {
             orderDTO.setParent(parentDAO.getParentNameById(order.getParentId()));
             return orderDTO;
         }
+    }
+
+    /**
+     * 生成HTML代码
+     * @return HTML页面代码
+     */
+  public String getHtmlCode(Integer orderId) throws IOException {
+        String path = this.getClass().getResource("/").toString();
+        String templatePath = (path.substring(0, path.lastIndexOf("/class")) + "/pages/templates").substring(5).replace("/", "\\");
+        //String templatePath = "D:\\SourceCode\\JAVA\\JavaEE\\phosphor\\target\\phosphor\\WEB-INF\\pages\\templates";
+        String templateName = "orderInfoTemplate.ftl";
+        OrderDTO orderDTO = getOrderById(orderId);
+        return getContent(templatePath, templateName, orderDTO);
+    }
+
+    public String getContent(String templatePath, String templateName, OrderDTO orderDTO) throws IOException {
+        try {
+            Configuration configuration = getConfiguration(templatePath);
+            FileTemplateLoader fileTemplateLoader = new FileTemplateLoader(new File(templatePath));
+            configuration.setTemplateLoader(fileTemplateLoader);
+            Template template = configuration.getTemplate(templateName);
+            StringWriter writer = new StringWriter();
+            template.process(orderDTO, writer);
+            writer.flush();
+            String content = writer.toString();
+            return content;
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return null;
+    }
+
+    private Configuration getConfiguration(String templatePath){
+
+        if(null != configurationCache.get(templatePath)){
+            return configurationCache.get(templatePath);
+        }
+        Configuration config = new Configuration(Configuration.VERSION_2_3_25);
+        config.setDefaultEncoding(UTF_8);
+        config.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        config.setLogTemplateExceptions(false);
+        FileTemplateLoader fileTemplateLoader=null;
+        if(null!=fileTemplateLoaderCache.get(templatePath)){
+            fileTemplateLoader=fileTemplateLoaderCache.get(templatePath);
+        }
+        try {
+            fileTemplateLoader=new FileTemplateLoader(new File(templatePath));
+            fileTemplateLoaderCache.put(templatePath,fileTemplateLoader);
+        } catch (IOException e) {
+            System.out.println(e.getStackTrace());
+        }
+        config.setTemplateLoader(fileTemplateLoader);
+        configurationCache.put(templatePath,config);
+        return config;
+
     }
 
 }

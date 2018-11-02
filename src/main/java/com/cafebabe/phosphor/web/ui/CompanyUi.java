@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.web.ui;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletException;
@@ -26,9 +27,10 @@ import java.io.IOException;
 @RequestMapping("/companyUi")
 public class CompanyUi {
 
-    @RequestMapping("companyUi")
-    public void companyUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+    @RequestMapping("companyUi/{companyId}")
+    public void companyUi(@PathVariable Integer companyId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
             throws ServletException, IOException {
+        httpServletRequest.getSession().setAttribute("companyId",companyId);
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/company/company.html")
                 .forward(httpServletRequest,httpServletResponse);
     }

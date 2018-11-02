@@ -55,13 +55,9 @@ public class CompanyCollectionServiceImpl implements CompanyCollectionService {
     public Integer insertCompanyCollection(CompanyCollection companyCollection) {
         Parent parent = parentDAO.getAllInfoAboutParentDao(companyCollection.getCompanyCollectionSf());
         companyCollection.setParentId(parent.getParentId());
-        int flag = 0;
         CompanyCollection collection = companyCollectionDAO.getCompanyCollection(
                 companyCollection.getParentId(), companyCollection.getCompanyId());
         if (collection == null) {
-            flag = 1;
-        }
-        if (flag == 1) {
             companyCollection.setCompanyCollectionCreateTime(new Date());
             companyCollection.setCompanyCollectionStatus(1);
             return companyCollectionDAO.insertCompanyCollection(companyCollection);

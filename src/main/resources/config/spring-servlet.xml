@@ -37,5 +37,4 @@
     <mvc:resources mapping="/WEB-INF/pages/**" location="/WEB-INF/pages/"/>
 
 
-
 </beans>

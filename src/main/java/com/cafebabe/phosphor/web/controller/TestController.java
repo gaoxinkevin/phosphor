@@ -1,5 +1,10 @@
 package com.cafebabe.phosphor.web.controller;
 
+
+import com.cafebabe.phosphor.solrdao.solrdaoimpl.TeacherSearchDaoImpl;
+import com.cafebabe.phosphor.util.JsonResponse;
+import com.cafebabe.phosphor.util.SolrUtil;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -8,16 +13,17 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 
-import java.time.LocalDate;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -37,11 +43,20 @@ import java.util.Collection;
 @RequestMapping("/test")
 public class TestController {
 
+
+    private final TeacherSearchDaoImpl teacherService;
+
     private final static String URL = "http://47.100.247.29:8080/solr/collection1";
 
     private final static String URL_MYSQL = "http://47.100.247.29:8080/solr/collection_mysql";
 
     private final static String URL_ACTIVITY = "http://47.100.247.29:8080/solr/collection_activity";
+
+    @Autowired
+    public TestController(TeacherSearchDaoImpl teacherService1) {
+
+        this.teacherService = teacherService1;
+    }
 
     /**
      *  向solr进行数据库插入操作
@@ -50,10 +65,7 @@ public class TestController {
      */
     @RequestMapping("test")
     public void test() throws IOException, SolrServerException {
-        HttpSolrClient httpSolrClient = new HttpSolrClient.Builder(URL).
-                                        withConnectionTimeout(10000).
-                                        withSocketTimeout(60000)
-                                        .build();
+        HttpSolrClient httpSolrClient =SolrUtil.connSolr(URL);
 
         SolrInputDocument document = new SolrInputDocument();
         document.addField("id","10001");
@@ -104,10 +116,6 @@ public class TestController {
                 withSocketTimeout(60000)
                 .build();
         SolrQuery solrQuery  = new SolrQuery();
-
-        LocalDate today =LocalDate.now();
-        today.getDayOfYear();
-
         solrQuery.set("date","2018-10-24T21:35:14Z");
         QueryResponse queryResponse = httpSolrClient.query(solrQuery);
         SolrDocumentList solrDocuments  = queryResponse.getResults();

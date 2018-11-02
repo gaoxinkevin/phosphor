@@ -1,6 +1,8 @@
 package com.cafebabe.phosphor.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -42,6 +44,8 @@ public class GroupDTO implements Serializable {
      * 套餐结束时间
 
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8",pattern ="yyyy-MM-dd HH:mm:ss")
     private Date groupEndTime;
 
     /**

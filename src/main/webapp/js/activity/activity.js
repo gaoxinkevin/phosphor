@@ -111,6 +111,10 @@ function refreshGrid(activityInfoList, pageSize) {
         let spDesc = document.getElementsByClassName("spDesc")[i];
         spDesc.innerText = activityDesc;
 
+        let activityPrice = activityInfo.activityPrice;
+        let spPrice = document.getElementsByClassName("spPrice")[i];
+        spPrice.innerText = "￥"+activityPrice;
+
         let activityImg = activityInfo.activitySf;
         let imgActivity = document.getElementsByClassName("img-activity")[i];
         imgActivity.setAttribute("src", activityImg);
@@ -181,6 +185,7 @@ function refreshUlPagination(currentPageCode, totalPages) {
         let liPageIndex = document.createElement("li");
         let aPageIndex= document.createElement("a");
         aPageIndex.innerText = (i + 1) + "";
+        aPageIndex.classList.add("page-code");
         liPageIndex.classList.add("pageIndex");
         aPageIndex.onclick = newPage;
         liPageIndex.appendChild(aPageIndex);
@@ -479,6 +484,7 @@ function newPage() {
     else {
         getActivityByPage(pageIndex, 4, "activity_start_time", startTimeOrder.getElementsByTagName("input")[0].value, title);
     }
+    document.getElementById("activityListTop").scrollIntoView(true);
 }
 
 
@@ -505,6 +511,7 @@ function perPage() {
             getActivityByPage(currentPageCode -1, 4, "activity_start_time", startTimeOrder.getElementsByTagName("input")[0].value, title);
         }
     }
+    document.getElementById("activityListTop").scrollIntoView(true);
 }
 
 /**
@@ -530,4 +537,5 @@ function nextPage() {
             getActivityByPage(currentPageCode + 1, 4, "activity_start_time", startTimeOrder.getElementsByTagName("input")[0].value, title);
         }
     }
+    document.getElementById("activityListTop").scrollIntoView(true);
 }

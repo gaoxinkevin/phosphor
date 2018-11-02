@@ -4,6 +4,7 @@ import com.cafebabe.phosphor.dao.OrderDAO;
 import com.cafebabe.phosphor.model.dto.OrderDTO;
 import com.cafebabe.phosphor.model.entity.Order;
 
+import java.io.File;
 import java.util.List;
 
 public interface OrderService {
@@ -80,4 +81,18 @@ public interface OrderService {
      * @return 订单
      */
     OrderDTO createOrder(String type, Integer detailId);
+
+    /**
+     * 根据订单ID创建PDF文档并暂存至服务器
+     * @param orderId   订单ID
+     * @return  PDF文件
+     */
+    File createOrderPdfFile(Integer orderId);
+
+    /**
+     * 删除暂存的PDF文件
+     * @param file  暂存至磁盘的pdf文件
+     * @return  是否删除成功 0:删除成功 1:删除失败
+     */
+    Integer delFile(File file);
 }

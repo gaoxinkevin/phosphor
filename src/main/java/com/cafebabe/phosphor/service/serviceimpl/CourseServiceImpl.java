@@ -129,6 +129,22 @@ public class CourseServiceImpl implements CourseService {
     }
 
 
+    @Override
+    public CourseInfo getConflictCourseInfo(List<CourseInfo> courseInfoList, Integer courseId) {
+        CourseInfo courseInfo =courseDAO.getCourseInfo(courseId);
+        for (int i = 0; i < courseInfoList.size() ; i++) {
+            if (courseInfoList.get(i).getCourseId().equals(courseId)){
+                return courseInfoList.get(i);
+            }
+        }
+        for (CourseInfo info : courseInfoList) {
+            if (contrastCourseTime(info,courseInfo)){
+                return info;
+            }
+        }
+        return null;
+    }
+
     /**
      * 获得某课程所有评价
      * @param courseId 课程id

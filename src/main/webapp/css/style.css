@@ -34,6 +34,12 @@ customize
 
 }
 
+#imgLoading{
+    height: 200px;
+    width: 200px;
+    top: 230px;
+}
+
 /******************************************
 IMPORT
 ******************************************/
@@ -1056,7 +1062,8 @@ SECTIONS
     left: 0;
     bottom: 0;
     z-index: 1;
-    background: url(/images/pattern.png) repeat center center rgba(0, 0, 0, 0.7);
+    /*background-image: url(/images/top.jpg);*/
+    /*background: url(/images/pattern.png) repeat center center rgba(0, 0, 0, 0.7);*/
 }
 
 .video-section {

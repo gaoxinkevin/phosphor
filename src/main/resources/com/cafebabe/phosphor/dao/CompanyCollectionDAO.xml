@@ -112,6 +112,7 @@
         where company_collection_id = #{companyCollectionId,jdbcType=INTEGER}
     </update>
 
+    <!--根据父母ID获取收藏的公司集合-->
     <select id="getCompanyCollectionList"
             resultType="com.cafebabe.phosphor.model.dto.CompanyCollectionDTO">
         select company_collection_id,
@@ -136,6 +137,7 @@
         limit #{startRecord},#{pageSize}
     </select>
 
+    <!--根据父母ID获取收藏公司的数量-->
     <select id="getCompanyCollectionCount" resultType="java.lang.Integer">
         select count(*)
         from company_collection
@@ -143,6 +145,7 @@
           and company_collection_status = 1
     </select>
 
+    <!--根据父母ID，公司ID获取公司收藏ID，收藏状态-->
     <select id="getCompanyCollection"
             resultType="com.cafebabe.phosphor.model.entity.CompanyCollection">
         select company_collection_id, company_collection_status
@@ -151,7 +154,7 @@
           and company_id = #{companyId,jdbcType=INTEGER}
     </select>
 
-
+    <!--添加公司收藏-->
     <insert id="insertCompanyCollection" parameterType="com.cafebabe.phosphor.model.entity.CompanyCollection">
         insert into company_collection (company_id,
                                         parent_id,
@@ -166,12 +169,14 @@
 
     </insert>
 
+    <!--删除公司收藏-->
     <update id="removeCompanyCollection" parameterType="java.lang.Integer">
         update company_collection
         set company_collection_status = 0
         where company_collection_id = #{companyCollectionId,jdbcType=INTEGER}
     </update>
 
+    <!--恢复删除的公司收藏-->
     <update id="updateCompanyCollection" parameterType="java.lang.Integer">
         update company_collection
         set company_collection_status = 1

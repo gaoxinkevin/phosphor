@@ -32,18 +32,36 @@ public class CompanyCollectionController {
         this.companyCollectionService = companyCollectionService;
     }
 
+    /**
+     * 根据父母ID获取公司收藏列表
+     *
+     * @param pageModel 含有父母ID的分页信息
+     * @return 含有公司收藏信息的Json数据
+     */
     @RequestMapping("getCompanyCollectionList")
     @ResponseBody
     public JsonResponse getFeedbackList(@RequestBody PageModel<CompanyCollectionDTO> pageModel) {
         return new JsonResponse(200, "success", companyCollectionService.getCompanyCollectionList(pageModel));
     }
 
+    /**
+     * 根据公司收藏ID删除收藏
+     *
+     * @param companyCollectionId 公司收藏ID
+     * @return 含有受影响行数的Json数据
+     */
     @RequestMapping("removeCompanyCollection/{companyCollectionId}")
     @ResponseBody
     public JsonResponse removeCompanyCollection(@PathVariable Integer companyCollectionId) {
         return new JsonResponse(200, "success", companyCollectionService.removeCompanyCollection(companyCollectionId));
     }
 
+    /**
+     * 添加公司收藏
+     *
+     * @param companyCollection 公司信息
+     * @return 含有受影响行数的Json数据
+     */
     @RequestMapping("insertCompanyCollection")
     @ResponseBody
     public JsonResponse insertCompanyCollection(@RequestBody CompanyCollection companyCollection) {

@@ -164,6 +164,7 @@
         where teacher_id = #{teacherId,jdbcType=INTEGER}
     </update>
 
+    <!--获取教师信息-->
     <select id="getTeacherList" resultType="com.cafebabe.phosphor.model.dto.TeacherInformationDTO">
         select teacher.teacher_id,
                teacher_name,
@@ -182,11 +183,13 @@
         limit #{startRecord},#{pageSize}
     </select>
 
+    <!--获取教师人数-->
     <select id="getTeacherCount" resultType="java.lang.Integer">
         select count(*)
         from teacher
     </select>
 
+    <!--根据ID获取指定教师信息-->
     <select id="getTeacherById" parameterType="java.lang.Integer"
             resultType="com.cafebabe.phosphor.model.dto.TeacherInformationDTO">
         select teacher.teacher_id,
@@ -206,6 +209,7 @@
         where teacher.teacher_id = #{teacherId,jdbcType=INTEGER}
     </select>
 
+    <!--根据公司ID获取教师信息-->
     <select id="getTeacherByCompanyId" parameterType="java.lang.Integer"
             resultType="com.cafebabe.phosphor.model.entity.Teacher">
         select

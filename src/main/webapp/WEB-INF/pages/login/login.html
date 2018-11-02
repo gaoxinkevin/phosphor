@@ -111,7 +111,7 @@
                 cancelBtn.innerText = "返回主页";
                 elButton.style.padding = "0.8em 2em";
                 cancelBtn.setAttribute("href","/indexUi/returnIndexPage");
-                elButton.setAttribute("href","/loginUi/loginUi")
+                elButton.setAttribute("href","/loginUi/loginUi");
                 vModal.style.display="block";
                 dialog.style.display="block";
                 dialogPInnerHtml.innerText=res.data;
@@ -152,7 +152,7 @@
                 userLoginA.removeAttribute('href');
             }
         }
-    }
+    };
 
     //注册界面跳转
     jumpToRegistrationPage=()=>{
@@ -164,7 +164,7 @@
 <div id="wrapper">
 
     <div id="preloader">
-        <img class="preloader" src="/images/loader.gif" alt="">
+        <img id="imgLoading" class="preloader" src="/images/loader.gif" alt="">
     </div>
 
     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
@@ -269,10 +269,11 @@
 
 
                         <div class="btn-wrapper">
-                            <a href="javascript:void(0); onclick=submitBtn()" id="userLoginA"
-                               class="btn btn-primary">登录</a>
-                            <a href="javascript:void(0);onclick=jumpToRegistrationPage()" class="btn btn-primary"
-                               style="margin-left: 10px">注册</a>
+                            <a href="javascript:void(0);" id="userLoginA" class="btn btn-primary"
+                               onclick=submitBtn()>登录</a>
+                            <a href="javascript:void(0);" class="btn btn-primary"
+                               style="margin-left: 10px"
+                               onclick=jumpToRegistrationPage()>注册</a>
                         </div>
                         <hr class="invis" style="margin-top: 10px">
 

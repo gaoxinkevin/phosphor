@@ -71,7 +71,16 @@ public interface CourseService {
      */
     PageCourse getCourseByType(Integer pageIndex, Integer pageSize,String orderField,Integer typeId);
 
+
     /**
+     * 查询插入课程是否与课程列表里面有时间冲突,如果有冲突,返回第一个有冲突的课程
+     * @param courseInfoList 课程列表
+     * @param courseId 课程编号
+     * @return 有冲突就返回冲突的课程,没有就返回null
+     */
+    CourseInfo getConflictCourseInfo(List<CourseInfo> courseInfoList, Integer courseId);
+    
+    /** 
      * 获得某课程所有评价
      * @param courseId 课程id
      * @return 建议列表

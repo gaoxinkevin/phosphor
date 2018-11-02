@@ -26,24 +26,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleDgtle.css">
     <link rel="stylesheet" href="/css/styleCommon.css">
-
-    <!--自己写的 -->
     <link rel="stylesheet" href="/css/alreadyLogin.css">
-    <style>
-        .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
-            background-color:#82B43F;
-            border-color: #82B43F;
-        }
-        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
-            background: #82B43F;
-            color: #ffffff !important;
-        }
-        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
-            background: #82B43F none repeat scroll 0 0 !important;
-
-        }
-    </style>
-
 </head>
 
 <body>
@@ -96,12 +79,16 @@
         parentDesc.innerText = res.data.parentDesc;
         parentAddress.value = res.data.parentAddress;
         parentPrephone.value = res.data.parentPrephone;
+        document.getElementById("preloader").style.display="none";
+        document.getElementById("img").style.display="none";
+
+
 
     }).catch(error => {
         console.log(error);
     });
 
-    updateParent = () => {
+    updateParentNoChild = () => {
 
         const trSite4 = document.getElementById("tr_site4");
         const familyAdress = document.getElementById("site4").value;
@@ -212,12 +199,13 @@
         window.localStorage.clear();
         window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
     }
+
 </script>
 
 <div id="wrapper">
 
     <div id="preloader">
-        <img class="preloader" src="/images/loader.gif" alt="">
+        <img id="img" class="preloader" src="/images/loader.gif" alt="">
     </div>
 
     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
@@ -401,7 +389,7 @@
                                         <th>&nbsp;</th>
                                         <td colspan="2">
                                             <input type="hidden" name="profilesubmit" value="true">
-                                            <button id="profilesubmitbtn" class="pn pnc" onclick="updateParent()">
+                                            <button id="profilesubmitbtn" class="pn pnc" onclick="updateParentNoChild()">
                                                 <strong>保存</strong>
                                             </button>
                                             <span id="submit_result" class="rq"></span>
@@ -459,7 +447,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="#">订单查询</a>
+                                    <a href="/orderUi/orderListUi">订单查询</a>
                                 </li>
 
                                 <li>
@@ -573,14 +561,10 @@
 
 </div>
 
-
-<!--自己写的-->
-
 <script src="/js/city-picker.js"></script>
-<!--模版自带-->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/customLogin.js"></script>
+<script src="/js/comment.js"></script>
 </body>
 
 </html>

@@ -345,5 +345,8 @@
     and activity_id !=null
     order by order_create_time desc
   </select>
+  <select id="getOrderId"  resultType="java.lang.Integer">
+    SELECT LAST_INSERT_ID()
+  </select>
 
 </mapper>

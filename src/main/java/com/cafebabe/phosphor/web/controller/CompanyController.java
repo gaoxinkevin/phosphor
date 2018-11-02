@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  *
  * @author thethingyk@gmail.com
@@ -27,16 +29,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/company")
 public class CompanyController {
 
-    @Autowired
+    private static final String COMPANY_ID = "companyId";
+    private HttpServletRequest httpServletRequest;
     private final CompanyServiceImpl companyService;
-    public CompanyController(CompanyServiceImpl companyService) { this.companyService = companyService; }
+    @Autowired
+    public CompanyController(CompanyServiceImpl companyService,HttpServletRequest httpServletRequest) {
+        this.httpServletRequest = httpServletRequest;
+        this.companyService = companyService; }
 
     @RequestMapping("company")
     @ResponseBody
-    public JsonResponse getCompany(Integer companyId){
+    public JsonResponse getCompany(){
+        if (httpServletRequest.getSession().getAttribute(COMPANY_ID) == null) {
+            return new JsonResponse(40400,"can not find resourse",null);
+        }
+        Integer companyId = (Integer) httpServletRequest.getSession().getAttribute(COMPANY_ID);
         Company company = companyService.getCompanyById(companyId);
         if (company == null) {
-            return new JsonResponse(404,"can not find resourse",null);
+            return new JsonResponse(40400,"can not find resourse",null);
         }
         return new JsonResponse(20000,"success",company);
     }

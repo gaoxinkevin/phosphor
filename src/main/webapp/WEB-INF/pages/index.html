@@ -12,28 +12,31 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Site Icons -->
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
     <link rel="icon" href="/images/favicon.ico">
-	<!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet"> 
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
     <!-- Custom & Default Styles -->
-	<link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/carousel.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleLogin.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="/js/login.js"></script>
     <style>
-        .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
-            background-color:#82B43F;
+        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
+            background-color: #82B43F;
             border-color: #82B43F;
         }
-        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
             background: #82B43F;
             color: #ffffff !important;
         }
-        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
             background: #82B43F none repeat scroll 0 0 !important;
 
         }
@@ -42,7 +45,7 @@
         const clientUrl = 'http://localhost:1250/parent/isSessionExit';
         const clientMethod = 'GET';
         const isSessionExit = (url) => {
-            return new Promise((resolve,reject) => {
+            return new Promise((resolve, reject) => {
                 const client = new XMLHttpRequest();
                 client.open(clientMethod, url);
                 client.responseType = 'json';
@@ -60,702 +63,757 @@
         };
         const sessionList = () => isSessionExit(clientUrl);
         sessionList().then((res) => {
-            if ("session不存在" === res.message){
+            if ("session不存在" === res.message) {
                 localStorage.clear();
-            }else if ("成功" === res.message && localStorage.getItem("userLoginPhone") !== null) {
-                window.location.href="http://localhost:1250/loginUi/alreadyLoginUi";
+            } else if ("成功" === res.message && localStorage.getItem("userLoginPhone") !== null) {
+                window.location.href = "http://localhost:1250/loginUi/alreadyLoginUi";
             }
         }).catch(error => {
             console.log(error);
         });
+
+        searchALL = () => {
+            alert(1);
+            const searchContent = document.getElementById("searchContent").value;
+            const clientUrl = "http://localhost:1250/searchUi/searchTeacher/" + searchContent;
+            const clientMethod = 'GET';
+            const search = (url) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send();
+                });
+            };
+            const searchList = () => search(clientUrl);
+            searchList().then((res) => {
+                console.log(res);
+                alert(res);
+                window.location.href = "/searchUi/searchTeacher/" + searchContent;
+            }).catch(error => {
+                console.log(error);
+            });
+        }
     </script>
 
 </head>
 <body>
 
+<!-- LOADER 页面加载时显示的图片-->
 
+<div id="preloader">
+    <img id="imgLoading" class="preloader" src="/images/loader.gif" alt="">
+</div>
 
-    <!-- LOADER 页面加载时显示的图片-->
+<!-- END LOADER -->
 
-    <div id="preloader">
-        <img class="preloader" src="/images/loader.gif" alt="">
-    </div>
+<!--WRAPPER-->
 
-    <!-- END LOADER -->
+<div id="wrapper">
 
-    <!--WRAPPER-->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
 
-    <div id="wrapper">
-        <!-- BEGIN # MODAL LOGIN -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
 
-        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- Begin # DIV Form -->
-                    <div id="div-forms">
-                        <form id="login-form">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span class="flaticon-add" aria-hidden="true"></span>
-                            </button>
-                            <div class="modal-body">
-                                <input class="form-control" type="text" placeholder="What you are looking for?" required>
-                            </div>
-                        </form><!-- End # Login Form -->
-                    </div><!-- End # DIV Form -->
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
                 </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="/courseUi/courseListUi">课程</a></li>
+                        <li><a href="/activityUi/returnActivityUi">活动</a></li>
+                        <li><a href="http://localhost:1250/teacherUi/getTeacherList">指导师</a></li>
+                        <li><a href="">联系我们</a></li>
+                        <li><a href="/loginUi/loginUi">登录|注册</a></li>
+                        <li class="iconitem">
+                            <a href="/searchUi/search">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="js-height-full">
+        <div class="overlay"><img src="/images/top.jpg" style="height: 100%; width: 100%;"></div>
+        <div class="home-text-wrapper relative container">
+            <div class="home-message" >
+                <p style="margin-top: -25px; margin-top: -330px;color: #00000080;letter-spacing: 30px;">启明星</p>
+                <p style="font-size: 25px;color: #00000080;">phosphor</p>
+                <!--<small style="color: #78C3F3;">For the future of your child, Phosphor is your best choice. We aim to provide quality education, create a better life for your child.-->
+                <!--</small>-->
             </div>
         </div>
 
-        <!-- END # MODAL LOGIN -->
+        <div class="slider-bottom">
+            <span>开启学习之旅<i class="fa fa-angle-down"></i></span>
+        </div>
+    </section>
 
-        <header class="header">
-            <div class="container">
-                <nav class="navbar navbar-default yamm">
-                    <div class="navbar-header">
+    <!--套餐介绍-->
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 hidden-sm hidden-xs">
+                    <div class="custom-module">
+                        <img src="http://ph4vwyi7h.bkt.clouddn.com/indexGroup2.png" alt=""
+                             class="img-responsive wow slideInLeft"
+                             style="width: 360px;height: 500px;">
+                    </div><!-- end module -->
+                </div><!-- end col -->
+                <div class="col-md-8">
+                    <div class="custom-module p40l">
+                        <h2 style="font-size: 40px;">精选课程套餐</h2>
 
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
+                        <p>我们提供官方课程套餐和自选课程套餐两种方案。</p>
+                        <p>官方课程套餐由各个公司精选课程构成，相比单独选购课程更优惠。</p>
+                        <p>自选套餐可由用户根据孩子的兴趣爱好和自身特点自行选择，相比官方套餐更自由。</p>
 
-                        <div class="logo-normal">
-                            <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                        <hr class="invis">
+
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 first">
+                                <ul class="check">
+                                    <li>语数英</li>
+                                    <li>数理化</li>
+                                    <li>政史地</li>
+                                    <li>文理综合</li>
+                                    <li>奥数拓展</li>
+                                </ul><!-- end check -->
+                            </div><!-- end col-lg-4 -->
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <ul class="check">
+                                    <li>弦乐套餐</li>
+                                    <li>管乐套餐</li>
+                                    <li>打击乐套餐</li>
+                                    <li>乐理套餐</li>
+                                    <li>谱曲套餐</li>
+                                </ul><!-- end check -->
+                            </div><!-- end col-lg-4 -->
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 last">
+                                <ul class="check">
+                                    <li>雅思托福</li>
+                                    <li>会计师套餐</li>
+                                    <li>公司管理套餐</li>
+                                    <li>编程基础</li>
+                                    <li>数据库管理</li>
+                                </ul><!-- end check -->
+                            </div><!-- end col-lg-4 -->
+                        </div><!-- end row -->
+
+                        <hr class="invis">
+
+                        <div class="btn-wrapper">
+                            <a href="#" class="btn btn-primary">了解更多</a>
                         </div>
+
+                    </div><!-- end module -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section>
+
+    <!--课程介绍-->
+    <section class="section gb">
+        <div class="container">
+            <div class="section-title text-center">
+                <h3>精选课程</h3>
+                <p>官方精选的高质量，由各个公司高级讲师授课，受到广泛好评的课程</p>
+            </div><!-- end title -->
+
+            <div id="owl-01" class="owl-carousel owl-theme owl-theme-01">
+                <div class="caro-item">
+                    <div class="course-box">
+                        <div>
+                            <img src="http://cafebabe.club/pinano001.jpg" alt=""
+                                 class="img-responsive"
+                                 style="height: 220px;">
+                            <div class="magnifier">
+                                <a href="#" title=""><i class="flaticon-add"></i></a>
+                            </div>
+                        </div><!-- end image-wrap -->
+                        <div class="course-details">
+                            <h4>
+                                <small>钢琴</small>
+                                <small style="float: right;margin-top: -24px;">新东方</small>
+                                <a href="http://localhost:1250/courseUi/courseInfoUi/10000" title="">钢琴基础</a>
+                            </h4>
+                            <p>新东方专业教师授课，主讲内容：识谱，指法练习，钢琴基础等内容。</p>
+                        </div><!-- end details -->
+                        <div class="course-footer clearfix">
+                            <div class="pull-left">
+                                <!--<ul class="list-inline">-->
+                                <!--<li><a href="#"><i class="fa fa-user"></i> 21</a></li>-->
+                                <!--<li><a href="#"><i class="fa fa-clock-o"></i> 15 Min.</a></li>-->
+                                <!--</ul>-->
+                            </div><!-- end left -->
+
+                            <div class="pull-right">
+                                <ul class="list-inline">
+                                    <li><a href="#">¥2000.00</a></li>
+                                </ul>
+                            </div><!-- end left -->
+                        </div><!-- end footer -->
+                    </div><!-- end box -->
+                </div><!-- end col -->
+
+                <div class="caro-item">
+                    <div class="course-box">
+                        <div>
+                            <img src="http://cafebabe.club/draw001.jpg" alt=""
+                                 class="img-responsive"
+                                 style="height: 220px;">
+                            <div class="magnifier">
+                                <a href="#" title=""><i class="flaticon-add"></i></a>
+                            </div>
+                        </div><!-- end image-wrap -->
+                        <div class="course-details">
+                            <h4>
+                                <small>绘画</small>
+                                <small style="float: right;margin-top: -24px;">驰星</small>
+                                <a href="http://localhost:1250/courseUi/courseInfoUi/10017" title="">儿童绘画</a>
+                            </h4>
+                            <p>驰星专业教师授课，为婴幼儿绘画进行启发，学习绘画基础知识，培养孩子的兴趣。</p>
+                        </div><!-- end details -->
+                        <div class="course-footer clearfix">
+                            <div class="pull-left">
+                                <!--<ul class="list-inline">-->
+                                <!--<li><a href="#"><i class="fa fa-user"></i> 41</a></li>-->
+                                <!--<li><a href="#"><i class="fa fa-clock-o"></i> 33 Min.</a></li>-->
+                                <!--</ul>-->
+                            </div><!-- end left -->
+
+                            <div class="pull-right">
+                                <ul class="list-inline">
+                                    <li><a href="#">¥1000.00</a></li>
+                                </ul>
+                            </div><!-- end left -->
+                        </div><!-- end footer -->
+                    </div><!-- end box -->
+                </div><!-- end col -->
+
+                <div class="caro-item">
+                    <div class="course-box">
+                        <div>
+                            <img src="http://cafebabe.club/font002.jpg" alt=""
+                                 class="img-responsive"
+                                 style="height: 220px;">
+                            <div class="magnifier">
+                                <a href="#" title=""><i class="flaticon-add"></i></a>
+                            </div>
+                        </div><!-- end image-wrap -->
+                        <div class="course-details">
+                            <h4>
+                                <small>书法</small>
+                                <small style="float: right;margin-top: -24px;">驰星</small>
+                                <a href="http://localhost:1250/courseUi/courseInfoUi/10019" title="">书法基础</a>
+                            </h4>
+                            <p>驰星教师授课，让孩子了解书法知识，了解古代文化，学习写一手好字。</p>
+                        </div><!-- end details -->
+                        <div class="course-footer clearfix">
+                            <div class="pull-left">
+                                <!--<ul class="list-inline">-->
+                                <!--<li><a href="#"><i class="fa fa-user"></i> 35</a></li>-->
+                                <!--<li><a href="#"><i class="fa fa-clock-o"></i> 1 Hrs.</a></li>-->
+                                <!--</ul>-->
+                            </div><!-- end left -->
+
+                            <div class="pull-right">
+                                <ul class="list-inline">
+                                    <li><a href="#">¥800.00</a></li>
+                                </ul>
+                            </div><!-- end left -->
+                        </div><!-- end footer -->
+                    </div><!-- end box -->
+                </div><!-- end col -->
+
+                <div class="caro-item">
+                    <div class="course-box">
+                        <div>
+                            <img src="http://cafebabe.club/song001.jpg" alt=""
+                                 class="img-responsive"
+                                 style="height: 220px;">
+                            <div class="magnifier">
+                                <a href="http://localhost:1250/courseUi/courseInfoUi/10027" title=""><i class="flaticon-add"></i></a>
+                            </div>
+                        </div><!-- end image-wrap -->
+                        <div class="course-details">
+                            <h4>
+                                <small>表演</small>
+                                <small style="float: right;margin-top: -24px;">达内教育</small>
+                                <a href="#" title="">儿童音乐剧</a>
+                            </h4>
+                            <p>达内教育专业教师授课，主讲音乐剧表演，舞台表现力等，增强儿童表达力。</p>
+                        </div><!-- end details -->
+                        <div class="course-footer clearfix">
+                            <div class="pull-left">
+                                <!--<ul class="list-inline">-->
+                                <!--<li><a href="#"><i class="fa fa-user"></i> 35</a></li>-->
+                                <!--<li><a href="#"><i class="fa fa-clock-o"></i> 45 Min.</a></li>-->
+                                <!--</ul>-->
+                            </div><!-- end left -->
+
+                            <div class="pull-right">
+                                <ul class="list-inline">
+                                    <li><a>¥3000.00</a></li>
+                                </ul>
+                            </div><!-- end left -->
+                        </div><!-- end footer -->
+                    </div><!-- end box -->
+                </div><!-- end col -->
+
+                <div class="caro-item">
+                    <div class="course-box">
+                        <div>
+                            <img src="http://cafebabe.club/english04.jpg"
+                                 alt="" class="img-responsive"
+                                 style="height: 220px;">
+                            <div class="magnifier">
+                                <a href="#" title=""><i class="flaticon-add"></i></a>
+                            </div>
+                        </div><!-- end image-wrap -->
+                        <div class="course-details">
+                            <h4>
+                                <small>英语</small>
+                                <small style="float: right;margin-top: -24px;">达内教育</small>
+                                <a href="http://localhost:1250/courseUi/courseInfoUi/10023" title="">国际音标</a>
+                            </h4>
+                            <p>达内教育教师授课，主讲国际音标基础知识，让您的孩子更快，更好的学习英语知识。</p>
+                        </div><!-- end details -->
+                        <div class="course-footer clearfix">
+                            <div class="pull-left">
+                                <!--<ul class="list-inline">-->
+                                <!--<li><a href="#"><i class="fa fa-user"></i> 21</a></li>-->
+                                <!--<li><a href="#"><i class="fa fa-clock-o"></i> 15 Min.</a></li>-->
+                                <!--</ul>-->
+                            </div><!-- end left -->
+
+                            <div class="pull-right">
+                                <ul class="list-inline">
+                                    <li><a>¥2000.00</a></li>
+                                </ul>
+                            </div><!-- end left -->
+                        </div><!-- end footer -->
+                    </div><!-- end box -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+
+            <hr class="invis">
+
+            <div class="section-button text-center">
+                <a href="http://localhost:1250/courseUi/courseListUi" class="btn btn-primary">查看更多</a>
+            </div>
+        </div><!-- end container -->
+    </section>
+
+    <!--热门公司-->
+    <section class="section db p120" style="height: 210px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tagline-message text-center">
+                        <h3 style="color: white;">热门公司</h3>
                     </div>
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section><!-- end section -->
+    <section class="section gb">
+        <div class="container" style="width: 1174px;">
+            <div class="section-title text-center">
+                <!--<p>官方精选的高质量，由各个公司高级讲师授课，受到广泛好评的课程</p>-->
+            </div><!-- end title -->
 
-                    <div id="navbar" class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="/indexUi/returnIndexPage">首页</a></li>
-                            <li><a href="/courseUi/courseInfoUi">课程</a></li>
-                            <li><a href="/activityUi/returnActivityUi">活动</a></li>
-                            <li><a href="http://localhost:1250/teacherUi/getTeacherList">指导师</a></li>
-                            <li>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            style="padding: 6px 12px;margin-top: 7px">
-                                        课程套餐
-                                        <span class="caret"></span>
-                                    </button>
+            <div class="owl-carousel owl-theme owl-theme-01">
+                <div class="caro-item" style="float: left;width: 270px;height: 570px;margin: 8px;">
+                    <div class="course-box">
+                        <div>
 
-                                    <ul class="dropdown-menu">
-                                        <li><a href="/groupUi/groupListUi">官方套餐</a></li>
-                                        <li><a href="/groupUi/groupDiyUi">自定义套餐</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li><a href="">联系我们</a></li>
-                            <li><a href="/loginUi/loginUi">登录|注册</a></li>
-                            <li class="iconitem">
-                                <a href="#" data-toggle="modal" data-target="#login-modal">
-                                    <i class="fa fa-search"></i>
-                                </a>
-                            </li>
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%90%AF%E6%98%8E%E6%98%9Flogo.png" alt="" class="img-responsive"
+                                 style=" height:270px;border-radius: 4px;">
+                            <div class="magnifier">
+                                <a href="http://localhost:1250/companyUi/companyUi/10000" title=""><i class="flaticon-add"></i></a>
+                            </div>
+                        </div><!-- end image-wrap -->
+                        <div class="course-details" style="height: 218px;">
+                            <h4>
+                                <a href="http://localhost:1250/companyUi/companyUi/10000" title="">启明星幼儿教育有限公司</a>
+                            </h4>
+                            <p>恰同学少年，风华正茂，起步中的公司，具有相当的潜力和未来。</p>
+                        </div><!-- end details -->
+                    </div><!-- end box -->
+                </div><!-- end col -->
+
+                <div class="caro-item" style="float: left;width: 270px;height: 570px;margin: 8px;">
+                    <div class="course-box">
+                        <div>
+                            <div style="height: 85px;"></div>
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E9%A9%B0%E6%98%9Flogo.png" alt=""
+                                 class="img-responsive"
+                                 style="height: 100px;">
+                            <div style="height: 85px;"></div>
+                            <div class="magnifier">
+                                <a href="http://localhost:1250/companyUi/companyUi/10001" title=""><i class="flaticon-add"></i></a>
+                            </div>
+                        </div><!-- end image-wrap -->
+                        <div class="course-details" style="height: 218px;">
+                            <h4>
+                                <a href="http://localhost:1250/companyUi/companyUi/10001" title="">苏州驰星教育有限公司</a>
+                            </h4>
+                            <p>苏州驰星教育科技有限公司是由苏州思必驰和驰星创投联合政府,学校,研究机构及相关企业共同打造的企业联合办学及企业服务平台。</p>
+                        </div><!-- end details -->
+                    </div><!-- end box -->
+                </div><!-- end col -->
+
+                <div class="caro-item" style="float: left;width: 270px;height: 570px;margin: 8px;">
+                    <div class="course-box">
+                        <div>
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E6%96%B0%E4%B8%9C%E6%96%B9logo.png" alt=""
+                                 class="img-responsive"
+                                 style="height: 220px;margin: 25px auto;">
+                            <div class="magnifier">
+                                <a href="http://localhost:1250/companyUi/companyUi/10002" title=""><i class="flaticon-add"></i></a>
+                            </div>
+                        </div><!-- end image-wrap -->
+                        <div class="course-details" style="height: 218px;">
+                            <h4>
+                                <a href="http://localhost:1250/companyUi/companyUi/10002" title="">新东方教育集团</a>
+                            </h4>
+                            <p>教育、科研等于一体的大型教育科技集团</p>
+                        </div><!-- end details -->
+                    </div><!-- end box -->
+                </div><!-- end col -->
+
+                <div class="caro-item" style="float: left;width: 270px;height: 570px;margin: 8px;">
+                    <div class="course-box">
+                        <div>
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E4%B8%AD%E5%85%AC%E6%95%99%E8%82%B2logo.png"
+                                 alt=""
+                                 class="img-responsive"
+                                 style="height: 270px;">
+                            <div class="magnifier">
+                                <a href="http://localhost:1250/companyUi/companyUi/10004" title=""><i class="flaticon-add"></i></a>
+                            </div>
+                        </div><!-- end image-wrap -->
+                        <div class="course-details" style="height: 218px;">
+                            <h4>
+                                <a href="http://localhost:1250/companyUi/companyUi/10004" title="">中公教育集团苏州分公司</a>
+                            </h4>
+                            <p>极具影响力的教育连锁机构</p>
+                        </div><!-- end details -->
+                    </div><!-- end box -->
+                </div><!-- end col -->
+
+            </div><!-- end row -->
+
+            <hr class="invis">
+
+            <div class="section-button text-center">
+                <a href="#" class="btn btn-primary">查看更多</a>
+            </div>
+        </div><!-- end container -->
+    </section>
+
+    <!--教师介绍-->
+    <section class="section">
+        <div class="container">
+            <div class="section-title text-center">
+                <h3>优秀教师</h3>
+            </div><!-- end title -->
+
+            <div class="row">
+                <div class="col-lg-4 col-md-12" style="height: 748px;">
+                    <div class="blog-box">
+                        <div class="image-wrap entry">
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%91%A8%E5%BC%BA.bmp" alt=""
+                                 class="img-responsive" style="height: 460px;">
+                            <div class="magnifier">
+                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10006"><i
+                                        class="flaticon-add"></i></a>
+                            </div>
+                        </div><!-- end image-wrap -->
+
+                        <div class="blog-desc">
+                            <h2><a href="http://localhost:1250/teacherUi/getTeacherInformation/10006">周家强</a></h2>
+                            <h4>新东方教育集团优秀讲师</h4>
+                            <p>在多目标极大规模布局算法的方向，我的课题组结合纳米及超深亚微米工艺...</p>
+                        </div><!-- end blog-desc -->
+
+                        <div class="post-meta">
+                            <ul class="list-inline">
+                                <li>入职时间：2018年10月15日</li>
+                            </ul>
+                        </div><!-- end post-meta -->
+                    </div><!-- end blog -->
+                </div><!-- end col -->
+
+                <div class="col-lg-4 col-md-12" style="height: 748px;">
+                    <div class="blog-box">
+                        <div class="image-wrap entry">
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%88%98%E4%BA%91%E6%B5%A9.jpg" alt=""
+                                 class="img-responsive" style="height: 460px;">
+                            <div class="magnifier">
+                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10005"><i
+                                        class="flaticon-add"></i></a>
+                            </div>
+                        </div><!-- end image-wrap -->
+
+                        <div class="blog-desc">
+                            <h2><a href="http://localhost:1250/teacherUi/getTeacherInformation/10005">刘家浩</a></h2>
+                            <h4>新东方教育集团优秀讲师</h4>
+                            <p>ACM Fellow，IEEE Fellow，ACM Transactions on Sensor Network主编</p>
+                        </div><!-- end blog-desc -->
+
+                        <div class="post-meta">
+                            <ul class="list-inline">
+                                <li>入职时间：2018年10月15日</li>
+                            </ul>
+                        </div><!-- end post-meta -->
+                    </div><!-- end blog -->
+                </div><!-- end col -->
+
+                <div class="col-lg-4 col-md-12" style="height: 748px;">
+                    <div class="blog-box">
+                        <div class="image-wrap entry">
+                            <img src="http://ph4vwyi7h.bkt.clouddn.com/%E5%AD%99%E5%AE%B6%E5%B9%BF.jpg" alt=""
+                                 class="img-responsive" style="height: 460px;">
+                            <div class="magnifier">
+                                <a href="http://localhost:1250/teacherUi/getTeacherInformation/10004"><i
+                                        class="flaticon-add"></i></a>
+                            </div>
+                        </div><!-- end image-wrap -->
+
+                        <div class="blog-desc">
+                            <h2><a href="http://localhost:1250/teacherUi/getTeacherInformation/10004">孙广权</a></h2>
+                            <h4>新东方教育集团优秀讲师</h4>
+                            <p>清华大学教授，清华大学学术委员会副主任，教育部软件工程教指委主任...</p>
+                        </div><!-- end blog-desc -->
+
+                        <div class="post-meta">
+                            <ul class="list-inline">
+                                <li>入职时间：2018年10月3日</li>
+                            </ul>
+                        </div><!-- end post-meta -->
+                    </div><!-- end blog -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section>
+
+    <!--家长评价-->
+    <section class="section" style="margin-top: -90px;">
+        <div class="container">
+            <div class="section-title text-center">
+                <h3>家长评论</h3>
+                <p>我们的教师受到了很多家长的一致好评</p>
+            </div><!-- end title -->
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="box testimonial" style="height: 306px;">
+                        <p class="testiname"><strong><img
+                                src="http://pg8h1ukn9.bkt.clouddn.com/FlUsO40w1Duv7sirG4ccDjnwD1mZ" alt=""
+                                class="img-circle">
+                            曹思佳</strong></p>
+                        <p>这学期，我的孩子成绩有进步，你有能力把我的孩子教得更好，我们做家长的相信你，孩子交到你手中，我很放心。</p>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                    </div><!-- end testimonial -->
+                </div><!-- end col -->
+
+                <div class="col-md-4">
+                    <div class="box testimonial" style="height: 306px;">
+                        <p class="testiname"><strong><img src="http://ph4vwyi7h.bkt.clouddn.com/images6.jpeg" alt=""
+                                                          class="img-circle">
+                            吴桐</strong></p>
+                        <p>老师上课有时非常幽默，有时非常严格，不过还是非常有教授风度的，不妨自己来听听嘛！大家很崇拜他哦！</p>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                        </div>
+                    </div><!-- end testimonial -->
+                </div><!-- end col -->
+
+                <div class="col-md-4">
+                    <div class="box testimonial" style="height: 306px;">
+                        <p class="testiname"><strong><img src="http://ph4vwyi7h.bkt.clouddn.com/images4.jpeg" alt=""
+                                                          class="img-circle">
+                            刘世瑞</strong></p>
+                        <p>老师对待教学认真负责，语言生动，条理清晰，举例充分恰当，对待学生严格要求，能够鼓励学生踊跃发言，使课堂气氛比较积极热烈。</p>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                    </div><!-- end testimonial -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section>
+
+    <!--合作企业-->
+    <section class="section db" style="background-color: #f6f6f6">
+        <div class="container">
+            <div class="section-title text-center">
+                <h3>合作企业</h3>
+            </div><!-- end title -->
+            <div class="owl-carousel owl-theme owl-theme-01">
+                <img src="http://ph4vwyi7h.bkt.clouddn.com/join_endition.png" style="margin-left: -110px;">
+            </div>
+        </div>
+    </section>
+
+    <footer class="section footer noover" style="height: 350px;">
+        <div class="container">
+            <div class="row" style="margin-top: -50px;">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">关于我们</h3>
+                        <div class="newsletter-widget" style="width: 350px;">
+                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class" target="_blank">phosphor</a></p>
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">加入我们</h3>
+                        <p>了解更多关于我们的故事，或者加入我们的团队。</p>
+                        <a href="#" class="readmore">向我们发送邮件</a>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">友情链接</h3>
+                        <div class="tags-widget">
+                            <ul class="list-inline">
+                                <li><a href="https://cn.aliyun.com" target="_blank">阿里云</a></li>
+                                <li><a href="https://www.qiniu.com" target="_blank">七牛云</a></li>
+                                <li><a href="http://www.iconfont.cn" target="_blank">阿里图标</a></li>
+                                <li><a href="https://github.com" target="_blank">GitHub</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">支持</h3>
+                        <div class="list-widget" style="color: #9A9A9A;">
+                            <ul>
+                                <li>随便写写 看看效果</li>
+                                <li>觉得不错 那就留着</li>
+                                <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a> 试试效果</li>
+                                <li>有了想法 以后再加</li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer><!-- end footer -->
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
                         </ul>
                     </div>
-
-                </nav>
-            </div>
-        </header>
-
-        <section id="home" class="js-height-full">
-            <div class="overlay"></div>
-            <div class="home-text-wrapper relative container">
-                <div class="home-message">
-                    <p>孩子梦想开始的地方</p>
-                    <small>Edulogy is the ideal choice for your organization, your business and your online education system. Create your online course now with unlimited page templates, color options, and menu features.</small>
                 </div>
             </div>
+        </div><!-- end container -->
+    </div><!-- end copy -->
 
-            <div class="slider-bottom">
-                <span>开启学习之旅<i class="fa fa-angle-down"></i></span>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 hidden-sm hidden-xs">
-                        <div class="custom-module">
-                            <img src="/upload/device_01.png" alt="" class="img-responsive wow slideInLeft">
-                        </div><!-- end module -->
-                    </div><!-- end col -->
-                    <div class="col-md-8">
-                        <div class="custom-module p40l">
-                            <h2>We are a passionate <mark>learning system</mark> from<br>
-                            London. Do beautiful and easy-to-use digital <br>
-                            design & web development</h2>
-
-                            <p>Nam dictum sem, ipsum aliquam . Etiam sit amet fringilla lacus. Pellentesque suscipit ante at ullamcorper pulvinar neque porttitor. Integer lectus. Praesent sed nisi eleifend, fermentum orci amet, iaculis libero.</p>
-
-                            <hr class="invis">
-
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 first">
-                                    <ul class="check">
-                                        <li>Custom Shortcodes</li>
-                                        <li>Visual Page Builder</li>
-                                        <li>Unlimited Shortcodes</li>
-                                        <li>Responsive Theme</li>
-                                        <li>Tons of Layouts</li>
-                                    </ul><!-- end check -->
-                                </div><!-- end col-lg-4 -->
-                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                    <ul class="check">
-                                        <li>Font Awesome Icons</li>
-                                        <li>Pre-Defined Colors</li>
-                                        <li>AJAX Transitions</li>
-                                        <li>High Quality Support</li>
-                                        <li>Unlimited Options</li>
-                                    </ul><!-- end check -->    
-                                </div><!-- end col-lg-4 -->
-                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 last">
-                                    <ul class="check">
-                                        <li>Shopping Layouts</li>
-                                        <li>Pre-Defined Fonts</li>
-                                        <li>Style Changers</li>
-                                        <li>Footer Styles</li>
-                                        <li>Header Styles</li>
-                                    </ul><!-- end check -->
-                                </div><!-- end col-lg-4 --> 
-                            </div><!-- end row -->   
-
-                            <hr class="invis">
-
-                            <div class="btn-wrapper">
-                                <a href="#" class="btn btn-primary">Learn More About us</a>
-                            </div>
-
-                        </div><!-- end module -->
-                    </div><!-- end col -->
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </section>
-
-        <section class="section gb">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h3>Recent Courses</h3>
-                    <p>Maecenas sit amet tristique turpis. Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
-                </div><!-- end title -->
-
-                <div id="owl-01" class="owl-carousel owl-theme owl-theme-01">
-                    <div class="caro-item">
-                        <div class="course-box">
-                            <div class="image-wrap entry">
-                                <img src="/upload/course_01.jpg" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                     <a href="#" title=""><i class="flaticon-add"></i></a>
-                                </div>
-                            </div><!-- end image-wrap -->
-                            <div class="course-details">
-                                <h4>
-                                    <small>Javascript</small>
-                                    <a href="#" title="">Modern JavaScript Linting With ESLint</a>
-                                </h4>
-                                <p>Fusce interdum, elit sit amet vehicula malesuada, eros libero elementum orci.</p>
-                            </div><!-- end details -->
-                            <div class="course-footer clearfix">
-                                <div class="pull-left">
-                                    <ul class="list-inline">
-                                        <li><a href="#"><i class="fa fa-user"></i> 21</a></li>
-                                        <li><a href="#"><i class="fa fa-clock-o"></i> 15 Min.</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-
-                                <div class="pull-right">
-                                    <ul class="list-inline">
-                                        <li><a href="#">$22.00</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-                            </div><!-- end footer -->
-                        </div><!-- end box -->
-                    </div><!-- end col -->
-
-                    <div class="caro-item">
-                        <div class="course-box">
-                            <div class="image-wrap entry">
-                                <img src="/upload/course_02.jpg" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                     <a href="#" title=""><i class="flaticon-add"></i></a>
-                                </div>
-                            </div><!-- end image-wrap -->
-                            <div class="course-details">
-                                <h4>
-                                    <small>Design</small>
-                                    <a href="#" title="">Designing Game UI Assets in Adobe Illustrator</a>
-                                </h4>
-                                <p>Curabitur condimentum velit non odio mattis tristique. Nam vitae orci aliquam. </p>
-                            </div><!-- end details -->
-                            <div class="course-footer clearfix">
-                                <div class="pull-left">
-                                    <ul class="list-inline">
-                                        <li><a href="#"><i class="fa fa-user"></i> 41</a></li>
-                                        <li><a href="#"><i class="fa fa-clock-o"></i> 33 Min.</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-
-                                <div class="pull-right">
-                                    <ul class="list-inline">
-                                        <li><a href="#">$55.00</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-                            </div><!-- end footer -->
-                        </div><!-- end box -->
-                    </div><!-- end col -->
-
-                    <div class="caro-item">
-                        <div class="course-box">
-                            <div class="image-wrap entry">
-                                <img src="/upload/course_03.jpg" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                     <a href="#" title=""><i class="flaticon-add"></i></a>
-                                </div>
-                            </div><!-- end image-wrap -->
-                            <div class="course-details">
-                                <h4>
-                                    <small>PHP Coding</small>
-                                    <a href="#" title="">How to Become a Web Developer: Learn PHP</a>
-                                </h4>
-                                <p>Donec auctor nec nibh sit amet pulvinar. Mauris nulla elit, lacinia ac facilisis mattis.</p>
-                            </div><!-- end details -->
-                            <div class="course-footer clearfix">
-                                <div class="pull-left">
-                                    <ul class="list-inline">
-                                        <li><a href="#"><i class="fa fa-user"></i> 35</a></li>
-                                        <li><a href="#"><i class="fa fa-clock-o"></i> 1 Hrs.</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-
-                                <div class="pull-right">
-                                    <ul class="list-inline">
-                                        <li><a href="#">$51.00</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-                            </div><!-- end footer -->
-                        </div><!-- end box -->
-                    </div><!-- end col -->
-
-                    <div class="caro-item">
-                        <div class="course-box">
-                            <div class="image-wrap entry">
-                                <img src="/upload/course_04.jpg" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                     <a href="#" title=""><i class="flaticon-add"></i></a>
-                                </div>
-                            </div><!-- end image-wrap -->
-                            <div class="course-details">
-                                <h4>
-                                    <small>PHP Coding</small>
-                                    <a href="#" title="">How to Build a Custom Theme for Drupal 8</a>
-                                </h4>
-                                <p>Pellentesque ut enim dictum, interdum lorem eget, vulputate eros sed felis euismod.</p>
-                            </div><!-- end details -->
-                            <div class="course-footer clearfix">
-                                <div class="pull-left">
-                                    <ul class="list-inline">
-                                        <li><a href="#"><i class="fa fa-user"></i> 35</a></li>
-                                        <li><a href="#"><i class="fa fa-clock-o"></i> 45 Min.</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-
-                                <div class="pull-right">
-                                    <ul class="list-inline">
-                                        <li><a href="#">$51.00</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-                            </div><!-- end footer -->
-                        </div><!-- end box -->
-                    </div><!-- end col -->
-
-                    <div class="caro-item">
-                        <div class="course-box">
-                            <div class="image-wrap entry">
-                                <img src="/upload/course_01.jpg" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                     <a href="#" title=""><i class="flaticon-add"></i></a>
-                                </div>
-                            </div><!-- end image-wrap -->
-                            <div class="course-details">
-                                <h4>
-                                    <small>Javascript</small>
-                                    <a href="#" title="">Modern JavaScript Linting With ESLint</a>
-                                </h4>
-                                <p>Fusce interdum, elit sit amet vehicula malesuada, eros libero elementum orci.</p>
-                            </div><!-- end details -->
-                            <div class="course-footer clearfix">
-                                <div class="pull-left">
-                                    <ul class="list-inline">
-                                        <li><a href="#"><i class="fa fa-user"></i> 21</a></li>
-                                        <li><a href="#"><i class="fa fa-clock-o"></i> 15 Min.</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-
-                                <div class="pull-right">
-                                    <ul class="list-inline">
-                                        <li><a href="#">$22.00</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-                            </div><!-- end footer -->
-                        </div><!-- end box -->
-                    </div><!-- end col -->
-                </div><!-- end row -->
-
-                <hr class="invis">
-
-                <div class="section-button text-center">
-                    <a href="#" class="btn btn-primary">View All Courses</a>
-                </div>
-            </div><!-- end container -->
-        </section>
-
-        <section class="section db p120">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="tagline-message text-center">
-                            <h3>Howdy, we are Edulogy, we have brought together the best quality services, offers, projects for you!</h3>
-                        </div>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </section><!-- end section -->
-
-        <section class="section gb nopadtop">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="box m30">
-                            <i class="flaticon-computer-tool-for-education"></i>
-                            <h4>Learning system</h4>
-                            <p>All sections required for online training are included to Edulogy.</p>
-                            <a href="#" class="readmore">Read more</a>
-                        </div>
-                    </div><!-- end col -->
-
-                    <div class="col-md-6">
-                        <div class="box m30">
-                            <i class="flaticon-monitor-tablet-and-smartohone"></i>
-                            <h4>Works all mobile devices</h4>
-                            <p>The most important feature of this template is that it is compatible with all mobile devices. Your customers can also visit your site easily from tablets and phones.</p>
-                            <a href="#" class="readmore">Read more</a>
-                        </div>
-                    </div><!-- end col -->
-
-                    <div class="col-md-3">
-                        <div class="box m30">
-                            <i class="flaticon-download-business-statistics-symbol-of-a-graphic"></i>
-                            <h4>User Dashboard</h4>
-                            <p>We designed the design of all the sub-pages needed for the users.</p>
-                            <a href="#" class="readmore">Read more</a>
-                        </div>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-
-                <hr class="invis">
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="box">
-                            <i class="flaticon-html5"></i> <i class="flaticon-css-3"></i>
-                            <h4>Compatible HTML5 & CSS3</h4>
-                            <p>HTML5 is a markup language used for structuring and presenting content on the World Wide Web. It is the fifth and current version of the HTML standard.</p>
-                            <a href="#" class="readmore">Read more</a>
-                        </div>
-                    </div><!-- end col -->
-
-                    <div class="col-md-6">
-                        <div class="box">
-                            <i class="flaticon-html-coding"></i>
-                            <h4>Bootstrap Framework</h4>
-                            <p>Bootstrap is a technique of loading a program into a computer by means of a few initial instructions which enable the introduction of the rest of the program from an input device.</p>
-                            <a href="#" class="readmore">Read more</a>
-                        </div>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </section>
-
-        <section class="section db">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4">
-                        <div class="stat-count">
-                            <h4 class="stat-timer">1230</h4>
-                            <h3><i class="flaticon-black-graduation-cap-tool-of-university-student-for-head"></i> Happy Students</h3>
-                            <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. </p>
-                        </div><!-- stat-count -->
-                    </div><!-- end col -->
-
-                    <div class="col-lg-4 col-md-4">
-                        <div class="stat-count">
-                            <h4 class="stat-timer">331</h4>
-                            <h3><i class="flaticon-online-course"></i> Course Done</h3>
-                            <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. </p>
-                        </div><!-- stat-count -->
-                    </div><!-- end col -->
-
-                    <div class="col-lg-4 col-md-4">
-                        <div class="stat-count">
-                            <h4 class="stat-timer">8901</h4>
-                            <h3><i class="flaticon-coffee-cup"></i> Ordered Coffe's</h3>
-                            <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. </p>
-                        </div><!-- stat-count -->
-                    </div><!-- end col -->
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </section>
-
-        <section class="section">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h3>Testimonials</h3>
-                    <p>Maecenas sit amet tristique turpis. Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
-                </div><!-- end title -->
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="box testimonial">
-                            <p class="testiname"><strong><img src="/upload/testimonial_01.png" alt="" class="img-circle"> Jenny LUXURY</strong></p>
-                            <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                        </div><!-- end testimonial -->
-                    </div><!-- end col -->
-
-                    <div class="col-md-4">
-                        <div class="box testimonial">
-                            <p class="testiname"><strong><img src="/upload/testimonial_02.png" alt="" class="img-circle"> Martin LEO</strong></p>
-                            <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                        </div><!-- end testimonial -->
-                    </div><!-- end col -->
-
-                    <div class="col-md-4">
-                        <div class="box testimonial">
-                            <p class="testiname"><strong><img src="/upload/testimonial_03.png" alt="" class="img-circle"> John DOE</strong></p>
-                            <p>Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                        </div><!-- end testimonial -->
-                    </div><!-- end col -->
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </section>
-
-        <section class="section gb">
-            <div class="container">
-                <div class="section-title text-center">
-                    <h3>Recent News</h3>
-                    <p>Maecenas sit amet tristique turpis. Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis. Donec consectetur accumsan arcu, sit amet fringilla ex ultricies.</p>
-                </div><!-- end title -->
-
-                <div class="row">
-                    <div class="col-lg-4 col-md-12">
-                        <div class="blog-box">
-                            <div class="image-wrap entry">
-                                <img src="/upload/blog_01.jpeg" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                     <a href="" title=""><i class="flaticon-add"></i></a>
-                                </div>
-                            </div><!-- end image-wrap -->
-
-                            <div class="blog-desc">
-                                <h4><a href="">How to learn perfect code with Javascript</a></h4>
-                                <p>Praesent at suscipit ligula. Suspendisse pre neque, quis suscipit enim. sed maximus, mia auctor.</p>
-                            </div><!-- end blog-desc -->
-
-                            <div class="post-meta">
-                                <ul class="list-inline">
-                                    <li><a href="#">21 March 2017</a></li>
-                                    <li><a href="#">by WP Destek</a></li>
-                                    <li><a href="#">14 Share</a></li>
-                                </ul>
-                            </div><!-- end post-meta -->
-                        </div><!-- end blog -->
-                    </div><!-- end col -->
-
-                    <div class="col-lg-4 col-md-12">
-                        <div class="blog-box">
-                            <div class="image-wrap entry">
-                                <img src="/upload/blog_02.jpeg" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                     <a href="" title=""><i class="flaticon-add"></i></a>
-                                </div>
-                            </div><!-- end image-wrap -->
-
-                            <div class="blog-desc">
-                                <h4><a href="">The most suitable web design & development tutorials</a></h4>
-                                <p>Sed suscipit neque in erat posuere tristique aliquam porta vestibulum. Cras placerat tincidunt. </p>
-                            </div><!-- end blog-desc -->
-
-                            <div class="post-meta">
-                                <ul class="list-inline">
-                                    <li><a href="#">20 March 2017</a></li>
-                                    <li><a href="#">by WP Destek</a></li>
-                                    <li><a href="#">11 Share</a></li>
-                                </ul>
-                            </div><!-- end post-meta -->
-                        </div><!-- end blog -->
-                    </div><!-- end col -->
-
-                    <div class="col-lg-4 col-md-12">
-                        <div class="blog-box">
-                            <div class="image-wrap entry">
-                                <img src="/upload/blog_03.jpeg" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                     <a href="" title=""><i class="flaticon-add"></i></a>
-                                </div>
-                            </div><!-- end image-wrap -->
-
-                            <div class="blog-desc">
-                                <h4><a href="">Design for all mobile devices! This is name "responsive"</a></h4>
-                                <p>Suspendisse scelerisque ex ac mattis molestie vel enim ut massa placerat faucibus sed ut dui vivamus. </p>
-                            </div><!-- end blog-desc -->
-
-                            <div class="post-meta">
-                                <ul class="list-inline">
-                                    <li><a href="#">19 March 2017</a></li>
-                                    <li><a href="#">by WP Destek</a></li>
-                                    <li><a href="#">44 Share</a></li>
-                                </ul>
-                            </div><!-- end post-meta -->
-                        </div><!-- end blog -->
-                    </div><!-- end col -->
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </section>
-
-        <section class="section bgcolor1">
-            <div class="container">
-                <a href="#">
-                <div class="row callout">
-                    <div class="col-md-4 text-center">
-                        <h3><sup>$</sup>49.99</h3>
-                        <h4>Start your awesome course today!</h4>
-                    </div><!-- end col -->
-
-                    <div class="col-md-8">
-                        <p class="lead">Limited time offer! Your profile will be added to our "Students" directory as well. </p>
-                    </div>
-                </div><!-- end row -->
-                </a>
-            </div><!-- end container -->  
-        </section>
-
-        <footer class="section footer noover">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4">
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Subscribe Our Newsletter</h3>
-                            <div class="newsletter-widget">
-                                <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.</p>
-                                <form class="form-inline" role="search">
-                                    <div class="form-1">
-                                        <input type="text" class="form-control" placeholder="Enter email here..">
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
-                                    </div>
-                                </form>
-                                <img src="/images/payments.png" alt="" class="img-responsive">
-                            </div><!-- end newsletter -->
-                        </div><!-- end widget -->
-                    </div><!-- end col -->
-
-                    <div class="col-lg-3 col-md-3">
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Join us today</h3>
-                            <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
-                            <a href="#" class="readmore">Became a Teacher</a>
-                        </div><!-- end widget -->
-                    </div><!-- end col -->
-
-                    <div class="col-lg-3 col-md-3">
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Popular Tags</h3>
-                            <div class="tags-widget">   
-                                <ul class="list-inline">
-                                    <li><a href="#">course</a></li>
-                                    <li><a href="#">web design</a></li>
-                                    <li><a href="#">development</a></li>
-                                    <li><a href="#">language</a></li>
-                                    <li><a href="#">teacher</a></li>
-                                    <li><a href="#">speaking</a></li>
-                                    <li><a href="#">material</a></li>
-                                    <li><a href="#">css3</a></li>
-                                    <li><a href="#">html</a></li>
-                                    <li><a href="#">learning</a></li>
-                                </ul>
-                            </div><!-- end list-widget -->
-                        </div><!-- end widget -->
-                    </div><!-- end col -->
-
-                    <div class="col-lg-2 col-md-2">
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">Support</h3>
-                            <div class="list-widget">   
-                                <ul>
-                                    <li><a href="#">Terms of Use</a></li>
-                                    <li><a href="#">Copyrights</a></li>
-                                    <li><a href="#">Create a Ticket</a></li>
-                                    <li><a href="#">Pricing & Plans</a></li>
-                                    <li><a href="#">Carrier</a></li>
-                                    <li><a href="#">Trademark</a></li>
-                                </ul>
-                            </div><!-- end list-widget -->
-                        </div><!-- end widget -->
-                    </div><!-- end col -->
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </footer><!-- end footer -->
-
-        <div class="copyrights">
-            <div class="container">
-                <div class="clearfix">
-                    <div class="pull-left">
-                        <div class="cop-logo">
-                            <a href="#"><img src="/images/logo.png" alt=""></a>
-                        </div>
-                    </div>
-
-                    <div class="pull-right">
-                        <div class="footer-links">
-                            <ul class="list-inline">
-                                <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- end container -->
-        </div><!-- end copy -->
-
+    <div id="dialog">
+        <div class="el-message-box" style="width: 500px;height: 1000px;background-color: transparent;margin-top: 90px;">
+            <div style="float: right;"><img src="/images/close.png" style="width: 50px;cursor: pointer;"
+                                            onclick="closeLight()"></div>
+            <img id="image" onclick="turnOnOrOff()" style="cursor: pointer;">
+        </div>
     </div>
+    <div id="v-modal" style="z-index: 9998;"></div>
 
-    <!--END WRAPPER-->
+</div>
 
-    <!-- jQuery Js Files -->
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/carousel.js"></script>
-    <script src="/js/animate.js"></script>
-    <script src="/js/custom.js"></script>
+<!--END WRAPPER-->
+
+<script>
+    lightPoint = () => {
+        document.body.style.overflowX = "hidden";
+        document.body.style.overflowY = "hidden";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        div1.style.display = "block";
+        div2.style.display = "block";
+        let img = document.getElementById("image");
+        img.setAttribute("src", "/images/light1.png");
+    }
+    turnOnOrOff = () => {
+        let img = document.getElementById("image");
+        if (img.getAttribute("src") === "/images/light1.png") {
+            img.setAttribute("src", "/images/light0.png");
+        } else if (img.getAttribute("src") === "/images/light0.png") {
+            img.setAttribute("src", "/images/light1.png");
+        }
+    }
+    closeLight = () => {
+        document.body.style.overflowX = "auto";
+        document.body.style.overflowY = "auto";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        div1.style.display = "none";
+        div2.style.display = "none";
+    }
+</script>
+<!-- jQuery Js Files -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/carousel.js"></script>
+<script src="/js/animate.js"></script>
+<script src="/js/custom.js"></script>
 </body>
 </html>

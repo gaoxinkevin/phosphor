@@ -9,19 +9,15 @@ import com.cafebabe.phosphor.model.entity.Group;
 import com.cafebabe.phosphor.model.entity.GroupCourse;
 import com.cafebabe.phosphor.service.GroupService;
 import com.cafebabe.phosphor.util.Price;
+import com.cafebabe.phosphor.util.RedisUtil;
 import com.cafebabe.phosphor.util.priceimpl.PriceOneImpl;
-import com.cafebabe.phosphor.util.priceimpl.PriceThreeImpl;
 import com.cafebabe.phosphor.util.priceimpl.PriceTwoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 
 /**
@@ -41,7 +37,7 @@ import java.util.TreeSet;
 public class GroupServiceImpl implements GroupService {
 
 
-
+    private static final Integer RECOMMEND_GROUP = 3;
     private final GroupDAO groupDAO;
     private final GroupCourseDAO groupCourseDAO;
     private final CourseDAO courseDAO;
@@ -115,12 +111,19 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<GroupDTO> getGroupListAlive() {
 
-        List<Group> groups = groupDAO.getGroupListAlive();
-        List<GroupDTO> groupDTOS = new ArrayList<>();
-        for (Group group : groups) {
-            groupDTOS.add(toGroupDTO(group));
+        List<GroupDTO> cache = RedisUtil.getList("getGroupListAll");
+        if (cache != null&&cache.size()>0){
+            return cache;
+
+        }else {
+            List<Group> groups = groupDAO.getGroupListAlive();
+            List<GroupDTO> groupDTOS = new ArrayList<>();
+            for (Group group : groups) {
+                groupDTOS.add(toGroupDTO(group));
+            }
+            RedisUtil.setList("getGroupListAll",groupDTOS);
+            return groupDTOS;
         }
-        return groupDTOS;
     }
 
     @Override
@@ -131,7 +134,6 @@ public class GroupServiceImpl implements GroupService {
             groupDTOS.add(toGroupDTO(group));
         }
         return groupDTOS;
-
     }
 
     @Override
@@ -144,7 +146,7 @@ public class GroupServiceImpl implements GroupService {
         }
         return groupDTOS;
     }
-
+    @Override
     public GroupDTO createGroup(Integer courseId){
         GroupDTO groupDTO = new GroupDTO();
         CourseInfo courseInfo = courseDAO.getCourseInfo(courseId);
@@ -159,6 +161,32 @@ public class GroupServiceImpl implements GroupService {
         return groupDTO;
 
     }
+
+    @Override
+    public List<GroupDTO> getGroupByTime() {
+        List<GroupDTO> groupDTOS = this.getGroupListAlive();
+        groupDTOS.sort(Comparator.comparing(GroupDTO::getGroupCreateTime));
+        return groupDTOS;
+    }
+
+    @Override
+    public List<GroupDTO> getGroupByPriceAsc() {
+        List<GroupDTO> groupDTOS = this.getGroupListAlive();
+        groupDTOS.sort(Comparator.comparing(GroupDTO::getGroupPrice));
+        return groupDTOS;
+    }
+
+    @Override
+    public List<GroupDTO> getGroupByPriceDesc() {
+        List<GroupDTO> groupDTOS = this.getGroupListAlive();
+        groupDTOS.sort(Comparator.comparing(GroupDTO::getGroupPrice));
+        List<GroupDTO> groupDTOList = new ArrayList<>();
+        for (int i = groupDTOS.size()-1; i >=0; i--) {
+            groupDTOList.add(groupDTOS.get(i));
+        }
+        return groupDTOList;
+    }
+
     @Override
     public GroupDTO addCourseToGroup(GroupDTO groupDTO,Integer courseId){
         CourseInfo courseInfo = courseDAO.getCourseInfo(courseId);
@@ -186,6 +214,23 @@ public class GroupServiceImpl implements GroupService {
         }
         groupDTO.setGroupCourseNumber(groupDTO.getCourseInfos().size());
         return groupDTO;
+    }
+
+    @Override
+    public List<GroupDTO> getGroupListRecommend() {
+        List<GroupDTO> cache = RedisUtil.getList("getGroupListRecommend");
+        if (cache != null&&cache.size()>0){
+            return cache;
+        }else {
+            List<Group> groups = groupDAO.getGroupListAlive();
+            groups.sort(Comparator.comparing(Group::getGroupCreateTime));
+            List<GroupDTO> groupDTOList = new ArrayList<>();
+            for (int i = 0; i <RECOMMEND_GROUP ; i++) {
+                groupDTOList.add(toGroupDTO(groups.get(i)));
+            }
+            RedisUtil.setList("getGroupListRecommend",groupDTOList);
+            return groupDTOList;
+        }
     }
 
     /**
