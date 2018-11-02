@@ -35,8 +35,6 @@
     <mvc:resources mapping="/fonts/**" location="/fonts/"/>
     <mvc:resources mapping="/upload/**" location="/upload/"/>
     <mvc:resources mapping="/WEB-INF/pages/**" location="/WEB-INF/pages/"/>
-    <mvc:resources mapping="/file/pdfTemp/**" location="/file/pdfTemp/"/>
-    <mvc:resources mapping="/templates/**" location="/templates/"/>
 
 
 </beans>
