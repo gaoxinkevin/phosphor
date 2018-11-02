@@ -1,0 +1,486 @@
+<!Doctype html>
+<html class="no-js " lang="en">
+<head>
+
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Site Meta -->
+    <title>phosphor</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+
+    <!-- Custom & Default Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <!--<script src="/js/vendor/html5shiv.min.js"></script>-->
+    <script src="/js/vendor/respond.min.js"></script>
+
+    <script src="/js/activity/activity.js"></script>
+
+    <script src="/js/parent.js"></script>
+    <style>
+        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
+            background-color: #82B43F;
+            border-color: #82B43F;
+        }
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
+            background: #82B43F;
+            color: #ffffff !important;
+        }
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
+            background: #82B43F none repeat scroll 0 0 !important;
+
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="preloader">
+    <img class="preloader" src="/images/loader.gif" alt="">
+</div><!-- end loader -->
+<!-- END LOADER -->
+
+<div id="wrapper">
+
+    <!-- BEGIN # MODAL LOGIN -->
+
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <form id="login-form">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="flaticon-add" aria-hidden="true"></span>
+                        </button>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="What you are looking for?" required>
+                        </div>
+                    </form><!-- End # Login Form -->
+                </div><!-- End # DIV Form -->
+            </div>
+        </div>
+    </div>
+
+    <!-- END # MODAL LOGIN -->
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right" id="ul">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="/courseUi/courseListUi">课程</a></li>
+                        <li><a href="/activityUi/returnActivityUi">活动</a></li>
+                        <li><a href="/teacherUi/getTeacherList">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="/groupUi/groupListUi">官方套餐</a></li>
+                                    <li><a href="/groupUi/groupDiyUi">自定义套餐</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="">联系我们</a></li>
+                        <li class="iconitem">
+                            <a href="/searchUi/search">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
+                                    <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
+                                    <li><a href="#">我的关注</a></li>
+                                    <li><a href="#">我的收藏</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+    <div id="activityListTop" style="visibility: hidden; width: 1px; height: 1px;"></div>
+    <section class="section db p120">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tagline-message page-title text-center">
+                        <h3>所有活动</h3>
+                    </div>
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section><!-- end section -->
+
+    <section class="section gb nopadtop">
+        <div class="container">
+            <div class="boxed">
+                <div class="row">
+
+                    <div class="sidebar col-md-4">
+                        <div class="widget clearfix" >
+                            <!--搜索框-->
+                            <div class="banner-widget form-inline">
+                                <input id="activity-title" type="text" class="form-control" value="" placeholder="活动主题" style="margin-bottom: 0px">
+                                <button type="submit" class="btn btn-primary" style="line-height: 18px; margin-left: 5px" onclick="searchByActivityTitle()">搜索</button>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+
+
+                        </script>
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">近期热门</h3>
+
+                            <!--显示近期热门活动-->
+                            <div class="post-widget" id="divRecentActivity">
+                                <!--单个活动-->
+                                <div class="media" style="display: none">
+                                    <img src="/upload/blog_small_01.jpg" alt=""
+                                         class="img-responsive alignleft img-rounded">
+                                    <div class="media-body">
+                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a>
+                                        </h5>
+                                        <div class="blog-meta">
+                                            <ul class="list-inline">
+                                                <li>4 days ago</li>
+                                                <li style="color: #01bacf;"></li>
+                                            </ul>
+                                        </div><!-- end blog-meta -->
+                                    </div>
+                                </div>
+
+                                <div class="media" style="display: none">
+                                    <img src="/upload/blog_small_01.jpg" alt=""
+                                         class="img-responsive alignleft img-rounded">
+                                    <div class="media-body">
+                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a>
+                                        </h5>
+                                        <div class="blog-meta">
+                                            <ul class="list-inline">
+                                                <li>4 days ago</li>
+                                                <li style="color: #01bacf;"></li>
+                                            </ul>
+                                        </div><!-- end blog-meta -->
+                                    </div>
+                                </div>
+
+                                <div class="media" style="display: none">
+                                    <img src="/upload/blog_small_01.jpg" alt=""
+                                         class="img-responsive alignleft img-rounded">
+                                    <div class="media-body">
+                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a>
+                                        </h5>
+                                        <div class="blog-meta">
+                                            <ul class="list-inline">
+                                                <li>4 days ago</li>
+                                                <li style="color: #01bacf;"></li>
+                                            </ul>
+                                        </div><!-- end blog-meta -->
+                                    </div>
+                                </div>
+                            </div><!-- end post-widget -->
+                        </div><!-- end widget -->
+
+                    </div><!-- end sidebar -->
+                    <div class="col-md-8" id="activityGrid">
+                        <div class="tags-widget" style="margin-left:15px; border-bottom: 1px solid #eaeaea;border-bottom-width: 1px;border-bottom-style: solid; border-bottom-color: rgb(234, 234, 234); margin-bottom: 8px;">
+                            <ul class="list-inline">
+                                <li id="applyTimeOrder" style="margin-right: 20px; background-color: #01BACF"><a onclick="orderByApplyTime()">报名时间</a>
+                                    <img src="/images/arrowUp.png"><img src="/images/arrowDown.png">
+                                    <input type="hidden" value="null">
+                                </li>
+                                <li id="startTimeOrder" style="margin-right: 5px; background-color: #01BACF"><a onclick="orderByBeginTime()">开始时间</a>
+                                    <img src="/images/arrowUp.png"><img src="/images/arrowDown.png">
+                                    <input  type="hidden" value="null">
+                                </li>
+                            </ul>
+                        </div>
+
+                        <script type="text/javascript">
+                        </script>
+                        <input type="hidden" id="hidCurrentPageIndex">
+                        <script type="text/javascript">
+                            getActivityByPage(0, 4, null, null, null);
+                        </script>
+                        <!--单个活动-->
+                        <div class="row activityGrid">
+                            <div class="authorbox">
+                                <div class="site-publisher clearfix">
+                                    <input type="hidden" class="hidID">
+                                    <img src="" alt="" class="img-responsive img-circle img-activity">
+                                    <a href="" title="">
+                                        <h4>
+                                            <small>主题</small>
+                                            <span class="spTitle"></span>
+                                        </h4>
+                                    </a>
+                                    <div style="height: 55px;">
+                                        <p >
+                                            <span class="spDesc" ></span>
+                                        </p>
+                                    </div>
+
+                                    <span style="color: #01C9E5; font-size: medium; font-weight: normal; float: right" class="spPrice"></span>
+                                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+                                        <a class="aDetail">
+                                            <i class="fa fa-paper-plane-o">查看详情</i>
+                                        </a>
+                                    </button>
+                                </div><!-- end publisher -->
+                            </div><!-- end details -->
+                        </div>
+
+                        <div class="row activityGrid">
+                            <div class="authorbox">
+                                <div class="site-publisher clearfix">
+                                    <input type="hidden" class="hidID">
+                                    <img src="" alt="" class="img-responsive img-circle img-activity">
+                                    <a href="" title="">
+                                        <h4>
+                                            <small>主题</small>
+                                            <span class="spTitle"></span>
+                                        </h4>
+                                    </a>
+                                    <div style="height: 55px;">
+                                        <p >
+                                            <span class="spDesc" ></span>
+                                        </p>
+                                    </div>
+
+                                    <span style="color: #01C9E5; font-size: medium; font-weight: normal; float: right" class="spPrice"></span>
+                                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+                                        <a class="aDetail">
+                                            <i class="fa fa-paper-plane-o">查看详情</i>
+                                        </a>
+                                    </button>
+                                </div><!-- end publisher -->
+                            </div><!-- end details -->
+                        </div>
+
+                        <div class="row activityGrid">
+                            <div class="authorbox">
+                                <div class="site-publisher clearfix">
+                                    <input type="hidden" class="hidID">
+                                    <img src="" alt="" class="img-responsive img-circle img-activity">
+                                    <a href="" title="">
+                                        <h4>
+                                            <small>主题</small>
+                                            <span class="spTitle"></span>
+                                        </h4>
+                                    </a>
+                                    <div style="height: 55px;">
+                                        <p >
+                                            <span class="spDesc" ></span>
+                                        </p>
+                                    </div>
+
+                                    <span style="color: #01C9E5; font-size: medium; font-weight: normal; float: right" class="spPrice"></span>
+                                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+                                        <a class="aDetail">
+                                            <i class="fa fa-paper-plane-o">查看详情</i>
+                                        </a>
+                                    </button>
+                                </div><!-- end publisher -->
+                            </div><!-- end details -->
+                        </div>
+
+                        <div class="row activityGrid">
+                            <div class="authorbox">
+                                <div class="site-publisher clearfix">
+                                    <input type="hidden" class="hidID">
+                                    <img src="" alt="" class="img-responsive img-circle img-activity">
+                                    <a href="" title="">
+                                        <h4>
+                                            <small>主题</small>
+                                            <span class="spTitle"></span>
+                                        </h4>
+                                    </a>
+                                    <div style="height: 55px;">
+                                        <p >
+                                            <span class="spDesc" ></span>
+                                        </p>
+                                    </div>
+
+                                    <span style="color: #01C9E5; font-size: medium; font-weight: normal; float: right" class="spPrice"></span>
+                                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+                                        <a class="aDetail">
+                                            <i class="fa fa-paper-plane-o">查看详情</i>
+                                        </a>
+                                    </button>
+                                </div><!-- end publisher -->
+                            </div><!-- end details -->
+                        </div>
+
+                        <!--页码条-->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="hidden" id="currentPageCode">
+                                <input type="hidden" id="totalPages">
+                                <ul class="pagination" id="uPagination">
+                                    <!--上一页-->
+                                    <li id="perPage" class="page-code">
+                                        <a href="javascript:void(0)" onclick="perPage()">«</a>
+                                    </li>
+                                    <!--下一页-->
+                                    <li id="nextPage" class="page-code">
+                                        <a href="javascript:void(0)" onclick="nextPage()">»</a>
+                                    </li>
+                                </ul>
+                            </div><!-- end col -->
+                        </div>
+                    </div><!-- end col -->
+
+                </div><!-- end row -->
+            </div><!-- end boxed -->
+        </div><!-- end container -->
+    </section>
+
+    <footer class="section footer noover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.</p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
+                                </div>
+                            </form>
+                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                        <a href="#" class="readmore">Became a Teacher</a>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags-widget">
+                            <ul class="list-inline">
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Support</h3>
+                        <div class="list-widget">
+                            <ul>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing & Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer><!-- end footer -->
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div><!-- end copy -->
+</div><!-- end wrapper -->
+
+<!-- jQuery Files -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/animate.js"></script>
+<script src="/js/custom.js"></script>
+
+</body>
+</html>
