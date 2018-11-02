@@ -43,11 +43,6 @@ public interface CourseService {
     List<Course> getAllCourseInfo ();
 
 
-    /**
-     * 根据名称查询某课程
-     * @return 课程
-     */
-    Course getCourseService(String courseName);
 
     /**
      * 查询某课程所有信息
@@ -55,7 +50,6 @@ public interface CourseService {
      * @return 课程信息
      */
     CourseInfo getCourseInfoService(Integer courseId);
-
     /**
      * 获得某课程时间信息
      * @param courseId 课程id
@@ -73,7 +67,7 @@ public interface CourseService {
      *
      * @param pageIndex 页码
      * @param pageSize 每页信息数量
-     * @return
+     * @return 课程
      */
     PageCourse getCourseByType(Integer pageIndex, Integer pageSize,String orderField,Integer typeId);
 
@@ -87,7 +81,7 @@ public interface CourseService {
     /**
      * 添加课程评价
      * @param suggest 评价
-     * @return
+     * @return 评价
      */
     Integer insertSuggest(Suggest suggest);
 }
