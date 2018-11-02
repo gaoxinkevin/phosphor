@@ -77,7 +77,7 @@
         <property name="maxUploadSize" value="-1"/>
     </bean>
 
-    <!--配置事物-->
+    <!--配置事务-->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
