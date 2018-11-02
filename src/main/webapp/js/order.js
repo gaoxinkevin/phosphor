@@ -233,6 +233,18 @@ cancelDialog =() =>{
     dialog.style.display="none";
 };
 
+function str_encrypt(str) {
+    console.log(str);
+    console.log(str.charCodeAt(0));
+    var c = String.fromCharCode(str.charCodeAt(0) + str.length);
+
+    for (var i = 1; i < str.length; i++) {
+        c += String.fromCharCode(str.charCodeAt(i) + str.charCodeAt(i - 1));
+    }
+
+    return encodeURIComponent(c);
+}
+
 btnOrder = () => {
     let getOrder = () => getJson(currentOrderUrl);
     getOrder().then(res => {
@@ -243,7 +255,7 @@ btnOrder = () => {
                 getOrderPay().then(res => {
                     if(res.code<=30000){
                         let a="http://localhost:8888/pay?id="+JSON.parse(localStorage.getItem("userLoginPhone")).val
-                            +"&money="+localStorage.getItem("money")
+                            +"&money="+localStorage.getItem("money")+"&orderId="+str_encrypt(res.data.toString());
                         window.location.href=a;
                     }else{
                         console.log(res.data);
