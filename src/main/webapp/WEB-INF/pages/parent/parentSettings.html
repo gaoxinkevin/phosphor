@@ -253,11 +253,11 @@
                 </div>
 
                 <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right" id="ul">
                         <li><a href="/indexUi/returnIndexPage">首页</a></li>
-                        <li><a href="">课程</a></li>
-                        <li><a href="">活动</a></li>
-                        <li><a href="">指导师</a></li>
+                        <li><a href="/courseUi/courseListUi">课程</a></li>
+                        <li><a href="/activityUi/returnActivityUi">活动</a></li>
+                        <li><a href="/teacherUi/getTeacherList">指导师</a></li>
                         <li>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary dropdown-toggle"
@@ -268,13 +268,17 @@
                                 </button>
 
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">官方套餐</a></li>
-                                    <li><a href="#">自定义套餐</a></li>
+                                    <li><a href="/groupUi/groupListUi">官方套餐</a></li>
+                                    <li><a href="/groupUi/groupDiyUi">自定义套餐</a></li>
                                 </ul>
                             </div>
                         </li>
-                        <li><a href="">联系我们</a></li>
-                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
+                        <li><a href="/contactUi/returnContactUi">联系我们</a></li>
+                        <li class="iconitem">
+                            <a href="/searchUi/alreadySearch">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
                         <li>
                             <div class="dropdown">
                                 <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
@@ -282,10 +286,9 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
-                                    <li><a href="#">我的关注</a></li>
-                                    <li><a href="#">我的收藏</a></li>
+                                    <li><a href="/courseCollectionUi/courseCollectionUi">我的收藏</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                    <li><a href="javascript:void(0)" onclick=loginOut()>退出</a></li>
                                 </ul>
                             </div>
                         </li>
