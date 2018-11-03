@@ -62,12 +62,12 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public PageCourse getCourseByType(Integer pageIndex, Integer pageSize,String orderField,Integer typeId) {
         PageCourse<Course> pageCourse = new PageCourse<>();
-        String strundefind = "undefined";
-        String strnull = "null";
-        if (orderField!=null && !orderField.equals(strundefind) && !orderField.equals(strnull)){
+        String strUndefind = "undefined";
+        String strNull = "null";
+        if (orderField!=null && !orderField.equals(strUndefind) && !orderField.equals(strNull)){
             pageCourse.setOrderField(orderField);
         }
-        if (typeId !=null && !typeId.equals(strundefind) && !orderField.equals(strnull)){
+        if (typeId !=null){
             pageCourse.setTypeId(typeId);
         }
         pageCourse.setTotalRecord(courseDAO.getCourseCount());

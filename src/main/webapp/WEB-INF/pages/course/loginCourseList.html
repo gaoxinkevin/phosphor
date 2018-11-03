@@ -31,6 +31,22 @@
     <script src="/js/vendor/respond.min.js"></script>
 
     <script src="/js/course.js"></script>
+    <style>
+        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
+            background-color: #82B43F;
+            border-color: #82B43F;
+        }
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
+            background: #82B43F;
+            color: #ffffff !important;
+        }
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
+            background: #82B43F none repeat scroll 0 0 !important;
+
+        }
+    </style>
 </head>
 <body onload="getCourseListByPage(0,12)">
     <!-- LOADER -->
@@ -60,7 +76,7 @@
         </div>
         <!-- END # MODAL LOGIN -->
 
-        <header class="header affix" style="background: black">
+        <header class="header">
             <div class="container">
                 <nav class="navbar navbar-default yamm">
                     <div class="navbar-header">
@@ -79,15 +95,46 @@
                     </div>
 
                     <div id="navbar" class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav navbar-right">
+                        <ul class="nav navbar-nav navbar-right" id="ul">
                             <li><a href="/indexUi/returnIndexPage">首页</a></li>
-                            <li><a href="">课程</a></li>
-                            <li><a href="">活动</a></li>
-                            <li><a href="">指导师</a></li>
+                            <li><a href="/courseUi/courseListUi">课程</a></li>
+                            <li><a href="/activityUi/returnActivityUi">活动</a></li>
+                            <li><a href="/teacherUi/getTeacherList">指导师</a></li>
+                            <li>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            style="padding: 6px 12px;margin-top: 7px">
+                                        课程套餐
+                                        <span class="caret"></span>
+                                    </button>
+
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/groupUi/groupListUi">官方套餐</a></li>
+                                        <li><a href="/groupUi/groupDiyUi">自定义套餐</a></li>
+                                    </ul>
+                                </div>
+                            </li>
                             <li><a href="">联系我们</a></li>
-                            <li><a href="/loginUi/loginUi">登录|注册</a></li>
-                            <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
-                                    class="fa fa-search"></i></a></li>
+                            <li class="iconitem">
+                                <a href="/searchUi/search">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
+                                        <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
+                                        <li><a href="#">我的关注</a></li>
+                                        <li><a href="#">我的收藏</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
 
@@ -95,12 +142,12 @@
             </div>
         </header>
 
-        <section class="section lb p120" style="background:url('/images/p1.png');background-size: 100% 100%">
-            <div class="container" >
-                <div class="row" >
+        <section class="section lb p120">
+            <div class="container">
+                <div class="row">
                     <div class="col-md-12">
                         <div class="tagline-message page-title text-center">
-                            <h3 style="height: 20px"></h3>
+                            <h3>课程</h3>
                         </div>
                     </div><!-- end col -->
                 </div><!-- end row -->
@@ -113,20 +160,16 @@
                     <div class="shop-top">
                         <div class="clearfix">
                             <div class="pull-left">
-                                <p>热门分类:</p>
-                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,0)"><em>全部</em></span></a>
-                                <span>|</span>
-                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,10000)"><em>音乐</em></span></a>
+                                <p>入驻公司:</p>
+                                <span><em>启明星教育</em></span>&nbsp;
                                 <span>/</span>
-                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,10010)"><em>运动</em></span></a>
+                                <span><em>驰星教育</em></span>&nbsp;
                                 <span>/</span>
-                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,10004)"><em>外语</em></span></a>
+                                <span><em>新东方教育</em></span>&nbsp;
                                 <span>/</span>
-                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,10005)"><em>益智</em></span></a>
+                                <span><em>达内教育</em></span>&nbsp;
                                 <span>/</span>
-                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,10006)"><em>表演</em></span></a>
-                                <span>/</span>
-                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,10009)"><em>文学</em></span></a>
+                                <span><em>中公教育</em></span>
                             </div>
                             <div class="pull-right">
                                 <p>排序方式：</p>
@@ -604,6 +647,7 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/animate.js"></script>
     <script src="/js/bootstrap-select.min.js"></script>
+    <script src="/js/parent.js"></script>
     <script src="/js/custom.js"></script>
 
 </body>

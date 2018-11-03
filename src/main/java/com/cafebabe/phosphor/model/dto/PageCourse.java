@@ -2,6 +2,7 @@ package com.cafebabe.phosphor.model.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageCourse<T> {
+public class PageCourse<T> implements Serializable {
 
     /**
      * 每页显示记录数
