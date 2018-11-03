@@ -76,6 +76,10 @@ function loadActivityToView(responseText) {
         activityImg.setAttribute("src", "images/loader.gif");
         activityImg.setAttribute("alt", "获取图片失败");
     });
+
+    let activityTitleSum = document.getElementById("activity-title-sum");
+    activityTitleSum.innerText += activityDetail.activityTitle;
+
     let activityTitle = document.getElementById("activity-title");
     activityTitle.innerText = activityDetail.activityTitle;
 
@@ -83,5 +87,16 @@ function loadActivityToView(responseText) {
     activityDesc.innerText =  activityDetail.activityDesc;
 
     let activityPrice = document.getElementById("activity-price");
-    activityPrice.innerText = activityDetail.activityPrice;
+    activityPrice.innerText = "￥ "+ activityDetail.activityPrice;
+
+    let applyEndTime = document.getElementById("apply-end-time");
+    applyEndTime.innerText += " "+timestampToDate(activityDetail.activityApplyEndTime);
+
+    let activityEndTime = document.getElementById("activity-end-time");
+    activityEndTime.innerText += " "+timestampToDate(activityDetail.activityEndTime);
+
+    let seeOthers = document.getElementById("see-others");
+    let aSeeOthers = seeOthers.getElementsByTagName("a")[0];
+    aSeeOthers.setAttribute("href", "/activityUi/returnActivityUi");
+
 }
