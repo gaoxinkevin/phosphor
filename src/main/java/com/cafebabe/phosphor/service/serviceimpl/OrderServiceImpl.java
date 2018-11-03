@@ -74,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer updateOrder(Order order) {
-        return orderDAO.updateOrder(order);
+        return orderDAO.updateByPrimaryKeySelective(order);
     }
 
     @Override

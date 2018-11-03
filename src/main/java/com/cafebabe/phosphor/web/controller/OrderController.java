@@ -175,4 +175,18 @@ public class OrderController {
         pdfUtil.downLoad(fileName, httpServletResponse);
         pdfUtil.deletePDF(fileName);
     }
+
+    @RequestMapping("confirmOrder")
+    @ResponseBody
+    public JsonResponse getConfirmOrder(Integer orderId){
+        Order order = new Order();
+        order.setOrderId(orderId);
+        order.setOrderState(1);
+        if (orderService.updateOrder(order)>0&&orderService.createCourse(orderId)>0){
+            return new JsonResponse(20000,"success","");
+        }else{
+            return new JsonResponse(50000, "服务器添加失败","");
+        }
+
+    }
 }

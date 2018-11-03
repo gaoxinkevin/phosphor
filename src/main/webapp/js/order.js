@@ -228,7 +228,9 @@ selectChild = (message) => {
     dialog.style.display="block";
     dialogPInnerHtml.innerText=message;
 };
-
+/**
+ * 取消消息提示
+ */
 cancelDialog =() =>{
     document.body.style.overflowX = "visible";
     document.body.style.overflowY = "visible";
@@ -238,9 +240,12 @@ cancelDialog =() =>{
     dialog.style.display="none";
 };
 
+/**
+ * 字符加密
+ * @param str
+ * @return {string}
+ */
 function str_encrypt(str) {
-    console.log(str);
-    console.log(str.charCodeAt(0));
     var c = String.fromCharCode(str.charCodeAt(0) + str.length);
 
     for (var i = 1; i < str.length; i++) {
@@ -250,6 +255,9 @@ function str_encrypt(str) {
     return encodeURIComponent(c);
 }
 
+/**
+ * 确认订单界面
+ */
 btnOrder = () => {
     let getOrder = () => getJson(currentOrderUrl);
     getOrder().then(res => {
@@ -278,7 +286,11 @@ btnOrder = () => {
         console.log(res);
     });
 };
-
+/**
+ * 获取订单详情的演示
+ * @param detail
+ * @return {HTMLElement} otr
+ */
 getValidateDetail = (detail) => {
 
     let detailUrl="";
