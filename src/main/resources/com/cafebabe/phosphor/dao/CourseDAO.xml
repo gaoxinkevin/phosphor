@@ -89,13 +89,10 @@
             parameterType="com.cafebabe.phosphor.model.dto.PageCourse">
         select course.course_id,course_name,course_price,company_name,type_id,course_create_time,course_sf,company_id
         from course
-        left join course_type on course_type.course_id=course.course_id
-        <where>
-            <if test="typeId != null and typeId != 0">
-                company_id = #{typeId}
-            </if>
-
-        </where>
+        join course_type on course_type.course_id=course.course_id
+        <if test="typeId != null and typeId != 0">
+            where type_id=#{typeId}
+        </if>
         <if test="orderField != null and orderField != 'null'">
             order by
             <choose>

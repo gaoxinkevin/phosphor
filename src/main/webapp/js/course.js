@@ -135,20 +135,20 @@ function getCourseListByPage(pageIndex, pageSize) {
 }
 
 function getCourseListByPageAndType(pageIndex, pageSize,orderField,typeId) {
-    let request = getXhr();
-    if(typeof (orderField) == undefined)
+    const request = getXhr();
+    if(typeof (orderField) === undefined)
         orderField = null;
-    if(typeof (typeId) == undefined)
+    if(typeof (typeId) === undefined)
         typeId = null;
     let postData = "pageIndex="+pageIndex +"&pageSize="+ pageSize +"&orderField="+ orderField + "&typeId=" + typeId;
     request.open("POST", "http://localhost:1250/course/getCourseListByType", true);
     request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     request.send(postData);
-
     request.onreadystatechange = function () {
-        if(request.readyState == 4){
-            if(request.status >= 200 && request.status < 300 || request.status == 304){
+        if(request.readyState === 4){
+            if(request.status >= 200 && request.status < 300 || request.status === 304){
                 loadCourseListByPage(request.responseText);
+                console.log(request.responseText);
             }
         }
     }
@@ -157,11 +157,9 @@ function getCourseListByPageAndType(pageIndex, pageSize,orderField,typeId) {
 function loadCourseListByPage(pageJson) {
     let page = JSON.parse(pageJson);
     let courseInfoListData = page.data;
-
     let totalPages =courseInfoListData.totalPages;
     let hidTotalPages = document.getElementById("totalPages");
     hidTotalPages.setAttribute("value", totalPages);
-
     let currentPageCode = courseInfoListData.currentPageCode;
     let hidCurrentPageIndex = document.getElementById("currentPageCode");
     hidCurrentPageIndex.value = currentPageCode;
