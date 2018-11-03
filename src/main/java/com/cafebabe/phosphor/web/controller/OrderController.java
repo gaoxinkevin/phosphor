@@ -6,27 +6,15 @@ import com.cafebabe.phosphor.model.entity.Parent;
 import com.cafebabe.phosphor.service.serviceimpl.OrderServiceImpl;
 import com.cafebabe.phosphor.service.serviceimpl.ParentServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
-import com.cafebabe.phosphor.util.OrderType;
 import com.cafebabe.phosphor.util.PDFUtil;
-import org.apache.commons.io.FileUtils;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -54,11 +42,11 @@ public class OrderController {
 
     private final OrderServiceImpl orderService;
     private final ParentServiceImpl parentService;
-    @Autowired(required = false)
     private HttpServletRequest httpServletRequest;
 
     @Autowired
-    public OrderController(OrderServiceImpl orderService, ParentServiceImpl parentService) {
+    public OrderController(HttpServletRequest httpServletRequest,OrderServiceImpl orderService, ParentServiceImpl parentService) {
+        this.httpServletRequest = httpServletRequest;
         this.parentService = parentService;
         this.orderService = orderService;
     }
@@ -179,12 +167,26 @@ public class OrderController {
     }
 
     @RequestMapping("downloadOrderPDF")
-    public void downloadOrderPDF(Integer orderId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
+    public void downloadOrderPDF(Integer orderId, HttpServletResponse httpServletResponse) {
         PDFUtil pdfUtil = new PDFUtil();
         String htmlCode = orderService.getHtmlCode(orderId);
         String fileName = "MyPDF.pdf";
         pdfUtil.createPDF(htmlCode, fileName);
         pdfUtil.downLoad(fileName, httpServletResponse);
         pdfUtil.deletePDF(fileName);
+    }
+
+    @RequestMapping("confirmOrder")
+    @ResponseBody
+    public JsonResponse getConfirmOrder(Integer orderId){
+        Order order = new Order();
+        order.setOrderId(orderId);
+        order.setOrderState(1);
+        if (orderService.updateOrder(order)>0&&orderService.createCourse(orderId)>0){
+            return new JsonResponse(20000,"success","");
+        }else{
+            return new JsonResponse(50000, "服务器添加失败","");
+        }
+
     }
 }

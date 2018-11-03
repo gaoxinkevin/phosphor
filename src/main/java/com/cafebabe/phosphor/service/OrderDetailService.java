@@ -19,35 +19,33 @@ import java.util.List;
 public interface OrderDetailService {
     /**
      * 获取单个课程订单
-     * @param CourseId 课程id
-     * @param  state 订单状态
+     * @param courseId 课程id
      * @return 订单
      */
-    OrderDetail getByCourseId(Integer CourseId,Integer state);
+    @SuppressWarnings("unused")
+    OrderDetail getByCourseId(Integer courseId);
 
     /**
      * 获取单个活动订单
-     * @param ActivityId 活动id
-     * @param  state 订单状态
+     * @param activityId 活动id
      * @return 订单
      */
-    OrderDetail getByActivityId(Integer ActivityId,Integer state);
+    @SuppressWarnings("unused")
+    OrderDetail getByActivityId(Integer activityId);
 
     /**
      * 获取课程的订单详情
-     * @param CourseId 课程id
-     * @param  state 订单状态
+     * @param courseId 课程id
      * @return 订单详情
      */
-    List<OrderDetail> getListByCourseId(Integer CourseId,Integer state);
+    List<OrderDetail> getListByCourseId(Integer courseId);
 
     /**
      *  获取活动的订单详情
-     * @param ActivityId 活动id
-     * @param  state 订单状态
+     * @param activityId 活动id
      * @return 订单详情
      */
-    List<OrderDetail> getListByActivityId(Integer ActivityId,Integer state);
+    List<OrderDetail> getListByActivityId(Integer activityId);
 
     /**
      * 获取套餐的订单详情
@@ -55,4 +53,6 @@ public interface OrderDetailService {
      * @return 订单详情
      */
     List<OrderDetail> getListByGroupId(Integer groupId);
+
+
 }

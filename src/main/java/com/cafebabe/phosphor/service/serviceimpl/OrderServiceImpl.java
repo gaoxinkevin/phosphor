@@ -1,11 +1,9 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
-import com.cafebabe.phosphor.dao.ChildDAO;
-import com.cafebabe.phosphor.dao.GroupDAO;
-import com.cafebabe.phosphor.dao.OrderDAO;
-import com.cafebabe.phosphor.dao.ParentDAO;
+import com.cafebabe.phosphor.dao.*;
 import com.cafebabe.phosphor.model.dto.OrderDTO;
 import com.cafebabe.phosphor.model.dto.OrderDetail;
+import com.cafebabe.phosphor.model.entity.Grade;
 import com.cafebabe.phosphor.model.entity.Group;
 import com.cafebabe.phosphor.model.entity.Order;
 import com.cafebabe.phosphor.service.OrderService;
@@ -45,14 +43,16 @@ public class OrderServiceImpl implements OrderService {
     private final ParentDAO parentDAO;
     private final ChildDAO childDAO;
     private final GroupDAO groupDAO;
+    private final GradeDAO gradeDAO;
 
     private static Map<String, Configuration> configurationCache = Maps.newConcurrentMap();
     private  static Map<String,FileTemplateLoader> fileTemplateLoaderCache=Maps.newConcurrentMap();
 
-    private final String UTF_8 = "UTF-8";
+    private static final String UTF_8 = "UTF-8";
 
     @Autowired
-    public OrderServiceImpl(GroupDAO groupDAO, OrderDAO orderDAO, OrderDetailServiceImpl orderDetailService, ParentDAO parentDAO, ChildDAO childDAO) {
+    public OrderServiceImpl(GradeDAO gradeDAO,GroupDAO groupDAO, OrderDAO orderDAO, OrderDetailServiceImpl orderDetailService, ParentDAO parentDAO, ChildDAO childDAO) {
+        this.gradeDAO = gradeDAO;
         this.groupDAO = groupDAO;
         this.orderDAO = orderDAO;
         this.orderDetailService = orderDetailService;
@@ -74,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer updateOrder(Order order) {
-        return orderDAO.updateOrder(order);
+        return orderDAO.updateByPrimaryKeySelective(order);
     }
 
     @Override
@@ -207,10 +207,10 @@ public class OrderServiceImpl implements OrderService {
             orderDTO.setOrderPrice(group.getGroupPrice());
             orderDTO.setOrderSf(groupType);
         }else if(courseType.equals(type)){
-            orderDetails = orderDetailService.getListByCourseId(detailId,1);
+            orderDetails = orderDetailService.getListByCourseId(detailId);
             orderDTO.setOrderSf(courseType);
         }else if(activityType.equals(type)){
-            orderDetails = orderDetailService.getListByActivityId(detailId,1);
+            orderDetails = orderDetailService.getListByActivityId(detailId);
             orderDTO.setOrderSf(activityType);
         }else {
             return null;
@@ -245,11 +245,11 @@ public class OrderServiceImpl implements OrderService {
         }else {
             OrderDTO orderDTO = new OrderDTO();
             if (order.getCourseId()!=null){
-                orderDTO.setDetails(orderDetailService.getListByCourseId(order.getCourseId(),order.getOrderState()));
+                orderDTO.setDetails(orderDetailService.getListByCourseId(order.getCourseId()));
             } else if(order.getGroupId()!=null){
                 orderDTO.setDetails(orderDetailService.getListByGroupId(order.getGroupId()));
             } else if (order.getActivityId()!=null){
-                orderDTO.setDetails(orderDetailService.getListByActivityId(order.getActivityId(),order.getOrderState()));
+                orderDTO.setDetails(orderDetailService.getListByActivityId(order.getActivityId()));
             }
             orderDTO.setOrderId(order.getOrderId());
             orderDTO.setOrderCreateTime(order.getOrderCreateTime());
@@ -266,20 +266,36 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    /**
-     * 生成HTML代码
-     * @return HTML页面代码
-     */
-  public String getHtmlCode(Integer orderId) throws IOException {
+
+    @Override
+    public String getHtmlCode(Integer orderId) {
         String path = this.getClass().getResource("/").toString();
         String templatePath = (path.substring(0, path.lastIndexOf("/class")) + "/pages/templates").substring(5).replace("/", "\\");
-        //String templatePath = "D:\\SourceCode\\JAVA\\JavaEE\\phosphor\\target\\phosphor\\WEB-INF\\pages\\templates";
         String templateName = "orderInfoTemplate.ftl";
         OrderDTO orderDTO = getOrderById(orderId);
         return getContent(templatePath, templateName, orderDTO);
     }
 
-    public String getContent(String templatePath, String templateName, OrderDTO orderDTO) throws IOException {
+    @Override
+    public Integer createCourse(Integer orderId) {
+        String type ="活动";
+        OrderDTO orderDTO = this.getOrderById(orderId);
+        if (type.equals(orderDTO.getDetails().get(0).getType())) {
+            return 0;
+        }
+        for (OrderDetail detail : orderDTO.getDetails()) {
+            gradeDAO.insertSelective(createGrade(detail,orderDTO.getChildId()));
+        }
+        return 1;
+    }
+    private Grade createGrade(OrderDetail orderDetail,Integer child){
+        Grade grade = new Grade();
+        grade.setChildId(child);
+        grade.setCourseId(orderDetail.getId());
+        return grade;
+    }
+
+    private String getContent(String templatePath, String templateName, OrderDTO orderDTO)  {
         try {
             Configuration configuration = getConfiguration(templatePath);
             FileTemplateLoader fileTemplateLoader = new FileTemplateLoader(new File(templatePath));
@@ -288,8 +304,7 @@ public class OrderServiceImpl implements OrderService {
             StringWriter writer = new StringWriter();
             template.process(orderDTO, writer);
             writer.flush();
-            String content = writer.toString();
-            return content;
+            return writer.toString();
         }catch (Exception ex){
             System.out.println(ex.getMessage());
         }
@@ -313,7 +328,7 @@ public class OrderServiceImpl implements OrderService {
             fileTemplateLoader=new FileTemplateLoader(new File(templatePath));
             fileTemplateLoaderCache.put(templatePath,fileTemplateLoader);
         } catch (IOException e) {
-            System.out.println(e.getStackTrace());
+            System.out.println(Arrays.toString(e.getStackTrace()));
         }
         config.setTemplateLoader(fileTemplateLoader);
         configurationCache.put(templatePath,config);

@@ -30,58 +30,56 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
 
     private final CourseDAO courseDAO;
-    private final GroupDAO groupDAO;
     private final ActivityDAO activityDAO;
     private final GroupCourseDAO groupCourseDAO;
     @Autowired
     public OrderDetailServiceImpl(CourseDAO courseDAO, GroupDAO groupDAO, ActivityDAO activityDAO,GroupCourseDAO groupCourseDAO) {
         this.courseDAO = courseDAO;
-        this.groupDAO = groupDAO;
         this.activityDAO = activityDAO;
         this.groupCourseDAO = groupCourseDAO;
     }
 
     @Override
-    public OrderDetail getByCourseId(Integer courseId,Integer state) {
+    public OrderDetail getByCourseId(Integer courseId) {
 
         CourseInfo course = courseDAO.getCourseInfo(courseId);
         if (course == null) {
             return null;
         }
-        return courseToDetail(course,state);
+        return courseToDetail(course);
     }
 
     @Override
-    public OrderDetail getByActivityId(Integer activityId,Integer state) {
+    public OrderDetail getByActivityId(Integer activityId) {
 
         Activity activity = activityDAO.getActivityByID(activityId);
         if (activity == null) {
             return null;
         }
-        return activityToDetail(activity,state);
+        return activityToDetail(activity);
     }
 
     @Override
-    public List<OrderDetail> getListByCourseId(Integer courseId, Integer state) {
+    public List<OrderDetail> getListByCourseId(Integer courseId) {
 
         CourseInfo course = courseDAO.getCourseInfo(courseId);
         if (course == null) {
             return null;
         }
         List<OrderDetail> orderDetails = new ArrayList<>();
-        orderDetails.add(courseToDetail(course,state));
+        orderDetails.add(courseToDetail(course));
         return orderDetails;
     }
 
     @Override
-    public List<OrderDetail> getListByActivityId(Integer activityId, Integer state) {
+    public List<OrderDetail> getListByActivityId(Integer activityId) {
 
         Activity activity = activityDAO.getActivityByID(activityId);
         if (activity == null) {
             return null;
         }
         List<OrderDetail> orderDetails = new ArrayList<>();
-        orderDetails.add(activityToDetail(activity,state));
+        orderDetails.add(activityToDetail(activity));
         return orderDetails;
     }
 
@@ -94,35 +92,37 @@ public class OrderDetailServiceImpl implements OrderDetailService {
             if (course == null) {
                 return null;
             }
-            orderDetails.add(courseToDetail(course,Integer.parseInt(groupCourse.getGroupCourseSf())));
+            orderDetails.add(courseToDetail(course));
         }
         return orderDetails;
     }
 
+
+
+
     /**
      * 课程转化为orderDetail
      * @param course 课程
-     * @param state 状态
      * @return 订单详情
      */
-    private OrderDetail courseToDetail(CourseInfo course,Integer state){
+    private OrderDetail courseToDetail(CourseInfo course){
         return new OrderDetail(course.getCourseId(),
                 course.getCourseName(),
                 course.getCourseDesc(),
-                "/upload/people.jpg",
-                state,
+                course.getCourseSf(),
+                course.getCourseTimeStatus(),
                 course.getCoursePrice(),
                 course.getCompanyName(),
-                10001,
+                course.getCompanyId(),
                 "课程");
     }
 
-    private OrderDetail activityToDetail(Activity activity, Integer state){
+    private OrderDetail activityToDetail(Activity activity){
         return new OrderDetail(activity.getActivityId(),
                 activity.getActivityTitle(),
                 activity.getActivityDesc(),
-                "/upload/people.jpg",
-                state,
+                activity.getActivitySf(),
+                activity.getActivityState(),
                 activity.getActivityPrice(),
                 activity.getCompanyName(),
                 activity.getCompanyId(),

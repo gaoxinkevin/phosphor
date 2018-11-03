@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * group_course
- * @author 
+ * @author thethingyk@gmail.com
  */
 
 @Getter

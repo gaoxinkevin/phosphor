@@ -28,18 +28,18 @@ import java.io.IOException;
 public class GroupUi {
 
     @RequestMapping("groupListUi")
-    public void GroupList(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse)throws IOException,ServletException {
+    public void groupList(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)throws IOException,ServletException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/group/groupList.html").forward(httpServletRequest,httpServletResponse);
     }
 
     @RequestMapping("groupUi/{groupId}")
-    public void Group(@PathVariable Integer groupId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)throws IOException,ServletException {
+    public void getGroupUi(@PathVariable Integer groupId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)throws IOException,ServletException {
         httpServletRequest.getSession().setAttribute("groupId",groupId);
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/group/group.html").forward(httpServletRequest,httpServletResponse);
     }
 
     @RequestMapping("groupDiyUi")
-    public void GroupDiy(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse)throws IOException,ServletException {
+    public void getGroupDiy(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse)throws IOException,ServletException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/group/groupDiy.html").forward(httpServletRequest,httpServletResponse);
     }
 

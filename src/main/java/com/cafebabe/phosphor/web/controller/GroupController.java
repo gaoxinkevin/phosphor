@@ -94,7 +94,7 @@ public class GroupController {
                 if(conflictCourseInfo.getCourseId().equals(course.getCourseId())){
                     return new JsonResponse(40100,"不能重复添加课程","");
                 }else {
-                    return new JsonResponse(40200,"该课程和已选课程《"+conflictCourseInfo.getCourseName()+"》有时间冲突,只能选择其中一个","");
+                    return new JsonResponse(40200,"该课和已选课程《"+conflictCourseInfo.getCourseName()+"》有时间冲突","");
                 }
             }
         }

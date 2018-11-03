@@ -5,8 +5,17 @@ import com.cafebabe.phosphor.model.entity.Company;
 import java.util.List;
 
 /**
- * CompanyDAO继承基类
- */
+ *
+ * @author thethingyk@gmail.com
+ * 
+ * class_name: CompanyDAO
+ * 
+ * create_date: 18-11-3
+ *
+ * create_time: 上午11:19
+ *
+ * description: 公司相关信息实体类
+ **/
 public interface CompanyDAO extends MyBatisBaseDao<Company, Integer> {
     /**
      * 获取所有的的公司信息
@@ -16,16 +25,19 @@ public interface CompanyDAO extends MyBatisBaseDao<Company, Integer> {
 
     /**
      * 添加公司
+     * @param company 公司实体类
      * @return 0=>false | 1=>true
      */
     Integer insertCompany(Company company);
     /**
      * 修改公司
+     * @param company 公司实体类
      * @return 0=>false | 1=>true
      */
     Integer updateCompany(Company company);
     /**
      * 删除公司
+     * @param id 公司编号
      * @return 0=>false | 1=>true
      */
     Integer removeCompany(Integer id);
