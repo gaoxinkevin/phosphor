@@ -230,6 +230,15 @@
         window.localStorage.clear();
         window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
     }
+
+    loading = (id) => {
+        const btn = document.getElementById(id);
+        btn.style.background = "url('/images/loading/loading2.gif')";
+        btn.style.backgroundRepeat ="no-repeat";
+        btn.style.backgroundPosition = "center";
+        btn.setAttribute("onclick","#");
+    }
+
 </script>
 
 <div id="wrapper">
@@ -368,7 +377,7 @@
                                     <tr>
                                         <th>&nbsp;</th>
                                         <td>
-                                            <button id="changeBtn" onclick="returnToAllChild()" class="pn pnc" style="margin-top: 5px">
+                                            <button id="changeBtn" onclick="returnToAllChild(),loading('changeBtn')" class="pn pnc" style="margin-top: 5px">
                                                 <strong>确定</strong>
                                             </button>
                                         </td>

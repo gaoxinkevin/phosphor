@@ -59,6 +59,13 @@
             color: #004974;
             text-decoration: none;
         }
+        .btn-primary:focus {
+            border-color: #01bacf;
+        }
+        .btn-primary:hover{
+            box-shadow: none;
+            background-color: #01bacf;
+        }
     </style>
 </head>
 
@@ -208,6 +215,15 @@
         window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
     }
 
+    loading = (id) => {
+        const btn = document.getElementById(id);
+        btn.style.background = "url('/images/loading/loading2.gif')";
+        btn.style.backgroundRepeat ="no-repeat";
+        btn.style.backgroundPosition = "center";
+        btn.setAttribute("onclick","#");
+    }
+
+
 </script>
 <div id="wrapper">
 
@@ -355,7 +371,7 @@
                                         <td>
 
                                             <button id="cancelAvatarBtn2" class="btn-sm btn-primary"
-                                                    onclick="submitForm()">
+                                                    onclick="submitForm(),loading('cancelAvatarBtn2')">
                                                 确认更改
                                             </button>
                                             <button id="cancelAvatarBtn" class="btn-sm btn-primary"

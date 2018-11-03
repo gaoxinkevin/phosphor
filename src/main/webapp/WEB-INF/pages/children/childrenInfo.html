@@ -170,6 +170,7 @@
                 a.style.padding = "10px";
                 a.className = "btn-sm btn-primary";
                 a.setAttribute("href", "/childrenUi/singleChildInfo/"+res.data[item].childId);
+                a.setAttribute("onclick","loading('a"+res.data[item].childId+"')");
 
                 aUpdate.type = "button";
                 aUpdate.id  = "aUpdate"+res.data[item].childId;
@@ -178,6 +179,7 @@
                 aUpdate.style.padding = "10px";
                 aUpdate.className = "btn-sm btn-warning ";
                 aUpdate.setAttribute("href", "javascript:void(0);");
+                aUpdate.setAttribute("onclick","loading('aUpdate"+res.data[item].childId+"')");
 
                 aDelete.type = "button";
                 aDelete.id = "aBtn"+ res.data[item].childId;
@@ -188,6 +190,7 @@
                 aDelete.style.cursor = "pointer";
                 aDelete.className = "btn-sm btn-danger";
                 aDelete.setAttribute("href", "javascript:void(0);");
+                aDelete.setAttribute("onclick","loading('aBtn"+res.data[item].childId+"')");
 
                 spanName.innerText = "孩子姓名：";
                 spanSex.innerText = "孩子性别：";
@@ -621,6 +624,16 @@
         window.location.href  = "http://localhost:1250/childrenUi/infoUi";
     }
 
+    loading = (id) => {
+        const btn = document.getElementById(id);
+        btn.style.background = "url('/images/loading/loading2.gif')";
+        btn.style.backgroundRepeat ="no-repeat";
+        btn.style.backgroundPosition = "center";
+        btn.setAttribute("onclick","#");
+        btn.setAttribute("href","#");
+    }
+
+
 </script>
 <div id="wrapper">
 
@@ -768,7 +781,7 @@
                                 <tr>
                                     <th>&nbsp;</th>
                                     <td colspan="2">
-                                        <button id="profilesubmitbtn" class="pn pnc" onclick="insertChild()">
+                                        <button id="profilesubmitbtn" class="pn pnc" onclick="insertChild(),loading('profilesubmitbtn')">
                                             <strong>保存</strong>
                                         </button>
                                         <button id="profilesubmitbtn2" class="pn pnc" onclick="cancelInsert()">
