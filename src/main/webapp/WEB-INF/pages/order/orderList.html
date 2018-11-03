@@ -32,7 +32,6 @@
     <link rel="stylesheet" href="/css/styleGroup.css">
     <link rel="stylesheet" href="/css/styleLogin.css">
     <script src="/js/login.js"></script>
-    <script src="/js/parent.js"></script>
     <script src="/js/order.js"></script>
 </head>
 
@@ -53,6 +52,39 @@
     }).catch(error => {
         console.log(error);
     });
+
+
+    const getParentImg = (url) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open("POST", url);
+            client.responseType = 'json';
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send();
+        });
+    };
+
+    const JsonResponseList = () => getParentImg("http://localhost:1250/parent/parentAllInfo");
+    JsonResponseList().then((res) => {
+        const imgSrc = document.getElementById("avatarImg");
+        const imgSrc1 = document.getElementById("avatarImg2");
+        const parentName2 = document.getElementById("aName");
+        imgSrc.src = res.data.parentPhoto;
+        imgSrc1.src = res.data.parentPhoto;
+        parentName2.innerText = res.data.parentName;
+
+    }).catch(error => {
+        console.log(error);
+    });
+
 </script>
 <div id="wrapper">
 
@@ -179,7 +211,7 @@
                                 </li>
 
                                 <li class="a">
-                                    <a href="#">个人资料</a>
+                                    <a href="/parentUi/parentSettingsUi">个人资料</a>
                                 </li>
 
                                 <li>
@@ -192,18 +224,6 @@
 
                                 <li>
                                     <a href="/orderUi/orderListUi">订单查询</a>
-                                </li>
-
-                                <li>
-                                    <a href="#">课程查询</a>
-                                </li>
-
-                                <li>
-                                    <a href="#">活动查询</a>
-                                </li>
-
-                                <li>
-                                    <a href="#">帐号绑定</a>
                                 </li>
                             </ul>
 
