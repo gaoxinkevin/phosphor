@@ -29,4 +29,9 @@ public class ContactUi {
     public void returnMapUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/map/map.html").forward(httpServletRequest, httpServletResponse);
     }
+    @RequestMapping("alreadyLoginContactUsUi")
+    public void alreadyLoginContactUsUi(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/contactUs/alreadyLoginContactUs.html").forward(httpServletRequest, httpServletResponse);
+    }
+
 }

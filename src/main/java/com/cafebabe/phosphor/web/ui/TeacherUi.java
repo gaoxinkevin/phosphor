@@ -54,4 +54,32 @@ public class TeacherUi {
         httpServletResponse.addCookie(new Cookie("teacherId", teacherId.toString()));
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/teacher/teacherInformation.html").forward(httpServletRequest, httpServletResponse);
     }
+
+    /**
+     * 跳转到教师列表页
+     *
+     * @param httpServletRequest  httpRequest
+     * @param httpServletResponse httpResponse
+     * @throws ServletException Servlet异常
+     * @throws IOException      IO异常
+     */
+    @RequestMapping("teacherAlready")
+    public void teacherAlready(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/teacher/teacherAlready.html").forward(httpServletRequest, httpServletResponse);
+    }
+
+    /**
+     * 根据教师ID跳转到指定教师详情页
+     *
+     * @param teacherId           教师ID
+     * @param httpServletRequest  httpRequest
+     * @param httpServletResponse httpResponse
+     * @throws ServletException Servlet异常
+     * @throws IOException      IO异常
+     */
+    @RequestMapping("teacherInformationAlready/{teacherId}")
+    public void teacherInformationAlready(@PathVariable Integer teacherId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletResponse.addCookie(new Cookie("teacherId", teacherId.toString()));
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/teacher/teacherInformationAlready.html").forward(httpServletRequest, httpServletResponse);
+    }
 }

@@ -30,4 +30,14 @@ public class ActivityUi {
     public void returnActivityDetail(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/activity/activityDetail.html").forward(httpServletRequest, httpServletResponse);
     }
+
+    @RequestMapping("alreadyLoginActivityListUi")
+    public void alreadyLoginActivityList(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/activity/alreadyLoginActivityList.html").forward(httpServletRequest, httpServletResponse);
+    }
+
+    @RequestMapping("alreadyLoginActivityDetailUi")
+    public void alreadyLoginActivityDetail(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/activity/alreadyLoginActivityDetail.html").forward(httpServletRequest, httpServletResponse);
+    }
 }

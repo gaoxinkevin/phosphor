@@ -40,4 +40,16 @@ public class CourseUi {
         httpServletResponse.addCookie(new Cookie("courseId",courseId.toString()));
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/course/courseInfo.html").forward(httpServletRequest,httpServletResponse);
     }
+
+    @RequestMapping("loginCourseListUi")
+    public void loginCourseList(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/course/loginCourseList.html").forward(httpServletRequest,httpServletResponse);
+    }
+
+
+    @RequestMapping("loginCourseInfoUi/{courseId}")
+    public void loginCourseInfo(@PathVariable Integer courseId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletResponse.addCookie(new Cookie("courseId",courseId.toString()));
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/course/loginCourseInfo.html").forward(httpServletRequest,httpServletResponse);
+    }
 }
