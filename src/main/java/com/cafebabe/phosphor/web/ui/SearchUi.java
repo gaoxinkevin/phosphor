@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,19 +36,8 @@ public class SearchUi{
 
     }
 
-    @RequestMapping("searchTeacher/{teacherName}")
-    public void searchTeacher(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable String teacherName) throws ServletException, IOException {
-        System.out.println(teacherName);
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/search/searchTeacher.html?teacherName="+teacherName).forward(httpServletRequest,httpServletResponse);
-    }
-
-    @RequestMapping("searchCourse/{courseName}")
-    public void searchCourse(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable String courseName) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/search/searchCourse.html?courseName="+courseName).forward(httpServletRequest,httpServletResponse);
-    }
-
-    @RequestMapping("searchActivity/{activityName}")
-    public void searchActivity(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable String activityName) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/search/searchActivity.html?activityName="+activityName).forward(httpServletRequest,httpServletResponse);
+    @RequestMapping("alreadySearch")
+    public void alreadySearch(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws ServletException, IOException {
+     httpServletRequest.getRequestDispatcher("/WEB-INF/pages/search/alreadySearch.html").forward(httpServletRequest,httpServletResponse);
     }
 }

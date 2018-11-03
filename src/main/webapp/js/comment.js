@@ -22,3 +22,5 @@ $(".stat-timer").each(function() {
     $(this).html('0');
     count($(this));
 });
+
+
