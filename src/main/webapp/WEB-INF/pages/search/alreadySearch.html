@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Site Meta -->
+    <title>查询信息</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+    <!-- Custom & Default Styles -->
+
+    <script src="/js/login.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/styleDgtle.css">
+    <link rel="stylesheet" href="/css/styleLogin.css">
+    <link rel="stylesheet" href="/css/alreadyLogin.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
+            background-color:#82B43F;
+            border-color: #82B43F;
+        }
+        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+            background: #82B43F;
+            color: #ffffff !important;
+        }
+        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+            background: #82B43F none repeat scroll 0 0 !important;
+
+        }
+        .form-control{
+            height: 48px;
+        }
+        .dropdown-menu{
+            z-index: 0;
+            min-width:121px;
+        }
+        .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-8, .col-md-2, .col-md-3, .col-md-4,.col-md-8{
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        #infoTeacher,#infoTeacher2,#infoTeacher3{
+            padding: 20px 30px;
+        }
+        #searchBtn:hover{
+            box-shadow: none;
+            border-color: #01bacf;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+
+
+    searchSingle=()=>{
+        const inputInfo = document.getElementById("inputInfo").value;
+        if (inputInfo === ""){
+            const dialog = document.getElementById("dialog");
+            const vModal = document.getElementById("v-modal");
+            const elButton = document.getElementById("el-button");
+            const cancelButton = document.getElementById("cancel-button");
+            const dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+            dialogPInnerHtml.innerText = "查询输入不能为空";
+            dialogPInnerHtml.style.fontSize= "15px";
+            dialog.style.display = "block";
+            vModal.style.display = "block";
+            elButton.setAttribute("href","/searchUi/search");
+            cancelButton.setAttribute("href","/indexUi/returnIndexPage");
+            elButton.innerText = "重新查询";
+            cancelButton.innerText  = "返回首页";
+        } else {
+            const clientMethod = 'POST';
+            const clientUrl = "http://localhost:1250/searchInfo/searchTeacherInfo";
+            let teacher = {
+                teacherName: inputInfo,
+                pageNumber:0
+            };
+            //AjaxBegin
+            const updateParent = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const resultList = (data) => updateParent(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+            resultList(JSON.stringify(teacher)).then((res) => {
+                console.log(res);
+                const noResult = document.getElementById("noResult");
+                if (res.data.length === 0){
+                    noResult.style.display = "block";
+                }else {
+                    noResult.style.display = "none";
+                    const containerDiv=document.getElementById("containerDiv");
+                    containerDiv.innerHTML = "";
+                    for (let item in res.data){
+                        let divLeft1 = document.createElement("div");
+                        divLeft1.classList.add("col-md-3");
+                        const resultDiv = document.createElement("div");
+                        containerDiv.classList.add("row", "blog-grid", "shop-grid");
+                        let divLeft2 = document.createElement("div");
+                        divLeft2.classList.add("course-box", "shop-wrapper");
+                        let divLeft3 = document.createElement("div");
+                        // divLeft3.classList.add("image-wrap", "entry");
+                        let img = document.createElement("img");
+                        img.classList.add("img-responsive");
+                        img.setAttribute("src", res.data[item].teacherPhoto);
+                        img.setAttribute("style","width:188.5px;height:188.5px;margin-top:28px;float:left;border-radius: 6px;")
+                        img.setAttribute("alt", "");
+                        containerDiv.appendChild(divLeft1);
+                        divLeft1.appendChild(divLeft2);
+                        divLeft2.appendChild(divLeft3);
+                        divLeft3.appendChild(img);
+
+                        let divRight1 = document.createElement("div");
+                        divRight1.classList.add("customizeDiv");
+                        let divRight2 = document.createElement("div");
+                        divRight2.classList.add("course-details", "shop-box", "customizeFont");
+                        let divRightSpan1 = document.createElement("span");
+                        divRightSpan1.innerText = "教师姓名：" + res.data[item].teacherName;
+                        let divRightSpan2 = document.createElement("span");
+                        divRightSpan2.innerText = "教师电话：" + res.data[item].teachePhone;
+                        let divRightSpan3 = document.createElement("span");
+                        divRightSpan3.innerText = "教师邮箱：" + res.data[item].teacherMail;
+                        let divRightSpan4 = document.createElement("span");
+                        if (res.data[item].teacherDesc == null || res.data[item].teacherDesc == "") {
+                            divRightSpan4.innerText = "教师简介：";
+                        } else {
+                            divRightSpan4.innerText = "教师简介：" + res.data[item].teacherDesc.slice(0, 30) + "...";
+                        }
+                        let divRightA = document.createElement("a");
+
+                        divRightA.setAttribute("href", "http://localhost:1250/teacherUi/getTeacherInformation/" + res.data[item].id);
+                        divRightA.innerText = "查看详情";
+                        divRightA.classList.add("customizeA");
+                        divRight1.appendChild(divRight2);
+                        resultDiv.appendChild(divRightSpan1);
+                        resultDiv.appendChild(document.createElement("br"));
+                        resultDiv.appendChild(divRightSpan2);
+                        resultDiv.appendChild(document.createElement("br"));
+                        resultDiv.appendChild(divRightSpan3);
+                        resultDiv.appendChild(document.createElement("br"));
+                        resultDiv.appendChild(divRightSpan4);
+                        resultDiv.appendChild(document.createElement("br"));
+                        resultDiv.appendChild(document.createElement("br"));
+                        resultDiv.appendChild(divRightA);
+                        resultDiv.style.height = "222px";
+                        resultDiv.style.cssFloat = "left";
+                        resultDiv.style.marginTop = "35px";
+                        resultDiv.style.marginLeft = "20px";
+                        resultDiv.style.fontSize= "15px";
+                        resultDiv.padding = "10px";
+                        resultDiv.style.width="400px";
+                        containerDiv.appendChild(resultDiv);
+                    }
+
+
+
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+
+    };
+
+
+    createPagination=()=>{
+        const inputInfo = document.getElementById("inputInfo").value;
+        if (inputInfo === ""){
+            const dialog = document.getElementById("dialog");
+            const vModal = document.getElementById("v-modal");
+            const elButton = document.getElementById("el-button");
+            const cancelButton = document.getElementById("cancel-button");
+            const dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+            dialogPInnerHtml.innerText = "查询输入不能为空";
+            dialogPInnerHtml.style.fontSize= "15px";
+            dialog.style.display = "block";
+            vModal.style.display = "block";
+            elButton.setAttribute("href","/searchUi/search");
+            cancelButton.setAttribute("href","/indexUi/returnIndexPage");
+            elButton.innerText = "重新查询";
+            cancelButton.innerText  = "返回首页";
+        }else {
+            const clientMethod = 'POST';
+            const clientUrl = "http://localhost:1250/searchInfo/searchNumber";
+            let teacher = {
+                teacherName: inputInfo
+            };
+            const getPageNumber = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const resultListNumber = (data) => getPageNumber(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+            resultListNumber(JSON.stringify(teacher)).then((res) => {
+                /**
+                 *   <li class="active">
+                 <a href="#">1
+                 <span class="sr-only">(current)</span>
+                 </a>
+                 </li>
+                 */
+                const ul = document.getElementById("pageUrl");
+
+                console.log(res.data);
+                console.log(res);
+                if (res.data === 0){
+                    ul.innerHTML = "";
+                    const div= document.getElementById("containerDiv");
+                    div.innerHTML = "";
+                }else {
+                    ul.innerHTML="";
+                    for (let i =0;i<res.data;i++){
+                        const li = document.createElement("li");
+                        const a  = document.createElement("a");
+                        li.onclick = getInfoA;
+                        const span =document.createElement("span");
+                        a.setAttribute("href","javascript:void(0)");
+                        li.id = i;
+                        li.className = "li";
+                        a.innerText  = i+1;
+                        span.innerText="(current)";
+                        span.className="sr-only";
+                        li.appendChild(a);
+                        a.appendChild(span);
+                        ul.appendChild(li);
+                    }
+                }
+
+
+            }).catch(error => {
+                console.log(error);
+            });
+
+        }
+    };
+
+    function getInfoA() {
+        const id = this.id;
+        const liList = document.getElementsByClassName("active");
+        for (let item in liList){
+            liList[item].className="li";
+        }
+        const li = document.getElementById(id);
+        li.className="active";
+        console.log(id);
+        searchAll(id);
+    }
+
+    //查询数据
+    searchAll=(id)=>{
+        const inputInfo = document.getElementById("inputInfo").value;
+        console.log(id);
+        if (inputInfo === ""){
+            const dialog = document.getElementById("dialog");
+            const vModal = document.getElementById("v-modal");
+            const elButton = document.getElementById("el-button");
+            const cancelButton = document.getElementById("cancel-button");
+            const dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
+            dialogPInnerHtml.innerText = "查询输入不能为空";
+            dialogPInnerHtml.style.fontSize= "15px";
+            dialog.style.display = "block";
+            vModal.style.display = "block";
+            elButton.setAttribute("href","/searchUi/search");
+            cancelButton.setAttribute("href","/indexUi/returnIndexPage");
+            elButton.innerText = "重新查询";
+            cancelButton.innerText  = "返回首页";
+        } else {
+            const clientMethod = 'POST';
+            const clientUrl = "http://localhost:1250/searchInfo/searchTeacherInfo";
+            let teacher = {
+                teacherName: inputInfo,
+                pageNumber:id
+            };
+            //AjaxBegin
+            const updateParent = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const resultList = (data) => updateParent(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+            resultList(JSON.stringify(teacher)).then((res) => {
+                console.log(res);
+                const noResult = document.getElementById("noResult");
+                if (res.data.length === 0){
+                    noResult.style.display = "block";
+                }else {
+                    noResult.style.display = "none";
+                    const containerDiv=document.getElementById("containerDiv");
+                    containerDiv.innerHTML = "";
+                    for (let item in res.data){
+                        let divLeft1 = document.createElement("div");
+                        divLeft1.classList.add("col-md-3");
+                        const resultDiv = document.createElement("div");
+                        containerDiv.classList.add("row", "blog-grid", "shop-grid");
+                        let divLeft2 = document.createElement("div");
+                        divLeft2.classList.add("course-box", "shop-wrapper");
+                        let divLeft3 = document.createElement("div");
+                        // divLeft3.classList.add("image-wrap", "entry");
+                        let img = document.createElement("img");
+                        img.classList.add("img-responsive");
+                        img.setAttribute("src", res.data[item].teacherPhoto);
+                        img.setAttribute("style","width:188.5px;height:188.5px;margin-top:28px;float:left;border-radius: 6px;")
+                        img.setAttribute("alt", "");
+                        containerDiv.appendChild(divLeft1);
+                        divLeft1.appendChild(divLeft2);
+                        divLeft2.appendChild(divLeft3);
+                        divLeft3.appendChild(img);
+
+                        let divRight1 = document.createElement("div");
+                        divRight1.classList.add("customizeDiv");
+                        let divRight2 = document.createElement("div");
+                        divRight2.classList.add("course-details", "shop-box", "customizeFont");
+                        let divRightSpan1 = document.createElement("span");
+                        divRightSpan1.innerText = "教师姓名：" + res.data[item].teacherName;
+                        let divRightSpan2 = document.createElement("span");
+                        divRightSpan2.innerText = "教师电话：" + res.data[item].teachePhone;
+                        let divRightSpan3 = document.createElement("span");
+                        divRightSpan3.innerText = "教师邮箱：" + res.data[item].teacherMail;
+                        let divRightSpan4 = document.createElement("span");
+                        if (res.data[item].teacherDesc == null || res.data[item].teacherDesc == "") {
+                            divRightSpan4.innerText = "教师简介：";
+                        } else {
+                            divRightSpan4.innerText = "教师简介：" + res.data[item].teacherDesc.slice(0, 30) + "...";
+                        }
+                        let divRightA = document.createElement("a");
+
+                        divRightA.setAttribute("href", "http://localhost:1250/teacherUi/getTeacherInformation/" + res.data[item].id);
+                        divRightA.innerText = "查看详情";
+                        divRightA.classList.add("customizeA");
+                        divRight1.appendChild(divRight2);
+                        resultDiv.appendChild(divRightSpan1);
+                        resultDiv.appendChild(document.createElement("br"));
+                        resultDiv.appendChild(divRightSpan2);
+                        resultDiv.appendChild(document.createElement("br"));
+                        resultDiv.appendChild(divRightSpan3);
+                        resultDiv.appendChild(document.createElement("br"));
+                        resultDiv.appendChild(divRightSpan4);
+                        resultDiv.appendChild(document.createElement("br"));
+                        resultDiv.appendChild(document.createElement("br"));
+                        resultDiv.appendChild(divRightA);
+                        resultDiv.style.height = "222px";
+                        resultDiv.style.cssFloat = "left";
+                        resultDiv.style.marginTop = "35px";
+                        resultDiv.style.marginLeft = "20px";
+                        resultDiv.style.fontSize= "15px";
+                        resultDiv.padding = "10px";
+                        containerDiv.appendChild(resultDiv);
+                    }
+
+
+
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+
+
+    };
+
+    //生成分页
+
+</script>
+
+<div id="wrapper">
+    <div id="preloader">
+        <img class="preloader" id="imgLoading" src="/images/loader.gif" alt="">
+    </div>
+
+    <header class="header" style="background-color: black">
+        <div class="container" style="background-color: black">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right" id="ul">
+                        <li><a href="/indexUi/returnIndexPage">首页</a></li>
+                        <li><a href="/courseUi/courseListUi">课程</a></li>
+                        <li><a href="/activityUi/returnActivityUi">活动</a></li>
+                        <li><a href="/teacherUi/getTeacherList">指导师</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        style="padding: 6px 12px;margin-top: 7px">
+                                    课程套餐
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li><a href="/groupUi/groupListUi">官方套餐</a></li>
+                                    <li><a href="/groupUi/groupDiyUi">自定义套餐</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="">联系我们</a></li>
+                        <li class="iconitem">
+                            <a href="/searchUi/search">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
+                                    <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
+                                    <li><a href="#">我的关注</a></li>
+                                    <li><a href="#">我的收藏</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+    <div class="container" style="min-height: 1000px;">
+        <!--搜索框-->
+        <div class="col-lg-8 col-md-offset-2" style="margin-top: 90px">
+            <div class="input-group">
+                <input type="text" class="form-control" aria-label="..." id="inputInfo">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle"
+                            style="background-color: #01bacf;border-color: #01bacf;"
+                            data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" id="searchBtn"
+                            onclick="searchSingle(),createPagination()">查询</button>
+                </div><!-- /btn-group -->
+            </div><!-- /input-group -->
+        </div>
+
+
+        <!--搜索结果-->
+        <div class="col-lg-8 col-md-offset-2" style="margin-top: 30px;min-height: 800px" id="divResult">
+            <ul class="nav nav-pills">
+                <li role="presentation" class="active">
+                    <a href="#" id="infoTeacher" style="background-color: #01bacf;">
+                        教师信息
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#" id="infoTeacher2">课程信息</a>
+                </li>
+                <li role="presentation">
+                    <a href="#" id="infoTeacher3">活动信息</a>
+                </li>
+            </ul>
+            <ul class="searchResult">
+                <li>
+                    <div class="left" style="float: left;background-color: #01bacf;width: 25%;height: 3px;margin-top: 3px;">
+                        <img src="" alt="">
+                    </div>
+                    <div class="right"style="float: left;background-color: #01bacf;width: 75%;height: 3px;margin-top: 3px;"></div>
+                </li>
+            </ul>
+            <div id="containerDiv"  style="margin-left: 0">
+
+            </div>
+
+            <div id="pageNumDiv" style="margin-left: 0">
+                <nav aria-label="...">
+                    <ul class="pagination" id="pageUrl">
+
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-lg-8 col-md-offset-2" id="noResult" style="margin: 14px auto;margin-left: 28%;display: none;
+                                                                    font-size: 20px;font-style: oblique;color: #a2a2a2">
+                <span>您查询的数据没有结果，十分抱歉</span>
+            </div>
+        </div>
+
+        <!--搜索没有结果-->
+
+    </div>
+
+    <footer class="section footer noover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                        <div class="newsletter-widget">
+                            <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.
+                            </p>
+                            <form class="form-inline" role="search">
+                                <div class="form-1">
+                                    <input type="text" class="form-control" placeholder="Enter email here..">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <img src="/images/payments.png" alt="" class="img-responsive">
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Join us today</h3>
+                        <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
+                        <a href="#" class="readmore">Became a Teacher</a>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags-widget">
+                            <ul class="list-inline">
+                                <li><a href="#">course</a></li>
+                                <li><a href="#">web design</a></li>
+                                <li><a href="#">development</a></li>
+                                <li><a href="#">language</a></li>
+                                <li><a href="#">teacher</a></li>
+                                <li><a href="#">speaking</a></li>
+                                <li><a href="#">material</a></li>
+                                <li><a href="#">css3</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">learning</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">Support</h3>
+                        <div class="list-widget">
+                            <ul>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Copyrights</a></li>
+                                <li><a href="#">Create a Ticket</a></li>
+                                <li><a href="#">Pricing & Plans</a></li>
+                                <li><a href="#">Carrier</a></li>
+                                <li><a href="#">Trademark</a></li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer><!-- end footer -->
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div><!-- end copy -->
+
+    <div id="dialog">
+        <div class="el-message-box">
+            <div class="el-message-box__content">
+                <div class="el-message-box__status"></div>
+                <div class="el-message-box__message">
+                    <p id="dialogPInnerHtml"></p>
+                </div>
+                <div class="el-message-box__input" style="display: none;">
+                    <div class="el-input">
+                        <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                    </div>
+                    <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+                </div>
+            </div>
+            <div class="el-message-box__btns">
+                <a id="el-button" class="el-button" style="padding: 0.8em 2em"></a>
+                <a id="cancel-button" class="el-button" style="padding: 0.8em 2em"></a>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="v-modal" style="z-index: 9998"></div>
+</div>
+
+
+<script src="/js/light.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/carousel.js"></script>
+<script src="/js/animate.js"></script>
+<script src="/js/parent.js"></script>
+<script src="/js/comment.js"></script>
+
+</body>
+</html>

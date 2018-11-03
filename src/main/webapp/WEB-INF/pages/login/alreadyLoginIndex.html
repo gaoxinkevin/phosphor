@@ -25,34 +25,9 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/alreadyLogin.css">
     <link rel="stylesheet" href="/css/styleLogin.css">
-
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <style>
-        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
-            background-color: #82B43F;
-            border-color: #82B43F;
-        }
-
-        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
-            background: #82B43F;
-            color: #ffffff !important;
-        }
-
-        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
-            background: #82B43F none repeat scroll 0 0 !important;
-
-        }
-    </style>
 </head>
 <body>
-<script>
-
-
-    loginOut = () => {
-        window.localStorage.clear();
-        window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
-    }
-</script>
 
 <!-- LOADER 页面加载时显示的图片-->
 
@@ -107,7 +82,7 @@
                         </li>
                         <li><a href="">联系我们</a></li>
                         <li class="iconitem">
-                            <a href="/searchUi/search">
+                            <a href="/searchUi/alreadySearch">
                                 <i class="fa fa-search"></i>
                             </a>
                         </li>
@@ -746,6 +721,7 @@
             <img id="image" onclick="turnOnOrOff()" style="cursor: pointer;">
         </div>
     </div>
+
     <div id="v-modal" style="z-index: 9998;"></div>
 
 </div>

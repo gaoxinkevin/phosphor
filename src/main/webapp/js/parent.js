@@ -31,7 +31,12 @@ JsonResponseList().then((res) => {
     const imgSrc = document.getElementById("avatarImg");
     imgSrc.src = res.data;
     document.getElementById("preloader").style.display="none";
-    document.getElementById("img").style.display="none";
+    document.getElementById("imgLoading").style.display="none";
 }).catch(error => {
     console.log(error);
 });
+
+loginOut = () => {
+    window.localStorage.clear();
+    window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
+};
