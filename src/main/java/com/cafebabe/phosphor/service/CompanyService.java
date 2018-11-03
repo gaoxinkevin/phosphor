@@ -21,6 +21,7 @@ public interface CompanyService {
      * 获取所有公司信息
      * @return 公司的相关信息的列表
      */
+    @SuppressWarnings("unused")
     List<Company> getCompanyListAll();
 
     /**
@@ -28,6 +29,7 @@ public interface CompanyService {
      * @param company 需要插入公司对象
      * @return 0=>false | 1=>true
      */
+    @SuppressWarnings("unused")
     Integer insertCompany(Company company);
 
     /**
@@ -35,6 +37,7 @@ public interface CompanyService {
      * @param company 需要修改的公司的相关信息()
      * @return 0=>false | 1=>true
      */
+    @SuppressWarnings("unused")
     Integer updateCompany(Company company);
 
     /**
@@ -42,6 +45,7 @@ public interface CompanyService {
      * @param id 公司id
      * @return 0=>false | 1=>true
      */
+    @SuppressWarnings("unused")
     Integer removeCompany(Integer id );
 
     /**
@@ -56,5 +60,6 @@ public interface CompanyService {
      * @param name 公司的模糊名称
      * @return 公司列表
      */
+    @SuppressWarnings("unused")
     List<Company> getCompanyListByName(String name);
 }

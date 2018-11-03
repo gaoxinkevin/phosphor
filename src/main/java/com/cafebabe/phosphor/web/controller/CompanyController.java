@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * create_time: 10:30
  *
- * description:
+ * description:公司数据分发界面
  **/
 
 @Controller

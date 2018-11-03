@@ -13,6 +13,7 @@ public interface GroupDAO extends MyBatisBaseDao<Group, Integer> {
 
     /**
      * 添加套餐
+     * @param group 套餐实体类
      * @return 0=>false | 1=>true
      */
     Integer insertGroup(Group group);
@@ -25,6 +26,7 @@ public interface GroupDAO extends MyBatisBaseDao<Group, Integer> {
 
     /**
      * 修改套餐
+     * @param group 套餐实体类
      * @return 0=>false | 1=>true
      */
     Integer updateGroup(Group group);
@@ -39,12 +41,15 @@ public interface GroupDAO extends MyBatisBaseDao<Group, Integer> {
 
     /**
      * 修改套餐状态
+     * @param groupId 套餐id
+     * @param groupStatus 套餐状态
      * @return 0=>false | 1=>true
      */
     Integer updateGroupStatus(@Param("groupStatus") Integer groupStatus, @Param("groupId") Integer groupId);
 
     /**
      * 删除套餐
+     * @param id 公司编号
      * @return 0=>false | 1=>true
      */
     Integer removeGroup(Integer id);

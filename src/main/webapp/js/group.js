@@ -9,13 +9,21 @@ const groupUrl = clientGroupUrl + '/groupUi/groupUi/';
 const getGroupUrl = clientGroupUrl + '/group/group/';
 const recommendGroupUrl = clientGroupUrl + '/group/groupRecommend';
 
+/**
+ * 判断是否,如果未登录返回首页
+ * @type {string}
+ */
 let a = localStorage.getItem("userLoginPhone");
 if (a === null) {
     localStorage.clear();
     window.location.href =clientGroupUrl+ "/indexUi/returnIndexPage";
 }
 
-
+/**
+ * 生成Course的样式数据
+ * @param course
+ * @return {HTMLElement}
+ */
 function generateCourseDiv(course) {
     let divMedia = document.createElement("div");
     divMedia.classList.add("media");
@@ -70,6 +78,11 @@ function generateCourseDiv(course) {
     return divMedia;
 }
 
+/**
+ * 生成group的数据演样式
+ * @param group
+ * @return {HTMLElement} group样式
+ */
 generateGroupDiv = (group) => {
     let divGrid = document.createElement("div");
     divGrid.classList.add("col-md-4");
@@ -142,8 +155,8 @@ generateGroupDiv = (group) => {
 };
 /**
  * post 方法访问网站
- * @Param url 访问地址
- * @Param method 请求方法
+ * @param url 访问地址
+ * @param method 请求方法
  * @param data 上传数据
  */
 const postJson = ({ url, method, data }) => {
@@ -187,6 +200,10 @@ const getJson = (url) => {
     });
 };
 
+/**
+ * 显示自定义套餐的价格相关信息
+ * @param group
+ */
 setGroupDiy = (group) => {
     let divGroupPrice = document.getElementById("groupPrice");
     let divNumber = document.getElementById("groupCourseNumber");
@@ -201,6 +218,9 @@ setGroupDiy = (group) => {
     divGroupPrice.innerText="￥"+price;
 
 };
+/**
+ * 清空自定义套餐的价格的相关信息
+ */
 setGroupNull = () =>{
     let divGroupPrice = document.getElementById("groupPrice");
     let divNumber = document.getElementById("groupCourseNumber");
@@ -300,6 +320,9 @@ addCourse=(courseId)=>{
     });
 };
 
+/**
+ * 显示自定义套餐的目前课程为空
+ */
 showImg　= () =>{
     let cover = document.getElementById("cover");
     let content = document.getElementById("content");
@@ -309,7 +332,9 @@ showImg　= () =>{
     content.setAttribute("display","block");
 
 };
-
+/**
+ * 关闭显示自定义套餐的目前课程为空
+ */
 closeImg　= () =>{
     let cover = document.getElementById("cover");
     let content = document.getElementById("content");
@@ -363,7 +388,9 @@ getCourse = (course) => {
     otr.appendChild(td4);
     return otr;
 };
-
+/**
+ * 创建自定义套餐
+ */
 addGroup = () => {
     let delSession = () => getJson(addGroupUrl);
     delSession().then(res => {
@@ -376,6 +403,10 @@ addGroup = () => {
         console.log(res);
     });
 };
+/**
+ * 课程超出上限的消息提示
+ * @param message
+ */
 overMax = (message) => {
     document.body.style.overflowX = "hidden";
     document.body.style.overflowY = "hidden";
@@ -393,7 +424,10 @@ overMax = (message) => {
     dialog.style.display="block";
     dialogPInnerHtml.innerText=message;
 };
-
+/**
+ * 课程之间有时间冲突的提示
+ * @param message
+ */
 courseConflict = (message) => {
     document.body.style.overflowX = "hidden";
     document.body.style.overflowY = "hidden";
@@ -411,7 +445,10 @@ courseConflict = (message) => {
     dialog.style.display="block";
     dialogPInnerHtml.innerText=message;
 };
-
+/**
+ * 课程选择低于下限的消息提示
+ * @param message
+ */
 courseLess = (message) => {
     document.body.style.overflowX = "hidden";
     document.body.style.overflowY = "hidden";
@@ -430,7 +467,9 @@ courseLess = (message) => {
     dialogPInnerHtml.innerText=message;
 };
 
-
+/**
+ * 关闭消息提示
+ */
 cancelDialog =() =>{
     document.body.style.overflowX = "visible";
     document.body.style.overflowY = "visible";

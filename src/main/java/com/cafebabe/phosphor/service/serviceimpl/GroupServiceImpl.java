@@ -238,13 +238,16 @@ public class GroupServiceImpl implements GroupService {
      * @param courseInfos 课程列表
      * @return 价格
      */
-    BigDecimal getPrice(List<CourseInfo> courseInfos){
+    private BigDecimal getPrice(List<CourseInfo> courseInfos){
+        int twoCourse;
+        twoCourse = 2;
+        int threeCourse = 3;
         Price price;
         if(courseInfos.size() == 1){
             price= new PriceOneImpl();
-        }else if (courseInfos.size() == 2) {
+        }else if (courseInfos.size() == twoCourse) {
             price= new PriceTwoImpl();
-        }else if(courseInfos.size() == 3){
+        }else if(courseInfos.size() == threeCourse){
             price = new PriceTwoImpl();
         }else{
             price = new PriceTwoImpl();

@@ -278,10 +278,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer createCourse(Integer orderId) {
+        String type ="活动";
         OrderDTO orderDTO = this.getOrderById(orderId);
-        Grade grade = new Grade();
-        gradeDAO.insertSelective(grade);
+        if (type.equals(orderDTO.getDetails().get(0).getType())) {
+            return 0;
+        }
+        for (OrderDetail detail : orderDTO.getDetails()) {
+            gradeDAO.insertSelective(createGrade(detail,orderDTO.getChildId()));
+        }
         return 1;
+    }
+    private Grade createGrade(OrderDetail orderDetail,Integer child){
+        Grade grade = new Grade();
+        grade.setChildId(child);
+        grade.setCourseId(orderDetail.getId());
+        return grade;
     }
 
     private String getContent(String templatePath, String templateName, OrderDTO orderDTO)  {

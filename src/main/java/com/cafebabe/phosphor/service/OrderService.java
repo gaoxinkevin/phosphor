@@ -1,12 +1,24 @@
 package com.cafebabe.phosphor.service;
 
-import com.cafebabe.phosphor.dao.OrderDAO;
 import com.cafebabe.phosphor.model.dto.OrderDTO;
 import com.cafebabe.phosphor.model.entity.Order;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.List;
-
+/**
+ *
+ * @author thethingyk@gmail.com
+ *
+ * class_name: OrderService
+ *
+ * create_date: 18-11-3
+ *
+ * create_time: 上午10:58
+ *
+ * description: 订单处理服务
+ **/
+@Service
 public interface OrderService {
     /**
      * 添加订单
@@ -20,6 +32,7 @@ public interface OrderService {
      * @param order 订单对象
      * @return  0=>false | 1=>true
      */
+    @SuppressWarnings("unused")
     Integer updateOrder(Order order);
 
     /**
@@ -27,6 +40,7 @@ public interface OrderService {
      * @param id 订单编号
      * @return 0=>false | 1=>true
      */
+    @SuppressWarnings("unused")
     Integer removeOrder(Integer id);
     /**
      * 根据订单的id查询信息
@@ -39,18 +53,22 @@ public interface OrderService {
      * 获取所有的订单信息
      * @return group的列表
      */
+    @SuppressWarnings("unused")
     List<OrderDTO> getOrderListAll();
 
     /**
      * 获取所有单个用户的order
+     * @param id 用户编号
      * @return order的列表
      */
     List<OrderDTO> getOrderList(Integer id);
 
     /**
      * 获取所有单个孩子的所有order
+     * @param id 孩子编号
      * @return order的列表
      */
+    @SuppressWarnings("unused")
     List<OrderDTO> getOrderListByChildId(Integer id);
 
     /**
@@ -58,6 +76,7 @@ public interface OrderService {
      * @param parentId 用户编号
      * @return order的列表
      */
+    @SuppressWarnings("unused")
     List<OrderDTO> getCourseOrderList( Integer parentId);
 
     /**
@@ -65,6 +84,7 @@ public interface OrderService {
      * @param parentId 用户编号
      * @return order的列表
      */
+    @SuppressWarnings("unused")
     List<OrderDTO> getGroupOrderList(Integer parentId);
 
     /**
@@ -72,6 +92,7 @@ public interface OrderService {
      * @param parentId 用户编号
      * @return order的列表
      */
+    @SuppressWarnings("unused")
     List<OrderDTO> getActivityOrderList(Integer parentId);
 
     /**
@@ -87,6 +108,7 @@ public interface OrderService {
      * @param orderId   订单ID
      * @return  PDF文件
      */
+    @SuppressWarnings("unused")
     File createOrderPdfFile(Integer orderId);
 
     /**
@@ -94,6 +116,7 @@ public interface OrderService {
      * @param file  暂存至磁盘的pdf文件
      * @return  是否删除成功 0:删除成功 1:删除失败
      */
+    @SuppressWarnings("unused")
     Integer delFile(File file);
 
     /**
@@ -108,5 +131,6 @@ public interface OrderService {
      * @param orderId 订单编号
      * @return 0表示失败,1表示成功
      */
+    @SuppressWarnings("unused")
     Integer createCourse(Integer orderId);
 }

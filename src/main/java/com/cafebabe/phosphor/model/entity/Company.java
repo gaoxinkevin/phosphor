@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * company
- * @author 
+ * @author thethingyk@gmail.com
  */
 @Getter
 @Setter

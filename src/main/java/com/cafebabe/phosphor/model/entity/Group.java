@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * group
- * @author 
+ * @author thethingyk@gmail.com
  */
 @Getter
 @Setter

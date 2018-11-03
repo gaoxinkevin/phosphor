@@ -30,13 +30,11 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
 
     private final CourseDAO courseDAO;
-    private final GroupDAO groupDAO;
     private final ActivityDAO activityDAO;
     private final GroupCourseDAO groupCourseDAO;
     @Autowired
     public OrderDetailServiceImpl(CourseDAO courseDAO, GroupDAO groupDAO, ActivityDAO activityDAO,GroupCourseDAO groupCourseDAO) {
         this.courseDAO = courseDAO;
-        this.groupDAO = groupDAO;
         this.activityDAO = activityDAO;
         this.groupCourseDAO = groupCourseDAO;
     }
