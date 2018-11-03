@@ -102,4 +102,11 @@ public interface OrderService {
      * @return 代码
      */
     String getHtmlCode(Integer orderId);
+
+    /**
+     * 根据订单给孩子添加课程
+     * @param orderId 订单编号
+     * @return 0表示失败,1表示成功
+     */
+    Integer createCourse(Integer orderId);
 }

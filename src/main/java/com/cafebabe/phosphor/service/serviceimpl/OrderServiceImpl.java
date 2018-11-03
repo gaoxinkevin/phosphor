@@ -1,11 +1,9 @@
 package com.cafebabe.phosphor.service.serviceimpl;
 
-import com.cafebabe.phosphor.dao.ChildDAO;
-import com.cafebabe.phosphor.dao.GroupDAO;
-import com.cafebabe.phosphor.dao.OrderDAO;
-import com.cafebabe.phosphor.dao.ParentDAO;
+import com.cafebabe.phosphor.dao.*;
 import com.cafebabe.phosphor.model.dto.OrderDTO;
 import com.cafebabe.phosphor.model.dto.OrderDetail;
+import com.cafebabe.phosphor.model.entity.Grade;
 import com.cafebabe.phosphor.model.entity.Group;
 import com.cafebabe.phosphor.model.entity.Order;
 import com.cafebabe.phosphor.service.OrderService;
@@ -45,6 +43,7 @@ public class OrderServiceImpl implements OrderService {
     private final ParentDAO parentDAO;
     private final ChildDAO childDAO;
     private final GroupDAO groupDAO;
+    private final GradeDAO gradeDAO;
 
     private static Map<String, Configuration> configurationCache = Maps.newConcurrentMap();
     private  static Map<String,FileTemplateLoader> fileTemplateLoaderCache=Maps.newConcurrentMap();
@@ -52,7 +51,8 @@ public class OrderServiceImpl implements OrderService {
     private static final String UTF_8 = "UTF-8";
 
     @Autowired
-    public OrderServiceImpl(GroupDAO groupDAO, OrderDAO orderDAO, OrderDetailServiceImpl orderDetailService, ParentDAO parentDAO, ChildDAO childDAO) {
+    public OrderServiceImpl(GradeDAO gradeDAO,GroupDAO groupDAO, OrderDAO orderDAO, OrderDetailServiceImpl orderDetailService, ParentDAO parentDAO, ChildDAO childDAO) {
+        this.gradeDAO = gradeDAO;
         this.groupDAO = groupDAO;
         this.orderDAO = orderDAO;
         this.orderDetailService = orderDetailService;
@@ -274,6 +274,14 @@ public class OrderServiceImpl implements OrderService {
         String templateName = "orderInfoTemplate.ftl";
         OrderDTO orderDTO = getOrderById(orderId);
         return getContent(templatePath, templateName, orderDTO);
+    }
+
+    @Override
+    public Integer createCourse(Integer orderId) {
+        OrderDTO orderDTO = this.getOrderById(orderId);
+        Grade grade = new Grade();
+        gradeDAO.insertSelective(grade);
+        return 1;
     }
 
     private String getContent(String templatePath, String templateName, OrderDTO orderDTO)  {
