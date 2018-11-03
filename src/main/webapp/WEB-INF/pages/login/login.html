@@ -25,17 +25,26 @@
     <link rel="stylesheet" href="/css/styleLogin.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
-        .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
-            background-color:#82B43F;
+        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
+            background-color: #82B43F;
             border-color: #82B43F;
         }
-        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
             background: #82B43F;
             color: #ffffff !important;
         }
-        .btn-group.open .dropdown-toggle, .bootstrap-select>.dropdown-toggle{
+
+        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
             background: #82B43F none repeat scroll 0 0 !important;
 
+        }
+        .btn-primary:focus {
+            border-color: #01bacf;
+        }
+        .btn-primary:hover{
+            box-shadow: none;
+            background-color: #01bacf;
         }
     </style>
 </head>
@@ -88,8 +97,8 @@
                     });
                     try {
                         localStorage.setItem(key, valueDate);
-                    } catch(e) {
-                        if(isQuotaExceeded(e)) {
+                    } catch (e) {
+                        if (isQuotaExceeded(e)) {
                             console.log("Error: 本地存储超过限制");
                             localStorage.clear();
                         } else {
@@ -97,44 +106,54 @@
                         }
                     }
                 }
+
                 setLocalStorage("userLoginPhone", document.getElementById("tel").value);
                 window.location.href = 'http://localhost:1250/loginUi/alreadyLoginUi';
             } else if (res.message === "用户名或密码不正确，请确认后登录") {
                 document.body.style.overflowX = "hidden";
                 document.body.style.overflowY = "hidden";
                 let dialog = document.getElementById("dialog");
-                let vModal =document.getElementById("v-modal");
+                let vModal = document.getElementById("v-modal");
                 let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
                 let elButton = document.getElementById("el-button");
                 const cancelBtn = document.getElementById("cancel-button");
-                elButton.innerText="重新登录";
+                elButton.innerText = "重新登录";
                 cancelBtn.innerText = "返回主页";
                 elButton.style.padding = "0.8em 2em";
-                cancelBtn.setAttribute("href","/indexUi/returnIndexPage");
-                elButton.setAttribute("href","/loginUi/loginUi");
-                vModal.style.display="block";
-                dialog.style.display="block";
-                dialogPInnerHtml.innerText=res.data;
+                cancelBtn.setAttribute("href", "/indexUi/returnIndexPage");
+                elButton.setAttribute("href", "/loginUi/loginUi");
+                vModal.style.display = "block";
+                dialog.style.display = "block";
+                dialogPInnerHtml.innerText = res.data;
             } else {
                 document.body.style.overflowX = "hidden";
                 document.body.style.overflowY = "hidden";
                 let dialog = document.getElementById("dialog");
-                let vModal =document.getElementById("v-modal");
+                let vModal = document.getElementById("v-modal");
                 let elButton = document.getElementById("el-button");
                 const cancelBtn = document.getElementById("cancel-button");
-                elButton.innerText="前往注册界面";
-                cancelBtn.innerText="关闭标签";
-                cancelBtn.setAttribute("href","/loginUi/loginUi");
-                elButton.setAttribute("href","/loginUi/registrationUi");
+                elButton.innerText = "前往注册界面";
+                cancelBtn.innerText = "关闭标签";
+                cancelBtn.setAttribute("href", "/loginUi/loginUi");
+                elButton.setAttribute("href", "/loginUi/registrationUi");
                 let dialogPInnerHtml = document.getElementById("dialogPInnerHtml");
-                vModal.style.display="block";
-                dialog.style.display="block";
-                dialogPInnerHtml.innerText=res.data;
+                vModal.style.display = "block";
+                dialog.style.display = "block";
+                dialogPInnerHtml.innerText = res.data;
+
             }
         }, err => {
             console.log(err)
         })
     };
+
+    loading = (id) => {
+        const btn = document.getElementById(id);
+        btn.style.background = "url('/images/loading/loading1.gif')";
+        btn.style.backgroundRepeat ="no-repeat";
+        btn.style.backgroundPosition = "center";
+        btn.setAttribute("onclick","#");
+    }
 
     checkOutPhoneNumber = () => {
         const innerValue = document.getElementById('tel').value;
@@ -145,7 +164,7 @@
             if (reg.test(innerValue)) {
                 userLoginA.setAttribute("href", "javascript:void(0); onclick=submitBtn()");
                 bottomLine.style.backgroundColor = "#658db5";
-                userLoginA.style.opacity="1";
+                userLoginA.style.opacity = "1";
             } else {
                 bottomLine.style.backgroundColor = "red";
                 userLoginA.style.opacity = "0.2";
@@ -155,8 +174,8 @@
     };
 
     //注册界面跳转
-    jumpToRegistrationPage=()=>{
-        window.location.href='http://localhost:1250/loginUi/registrationUi';
+    jumpToRegistrationPage = () => {
+        window.location.href = 'http://localhost:1250/loginUi/registrationUi';
     }
 
 </script>
@@ -270,10 +289,10 @@
 
                         <div class="btn-wrapper">
                             <a href="javascript:void(0);" id="userLoginA" class="btn btn-primary"
-                               onclick=submitBtn()>登录</a>
-                            <a href="javascript:void(0);" class="btn btn-primary"
+                               onclick=loading("userLoginA"),submitBtn()>登录</a>
+                            <a href="javascript:void(0);" id="register" class="btn btn-primary"
                                style="margin-left: 10px"
-                               onclick=jumpToRegistrationPage()>注册</a>
+                               onclick=loading("register"),jumpToRegistrationPage()>注册</a>
                         </div>
                         <hr class="invis" style="margin-top: 10px">
 

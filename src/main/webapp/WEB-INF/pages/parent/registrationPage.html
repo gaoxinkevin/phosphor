@@ -25,6 +25,15 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleRegistration.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .btn-primary:focus {
+            border-color: #01bacf;
+        }
+        .btn-primary:hover{
+            box-shadow: none;
+            background-color: #01bacf;
+        }
+    </style>
 </head>
 
 <body>
@@ -218,7 +227,7 @@
         if (firstInput.length > 5 && secondInput.length > 5 && firstInput === secondInput) {
             errorMessage3.style.display = "none";
             errorMessage4.style.display = "none";
-            submitBtn23.setAttribute("href","javascript:void(0);saveParent()")
+            submitBtn23.setAttribute("href","javascript:void(0);saveParent(),loading('submitBtn23')");
         }
         if (firstInput.length < 6) {
             errorMessage3.style.display = "";
@@ -296,6 +305,14 @@
         }).catch(error => {
             console.log(error);
         });
+    }
+
+    loading = (id) => {
+        const btn = document.getElementById(id);
+        btn.style.background = "url('/images/loading/loading1.gif')";
+        btn.style.backgroundRepeat ="no-repeat";
+        btn.style.backgroundPosition = "center";
+        btn.setAttribute("onclick","#");
     }
 </script>
 
