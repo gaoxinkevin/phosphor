@@ -95,7 +95,7 @@
             coursePrice.innerText = data.coursePrice;
             courseDesc.innerText = data.courseDesc;
             companyName.innerText = data.companyName;
-            companyName.setAttribute("href", "http://localhost:1250/companyUi/companyUi" + data.companyId);
+            companyName.setAttribute("href", "http://localhost:1250/companyUi/companyUi/" + data.companyId);
             courseType.innerText = data.typeName;
             courseCount.innerText = data.courseCount;
             courseContent.innerText = data.courseContent;
@@ -106,7 +106,7 @@
             courseAddress.innerText = data.courseAddress;
             courseTeacher.innerText = data.teacherName;
             courseImg.setAttribute("src",data.courseSf);
-            buyCourse.setAttribute("href","http://localhost:1250/orderUi/orderCourseUi" + data.courseId);
+            buyCourse.setAttribute("href","http://localhost:1250/orderUi/orderCourseUi/" + data.courseId);
 
         }).catch(error => {
             console.log(error);
@@ -241,10 +241,6 @@
                     <div class="tagline-message page-title"></div>
                 </div><!-- end col -->
                 <div class="col-md-6 text-right">
-                    <!--<ul class="breadcrumb">-->
-                    <!--<li><a href="javascript:void(0)">启明星</a></li>-->
-                    <!--<li class="active">课程</li>-->
-                    <!--</ul>-->
                 </div>
             </div><!-- end row -->
         </div><!-- end container -->
@@ -269,37 +265,6 @@
 
                         <hr class="invis">
 
-                        <!--<div class="row">-->
-                            <!--<div class="col-md-4 col-sm-4 col-xs-4">-->
-                                <!--<div class="image-wrap entry">-->
-                                    <!--<img src="/upload/single_shop_02.jpg" alt="" class="img-responsive">-->
-                                    <!--<div class="magnifier">-->
-                                        <!--<a rel="prettyPhoto[inline]" href="/upload/single_shop_02.jpg" title=""><i-->
-                                                <!--class="flaticon-add"></i></a>-->
-                                    <!--</div>-->
-                                <!--</div>&lt;!&ndash; end image-wrap &ndash;&gt;-->
-                            <!--</div>-->
-
-                            <!--<div class="col-md-4 col-sm-4 col-xs-4">-->
-                                <!--<div class="image-wrap entry">-->
-                                    <!--<img src="/upload/single_shop_03.jpg" alt="" class="img-responsive">-->
-                                    <!--<div class="magnifier">-->
-                                        <!--<a rel="prettyPhoto[inline]" href="/upload/single_shop_03.jpg" title=""><i-->
-                                                <!--class="flaticon-add"></i></a>-->
-                                    <!--</div>-->
-                                <!--</div>&lt;!&ndash; end image-wrap &ndash;&gt;-->
-                            <!--</div>-->
-
-                            <!--<div class="col-md-4 col-sm-4 col-xs-4">-->
-                                <!--<div class="image-wrap entry">-->
-                                    <!--<img src="/upload/single_shop_04.jpg" alt="" class="img-responsive">-->
-                                    <!--<div class="magnifier">-->
-                                        <!--<a rel="prettyPhoto[inline]" href="/upload/single_shop_04.jpg" title=""><i-->
-                                                <!--class="flaticon-add"></i></a>-->
-                                    <!--</div>-->
-                                <!--</div>&lt;!&ndash; end image-wrap &ndash;&gt;-->
-                            <!--</div>-->
-                        <!--</div>&lt;!&ndash; end row &ndash;&gt;-->
                     </div><!-- end col -->
 
                     <div class="col-md-6">

@@ -709,7 +709,7 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">加入我们</h3>
                         <p>了解更多关于我们的故事，或者加入我们的团队。</p>
-                        <a href="#" class="readmore">向我们发送邮件</a>
+                        <a href="/contactUi/returnContactUi" class="readmore">向我们发送邮件</a>
                     </div><!-- end widget -->
                 </div><!-- end col -->
 
@@ -787,7 +787,7 @@
         div2.style.display = "block";
         let img = document.getElementById("image");
         img.setAttribute("src", "/images/light1.png");
-    }
+    };
     turnOnOrOff = () => {
         let img = document.getElementById("image");
         if (img.getAttribute("src") === "/images/light1.png") {
@@ -795,7 +795,7 @@
         } else if (img.getAttribute("src") === "/images/light0.png") {
             img.setAttribute("src", "/images/light1.png");
         }
-    }
+    };
     closeLight = () => {
         document.body.style.overflowX = "auto";
         document.body.style.overflowY = "auto";

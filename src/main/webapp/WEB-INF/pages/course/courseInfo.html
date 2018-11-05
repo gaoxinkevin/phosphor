@@ -79,7 +79,7 @@
             coursePrice.innerText = data.coursePrice;
             courseDesc.innerText = data.courseDesc;
             companyName.innerText = data.companyName;
-            companyName.setAttribute("href", "http://localhost:1250/companyUi/companyUi" + data.companyId);
+            companyName.setAttribute("href", "http://localhost:1250/companyUi/companyUi/" + data.companyId);
             courseType.innerText = data.typeName;
             courseCount.innerText = data.courseCount;
             courseContent.innerText = data.courseContent;
@@ -90,7 +90,7 @@
             courseAddress.innerText = data.courseAddress;
             courseTeacher.innerText = data.teacherName;
             courseImg.setAttribute("src",data.courseSf);
-            buyCourse.setAttribute("href","http://localhost:1250/orderUi/orderCourseUi" + data.courseId);
+            buyCourse.setAttribute("href","http://localhost:1250/orderUi/orderCourseUi/" + data.courseId);
 
         }).catch(error => {
             console.log(error);
