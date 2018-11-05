@@ -66,6 +66,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     public Integer insertOrder(Order order) {
         if(orderDAO.insertOrder(order)>0){
+            RedisUtil.del("getOrderList"+order.getParentId());
            return orderDAO.getOrderId();
         }else{
             return 0;
