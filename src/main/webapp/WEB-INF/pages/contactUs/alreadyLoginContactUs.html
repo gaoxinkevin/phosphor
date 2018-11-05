@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Site Meta -->
-    <title id="activity-title-sum">总结:</title>
+    <title id="activity-title-sum">联系我们</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -268,7 +268,30 @@
         </div><!-- end container -->
     </div><!-- end copy -->
 </div><!-- end wrapper -->
+<script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.10&key=76a2b3ed7479179360ad3d6bcf730e85"></script>
+<script type="text/javascript">
+    let marker, map = new AMap.Map("mapContainer", {
+        mapStyle:'amap://styles/cac858df5305d4301ad3b3317db816b2',
+        resizeEnable: true,
+        center: [120.734442,31.263581],
+        zoom: 15
+    });
 
+    // 实例化点标记
+    function addMarker() {
+        marker = new AMap.Marker({
+            icon: "/images/poi-marker-default.png",
+            position: [120.735,31.263581],
+            offset: new AMap.Pixel(-13, -30)
+        });
+        marker.setMap(map);
+    }
+
+</script>
+<script type="text/javascript">
+    addMarker();
+</script>
 <!-- jQuery Files -->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>

@@ -49,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
     private  static Map<String,FileTemplateLoader> fileTemplateLoaderCache=Maps.newConcurrentMap();
 
     private static final String UTF_8 = "UTF-8";
+    private static String OS = System.getProperty("os.name").toLowerCase();
 
     @Autowired
     public OrderServiceImpl(GradeDAO gradeDAO,GroupDAO groupDAO, OrderDAO orderDAO, OrderDetailServiceImpl orderDetailService, ParentDAO parentDAO, ChildDAO childDAO) {
@@ -271,6 +272,9 @@ public class OrderServiceImpl implements OrderService {
     public String getHtmlCode(Integer orderId) {
         String path = this.getClass().getResource("/").toString();
         String templatePath = (path.substring(0, path.lastIndexOf("/class")) + "/pages/templates").substring(5).replace("/", "\\");
+        if(OS.indexOf("mac")>=0&&OS.indexOf("os")>0&&OS.indexOf("x")>0){
+            templatePath = templatePath.replace("\\","/");
+        }
         String templateName = "orderInfoTemplate.ftl";
         OrderDTO orderDTO = getOrderById(orderId);
         return getContent(templatePath, templateName, orderDTO);

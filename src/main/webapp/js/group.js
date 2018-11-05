@@ -9,15 +9,6 @@ const groupUrl = clientGroupUrl + '/groupUi/groupUi/';
 const getGroupUrl = clientGroupUrl + '/group/group/';
 const recommendGroupUrl = clientGroupUrl + '/group/groupRecommend';
 
-/**
- * 判断是否,如果未登录返回首页
- * @type {string}
- */
-let a = localStorage.getItem("userLoginPhone");
-if (a === null) {
-    localStorage.clear();
-    window.location.href =clientGroupUrl+ "/indexUi/returnIndexPage";
-}
 
 /**
  * 生成Course的样式数据
