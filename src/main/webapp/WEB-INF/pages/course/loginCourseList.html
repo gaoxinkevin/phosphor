@@ -27,8 +27,11 @@
     <link rel="stylesheet" href="/css/bootstrap-select.min.css">
 
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/alreadyLogin.css">
+    <script src="/js/login.js"></script>
 
     <script src="/js/vendor/respond.min.js"></script>
+
 
     <script src="/js/course.js"></script>
     <style>
@@ -97,9 +100,9 @@
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav navbar-right" id="ul">
                             <li><a href="/indexUi/returnIndexPage">首页</a></li>
-                            <li><a href="/courseUi/courseListUi">课程</a></li>
-                            <li><a href="/activityUi/returnActivityUi">活动</a></li>
-                            <li><a href="/teacherUi/getTeacherList">指导师</a></li>
+                            <li><a href="/courseUi/loginCourseListUi">课程</a></li>
+                            <li><a href="/activityUi/alreadyLoginActivityListUi">活动</a></li>
+                            <li><a href="/teacherUi/teacherAlready">指导师</a></li>
                             <li>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary dropdown-toggle"
@@ -115,9 +118,9 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li><a href="">联系我们</a></li>
+                            <li><a href="/contactUi/alreadyLoginContactUsUi">联系我们</a></li>
                             <li class="iconitem">
-                                <a href="/searchUi/search">
+                                <a href="/searchUi/alreadySearch">
                                     <i class="fa fa-search"></i>
                                 </a>
                             </li>
@@ -128,10 +131,9 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
-                                        <li><a href="#">我的关注</a></li>
-                                        <li><a href="#">我的收藏</a></li>
+                                        <li><a href="/courseCollectionUi/courseCollectionUi">我的收藏</a></li>
                                         <li role="separator" class="divider"></li>
-                                        <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                        <li><a href="javascript:void(0)" onclick=loginOut()>退出</a></li>
                                     </ul>
                                 </div>
                             </li>
@@ -142,7 +144,7 @@
             </div>
         </header>
 
-        <section class="section lb p120">
+        <section class="section lb p120" style="background: black">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
@@ -160,25 +162,29 @@
                     <div class="shop-top">
                         <div class="clearfix">
                             <div class="pull-left">
-                                <p>入驻公司:</p>
-                                <span><em>启明星教育</em></span>&nbsp;
+                                <p>热门分类:</p>
+                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,0)"><em>全部</em></span></a>
+                                <span>|</span>
+                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,10000)"><em>音乐</em></span></a>
                                 <span>/</span>
-                                <span><em>驰星教育</em></span>&nbsp;
+                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,10010)"><em>运动</em></span></a>
                                 <span>/</span>
-                                <span><em>新东方教育</em></span>&nbsp;
+                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,10004)"><em>外语</em></span></a>
                                 <span>/</span>
-                                <span><em>达内教育</em></span>&nbsp;
+                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,10005)"><em>益智</em></span></a>
                                 <span>/</span>
-                                <span><em>中公教育</em></span>
+                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,10006)"><em>表演</em></span></a>
+                                <span>/</span>
+                                <a><span class="typeId" onclick="getCourseListByPageAndType(0,12,null,10009)"><em>文学</em></span></a>
                             </div>
                             <div class="pull-right">
                                 <p>排序方式：</p>
-                            <select class="selectpicker" id="pid" onchange="getValue(this.value)" >
-                                <option>默认</option>
-                                <option id="priceAsc" value="priceAsc">价格升序</option>
-                                <option id="priceDesc" value="priceDesc">价格降序</option>
-                                <option id="courseTime" value="courseTime">课程创建时间</option>
-                            </select>
+                                <select class="selectpicker" id="pid" onchange="getValue(this.value)" >
+                                    <option>默认</option>
+                                    <option id="priceAsc" value="priceAsc">价格升序</option>
+                                    <option id="priceDesc" value="priceDesc">价格降序</option>
+                                    <option id="courseTime" value="courseTime">课程创建时间</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -586,7 +592,7 @@
                         <div class="widget clearfix">
                             <h3 class="widget-title">加入我们</h3>
                             <p>了解更多关于我们的故事，或者加入我们的团队。</p>
-                            <a href="#" class="readmore">向我们发送邮件</a>
+                            <a href="/contactUi/alreadyLoginContactUsUi" class="readmore">向我们发送邮件</a>
                         </div><!-- end widget -->
                     </div><!-- end col -->
 

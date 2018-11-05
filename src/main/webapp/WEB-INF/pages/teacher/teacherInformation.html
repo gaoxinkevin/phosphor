@@ -266,14 +266,6 @@
             const divRightLikeSpan = document.createElement("span");
             divRightLikeSpan.innerText = teacherData.teacherLikeCount;
 
-            // const divRightLikeSpan = document.createElement("span");
-            // divRightLikeSpan.innerText = "点赞数：" + teacherData.teacherLikeCount;
-            // const divRightA = document.createElement("a");
-            // divRightA.setAttribute("href", "javascript:teacherLikeAdd()");
-            // const likeImg = document.createElement("img");
-            // likeImg.setAttribute("src", "/images/teacherLike.png");
-            // likeImg.setAttribute("style", "margin: auto auto 5px 6px;width:18px;height:18px;");
-
             let divRightSpan6 = document.createElement("span");
             if (teacherData.teacherDesc == null || teacherData.teacherDesc == "") {
                 divRightSpan6.innerText = "教师简介：空";
@@ -748,51 +740,25 @@
                 </div>
 
                 <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right" id="ul">
+                    <ul class="nav navbar-nav navbar-right">
                         <li><a href="/indexUi/returnIndexPage">首页</a></li>
                         <li><a href="/courseUi/courseListUi">课程</a></li>
                         <li><a href="/activityUi/returnActivityUi">活动</a></li>
-                        <li><a href="/teacherUi/getTeacherList">指导师</a></li>
-                        <li>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary dropdown-toggle"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                        style="padding: 6px 12px;margin-top: 7px">
-                                    课程套餐
-                                    <span class="caret"></span>
-                                </button>
-
-                                <ul class="dropdown-menu">
-                                    <li><a href="/groupUi/groupListUi">官方套餐</a></li>
-                                    <li><a href="/groupUi/groupDiyUi">自定义套餐</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li><a href="">联系我们</a></li>
-                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
-                                class="fa fa-search"></i></a></li>
-                        <li>
-                            <div class="dropdown">
-                                <a class="dropdown-toggle avatar-img" id="dropdownMenu1" data-toggle="dropdown">
-                                    <img id="avatarImg" src="/images/apple-touch-icon.png" alt="">
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
-                                    <li><a href="#">我的关注</a></li>
-                                    <li><a href="#">我的收藏</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
-                                </ul>
-                            </div>
+                        <li><a href="http://localhost:1250/teacherUi/getTeacherList">指导师</a></li>
+                        <li><a href="/contactUi/returnContactUi">联系我们</a></li>
+                        <li><a href="/loginUi/loginUi">登录|注册</a></li>
+                        <li class="iconitem">
+                            <a href="/searchUi/search">
+                                <i class="fa fa-search"></i>
+                            </a>
                         </li>
                     </ul>
                 </div>
-
             </nav>
         </div>
     </header>
 
-    <section class="section lb p120">
+    <section class="section lb p120" style="background: black">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -825,8 +791,7 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">关于我们</h3>
                         <div class="newsletter-widget" style="width: 350px;">
-                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class" target="_blank">phosphor</a>
-                            </p>
+                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class" target="_blank">phosphor</a></p>
                         </div><!-- end newsletter -->
                     </div><!-- end widget -->
                 </div><!-- end col -->
@@ -835,7 +800,7 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">加入我们</h3>
                         <p>了解更多关于我们的故事，或者加入我们的团队。</p>
-                        <a href="#" class="readmore">向我们发送邮件</a>
+                        <a href="/contactUi/alreadyLoginContactUsUi" class="readmore">向我们发送邮件</a>
                     </div><!-- end widget -->
                 </div><!-- end col -->
 
@@ -860,9 +825,7 @@
                             <ul>
                                 <li>随便写写 看看效果</li>
                                 <li>觉得不错 那就留着</li>
-                                <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a>
-                                    试试效果
-                                </li>
+                                <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a> 试试效果</li>
                                 <li>有了想法 以后再加</li>
                             </ul>
                         </div><!-- end list-widget -->

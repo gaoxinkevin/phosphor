@@ -1,71 +1,213 @@
 <!DOCTYPE html>
-<head>
+<html lang="en">
 
+<head>
     <!-- Basic -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
     <!-- Mobile Meta -->
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
     <!-- Site Meta -->
-    <title>phosphor</title>
+    <title>公司简介</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <!-- Site Icons -->
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
-
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
-
     <!-- Custom & Default Styles -->
     <script src="/js/login.js"></script>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/carousel.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styleLogin.css">
     <link rel="stylesheet" href="/css/alreadyLogin.css">
-    <!--[if lt IE 9]>
-    <script src="/js/vendor/respond.min.js"></script>
-    <![endif]-->
-    <!--载入js-->
-    <script src="/js/activity/activityDetail.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="/js/parent.js"></script>
-
-    <style>
-        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
-            background-color: #82B43F;
-            border-color: #82B43F;
-        }
-
-        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
-            background: #82B43F;
-            color: #ffffff !important;
-        }
-
-        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
-            background: #82B43F none repeat scroll 0 0 !important;
-
-        }
-    </style>
 </head>
-<body>
-<script type="text/javascript">
-    getActivityDetail();
-</script>
-<!-- LOADER -->
-<div id="preloader">
-    <img class="preloader" src="/images/loader.gif" alt="">
-</div><!-- end loader -->
-<!-- END LOADER -->
 
+<body>
+<script>
+
+    const clientUrl = 'http://localhost:1250/company/company';
+    const clientMethod = 'GET';
+    const getJsonCompany = (url) => {
+        return new Promise((resolve, reject) => {
+            const client = new XMLHttpRequest();
+            client.open(clientMethod, url);
+            client.responseType = 'json';
+            client.onreadystatechange = () => {
+                if (client.readyState === 4) {
+                    if (client.status === 200) {
+                        resolve(client.response);
+                    } else {
+                        reject(client.status);
+                    }
+                }
+            };
+            client.send();
+        });
+    };
+
+    const company = () => getJsonCompany(clientUrl);
+
+    let companyId = 0;
+    company().then(({data}) => {
+        const companyName = document.getElementById("companyName");
+        const companyDesc = document.getElementById("companyDesc");
+        const companyCreateTime = document.getElementById("companyCreateTime");
+        const companyPhone = document.getElementById("companyPhone");
+        const companyNum = document.getElementById("companyNum");
+        const companyPhoto = document.getElementById("companyPhoto");
+        const companyAddress = document.getElementById("companyAddress");
+
+        companyName.innerText = data.companyName;
+        companyDesc.innerHTML += data.companyDesc;
+        companyPhoto.src = data.companyPhoto;
+        companyCreateTime.innerText += data.companyCreateTime;
+        companyPhone.innerText += data.companyPhone;
+        companyAddress.innerText += data.companyAddress;
+        companyNum.innerText += data.companyRegistrationId;
+        companyId = data.companyId;
+
+    }).catch(error => {
+        console.log(error);
+    });
+
+    /*动态加载js和css*/
+    const dynamicLoading = {
+        css: function (path) {
+            if (!path || path.length === 0) {
+                throw new Error('argument "path" is required !');
+            }
+            var head = document.getElementsByTagName('head')[0];
+            var link = document.createElement('link');
+            link.href = path;
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            head.appendChild(link);
+        },
+        js: function (path) {
+            if (!path || path.length === 0) {
+                throw new Error('argument "path" is required !');
+            }
+            var head = document.getElementsByTagName('head')[0];
+            var script = document.createElement('script');
+            script.src = path;
+            script.type = 'text/javascript';
+            head.appendChild(script);
+        }
+    }
+
+    addCompanyCollection = () => {
+        let a = localStorage.getItem("userLoginPhone");
+        if (a === null) {
+            prompt(0);
+        } else {
+            let companyCollection = {
+                companyId: companyId,
+                companyCollectionSf: JSON.parse(localStorage.getItem("userLoginPhone")).val,
+            };
+
+            const clientUrl = 'http://localhost:1250/companyCollection/insertCompanyCollection';
+            const clientMethod = 'POST';
+            const getResult = ({url, method, data}) => {
+                return new Promise((resolve, reject) => {
+                    const client = new XMLHttpRequest();
+                    client.open(clientMethod, url);
+                    client.responseType = 'json';
+                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    client.onreadystatechange = () => {
+                        if (client.readyState === 4) {
+                            if (client.status === 200) {
+                                resolve(client.response);
+                            } else {
+                                reject(client.status);
+                            }
+                        }
+                    };
+                    client.send(data);
+                });
+            };
+
+            const result = (data) => getResult(
+                {
+                    url: clientUrl,
+                    method: clientMethod,
+                    data
+                }
+            );
+
+            result(JSON.stringify(companyCollection)).then((res) => {
+                prompt(res.data);
+            });
+        }
+
+    };
+
+    prompt = (type) => {
+        document.body.style.overflowX = "hidden";
+        document.body.style.overflowY = "hidden";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        div1.style.display = "block";
+        div2.style.display = "block";
+        let p = document.getElementById("information");
+        p.innerText = "";
+        if (type == 0) {
+            p.innerText = "您还未登录，请登录后收藏。";
+        } else if (type == 1) {
+            p.innerText = "收藏成功";
+        } else if (type == -1) {
+            p.innerText = "您已收藏，请勿重复收藏。";
+        } else {
+            p.innerText ="收藏失败";
+        }
+    };
+
+    determine = () => {
+        document.body.style.overflowX = "auto";
+        document.body.style.overflowY = "auto";
+        let div1 = document.getElementById("dialog");
+        let div2 = document.getElementById("v-modal");
+        let p = document.getElementById("information");
+        div1.style.display = "none";
+        div2.style.display = "none";
+        p.innerText ="";
+    }
+
+</script>
+<div id="dialog">
+    <div class="el-message-box" style="width: 330px;height: 165px;">
+        <div class="el-message-box__content">
+            <div class="el-message-box__status"></div>
+            <div class="el-message-box__message">
+                <p id="information" style="font-size: 18px;"></p>
+            </div>
+            <div class="el-message-box__input" style="display: none;">
+                <div class="el-input">
+                    <input type="text" placeholder="" autocomplete="off" class="el-input__inner">
+                </div>
+                <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+            </div>
+        </div>
+        <div class="el-message-box__btns">
+            <span style="display: none;" id="collectionId"></span>
+            <a href="javascript:void(0);onclick=determine()" id="el-button" class="btn-primary btn-sm"
+               style="font-size: 18px;">确定</a>
+        </div>
+
+    </div>
+</div>
+<div id="v-modal" style="z-index: 9998;"></div>
 <div id="wrapper">
+
+    <div id="preloader">
+        <img class="preloader" src="/images/loader.gif" alt="">
+    </div>
 
     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
@@ -85,9 +227,7 @@
         </div>
     </div>
 
-    <!-- END # MODAL LOGIN -->
-
-    <header class="header">
+    <header class="header affix" style="background: black">
         <div class="container">
             <nav class="navbar navbar-default yamm">
                 <div class="navbar-header">
@@ -157,7 +297,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tagline-message page-title text-center">
-                        <h3 class="hActivityTitle" >活动标题</h3>
+                        <h3>公司简介</h3>
+                        <ul class="breadcrumb">
+                            <li><a href="">Phosphor</a></li>
+                        </ul>
                     </div>
                 </div><!-- end col -->
             </div><!-- end row -->
@@ -168,139 +311,60 @@
         <div class="container">
             <div class="boxed">
                 <div class="row">
-                    <div class="col-md-8">
-                        <!--活动详情-->
-                        <div class="content blog-list">
+                    <div class="col-md-12">
+                        <div class="content">
                             <div class="blog-wrapper clearfix">
                                 <div class="blog-meta">
-                                    <small><a href="/activityUi/returnActivityUi">所有活动</a></small>
-                                    <h3 class="hActivityTitle"></h3>
+                                    <small><a href="#">公司 & Phosphor</a></small>
+                                    <h3 align="center" id="companyName"></h3>
                                     <ul class="list-inline">
-                                        <li id="beginTime">开始时间&nbsp; </li>
-                                        <li><span>举办方&nbsp;</span><small><a id="aCompany" style="font-family: 'Microsoft JhengHei UI Light'; font-size: medium"></a></small></li>
+                                        <li><a href="#">公司创建时间:</a></li>
+                                        <li id="companyCreateTime"></li>
+                                    </ul>
+                                    <ul class="list-inline">
+                                        <li style="display: block;float: left;"><a href="#">联系方式:</a></li>
+                                        <li id="companyPhone" style="display: block;float: left;">
+                                            <mark>Tel</mark>
+                                        </li>
+                                        <li style="display:block;float: right;margin-right: 15px;margin-bottom: 20px;">
+                                            <a href="javascript:addCompanyCollection()"
+                                               style="font-size: 16px;color: #01bacf">
+                                                添加收藏
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div><!-- end blog-meta -->
 
-                                <div class="blog-media">
-                                    <img src="/upload/blog_01.jpg" id="activityImg" alt="" class="img-responsive img-rounded">
-                                </div><!-- end media -->
 
+                                <div class="blog-media">
+                                    <img src="" alt="" class="img-responsive img-rounded" id="companyPhoto">
+                                </div>
+
+
+                                <div class="blog-desc-big" id="companyDesc">
+
+                                </div><!-- end desc -->
                                 <div class="blog-desc-big">
-                                    <p class="lead">Desc</p>
-                                    <blockquote class="text-center" id="activityContent">
-                                        活动内容
-                                    </blockquote>
+                                    <ul class="list-inline">
+                                        <li><a href="#">公司注册号:</a></li>
+                                        <li id="companyNum"></li>
+                                    </ul>
+                                    <ul class="list-inline">
+                                        <li><a href="#">公司地址:</a></li>
+                                        <li id="companyAddress"></li>
+                                    </ul>
                                     <hr class="invis">
+                                    <div class="tags-widget">
+                                        <ul class="list-inline">
+                                            <li><a href="#">AI课程</a></li>
+                                            <li><a href="#">益智</a></li>
+                                            <li><a href="#">语言</a></li>
+                                        </ul>
+                                    </div><!-- end list-widget -->
                                 </div><!-- end desc -->
                             </div><!-- end blog -->
                         </div><!-- end content -->
-
-
-                        <!--教师信息-->
-                        <div class="authorbox">
-                            <div class="site-publisher clearfix">
-                                <img src="/upload/people_10.jpeg" id="imgTeacher" alt="" class="img-responsive img-circle">
-                                <a href="" title="" id="aToTeacherDetail"><h4><small>about</small> <span id="spTeacherName"></span></h4></a>
-                                <p id="pTeacherDesc">
-                                </p>
-
-                                <div class="authorbox-social">
-                                    <ul class="list-inline" id="teacher-info">
-                                        <li><a href="#"><i class="fa fa-phone" id="iTeacherPhone"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-envelope-o" id="iTeacherMail"></i></a></li>
-                                        <li><a href="#"><i class="fa" id="iWorkTime"></i></a></li>
-                                        <li><a href="#"><i class="fa" id="iTeacherStatus"></i></a></li>
-                                    </ul>
-                                    <div class="tags-widget">
-                                        <ul class="list-inline" id="teacher-courses">
-                                        </ul>
-                                    </div>
-                                    <!-- end list -->
-                                </div><!-- end share -->
-                            </div><!-- end publisher -->
-                        </div><!-- end details -->
-                        <!--报名-->
-                        <script type="text/javascript">
-                            window.setInterval("refreshBtnSignIn()",60000);
-                        </script>
-                        <button class="btn btn-primary" type="submit" id="btnSignIn" onclick=""></button>
-
-                    </div><!-- end col -->
-
-                    <div class="sidebar col-md-4">
-                        <!--放置推荐的活动,最多放置五个-->
-                        <script type="text/javascript">
-                        </script>
-                        <div class="widget clearfix" id="divOtherActivity">
-                            <h3 class="widget-title" id="comTitleOtherActivity"></h3>
-                            <div class="post-widget" id="comOtherActivity">
-                                <div class="media" style="display: none">
-                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>4 days ago</li>
-                                                <li>price</li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
-                                    </div>
-                                </div>
-
-                                <div class="media" style="display: none">
-                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>4 days ago</li>
-                                                <li>price</li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
-                                    </div>
-                                </div>
-
-                                <div class="media" style="display: none">
-                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>4 days ago</li>
-                                                <li>price</li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
-                                    </div>
-                                </div>
-
-                                <div class="media" style="display: none">
-                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>4 days ago</li>
-                                                <li>price</li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
-                                    </div>
-                                </div>
-
-                                <div class="media" style="display: none">
-                                    <img src="/upload/blog_small_01.jpg" alt="" class="img-responsive alignleft img-rounded">
-                                    <div class="media-body">
-                                        <h5 class="mt-0"><a href="blog-single.html">Learning English Like a Pro..</a></h5>
-                                        <div class="blog-meta">
-                                            <ul class="list-inline">
-                                                <li>4 days ago</li>
-                                                <li>price</li>
-                                            </ul>
-                                        </div><!-- end blog-meta -->
-                                    </div>
-                                </div>
-                            </div><!-- end post-widget -->
-                        </div><!-- end widget -->
-                    </div><!-- end sidebar -->
+                    </div>
                 </div><!-- end row -->
             </div><!-- end boxed -->
         </div><!-- end container -->
@@ -375,16 +439,12 @@
                 </div>
             </div>
         </div><!-- end container -->
-    </div><!-- end copy -->
-
-
-</div><!-- end wrapper -->
-
-<!-- jQuery Files -->
+    </div>
+</div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/animate.js"></script>
 <script src="/js/custom.js"></script>
-
 </body>
+
 </html>

@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleLogin.css">
-    <link rel="stylesheet" href="/css/styleStar.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
         .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
@@ -44,6 +43,8 @@
     <script src="/js/vendor/html5shiv.js"></script>
     <script src="/js/vendor/respond.min.js"></script>
     <script src="/js/courseCommend.js"></script>
+    <link rel="stylesheet" href="/css/alreadyLogin.css">
+    <script src="/js/login.js"></script>
     <script>
         const courseId = document.cookie.split(';')[0].trim();
         const id = courseId.split('=')[1].trim();
@@ -189,9 +190,9 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right" id="ul">
                         <li><a href="/indexUi/returnIndexPage">首页</a></li>
-                        <li><a href="/courseUi/courseListUi">课程</a></li>
-                        <li><a href="/activityUi/returnActivityUi">活动</a></li>
-                        <li><a href="/teacherUi/getTeacherList">指导师</a></li>
+                        <li><a href="/courseUi/loginCourseListUi">课程</a></li>
+                        <li><a href="/activityUi/alreadyLoginActivityListUi">活动</a></li>
+                        <li><a href="/teacherUi/teacherAlready">指导师</a></li>
                         <li>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary dropdown-toggle"
@@ -207,9 +208,9 @@
                                 </ul>
                             </div>
                         </li>
-                        <li><a href="">联系我们</a></li>
+                        <li><a href="/contactUi/alreadyLoginContactUsUi">联系我们</a></li>
                         <li class="iconitem">
-                            <a href="/searchUi/search">
+                            <a href="/searchUi/alreadySearch">
                                 <i class="fa fa-search"></i>
                             </a>
                         </li>
@@ -220,10 +221,9 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
-                                    <li><a href="#">我的关注</a></li>
-                                    <li><a href="#">我的收藏</a></li>
+                                    <li><a href="/courseCollectionUi/courseCollectionUi">我的收藏</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                    <li><a href="javascript:void(0)" onclick=loginOut()>退出</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -234,7 +234,7 @@
         </div>
     </header>
 
-    <section class="section cb">
+    <section class="section cb" style="background: black">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -264,7 +264,6 @@
                         </div><!-- end row -->
 
                         <hr class="invis">
-
                     </div><!-- end col -->
 
                     <div class="col-md-6">
@@ -361,14 +360,7 @@
                                     </div>
 
                                     <hr class="invis">
-                                    <!--<form class="big-contact-form row" role="search">-->
-                                        <!--<div class="col-md-12">-->
-                                            <!--<textarea class="form-control" id="newSuggest" placeholder="您的意见或者建议..."></textarea>-->
-                                        <!--</div>-->
-                                        <!--<div class="col-md-12">-->
-                                            <!--<button type="submit" class="btn btn-primary">提交</button>-->
-                                        <!--</div>-->
-                                    <!--</form>-->
+
                                 </div>
                             </div>
                         </div><!-- end shop-extra -->
@@ -407,7 +399,7 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">加入我们</h3>
                         <p>了解更多关于我们的故事，或者加入我们的团队。</p>
-                        <a href="#" class="readmore">向我们发送邮件</a>
+                        <a href="/contactUi/alreadyLoginContactUsUi" class="readmore">向我们发送邮件</a>
                     </div><!-- end widget -->
                 </div><!-- end col -->
 

@@ -169,25 +169,26 @@
                         <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
                     </div>
                 </div>
-
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="/indexUi/returnIndexPage">首页</a></li>
-                        <li><a href="">课程</a></li>
-                        <li><a href="">活动</a></li>
-                        <li><a href="">指导师</a></li>
-                        <li><a href="">联系我们</a></li>
+                        <li><a href="/courseUi/courseListUi">课程</a></li>
+                        <li><a href="/activityUi/returnActivityUi">活动</a></li>
+                        <li><a href="http://localhost:1250/teacherUi/getTeacherList">指导师</a></li>
+                        <li><a href="/contactUi/returnContactUi">联系我们</a></li>
                         <li><a href="/loginUi/loginUi">登录|注册</a></li>
-                        <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i
-                                class="fa fa-search"></i></a></li>
+                        <li class="iconitem">
+                            <a href="/searchUi/search">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
                     </ul>
                 </div>
-
             </nav>
         </div>
     </header>
 
-    <section class="section cb">
+    <section class="section cb" style="background: black">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -222,37 +223,6 @@
 
                         <hr class="invis">
 
-                        <!--<div class="row">-->
-                            <!--<div class="col-md-4 col-sm-4 col-xs-4">-->
-                                <!--<div class="image-wrap entry">-->
-                                    <!--<img src="/upload/single_shop_02.jpg" alt="" class="img-responsive">-->
-                                    <!--<div class="magnifier">-->
-                                        <!--<a rel="prettyPhoto[inline]" href="/upload/single_shop_02.jpg" title=""><i-->
-                                                <!--class="flaticon-add"></i></a>-->
-                                    <!--</div>-->
-                                <!--</div>&lt;!&ndash; end image-wrap &ndash;&gt;-->
-                            <!--</div>-->
-
-                            <!--<div class="col-md-4 col-sm-4 col-xs-4">-->
-                                <!--<div class="image-wrap entry">-->
-                                    <!--<img src="/upload/single_shop_03.jpg" alt="" class="img-responsive">-->
-                                    <!--<div class="magnifier">-->
-                                        <!--<a rel="prettyPhoto[inline]" href="/upload/single_shop_03.jpg" title=""><i-->
-                                                <!--class="flaticon-add"></i></a>-->
-                                    <!--</div>-->
-                                <!--</div>&lt;!&ndash; end image-wrap &ndash;&gt;-->
-                            <!--</div>-->
-
-                            <!--<div class="col-md-4 col-sm-4 col-xs-4">-->
-                                <!--<div class="image-wrap entry">-->
-                                    <!--<img src="/upload/single_shop_04.jpg" alt="" class="img-responsive">-->
-                                    <!--<div class="magnifier">-->
-                                        <!--<a rel="prettyPhoto[inline]" href="/upload/single_shop_04.jpg" title=""><i-->
-                                                <!--class="flaticon-add"></i></a>-->
-                                    <!--</div>-->
-                                <!--</div>&lt;!&ndash; end image-wrap &ndash;&gt;-->
-                            <!--</div>-->
-                        <!--</div>&lt;!&ndash; end row &ndash;&gt;-->
                     </div><!-- end col -->
 
                     <div class="col-md-6">
@@ -349,14 +319,6 @@
                                     </div>
 
                                     <hr class="invis">
-                                    <!--<form class="big-contact-form row" role="search">-->
-                                        <!--<div class="col-md-12">-->
-                                            <!--<textarea class="form-control" id="newSuggest" placeholder="您的意见或者建议..."></textarea>-->
-                                        <!--</div>-->
-                                        <!--<div class="col-md-12">-->
-                                            <!--<button type="submit" class="btn btn-primary">提交</button>-->
-                                        <!--</div>-->
-                                    <!--</form>-->
                                 </div>
                             </div>
                         </div><!-- end shop-extra -->
@@ -395,7 +357,7 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">加入我们</h3>
                         <p>了解更多关于我们的故事，或者加入我们的团队。</p>
-                        <a href="#" class="readmore">向我们发送邮件</a>
+                        <a href="/contactUi/alreadyLoginContactUsUi" class="readmore">向我们发送邮件</a>
                     </div><!-- end widget -->
                 </div><!-- end col -->
 

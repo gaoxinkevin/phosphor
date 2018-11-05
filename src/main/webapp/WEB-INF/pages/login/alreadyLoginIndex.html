@@ -25,34 +25,9 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/alreadyLogin.css">
     <link rel="stylesheet" href="/css/styleLogin.css">
-
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <style>
-        .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
-            background-color: #82B43F;
-            border-color: #82B43F;
-        }
-
-        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
-            background: #82B43F;
-            color: #ffffff !important;
-        }
-
-        .btn-group.open .dropdown-toggle, .bootstrap-select > .dropdown-toggle {
-            background: #82B43F none repeat scroll 0 0 !important;
-
-        }
-    </style>
 </head>
 <body>
-<script>
-
-
-    loginOut = () => {
-        window.localStorage.clear();
-        window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
-    }
-</script>
 
 <!-- LOADER 页面加载时显示的图片-->
 
@@ -87,9 +62,9 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right" id="ul">
                         <li><a href="/indexUi/returnIndexPage">首页</a></li>
-                        <li><a href="/courseUi/courseListUi">课程</a></li>
-                        <li><a href="/activityUi/returnActivityUi">活动</a></li>
-                        <li><a href="/teacherUi/getTeacherList">指导师</a></li>
+                        <li><a href="/courseUi/loginCourseListUi">课程</a></li>
+                        <li><a href="/activityUi/alreadyLoginActivityListUi">活动</a></li>
+                        <li><a href="/teacherUi/teacherAlready">指导师</a></li>
                         <li>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary dropdown-toggle"
@@ -105,9 +80,9 @@
                                 </ul>
                             </div>
                         </li>
-                        <li><a href="">联系我们</a></li>
+                        <li><a href="/contactUi/alreadyLoginContactUsUi">联系我们</a></li>
                         <li class="iconitem">
-                            <a href="/searchUi/search">
+                            <a href="/searchUi/alreadySearch">
                                 <i class="fa fa-search"></i>
                             </a>
                         </li>
@@ -118,10 +93,9 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="/parentUi/parentSettingsUi">个人设置</a></li>
-                                    <li><a href="#">我的关注</a></li>
-                                    <li><a href="#">我的收藏</a></li>
+                                    <li><a href="/courseCollectionUi/courseCollectionUi">我的收藏</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="javascript:void(0);" onclick=loginOut()>退出</a></li>
+                                    <li><a href="javascript:void(0)" onclick=loginOut()>退出</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -672,8 +646,7 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">关于我们</h3>
                         <div class="newsletter-widget" style="width: 350px;">
-                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class" target="_blank">phosphor</a>
-                            </p>
+                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class" target="_blank">phosphor</a></p>
                         </div><!-- end newsletter -->
                     </div><!-- end widget -->
                 </div><!-- end col -->
@@ -682,7 +655,7 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">加入我们</h3>
                         <p>了解更多关于我们的故事，或者加入我们的团队。</p>
-                        <a href="#" class="readmore">向我们发送邮件</a>
+                        <a href="/contactUi/alreadyLoginContactUsUi" class="readmore">向我们发送邮件</a>
                     </div><!-- end widget -->
                 </div><!-- end col -->
 
@@ -707,9 +680,7 @@
                             <ul>
                                 <li>随便写写 看看效果</li>
                                 <li>觉得不错 那就留着</li>
-                                <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a>
-                                    试试效果
-                                </li>
+                                <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a> 试试效果</li>
                                 <li>有了想法 以后再加</li>
                             </ul>
                         </div><!-- end list-widget -->
@@ -746,6 +717,7 @@
             <img id="image" onclick="turnOnOrOff()" style="cursor: pointer;">
         </div>
     </div>
+
     <div id="v-modal" style="z-index: 9998;"></div>
 
 </div>
