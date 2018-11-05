@@ -181,6 +181,7 @@ public class OrderController {
     public JsonResponse getConfirmOrder(Integer orderId){
         Order order = new Order();
         order.setOrderId(orderId);
+
         order.setOrderState(1);
         if (orderService.updateOrder(order)>0&&orderService.createCourse(orderId)>0){
             return new JsonResponse(20000,"success","");
