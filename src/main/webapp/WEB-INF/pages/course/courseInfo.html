@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleLogin.css">
-    <link rel="stylesheet" href="/css/styleStar.css">
+    <link rel="stylesheet" href="/css/simpleAlert.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <script src="/js/vendor/html5shiv.js"></script>
@@ -120,6 +120,23 @@
             console.log(error);
         });
 
+
+
+        courseCommend = () => {
+            let dblChoseAlert = simpleAlert({
+                "title":"提示",
+                "content":"未登录",
+                "buttons":{
+                    "登录":function () {
+                        window.location.href='http://localhost:1250/loginUi/loginUi';
+                        dblChoseAlert.close();
+                    },
+                    "不登录":function () {
+                        dblChoseAlert.close();
+                    }
+                }
+            })
+        };
 
     </script>
 </head>
@@ -261,7 +278,7 @@
                             <small>价格：￥<span id="coursePrice"></span></small>
                             <p id="courseDesc">这里放课程简介：课程简介，大概两三行</p>
                             <div class="shop-meta">
-                                <a href="" class="btn btn-primary" id="buyNow">立即购买</a>
+                                <a href="" class="btn btn-primary" id="buyNow" onclick="courseCommend()">立即购买</a>
                                 <ul class="list-inline">
                                     <li>公司:
                                         <a href=""><span id="companyName"></span></a>
@@ -276,7 +293,7 @@
                                 </ul>
                             </div><!-- end shop meta -->
                             <div class="shop-meta" id="collection">
-                                <a href="#" class="btn btn-primary">收藏课程</a>
+                                <a href="" class="btn btn-primary" onclick="courseCommend()">收藏课程</a>
                             </div><!-- end shop meta -->
                         </div><!-- end desc -->
                     </div><!-- end col -->
@@ -479,6 +496,7 @@
 <script src="/js/animate.js"></script>
 <script src="/js/jquery.prettyPhoto.js"></script>
 <script src="/js/custom.js"></script>
+<script src="/js/simpleAlert.js"></script>
 
 
 </body>

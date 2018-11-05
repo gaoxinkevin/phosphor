@@ -40,4 +40,6 @@ public class CourseUi {
         httpServletResponse.addCookie(new Cookie("courseId",courseId.toString()));
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/course/courseInfo.html").forward(httpServletRequest,httpServletResponse);
     }
+
+
 }
