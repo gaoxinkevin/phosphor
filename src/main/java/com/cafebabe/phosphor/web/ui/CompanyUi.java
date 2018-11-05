@@ -34,4 +34,12 @@ public class CompanyUi {
         httpServletRequest.getRequestDispatcher("/WEB-INF/pages/company/company.html")
                 .forward(httpServletRequest,httpServletResponse);
     }
+
+    @RequestMapping("loginCompanyUi/{companyId}")
+    public void loginCompanyUi(@PathVariable Integer companyId, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+            throws ServletException, IOException {
+        httpServletRequest.getSession().setAttribute("companyId",companyId);
+        httpServletRequest.getRequestDispatcher("/WEB-INF/pages/company/alreadyLoginCompany.html")
+                .forward(httpServletRequest,httpServletResponse);
+    }
 }
