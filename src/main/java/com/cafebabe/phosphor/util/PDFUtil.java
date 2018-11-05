@@ -60,7 +60,7 @@ public class PDFUtil {
         try {
             FileInputStream fileInputStream = new FileInputStream(PDF_TEMP_PATH + fileName);
             ServletOutputStream outputStream = response.getOutputStream();
-            response.setHeader("content-disposition","attachment;filename=MyPDF.pdf");
+            response.setHeader("content-disposition","attachment;filename=MyOrder.pdf");
             response.setHeader("content-type", "application/pdf");
             //输出
             int len = 1;

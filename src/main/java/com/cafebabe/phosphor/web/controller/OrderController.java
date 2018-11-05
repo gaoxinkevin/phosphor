@@ -170,7 +170,7 @@ public class OrderController {
     public void downloadOrderPDF(Integer orderId, HttpServletResponse httpServletResponse) {
         PDFUtil pdfUtil = new PDFUtil();
         String htmlCode = orderService.getHtmlCode(orderId);
-        String fileName = "MyPDF.pdf";
+        String fileName = "MyOrder.pdf";
         pdfUtil.createPDF(htmlCode, fileName);
         pdfUtil.downLoad(fileName, httpServletResponse);
         pdfUtil.deletePDF(fileName);
