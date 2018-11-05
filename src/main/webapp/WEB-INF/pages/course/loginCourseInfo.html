@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleLogin.css">
+    <link rel="stylesheet" href="/css/simpleAlert.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
         .btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
@@ -138,6 +139,18 @@
         });
 
 
+
+        courseCollection = () => {
+            let dblChoseAlert = simpleAlert({
+                "title":"提示",
+                "content":"收藏成功，请前往个人中心查看",
+                "buttons":{
+                    "确认":function () {
+                        dblChoseAlert.close();
+                    }
+                }
+            })
+        };
     </script>
 </head>
 <body>
@@ -229,7 +242,6 @@
                         </li>
                     </ul>
                 </div>
-
             </nav>
         </div>
     </header>
@@ -287,7 +299,7 @@
                                 </ul>
                             </div><!-- end shop meta -->
                             <div class="shop-meta" id="collection">
-                                <a href="#" class="btn btn-primary">收藏课程</a>
+                                <a href="" class="btn btn-primary" onclick="courseCollection()">收藏课程</a>
                             </div><!-- end shop meta -->
                         </div><!-- end desc -->
                     </div><!-- end col -->
@@ -483,7 +495,7 @@
 <script src="/js/animate.js"></script>
 <script src="/js/jquery.prettyPhoto.js"></script>
 <script src="/js/custom.js"></script>
-
+<script src="/js/simpleAlert.js"></script>
 
 </body>
 </html>

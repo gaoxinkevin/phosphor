@@ -1,6 +1,8 @@
 <!doctype html>
-<!--[if IE 9]> <html class="no-js ie9 fixed-layout" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--> <html class="no-js " lang="en"> <!--<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie9 fixed-layout" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js " lang="en"> <!--<![endif]-->
 <head>
     <!-- Basic -->
     <meta charset="utf-8">
@@ -24,6 +26,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleLogin.css">
     <link rel="stylesheet" href="/css/styleCourse.css">
+    <link rel="stylesheet" href="/css/simpleAlert.css">
     <link rel="stylesheet" href="/css/bootstrap-select.min.css">
 
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -31,52 +34,70 @@
     <script src="/js/vendor/respond.min.js"></script>
 
     <script src="/js/course.js"></script>
+
+    <script>
+        courseBuy = () => {
+            let dblChoseAlert = simpleAlert({
+                "title":"提示",
+                "content":"请确认是否登录",
+                "buttons":{
+                    "登录":function () {
+                        window.location.href='http://localhost:1250/loginUi/loginUi';
+                        dblChoseAlert.close();
+                    },
+                    "不登录":function () {
+                        dblChoseAlert.close();
+                    }
+                }
+            })
+        };
+    </script>
 </head>
 <body onload="getCourseListByPage(0,12)">
-    <!-- LOADER -->
-    <div id="preloader">
-        <img class="preloader" src="/images/loader.gif" alt="">
-    </div><!-- end loader -->
-    <!-- END LOADER -->
+<!-- LOADER -->
+<div id="preloader">
+    <img class="preloader" src="/images/loader.gif" alt="">
+</div><!-- end loader -->
+<!-- END LOADER -->
 
-    <div id="wrapper">
-        <!-- BEGIN # MODAL LOGIN -->
-        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- Begin # DIV Form -->
-                    <div id="div-forms">
-                        <form id="login-form">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span class="flaticon-add" aria-hidden="true"></span>
-                            </button>
-                            <div class="modal-body">
-                                <input class="form-control" type="text" placeholder="What you are looking for?" required>
-                            </div>
-                        </form><!-- End # Login Form -->
-                    </div><!-- End # DIV Form -->
-                </div>
+<div id="wrapper">
+    <!-- BEGIN # MODAL LOGIN -->
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <form id="login-form">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="flaticon-add" aria-hidden="true"></span>
+                        </button>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="What you are looking for?" required>
+                        </div>
+                    </form><!-- End # Login Form -->
+                </div><!-- End # DIV Form -->
             </div>
         </div>
-        <!-- END # MODAL LOGIN -->
+    </div>
+    <!-- END # MODAL LOGIN -->
 
-        <header class="header affix" style="background: black">
-            <div class="container">
-                <nav class="navbar navbar-default yamm">
-                    <div class="navbar-header">
+    <header class="header affix" style="background: black">
+        <div class="container">
+            <nav class="navbar navbar-default yamm">
+                <div class="navbar-header">
 
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                                aria-expanded="false" aria-controls="navbar">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
 
-                        <div class="logo-normal">
-                            <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
-                        </div>
+                    <div class="logo-normal">
+                        <a class="navbar-brand" href="/indexUi/returnIndexPage"><img src="/images/logo.png" alt=""></a>
                     </div>
+                </div>
 
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
@@ -97,12 +118,49 @@
             </div>
         </header>
 
-        <section class="section lb p120" style="background:url('/images/p1.png');background-size: 100% 100%">
-            <div class="container" >
-                <div class="row" >
-                    <div class="col-md-12">
-                        <div class="tagline-message page-title text-center">
-                            <h3 style="height: 20px"></h3>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section lb p120" style="background:url('/images/p1.png');background-size: 100% 100%">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tagline-message page-title text-center">
+                        <h3 style="height: 20px"></h3>
+                    </div>
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section><!-- end section -->
+
+    <section class="section gb nopadtop">
+        <div class="container">
+            <div class="boxed boxedp4">
+                <div class="shop-top">
+                    <div class="clearfix">
+                        <div class="pull-left">
+                            <p>热门分类:</p>
+                            <a><span class="typeId"
+                                     onclick="getCourseListByPageAndType(0,12,null,0)"><em>全部</em></span></a>
+                            <span>|</span>
+                            <a><span class="typeId"
+                                     onclick="getCourseListByPageAndType(0,12,null,10000)"><em>音乐</em></span></a>
+                            <span>/</span>
+                            <a><span class="typeId"
+                                     onclick="getCourseListByPageAndType(0,12,null,10010)"><em>运动</em></span></a>
+                            <span>/</span>
+                            <a><span class="typeId"
+                                     onclick="getCourseListByPageAndType(0,12,null,10004)"><em>外语</em></span></a>
+                            <span>/</span>
+                            <a><span class="typeId"
+                                     onclick="getCourseListByPageAndType(0,12,null,10005)"><em>益智</em></span></a>
+                            <span>/</span>
+                            <a><span class="typeId"
+                                     onclick="getCourseListByPageAndType(0,12,null,10006)"><em>表演</em></span></a>
+                            <span>/</span>
+                            <a><span class="typeId"
+                                     onclick="getCourseListByPageAndType(0,12,null,10009)"><em>文学</em></span></a>
                         </div>
                     </div><!-- end col -->
                 </div><!-- end row -->
@@ -136,408 +194,372 @@
                                 <option id="priceDesc" value="priceDesc">价格降序</option>
                                 <option id="courseTime" value="courseTime">课程创建时间</option>
                             </select>
-                            </div>
                         </div>
                     </div>
-
-                    <div class="row blog-grid shop-grid" id="courseGrid" >
-                        <input type="hidden" id="hidCurrentPageIndex">
-                        <!--课程单元-->
-                        <div class="col-md-3">
-                            <div class="row courseGrid" style="visibility: hidden">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                    </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                            <small><span class="couCompany">公司</span></small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="row courseGrid" style="visibility: hidden">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                    </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                            <small><span class="couCompany">公司</span></small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="row courseGrid" style="visibility: hidden">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                    </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                            <small><span class="couCompany">公司</span></small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="row courseGrid" style="visibility: hidden">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                    </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                            <small><span class="couCompany">公司</span></small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="row courseGrid" style="visibility: hidden">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                    </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                            <small><span class="couCompany">公司</span></small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="row courseGrid" style="visibility: hidden">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                    </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                            <small><span class="couCompany">公司</span></small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="row courseGrid" style="visibility: hidden">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                    </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                            <small><span class="couCompany">公司</span></small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="row courseGrid" style="visibility: hidden">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                    </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                            <small><span class="couCompany">公司</span></small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="row courseGrid" style="visibility: hidden">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                    </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                            <small><span class="couCompany">公司</span></small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="row courseGrid" style="visibility: hidden">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                    </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                            <small><span class="couCompany">公司</span></small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="row courseGrid" style="visibility: hidden">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                    </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                            <small><span class="couCompany">公司</span></small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="row courseGrid" style="visibility: hidden">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
-                                    </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4><a class="courseDetail"><span class="couName">课程名</span></a>
-                                            <small><span class="couCompany">公司</span></small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                <li><a href="#"><i class="fa fa-shopping-basket"></i>立即购买</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">￥<span class="couPrice">价格</span></a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        </div>
-
-                    </div><!-- end row -->
-
-                    <hr class="invis">
-
-                    <div class="row text-center">
-                        <div class="col-md-12">
-                            <input type="hidden" id="currentPageCode">
-                            <input type="hidden" id="totalPages">
-                            <ul class="pagination" id="uPagination">
-                                <!--上一页-->
-                                <li id="perPage">
-                                    <a href="javascript:void(0)" onclick="perPage()">«</a>
-                                </li>
-                                <!--下一页-->
-                                <li id="nextPage">
-                                    <a href="javascript:void(0)" onclick="nextPage()">»</a>
-                                </li>
-                            </ul>
-                        </div><!-- end col -->
-                    </div><!-- end row -->
                 </div>
-            </div><!-- end container -->
-        </section>
 
-        <footer class="section footer noover" style="height: 350px;">
-            <div class="container">
-                <div class="row" style="margin-top: -50px;">
-                    <div class="col-lg-4 col-md-4">
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">关于我们</h3>
-                            <div class="newsletter-widget" style="width: 350px;">
-                                <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class" target="_blank">phosphor</a></p>
-                            </div><!-- end newsletter -->
-                        </div><!-- end widget -->
-                    </div><!-- end col -->
+                <div class="row blog-grid shop-grid" id="courseGrid">
+                    <input type="hidden" id="hidCurrentPageIndex">
+                    <!--课程单元-->
+                    <div class="col-md-3">
+                        <div class="row courseGrid" style="visibility: hidden">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
+                                        <small><span class="couCompany">公司</span></small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><i class="fa fa-shopping-basket" onclick="courseBuy()"></i>立即购买</li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row courseGrid" style="visibility: hidden">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
+                                        <small><span class="couCompany">公司</span></small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href=""><i class="fa fa-shopping-basket" onclick="courseBuy()"></i>立即购买</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row courseGrid" style="visibility: hidden">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
+                                        <small><span class="couCompany">公司</span></small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href=""><i class="fa fa-shopping-basket" onclick="courseBuy()"></i>立即购买</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row courseGrid" style="visibility: hidden">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
+                                        <small><span class="couCompany">公司</span></small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href=""><i class="fa fa-shopping-basket" onclick="courseBuy()"></i>立即购买</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row courseGrid" style="visibility: hidden">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
+                                        <small><span class="couCompany">公司</span></small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href=""><i class="fa fa-shopping-basket" onclick="courseBuy()"></i>立即购买</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row courseGrid" style="visibility: hidden">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
+                                        <small><span class="couCompany">公司</span></small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href=""><i class="fa fa-shopping-basket" onclick="courseBuy()"></i>立即购买</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row courseGrid" style="visibility: hidden">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
+                                        <small><span class="couCompany">公司</span></small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href=""><i class="fa fa-shopping-basket" onclick="courseBuy()"></i>立即购买</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row courseGrid" style="visibility: hidden">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
+                                        <small><span class="couCompany">公司</span></small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href=""><i class="fa fa-shopping-basket" onclick="courseBuy()"></i>立即购买</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row courseGrid" style="visibility: hidden">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
+                                        <small><span class="couCompany">公司</span></small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href=""><i class="fa fa-shopping-basket" onclick="courseBuy()"></i>立即购买</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row courseGrid" style="visibility: hidden">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
+                                        <small><span class="couCompany">公司</span></small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href=""><i class="fa fa-shopping-basket" onclick="courseBuy()"></i>立即购买</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row courseGrid" style="visibility: hidden">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
+                                        <small><span class="couCompany">公司</span></small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href=""><i class="fa fa-shopping-basket" onclick="courseBuy()"></i>立即购买</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row courseGrid" style="visibility: hidden">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="/upload/kidcoding.jpg" alt="" class="img-responsive">
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4><a class="courseDetail"><span class="couName">课程名</span></a>
+                                        <small><span class="couCompany">公司</span></small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            <li><a href=""><i class="fa fa-shopping-basket" onclick="courseBuy()"></i>立即购买</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">￥<span class="couPrice">价格</span></a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    </div>
 
                     <div class="col-lg-3 col-md-3">
                         <div class="widget clearfix">
@@ -547,64 +569,110 @@
                         </div><!-- end widget -->
                     </div><!-- end col -->
 
-                    <div class="col-lg-3 col-md-3">
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">友情链接</h3>
-                            <div class="tags-widget">
-                                <ul class="list-inline">
-                                    <li><a href="https://cn.aliyun.com" target="_blank">阿里云</a></li>
-                                    <li><a href="https://www.qiniu.com" target="_blank">七牛云</a></li>
-                                    <li><a href="http://www.iconfont.cn" target="_blank">阿里图标</a></li>
-                                    <li><a href="https://github.com" target="_blank">GitHub</a></li>
-                                </ul>
-                            </div><!-- end list-widget -->
-                        </div><!-- end widget -->
-                    </div><!-- end col -->
+                <hr class="invis">
 
-                    <div class="col-lg-2 col-md-2">
-                        <div class="widget clearfix">
-                            <h3 class="widget-title">支持</h3>
-                            <div class="list-widget" style="color: #9A9A9A;">
-                                <ul>
-                                    <li>随便写写 看看效果</li>
-                                    <li>觉得不错 那就留着</li>
-                                    <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a> 试试效果</li>
-                                    <li>有了想法 以后再加</li>
-                                </ul>
-                            </div><!-- end list-widget -->
-                        </div><!-- end widget -->
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <input type="hidden" id="currentPageCode">
+                        <input type="hidden" id="totalPages">
+                        <ul class="pagination" id="uPagination">
+                            <!--上一页-->
+                            <li id="perPage">
+                                <a href="javascript:void(0)" onclick="perPage()">«</a>
+                            </li>
+                            <!--下一页-->
+                            <li id="nextPage">
+                                <a href="javascript:void(0)" onclick="nextPage()">»</a>
+                            </li>
+                        </ul>
                     </div><!-- end col -->
                 </div><!-- end row -->
-            </div><!-- end container -->
-        </footer><!-- end footer -->
+            </div>
+        </div><!-- end container -->
+    </section>
 
-        <div class="copyrights">
-            <div class="container">
-                <div class="clearfix">
-                    <div class="pull-left">
-                        <div class="cop-logo">
-                            <a href="#"><img src="/images/logo.png" alt=""></a>
-                        </div>
-                    </div>
+    <footer class="section footer noover" style="height: 350px;">
+        <div class="container">
+            <div class="row" style="margin-top: -50px;">
+                <div class="col-lg-4 col-md-4">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">关于我们</h3>
+                        <div class="newsletter-widget" style="width: 350px;">
+                            <p>想要了解更多内容，欢迎访问我们的GitHub网址：<a href="https://github.com/CAFEBABE-Class" target="_blank">phosphor</a>
+                            </p>
+                        </div><!-- end newsletter -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
 
-                    <div class="pull-right">
-                        <div class="footer-links">
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">加入我们</h3>
+                        <p>了解更多关于我们的故事，或者加入我们的团队。</p>
+                        <a href="#" class="readmore">向我们发送邮件</a>
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">友情链接</h3>
+                        <div class="tags-widget">
                             <ul class="list-inline">
-                                <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                                <li><a href="https://cn.aliyun.com" target="_blank">阿里云</a></li>
+                                <li><a href="https://www.qiniu.com" target="_blank">七牛云</a></li>
+                                <li><a href="http://www.iconfont.cn" target="_blank">阿里图标</a></li>
+                                <li><a href="https://github.com" target="_blank">GitHub</a></li>
                             </ul>
-                        </div>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="widget clearfix">
+                        <h3 class="widget-title">支持</h3>
+                        <div class="list-widget" style="color: #9A9A9A;">
+                            <ul>
+                                <li>随便写写 看看效果</li>
+                                <li>觉得不错 那就留着</li>
+                                <li>来个<a href="javascript:void(0);onclick=lightPoint()" style="color: white;">亮点</a>
+                                    试试效果
+                                </li>
+                                <li>有了想法 以后再加</li>
+                            </ul>
+                        </div><!-- end list-widget -->
+                    </div><!-- end widget -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer><!-- end footer -->
+
+    <div class="copyrights">
+        <div class="container">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <div class="cop-logo">
+                        <a href="#"><img src="/images/logo.png" alt=""></a>
                     </div>
                 </div>
-            </div><!-- end container -->
-        </div><!-- end copy -->
-    </div><!-- end wrapper -->
 
-    <!-- jQuery Files -->
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/animate.js"></script>
-    <script src="/js/bootstrap-select.min.js"></script>
-    <script src="/js/custom.js"></script>
+                <div class="pull-right">
+                    <div class="footer-links">
+                        <ul class="list-inline">
+                            <li>Design : <a href="#">CAFEBABE.PHOSPHOR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div><!-- end copy -->
+</div><!-- end wrapper -->
+
+<!-- jQuery Files -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/animate.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
+<script src="/js/custom.js"></script>
+<script src="/js/simpleAlert.js"></script>
 
 </body>
 </html>
