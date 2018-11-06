@@ -1,7 +1,8 @@
 package com.cafebabe.phosphor.service;
 
-import com.cafebabe.phosphor.model.dto.Page;
 import com.cafebabe.phosphor.model.entity.CourseCollection;
+
+import java.util.List;
 
 /**
  *
@@ -17,13 +18,11 @@ import com.cafebabe.phosphor.model.entity.CourseCollection;
  **/
 public interface CourseCollectionService {
     /**
-     *
-     * @param pageIndex 页数
-     * @param pageSize 每页数
-     * @param parentId 用户Id
-     * @return 课程List
+     * 课程收藏
+     * @param parentPhone 家长电话
+     * @return 课程
      */
-    Page getAllCourseCollection(Integer pageIndex, Integer pageSize,Integer parentId);
+    List<CourseCollection> getAllCourseCollection(String parentPhone);
     /**
      * 添加收藏
      * @param courseCollection 收藏信息

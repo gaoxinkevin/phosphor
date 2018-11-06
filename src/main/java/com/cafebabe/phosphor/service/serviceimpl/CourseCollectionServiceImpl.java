@@ -33,19 +33,10 @@ public class CourseCollectionServiceImpl implements CourseCollectionService {
         this.courseCollectionDAO = courseCollectionDAO;
     }
 
+
     @Override
-    public Page getAllCourseCollection(Integer pageIndex, Integer pageSize, Integer parentId) {
-        Page<CourseCollectionInfo> page = new Page<>();
-        page.setPageSize(3);
-        page.setTotalRecord(courseCollectionDAO.getCourseCollectionCount(parentId));
-        Integer totalPages = (page.getTotalRecord() % page.getPageSize() == 0) ? (page.getTotalRecord() / page.getPageSize()) : ((page.getTotalRecord() / page.getPageSize())+1);
-        page.setTotalPages(totalPages);
-        page.setCurrentPageCode(pageIndex);
-        page.setStartRecord(pageIndex * pageSize);
-        page.setEndRecord(pageSize * (pageIndex + 1) - 1);
-        List<CourseCollectionInfo> courseCollectionInfoList = courseCollectionDAO.getCourseCollectionByParentId(page,parentId);
-        page.setModelList(courseCollectionInfoList);
-        return page;
+    public List<CourseCollection> getAllCourseCollection(String parentPhone) {
+        return courseCollectionDAO.getCourseCollectionByPhone(parentPhone);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.cafebabe.phosphor.web.controller;
 
-import com.cafebabe.phosphor.model.dto.Page;
+import com.cafebabe.phosphor.model.entity.CourseCollection;
 import com.cafebabe.phosphor.service.serviceimpl.CourseCollectionServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  *
@@ -36,10 +38,10 @@ public class CourseCollectionController {
     }
 
     @ResponseBody
-    @RequestMapping("/getCourseCollectionList/{parentId}")
-    public JsonResponse getCourseList(@PathVariable Integer parentId, Integer pageIndex, Integer pageSize){
-        Page page = courseCollectionService.getAllCourseCollection(pageIndex,pageSize,parentId);
-        return new JsonResponse(200, "success", page);
+    @RequestMapping("/getCourseCollectionList/{parentPhone}")
+    public JsonResponse getCourseList(@PathVariable String parentPhone){
+        List<CourseCollection> courseCollectionList = courseCollectionService.getAllCourseCollection(parentPhone);
+        return new JsonResponse(200, "success", courseCollectionList);
     }
 
     @ResponseBody

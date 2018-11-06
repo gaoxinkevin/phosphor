@@ -1,7 +1,5 @@
 package com.cafebabe.phosphor.dao;
 
-import com.cafebabe.phosphor.model.dto.CourseCollectionInfo;
-import com.cafebabe.phosphor.model.dto.Page;
 import com.cafebabe.phosphor.model.entity.CourseCollection;
 
 import java.util.List;
@@ -24,7 +22,7 @@ public interface CourseCollectionDAO extends MyBatisBaseDao<CourseCollection, In
      * 根据用户id查询课程收藏
      * @return 收藏的课程
      */
-    List<CourseCollectionInfo> getCourseCollectionByParentId(Page page,Integer parentId);
+    List<CourseCollection> getCourseCollectionByPhone(String parentPhone);
 
     /**
      * 获得某用户收藏总记录数
