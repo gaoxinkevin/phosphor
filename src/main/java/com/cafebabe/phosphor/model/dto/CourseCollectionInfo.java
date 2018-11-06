@@ -52,4 +52,7 @@ public class CourseCollectionInfo {
      * 课程收藏创建时间
      */
     private Date courseCollectionCreateTime;
+
+    private Integer courseCollectionId;
+
 }

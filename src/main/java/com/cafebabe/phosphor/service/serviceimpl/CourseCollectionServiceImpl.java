@@ -35,7 +35,7 @@ public class CourseCollectionServiceImpl implements CourseCollectionService {
 
 
     @Override
-    public List<CourseCollection> getAllCourseCollection(String parentPhone) {
+    public List<CourseCollectionInfo> getAllCourseCollection(String parentPhone) {
         return courseCollectionDAO.getCourseCollectionByPhone(parentPhone);
     }
 

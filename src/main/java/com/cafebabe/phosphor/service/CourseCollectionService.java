@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.service;
 
+import com.cafebabe.phosphor.model.dto.CourseCollectionInfo;
 import com.cafebabe.phosphor.model.entity.CourseCollection;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface CourseCollectionService {
      * @param parentPhone 家长电话
      * @return 课程
      */
-    List<CourseCollection> getAllCourseCollection(String parentPhone);
+    List<CourseCollectionInfo> getAllCourseCollection(String parentPhone);
     /**
      * 添加收藏
      * @param courseCollection 收藏信息

@@ -1,5 +1,6 @@
 package com.cafebabe.phosphor.web.controller;
 
+import com.cafebabe.phosphor.model.dto.CourseCollectionInfo;
 import com.cafebabe.phosphor.model.entity.CourseCollection;
 import com.cafebabe.phosphor.service.serviceimpl.CourseCollectionServiceImpl;
 import com.cafebabe.phosphor.util.JsonResponse;
@@ -40,7 +41,7 @@ public class CourseCollectionController {
     @ResponseBody
     @RequestMapping("/getCourseCollectionList/{parentPhone}")
     public JsonResponse getCourseList(@PathVariable String parentPhone){
-        List<CourseCollection> courseCollectionList = courseCollectionService.getAllCourseCollection(parentPhone);
+        List<CourseCollectionInfo> courseCollectionList = courseCollectionService.getAllCourseCollection(parentPhone);
         return new JsonResponse(200, "success", courseCollectionList);
     }
 

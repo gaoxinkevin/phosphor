@@ -52,12 +52,7 @@
     <!--Ajax向后台输出数据-->
     <script>
 
-        // 判断用户登录
-        let a = localStorage.getItem("userLoginPhone");
-        if (a === null) {
-            localStorage.clear();
-            window.location.href = "http://localhost:1250/indexUi/returnIndexPage";
-        }
+
 
         // 获取公司收藏列表
         getCompanyCollectionList = () => {
@@ -211,7 +206,7 @@
             deleteCollectionA.classList.add("btn-primary", "btn-sm");
             deleteCollectionA.innerText = "取消收藏";
             let companyDetailA = document.createElement("a");
-            companyDetailA.setAttribute("href", "javascript:");
+            companyDetailA.setAttribute("href", "http://localhost:1250/companyUi/loginCompanyUi/"+data.companyId);
             companyDetailA.setAttribute("style", "cursor: pointer;");
             companyDetailA.classList.add("btn-primary", "btn-sm");
             companyDetailA.innerText = "查看详情";
@@ -498,7 +493,7 @@
 
                     <div style="width: 620px;height: 30px;float: left;font-size: 18px;border-bottom: 1px solid black;
                                 margin-bottom: 15px;margin-top: -35px">
-                        <a href="#" style="display: block;float: left;">课程收藏</a>
+                        <a href="http://localhost:1250/courseCollectionUi/courseCollectionUi" style="display: block;float: left;">课程收藏</a>
                         <div style="border-left: 1px solid black;height: 20px;float: left;margin: 5px 10px auto;"></div>
                         <a href="/parentUi/companyCollectionUi"
                            style="color: #01bacf;display: block;float: left;">公司收藏</a>

@@ -24,8 +24,8 @@
     select count(parent_id) from course_collection
     where parent_id=#{parentId}
   </select>
-    <select id="getCourseCollectionByPhone" resultType="com.cafebabe.phosphor.model.entity.CourseCollection">
-      select parent_id,course_collection_create_time,parent_phone,course_sf,company_name,course_price
+    <select id="getCourseCollectionByPhone" resultType="com.cafebabe.phosphor.model.dto.CourseCollectionInfo">
+      select parent.parent_id,course_collection_id,course.course_id,course_collection_create_time,course_name,course_sf,company_name,course_price
       from course_collection
       join parent on parent.parent_id=course_collection.parent_id
       join course on course_collection.course_id = course.course_id

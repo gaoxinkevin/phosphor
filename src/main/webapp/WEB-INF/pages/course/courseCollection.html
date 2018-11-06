@@ -60,12 +60,7 @@
 
         getCourseCollectionList = () => {
             let phone = JSON.parse(localStorage.getItem("userLoginPhone")).val;
-            let page = 1;
-            let pageModel = {
-                sfString: phone,
-                currentPageCode: page,
-            };
-            const clientUrl = 'http://localhost:1250/companyCollection/getCompanyCollectionList';
+            const clientUrl = 'http://localhost:1250/courseCollection/getCourseCollectionList/'+phone;
             const clientMethod = 'POST';
             const getCourseList = ({url, method, data}) => {
                 return new Promise((resolve, reject) => {
@@ -99,15 +94,13 @@
             fatherDiv.setAttribute("id", "fatherDiv");
             grandfatherDiv.appendChild(fatherDiv);
             scrollTo(0, 0);
-            result(JSON.stringify(pageModel)).then((res) => {
+            result().then((res) => {
                 console.log(res);
-                if (res.data.modelList.length != 0) {
-                    for (let i = 0; i < res.data.modelList.length; i++) {
-                        let sonDiv = generateCourseList(res.data.modelList[i]);
+                if (res.data.length != 0) {
+                    for (let i = 0; i < res.data.length; i++) {
+                        let sonDiv = generateCourseList(res.data[i]);
                         fatherDiv.appendChild(sonDiv);
                     }
-                    let pageDiv = generatePageDiv(res.data.currentPageCode, res.data.totalPages);
-                    fatherDiv.appendChild(pageDiv);
                 } else {
                     let div1 = document.createElement("div");
                     div1.setAttribute("style", "text-align:center;font-size:20px;height:60px;" +
@@ -121,66 +114,14 @@
             });
         }
 
-        getPageList = (pageCode) => {
-            const clientUrl = 'http://localhost:1250/courseCollection/getCourseCollectionList';
-            const clientMethod = 'POST';
-            const courseList = ({url, method, data}) => {
-                return new Promise((resolve, reject) => {
-                    const client = new XMLHttpRequest();
-                    client.open(clientMethod, url);
-                    client.responseType = 'json';
-                    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-                    client.onreadystatechange = () => {
-                        if (client.readyState === 4) {
-                            if (client.status === 200) {
-                                resolve(client.response);
-                            } else {
-                                reject(client.status);
-                            }
-                        }
-                    };
-                    client.send(data);
-                });
-            };
-            let phone = JSON.parse(localStorage.getItem("userLoginPhone")).val;
-            let pageModel = {
-                sfString: phone,
-                currentPageCode: pageCode,
-            };
-
-            const resultList = (data) => courseList(
-                {
-                    url: clientUrl,
-                    method: clientMethod,
-                    data
-                }
-            );
-
-            let grandfatherDiv = document.getElementById("ct");
-            const fatherDiv = document.getElementById("fatherDiv");
-            fatherDiv.innerText = "";
-            grandfatherDiv.appendChild(fatherDiv);
-            // scrollTo(0, 0);
-            resultList(JSON.stringify(pageModel)).then((res) => {
-                for (let i = 0; i < res.data.modelList.length; i++) {
-                    let sonDiv = generateCourseList(res.data.modelList[i]);
-                    fatherDiv.appendChild(sonDiv);
-                }
-                let pageDiv = generatePageDiv(res.data.currentPageCode, res.data.totalPages);
-                fatherDiv.appendChild(pageDiv);
-            }).catch(error => {
-                console.log(error);
-            });
-        }
-
         generateCourseList = (data) => {
             let div = document.createElement("div");
             div.classList.add("mn");
             let photo = document.createElement("img");
-            photo.setAttribute("src", "/upload/shop_01.jpg");
+            photo.setAttribute("src", data.courseSf);
             photo.setAttribute("style", "width:20%;display:block;float:left;");
             let courseDiv = document.createElement("div");
-            courseDiv.setAttribute("style", "float:left;margin-top:10px;margin-left:15px;");
+            courseDiv.setAttribute("style", "float:left;margin-top:10px;margin-left:15px;width: 300px;");
             let courseNameSpan = document.createElement("span");
             courseNameSpan.setAttribute("style", "font-size: 16px;");
             courseNameSpan.innerText = "课程名：" + data.courseName;
@@ -190,17 +131,7 @@
             let coursePrice = document.createElement("span");
             coursePrice.setAttribute("style", "font-size: 16px;");
             coursePrice.innerText = "价格："+ data.coursePrice;
-            let teacherName = document.createElement("span");
-            teacherName.setAttribute("style", "font-size: 16px;white-space:pre;");
-            teacherName.innerText = "授课教师："+data.teacherName;
-            // if (data.companyAddress.length > 16) {
-            //     const address1 = data.companyAddress.substr(0, 16);
-            //     companyAddress1.innerText = "公司地址：" + address1;
-            //     const address2 = data.companyAddress.substr(16);
-            //     companyAddress2.innerText = "                  " + address2;
-            // } else {
-            //     companyAddress1.innerText = "公司地址：" + data.companyAddress;
-            // }
+
             let optionDiv = document.createElement("div");
             optionDiv.setAttribute("style", "float:left;margin-top:20px;margin-left:40px;width:70px;");
             let deleteCollectionA = document.createElement("a");
@@ -209,7 +140,7 @@
             deleteCollectionA.classList.add("btn-primary", "btn-sm");
             deleteCollectionA.innerText = "取消收藏";
             let courseDetailA = document.createElement("a");
-            courseDetailA.setAttribute("href", "javascript:");
+            courseDetailA.setAttribute("href", "http://localhost:1250/courseUi/courseInfoUi/"+data.courseId);
             courseDetailA.setAttribute("style", "cursor: pointer;");
             courseDetailA.classList.add("btn-primary", "btn-sm");
             courseDetailA.innerText = "查看详情";
@@ -223,82 +154,10 @@
             courseDiv.appendChild(document.createElement("br"));
             courseDiv.appendChild(coursePrice);
             courseDiv.appendChild(document.createElement("br"));
-            courseDiv.appendChild(teacherName);
             optionDiv.appendChild(deleteCollectionA);
             optionDiv.appendChild(document.createElement("br"));
             optionDiv.appendChild(document.createElement("br"));
             optionDiv.appendChild(courseDetailA);
-
-            return div;
-        }
-
-        generatePageDiv = (currentPageCode, totalPages) => {
-            let div = document.createElement("div");
-            let hr = document.createElement("hr");
-            hr.classList.add("invis");
-            let div1 = document.createElement("div");
-            div1.classList.add("row", "text-center");
-            let div2 = document.createElement("div");
-            div2.classList.add("col-md-12");
-            div2.setAttribute("style", "margin-top: -87px;");
-            let ul = document.createElement("ul");
-            ul.classList.add("pagination");
-            let liFirstPage = document.createElement("li");
-            let liLastPage = document.createElement("li");
-            let liEndPage = document.createElement("li");
-            let liNextPage = document.createElement("li");
-            let li = document.createElement("li");
-            li.classList.add("disabled");
-            if (currentPageCode == 1) {
-                liFirstPage.classList.add("customizeDisable");
-                liLastPage.classList.add("customizeDisable");
-            }
-            else {
-                liFirstPage.classList.add("active");
-                liLastPage.classList.add("active");
-            }
-
-            if (currentPageCode == totalPages) {
-                liEndPage.classList.add("customizeDisable");
-                liNextPage.classList.add("customizeDisable");
-            }
-            else {
-                liEndPage.classList.add("active");
-                liNextPage.classList.add("active");
-            }
-            let aFirstPage = document.createElement("a");
-            aFirstPage.setAttribute("href", "javascript:getPageList(1)");
-            aFirstPage.setAttribute("style", "cursor: pointer;");
-            aFirstPage.innerText = "首页";
-            let aLastPage = document.createElement("a");
-            aLastPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode - 1) + ")");
-            aLastPage.setAttribute("style", "cursor: pointer;");
-            aLastPage.innerText = "上一页";
-            let aEndPage = document.createElement("a");
-            aEndPage.setAttribute("href", "javascript:getPageList(" + totalPages + ")");
-            aEndPage.setAttribute("style", "cursor: pointer;");
-            aEndPage.innerText = "尾页";
-            let aNextPage = document.createElement("a");
-            aNextPage.setAttribute("href", "javascript:getPageList(" + (currentPageCode + 1) + ")");
-            aNextPage.setAttribute("style", "cursor: pointer;");
-            aNextPage.innerText = "下一页";
-            let a = document.createElement("a");
-            a.innerText = currentPageCode;
-
-            div.appendChild(hr);
-            div.appendChild(div1);
-            div1.appendChild(div2);
-            div2.appendChild(ul);
-            ul.appendChild(liFirstPage);
-            ul.appendChild(liLastPage);
-            ul.appendChild(li);
-            ul.appendChild(liNextPage);
-            ul.appendChild(liEndPage);
-            liFirstPage.appendChild(aFirstPage);
-            liLastPage.appendChild(aLastPage);
-            li.appendChild(a);
-            liNextPage.appendChild(aNextPage);
-            liEndPage.appendChild(aEndPage);
 
             return div;
         }
@@ -450,10 +309,10 @@
 
                     <div style="width: 620px;height: 30px;float: left;font-size: 18px;border-bottom: 1px solid black;
                                 margin-bottom: 15px;margin-top: -35px">
-                        <a href="#" style="display: block;float: left;">课程收藏</a>
+                        <a href="#" style="display: block;float: left;color: #01bacf;">课程收藏</a>
                         <div style="border-left: 1px solid black;height: 20px;float: left;margin: 5px 10px auto;"></div>
                         <a href="/parentUi/companyCollectionUi"
-                           style="color: #01bacf;display: block;float: left;">公司收藏</a>
+                           style="display: block;float: left;">公司收藏</a>
                     </div>
 
                     <!--START-->
